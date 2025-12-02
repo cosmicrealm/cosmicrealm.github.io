@@ -9,56 +9,26 @@ redirect_from:
 
 {% include base_path %}
 
-Education
-======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+[CV Link](https://cosmicrealm.github.io/files/CV_zhangjinyang.pdf)
 
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+## Education
+* M.S. in Computer Science, **Northwestern Polytechnical University (NWPU)**, 2017.09–2020.03  
+* B.S. in Computer Science, **Northwestern Polytechnical University (NWPU)**, 2013.09–2017.07
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+## Work Experience
+* **Xiaobing — Algorithm Engineer**  2022.11–present, Beijing  
+  - Developed digital human generation models, including speech-driven facial animation and expression synthesis, leveraging Flow-Matching, diffusion and LoRA-based techniques for AIGC applications.
 
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* **Moqi — Algorithm Engineer**  2022.03–2022.10, Beijing  
+  - Worked on biometric recognition algorithms with a focus on palmprint matching.
 
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+* **Orbbec — Algorithm Engineer**  2020.04–2022.03, Xi’an  
+  - Worked on industrial vision inspection and industrial software engineering.
+
+## Skills
+* Python, C++ 
+
+## Tools & Libraries
+* ComfyUI, Ffmpge, TensorRT, Onnx runtime, Opencv, NumPy
+* StableDiffusion, Flux-dev, Flux-Kontext,  LoRA frameworks
+* Whisper ASR, CLIP, VLM (e.g., Qwen-VL, LLaVA)
