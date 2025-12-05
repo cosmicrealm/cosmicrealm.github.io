@@ -9,7 +9,7 @@ tags:
 
 ---
 
-# [Paper Reading] FLOAT: Flow Matching 驱动的语音口型合成方法
+### [Paper Reading] FLOAT: Flow Matching 驱动的语音口型合成方法
 
 本文记录 KAIST 论文 **FLOAT: Generative Motion Latent Flow Matching for Audio-driven Talking Portrait** 的阅读内容，包含动机、结构设计、Motion Latent Auto-Encoder、Flow Matching 训练方式以及推理流程等。
 

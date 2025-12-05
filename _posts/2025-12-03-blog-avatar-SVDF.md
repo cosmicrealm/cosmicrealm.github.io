@@ -10,7 +10,7 @@ tags:
   - Video Reenactment
 ---
 
-# [Paper Reading]：Stable Video-Driven Portraits — 基于 DiT 的高保真视频驱动人像生成
+### [Paper Reading]：Stable Video-Driven Portraits — 基于 DiT 的高保真视频驱动人像生成
 
 **来源**：Stable Video-Driven Portraits
 **核心亮点**：Stability AI最近放出了一篇视频驱动单图的文章，但是还没有开源，基于 Stable Diffusion 3.5 Medium (DiT) 架构，通过最小化参数引入和巧妙的数据构造，实现了 SOTA 级别的单图驱动视频生成。

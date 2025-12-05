@@ -12,7 +12,7 @@ tags:
 
 ---
 
-# [Paper Reading] 基于扩散 Transformer 的双重提示图像复原 (DPIR)
+### [Paper Reading] 基于扩散 Transformer 的双重提示图像复原 (DPIR)
 
 在图像复原（Image Restoration, IR）领域，虽然基于 U-Net 架构的潜在扩散模型（Latent Diffusion Models）已被广泛采用，但其在实现高质量复原方面仍面临挑战。与此同时，**扩散 Transformer（Diffusion Transformers, DiTs）**（如 Stable Diffusion 3, SD3）凭借其能够捕捉长距离依赖关系以及优越的可扩展性，正成为一种有前途的替代方案。
 
