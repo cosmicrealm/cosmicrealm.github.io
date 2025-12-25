@@ -1,5 +1,5 @@
 ---
-title: 'noao-chat-sft阶段训练'
+title: 'noao-chat-3-sft阶段训练'
 date: 2025-12-25
 permalink: /posts/2025/12/2025-12-25-blog-nonochat-3-sft/
 tags:

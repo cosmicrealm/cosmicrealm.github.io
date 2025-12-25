@@ -1,5 +1,5 @@
 ---
-title: 'noao-chat-mid阶段训练'
+title: 'noao-chat-2-mid阶段训练'
 date: 2025-12-25
 permalink: /posts/2025/12/2025-12-25-blog-nonochat-2-mid/
 tags:
@@ -1632,13 +1632,6 @@ Mid Model (扩展能力)
 **下一步：**
 - SFT：教模型遵循指令（使用 mask）
 - RL：通过强化学习优化行为（使用 mask）
-
----
-
-**相关文档：**
-- [Base训练完整解析-小白版.md](Base训练完整解析-小白版.md) - 预训练阶段
-- [SFT训练完整解析-小白版.md](SFT训练完整解析-小白版.md) - 监督微调阶段（详细的 Mask 机制）
-- [RL训练完整解析-小白版.md](RL训练完整解析-小白版.md) - 强化学习阶段
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: 'noao-chat-rl'
+title: 'noao-chat-4-rl阶段训练'
 date: 2025-12-25
 permalink: /posts/2025/12/2025-12-25-blog-nonochat-4-rl/
 tags:
