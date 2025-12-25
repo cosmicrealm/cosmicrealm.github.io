@@ -1,7 +1,7 @@
 ---
 title: 'noao-chat-rl'
 date: 2025-12-25
-permalink: /posts/2025/12/2025-12-25-blog-nonochat-rl/
+permalink: /posts/2025/12/2025-12-25-blog-nonochat-4-rl/
 tags:
   - llm
 ---

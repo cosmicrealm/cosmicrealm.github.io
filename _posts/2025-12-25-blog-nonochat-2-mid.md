@@ -1,7 +1,7 @@
 ---
 title: 'noao-chat-mid阶段训练'
 date: 2025-12-25
-permalink: /posts/2025/12/2025-12-25-blog-nonochat-mid/
+permalink: /posts/2025/12/2025-12-25-blog-nonochat-2-mid/
 tags:
   - llm
 ---
