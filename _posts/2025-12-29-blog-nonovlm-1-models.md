@@ -1049,3 +1049,778 @@ Text Tokens → Token Embedding → [B,T,960]
 ```
 
 ---
+
+
+
+接下来档详细说明 nanoVLM 中图像的处理流程，以及最终送入 LLM 的 token 序列构建方式。
+
+## 目录
+- [1. 图像处理流程](#1-图像处理流程)
+- [2. Vision Encoder 处理](#2-vision-encoder-处理)
+- [3. Modality Projector](#3-modality-projector)
+- [4. Token 序列构建](#4-token-序列构建)
+- [5. 完整的输入序列结构](#5-完整的输入序列结构)
+- [6. 关键数值总结](#6-关键数值总结)
+- [7. 特殊情况处理](#7-特殊情况处理)
+
+---
+
+## 1. 图像处理流程
+
+### 1.1 动态调整大小 (DynamicResize)
+
+**相关代码**：`data/custom_transforms.py` 中的 `DynamicResize` 类
+
+**配置参数**：
+- `max_img_size = 2048` 像素（长边限制）
+- `vit_img_size = 512` 像素（每个patch的大小）
+- `resize_to_max_side_len = True`
+
+**调整规则**：
+- 保持图像宽高比
+- 长边 ≤ 2048 且能被 512 整除
+- 短边按比例缩放，也能被 512 整除
+
+**示例1：处理 1920×1080 的图像**
+```
+原始尺寸：1920×1080
+长边：1920 → 调整到 1536 (最接近的512倍数)
+缩放比例：1536/1920 = 0.8
+短边：1080 × 0.8 = 864 → 向上取整到 1024 (512的倍数)
+调整后尺寸：1536×1024
+```
+
+**示例2：处理 2400×1600 的图像**
+```
+原始尺寸：2400×1600
+长边：2400 → 调整到 2048 (受max_img_size限制)
+缩放比例：2048/2400 ≈ 0.853
+短边：1600 × 0.853 ≈ 1365 → 向上取整到 1536 (512的倍数)
+调整后尺寸：2048×1536
+```
+
+### 1.2 切分成 Patches (GlobalAndSplitImages)
+
+**相关代码**：`data/custom_transforms.py` 中的 `GlobalAndSplitImages` 类
+
+图像被切分成多个 512×512 的 patches，并生成一个 global patch。
+
+**示例1：1536×1024 图像的切分**
+```
+水平切分：1536 ÷ 512 = 3 个patches
+垂直切分：1024 ÷ 512 = 2 个patches
+Local patches总数：3×2 = 6 个
+Global patch：整张图缩小到 512×512 = 1 个
+最终patches总数：7 个 (1 global + 6 local)
+Grid结构：(n_h=2, n_w=3)
+```
+
+**示例2：512×512 图像的切分**
+```
+水平切分：512 ÷ 512 = 1 个patch
+垂直切分：512 ÷ 512 = 1 个patch
+Grid结构：(n_h=1, n_w=1)
+特殊情况：只有1个patch时，不生成额外的global patch
+最终patches总数：1 个
+```
+
+**示例3：2048×1536 图像的切分**
+```
+水平切分：2048 ÷ 512 = 4 个patches
+垂直切分：1536 ÷ 512 = 3 个patches
+Local patches总数：4×3 = 12 个
+Global patch：1 个
+最终patches总数：13 个 (1 global + 12 local)
+Grid结构：(n_h=3, n_w=4)
+```
+
+---
+
+## 2. Vision Encoder 处理
+
+**相关代码**：`models/vision_transformer.py` 中的 `ViT` 类
+
+### 2.1 ViT 配置
+```python
+vit_hidden_dim: 768        # ViT的隐藏层维度
+vit_patch_size: 16         # ViT将图像切成16×16的小patches
+vit_img_size: 512          # 输入到ViT的图像大小
+vit_n_blocks: 12           # Transformer层数
+vit_n_heads: 12            # 注意力头数
+```
+
+### 2.2 处理流程
+
+每个 512×512 的 patch 经过 ViT：
+
+```
+输入：512×512×3 的图像
+切分：(512÷16) × (512÷16) = 32×32 = 1024 个小patches
+每个小patch：16×16×3
+经过ViT后：[1024, 768]
+```
+
+**以 1536×1024 图像为例（7个patches）**：
+```
+输入到ViT：[7, 3, 512, 512]
+ViT输出：[7, 1024, 768]
+```
+其中：
+- 7 = 1个global patch + 6个local patches
+- 1024 = 每个512×512图像产生的token数量
+- 768 = ViT的隐藏层维度
+
+---
+
+## 3. Modality Projector
+
+**相关代码**：`models/modality_projector.py` 中的 `ModalityProjector` 类
+
+### 3.1 Pixel Shuffle
+
+**配置参数**：
+```python
+mp_pixel_shuffle_factor: 4    # 压缩因子
+```
+
+**作用**：将视觉tokens压缩，减少送入LLM的token数量
+
+**计算过程**：
+```
+输入：[batch, 1024, 768]
+Pixel Shuffle 4×：
+  - Token数量：1024 → 1024 ÷ (4×4) = 64
+  - 特征维度：768 → 768 × (4×4) = 12288
+输出：[batch, 64, 12288]
+```
+
+### 3.2 Linear Projection
+
+**配置参数**：
+```python
+vit_hidden_dim: 768           # ViT输出维度
+lm_hidden_dim: 960            # LLM输入维度
+mp_image_token_length: 64     # 每个patch的最终token数
+```
+
+**投影过程**：
+```
+输入：[batch, 64, 12288]
+Linear层：12288 → 960
+输出：[batch, 64, 960]
+```
+
+### 3.3 完整示例
+
+**以 1536×1024 图像（7个patches）为例**：
+```
+ViT输出：     [7, 1024, 768]
+Pixel Shuffle: [7, 64, 12288]
+Linear投影：   [7, 64, 960]
+展平后：       [448, 960]  (7×64=448个image tokens)
+```
+
+**关键结论**：每个512×512的图像patch最终产生 **64 个 image tokens**
+
+---
+
+## 4. Token 序列构建
+
+**相关代码**：`data/processors.py` 中的 `get_image_string` 函数
+
+### 4.1 特殊Token定义
+
+```python
+vlm_extra_tokens = {
+    "image_token": "<|image|>",              # 实际的图像embedding占位符
+    "global_image_token": "<|global_image|>", # 标记全局图像的开始
+    "r1c1": "<row_1_col_1>",                 # 位置标记：第1行第1列
+    "r1c2": "<row_1_col_2>",                 # 位置标记：第1行第2列
+    "r1c3": "<row_1_col_3>",
+    ...
+    "r8c8": "<row_8_col_8>",                 # 最多支持 8×8 的grid
+}
+```
+
+**Token功能**：
+- `<|image|>`：会被替换成实际的image embedding（64维的向量）
+- `<|global_image|>`：文本token，标识全局图像的开始
+- `<row_i_col_j>`：文本token，标识局部patch的位置
+
+### 4.2 单张图像的Token序列
+
+**场景1：1536×1024 图像（2行3列grid）**
+
+Token序列：
+```
+<|global_image|>                    (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_1_col_1>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_1_col_2>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_1_col_3>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_2_col_1>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_2_col_2>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+<row_2_col_3>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+```
+
+**Token统计**：
+- Global部分：1（标记） + 64（embeddings） = 65 tokens
+- Local部分：6个patches × (1（标记） + 64（embeddings）) = 390 tokens
+- **总计**：65 + 390 = **455 tokens**
+
+**场景2：512×512 图像（1×1 grid）**
+
+Token序列：
+```
+<row_1_col_1>                       (1个文本token)
+<|image|><|image|>...<|image|>      (64个image embeddings)
+```
+
+**Token统计**：
+- 无global patch（因为只有1个patch）
+- **总计**：1 + 64 = **65 tokens**
+
+**场景3：2048×1536 图像（3行4列grid）**
+
+Token序列结构：
+```
+<|global_image|> + 64个<|image|>
+<row_1_col_1> + 64个<|image|>
+<row_1_col_2> + 64个<|image|>
+<row_1_col_3> + 64个<|image|>
+<row_1_col_4> + 64个<|image|>
+<row_2_col_1> + 64个<|image|>
+<row_2_col_2> + 64个<|image|>
+<row_2_col_3> + 64个<|image|>
+<row_2_col_4> + 64个<|image|>
+<row_3_col_1> + 64个<|image|>
+<row_3_col_2> + 64个<|image|>
+<row_3_col_3> + 64个<|image|>
+<row_3_col_4> + 64个<|image|>
+```
+
+**Token统计**：
+- Global部分：65 tokens
+- Local部分：12个patches × 65 = 780 tokens
+- **总计**：65 + 780 = **845 tokens**
+
+### 4.3 多张图像的Token序列
+
+**相关代码**：`data/processors.py` 中对多图像的处理
+
+**场景：2张图像**
+- 图1：1536×1024 (2×3 grid)
+- 图2：1024×512 (1×2 grid，只有2个patches)
+
+Token序列：
+```
+<image: 0>                          (1个文本token，标识第0张图)
+<|global_image|>                    (1个文本token)
+<|image|>×64                        (64个embeddings - global)
+<row_1_col_1>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 1,1)
+<row_1_col_2>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 1,2)
+<row_1_col_3>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 1,3)
+<row_2_col_1>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 2,1)
+<row_2_col_2>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 2,2)
+<row_2_col_3>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 2,3)
+<image: 1>                          (1个文本token，标识第1张图)
+<row_1_col_1>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 1,1)
+<row_1_col_2>                       (1个文本token)
+<|image|>×64                        (64个embeddings - patch 1,2)
+```
+
+**Token统计**：
+- 图1：1（图像标识） + 1（global标记） + 64（global embeddings） + 6×(1+64) = **456 tokens**
+- 图2：1（图像标识） + 2×(1+64) = **131 tokens**
+- **图像总计**：456 + 131 = **587 tokens**
+
+---
+
+## 5. 完整的输入序列结构
+
+**相关代码**：`data/datasets.py` 中的 `_get_messages` 和 `_prepare_inputs_and_loss_mask` 方法
+
+### 5.1 Chat Template
+
+使用 SmolLM2 的聊天格式：
+```python
+lm_chat_template = """
+{% for message in messages %}
+{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}
+{% endfor %}
+{% if add_generation_prompt %}{{ '<|im_start|>assistant\n' }}{% endif %}
+"""
+```
+
+格式化后：
+```
+<|im_start|>user
+[图像tokens][问题文本]<|im_end|>
+<|im_start|>assistant
+[回答文本]<|im_end|>
+```
+
+### 5.2 具体示例
+
+**场景**：用户上传2张图像，提问"这两张图有什么不同？"
+- 图1：1536×1024
+- 图2：1024×512
+
+**完整Token序列**：
+
+```
+位置    Token内容                    类型        数量
+----------------------------------------------------
+0       <|im_start|>                文本token    1
+1       user                        文本token    1
+2       \n                          文本token    1
+3       <image: 0>                  文本token    1
+4       <|global_image|>            文本token    1
+5-68    <|image|>...                embeddings   64
+69      <row_1_col_1>               文本token    1
+70-133  <|image|>...                embeddings   64
+134     <row_1_col_2>               文本token    1
+135-198 <|image|>...                embeddings   64
+199     <row_1_col_3>               文本token    1
+200-263 <|image|>...                embeddings   64
+264     <row_2_col_1>               文本token    1
+265-328 <|image|>...                embeddings   64
+329     <row_2_col_2>               文本token    1
+330-393 <|image|>...                embeddings   64
+394     <row_2_col_3>               文本token    1
+395-458 <|image|>...                embeddings   64
+459     <image: 1>                  文本token    1
+460     <row_1_col_1>               文本token    1
+461-524 <|image|>...                embeddings   64
+525     <row_1_col_2>               文本token    1
+526-589 <|image|>...                embeddings   64
+590     这                          文本token    1
+591     两                          文本token    1
+592     张                          文本token    1
+593     图                          文本token    1
+594     有                          文本token    1
+595     什么                         文本token    1
+596     不同                         文本token    1
+597     ？                          文本token    1
+598     <|im_end|>                  文本token    1
+599     \n                          文本token    1
+600     <|im_start|>                文本token    1
+601     assistant                   文本token    1
+602     \n                          文本token    1
+603-    [模型生成的回答]             生成tokens   变长
+```
+
+**Token统计**：
+- 系统格式tokens：约 10 个
+- 图1的tokens：456 个
+- 图2的tokens：131 个
+- 问题文本tokens：约 8 个
+- 助手前缀tokens：约 3 个
+- **输入总计**：约 **608 tokens**
+
+### 5.3 Labels (训练目标)
+
+**相关代码**：`data/datasets.py` 中的 `_get_labels` 方法
+
+```python
+labels = input_ids.clone().masked_fill(~mask, -100)
+labels = labels.roll(-1)  # 向左移1位，实现next token prediction
+labels[-1] = -100
+```
+
+**Mask规则**（在 `_prepare_inputs_and_loss_mask` 中实现）：
+```python
+# 对于每条消息
+for msg in messages:
+    if msg["role"] == "assistant":
+        # 只对助手的回答内容计算loss
+        # 跳过 "<|im_start|>assistant\n" 这个前缀
+        mask[start:end] = 1
+```
+
+**示例**（使用上面的场景）：
+```
+Position  Token                      Mask  Label
+-------------------------------------------------
+0-602     [所有用户输入和格式tokens]    0     -100
+603       \n (assistant后的换行)       0     -100
+604       第                          1     一
+605       一                          1     张
+606       张                          1     图
+607       图                          1     是
+...       [后续回答内容]               1     [下一个token]
+最后      <|im_end|>                  1     -100
+```
+
+**关键点**：
+- `mask=0` 的位置：label=-100，不计算loss
+- `mask=1` 的位置：label=下一个token的ID，计算cross-entropy loss
+- 所有图像tokens和用户问题都被mask掉
+- 只有助手的实际回答内容参与loss计算
+
+---
+
+## 6. 关键数值总结
+
+### 6.1 图像处理参数
+
+| 参数名称 | 数值 | 说明 |
+|---------|------|------|
+| `vit_patch_size` | 16×16 | ViT将图像切分的最小单位 |
+| `vit_img_size` | 512 | 送入ViT的图像patch大小 |
+| `max_img_size` | 2048 | 输入图像长边的最大限制 |
+| `vit_hidden_dim` | 768 | ViT的输出特征维度 |
+| ViT每个patch的tokens | 1024 | (512÷16)² = 1024 |
+
+### 6.2 Modality Projector参数
+
+| 参数名称 | 数值 | 说明 |
+|---------|------|------|
+| `mp_pixel_shuffle_factor` | 4 | Pixel shuffle的压缩因子 |
+| `mp_image_token_length` | 64 | 每个patch最终的token数量 |
+| Pixel shuffle输入维度 | 768 | 来自ViT |
+| Pixel shuffle输出维度 | 12288 | 768 × 4² |
+| Linear层输出维度 | 960 | LLM的hidden_dim |
+
+### 6.3 LLM参数
+
+| 参数名称 | 数值 | 说明 |
+|---------|------|------|
+| `lm_hidden_dim` | 960 | SmolLM2-360M的隐藏层维度 |
+| `lm_max_length` | 4096 | 训练时的最大序列长度 |
+| `lm_base_vocab_size` | 49152 | 基础词汇表大小 |
+| `extra_token_amount` | 66 | 额外的特殊tokens |
+| `lm_vocab_size` | 49218 | 总词汇表大小 |
+
+### 6.4 训练配置
+
+| 参数名称 | 数值 | 说明 |
+|---------|------|------|
+| `max_sample_length` | 4096 | 单个样本的最大token数 |
+| `max_images_per_example` | 4 | 每个样本最多包含的图像数 |
+| `batch_size` | 2 | 每个GPU的batch size |
+
+### 6.5 不同图像尺寸的Token消耗
+
+| 原始尺寸 | 调整后尺寸 | Grid | Patches | Image Tokens | 总Tokens |
+|---------|-----------|------|---------|-------------|---------|
+| 512×512 | 512×512 | 1×1 | 1 | 64 | 65 |
+| 800×600 | 1024×512 | 1×2 | 2 | 128 | 130 |
+| 1024×768 | 1024×1024 | 2×2 | 4+1(g) | 320 | 325 |
+| 1536×1024 | 1536×1024 | 2×3 | 6+1(g) | 448 | 455 |
+| 1920×1080 | 1536×1024 | 2×3 | 6+1(g) | 448 | 455 |
+| 2048×1536 | 2048×1536 | 3×4 | 12+1(g) | 832 | 845 |
+| 2048×2048 | 2048×2048 | 4×4 | 16+1(g) | 1088 | 1105 |
+
+**说明**：
+- `(g)` 表示包含1个global patch
+- Image Tokens = patches × 64
+- 总Tokens = Image Tokens + 位置标记tokens
+
+---
+
+## 7. 特殊情况处理
+
+### 7.1 单个Patch的图像（1×1 grid）
+
+**代码位置**：`data/custom_transforms.py` 中的 `GlobalAndSplitImages`
+
+```python
+if grid == (1, 1):
+    return patches, grid  # 不添加global patch
+```
+
+**原因**：当图像只有一个patch时，该patch本身已经代表了全局信息，无需额外的global patch。
+
+**Token序列**：
+```
+<row_1_col_1><|image|>×64
+```
+仅 65 tokens（而不是 1+64+1+64=130）
+
+### 7.2 无图像的纯文本对话
+
+**代码位置**：`data/datasets.py` 中的 `_process_data`
+
+```python
+if item['images'] is None:
+    images_data = []
+```
+
+**Token序列**：
+```
+<|im_start|>user
+你好，请介绍一下你自己。<|im_end|>
+<|im_start|>assistant
+我是一个AI助手...<|im_end|>
+```
+
+没有任何图像相关的tokens。
+
+### 7.3 多图像场景
+
+**最大支持**：`max_images_per_example = 4`
+
+**Token序列模式**：
+```
+<image: 0>[图1的所有tokens]<image: 1>[图2的所有tokens]<image: 2>[图3的tokens]<image: 3>[图4的tokens][文本内容]
+```
+
+**限制原因**：
+- 避免序列过长超过 `lm_max_length = 4096`
+- 4张 2048×2048 的图像就需要 4×1105 = 4420 tokens，已超过限制
+- 实际训练中平均每张图约 300-500 tokens
+
+### 7.4 位置标记的最大支持
+
+**代码位置**：`models/config.py` 中的 `vlm_extra_tokens`
+
+支持最大 8×8 的grid，即：
+- 最大切分：8行 × 8列 = 64个local patches
+- 加上1个global patch = 65个patches
+- Token消耗：65 × 65 = 4225 tokens
+
+**触发条件**：
+- 图像尺寸达到 4096×4096 时会产生 8×8 grid
+- 但受 `max_img_size = 2048` 限制，实际最大是 4×4 grid
+
+### 7.5 图像预处理失败
+
+**代码位置**：`data/datasets.py` 中的 `_process_images`
+
+```python
+if isinstance(image, Image.Image):
+    if image.mode != 'RGB':
+        image = image.convert('RGB')  # 转换为RGB模式
+```
+
+**处理方式**：
+- RGBA、L（灰度）等格式自动转换为RGB
+- 如果转换失败，抛出 `ValueError`
+- 该样本会被跳过（在 `__getitem__` 中返回 `None`）
+
+### 7.6 序列长度超限
+
+**代码位置**：`data/collators.py` 中的 `_discard_samples_that_are_too_long`
+
+```python
+filtered = [
+    (ids, label, attn, img)
+    for ids, label, attn, img in zip(...)
+    if len(ids) <= max_length
+]
+```
+
+**处理方式**：
+- 训练时：超过 `max_sample_length = 4096` 的样本直接丢弃
+- Collator层面：超过 `max_length` 的样本被过滤掉
+- 不会截断，避免破坏图像token的完整性
+
+---
+
+## 8. 代码实现要点
+
+### 8.1 图像Token的替换机制
+
+**代码位置**：`models/vision_language_model.py` 中的 `_replace_img_tokens_with_embd`
+
+```python
+def _replace_img_tokens_with_embd(self, input_ids, token_embd, image_embd):
+    updated_token_embd = token_embd.clone()
+    mask = (input_ids == self.tokenizer.image_token_id)
+    updated_token_embd[mask] = image_embd.view(-1, image_embd.size(-1))
+    return updated_token_embd
+```
+
+**关键点**：
+1. `<|image|>` token在tokenizer中有唯一的ID（`image_token_id`）
+2. 找到所有 `<|image|>` token的位置
+3. 用对应的image embedding替换这些位置
+4. 其他文本token保持不变
+
+**示例**：
+```python
+input_ids:    [10, 15, <img_id>, <img_id>, <img_id>, 20, 25]
+token_embd:   [[e10], [e15], [et], [et], [et], [e20], [e25]]  # et是文本embedding
+image_embd:   [[img1], [img2], [img3]]  # 实际的image embeddings
+替换后:
+token_embd:   [[e10], [e15], [img1], [img2], [img3], [e20], [e25]]
+```
+
+### 8.2 多图像的处理
+
+**代码位置**：`models/vision_language_model.py` 中的 `_process_images`
+
+```python
+def _process_images(self, images, device):
+    if isinstance(images, list):
+        if images and isinstance(images[0], list):
+            images = [img for sublist in images for img in sublist]
+        if not images:
+            return None
+        else:
+            return torch.cat(images, dim=0).to(device)
+    return images
+```
+
+**处理逻辑**：
+1. Batch中每个样本的images是一个list
+2. 将所有样本的所有图像patches展平成一维
+3. 拼接成一个大tensor
+4. 一次性送入Vision Encoder处理
+
+**示例**（batch_size=2）：
+```python
+样本1: [img1的7个patches]
+样本2: [img2的5个patches, img3的3个patches]
+
+展平后: [12个patches]
+Vision Encoder输出: [12, 64, 960]
+
+替换时按顺序对应：
+样本1的image tokens: 前7个patches (448个tokens)
+样本2的image tokens: 后5+3个patches (512个tokens)
+```
+
+### 8.3 训练时的Loss计算
+
+**代码位置**：`models/vision_language_model.py` 中的 `forward`
+
+```python
+if targets is not None:
+    logits = self.decoder.head(logits)
+    loss = F.cross_entropy(
+        logits.reshape(-1, logits.size(-1)),
+        targets.reshape(-1),
+        ignore_index=-100
+    )
+```
+
+**关键点**：
+- `ignore_index=-100`：所有label为-100的位置不计入loss
+- 图像tokens、用户问题、格式tokens的label都是-100
+- 只有助手回答的实际内容参与loss计算
+
+---
+
+## 9. 性能考虑
+
+### 9.1 Token效率
+
+**Pixel Shuffle的作用**：
+- 不使用Pixel Shuffle：每个patch需要 1024 tokens
+- 使用4× Pixel Shuffle：每个patch只需 64 tokens
+- **压缩比**：1024 ÷ 64 = 16倍
+
+**示例对比**（1536×1024图像）：
+```
+无压缩：7个patches × 1024 = 7168 tokens
+有压缩：7个patches × 64 = 448 tokens
+节省：7168 - 448 = 6720 tokens (93.7%)
+```
+
+### 9.2 序列长度管理
+
+**Batch中的实际长度分布**：
+```python
+样本1: 600 tokens (1张小图 + 问答)
+样本2: 1200 tokens (2张中图 + 问答)
+样本3: 2500 tokens (1张大图 + 长文本)
+样本4: 800 tokens (无图 + 问答)
+
+Padding后: 所有样本都padding到2500
+实际计算量: 4 × 2500 = 10000 tokens
+有效计算量: 600+1200+2500+800 = 5100 tokens
+效率: 51%
+```
+
+**优化**（使用 `ConstantLengthDataset`）：
+- 将长短样本打包在一起
+- 减少padding浪费
+- 提高训练效率
+
+### 9.3 内存消耗估算
+
+**单张2048×2048图像**：
+```
+原始图像: 2048×2048×3×4 bytes = 48 MB (float32)
+调整后: 2048×2048×3×4 bytes = 48 MB
+ViT patches: 17个 × 512×512×3×4 bytes = 51 MB
+ViT输出: 17×1024×768×4 bytes = 53 MB
+MP输出: 17×64×960×4 bytes = 4 MB
+Image tokens: 1088×960×4 bytes = 4 MB
+```
+
+**Batch处理**（batch_size=2，每样本2张大图）：
+```
+总图像数: 2×2 = 4张
+总patches: 4×17 = 68个
+ViT输出内存: 68×1024×768×4 ≈ 213 MB
+MP输出内存: 68×64×960×4 ≈ 17 MB
+```
+
+---
+
+## 10. 总结
+
+### 10.1 核心设计思想
+
+1. **分块处理**：将大图切分成固定大小的patches，支持任意分辨率
+2. **全局+局部**：global patch捕捉整体信息，local patches捕捉细节
+3. **位置编码**：通过 `<row_i_col_j>` tokens显式表示空间关系
+4. **高效压缩**：Pixel Shuffle将视觉tokens压缩16倍
+
+### 10.2 Token流向总览
+
+```
+原始图像 (1920×1080)
+    ↓ DynamicResize
+调整后图像 (1536×1024)
+    ↓ GlobalAndSplitImages
+7个patches (512×512)
+    ↓ Vision Encoder (ViT)
+[7, 1024, 768]
+    ↓ Pixel Shuffle (4×)
+[7, 64, 12288]
+    ↓ Linear Projection
+[7, 64, 960]
+    ↓ 构建Token序列
+<|global_image|><|image|>×64<row_1_col_1><|image|>×64...<row_2_col_3><|image|>×64
+    ↓ 与文本拼接
+<|im_start|>user\n[图像tokens][问题文本]<|im_end|>\n<|im_start|>assistant\n
+    ↓ 送入LLM
+生成回答
+```
+
+### 10.3 实际应用建议
+
+1. **图像尺寸**：
+   - 推荐使用接近512倍数的尺寸（如512、1024、1536）
+   - 避免极端宽高比，减少padding浪费
+
+2. **多图场景**：
+   - 控制图像数量和尺寸，避免超过序列长度限制
+   - 4张512×512的图比1张2048×2048更高效
+
+3. **Token预算**：
+   - 单张图约占300-500 tokens
+   - 为文本内容预留至少1000-2000 tokens
+   - 4096长度可容纳2-3张中等尺寸图 + 充足文本
+
+4. **性能优化**：
+   - 使用batch内长度相近的样本
+   - 开启 `ConstantLengthDataset` 减少padding
+   - 考虑使用 `compile=True` 加速训练
