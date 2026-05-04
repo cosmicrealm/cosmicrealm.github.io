@@ -1,0 +1,3437 @@
+{
+  "generated_from": {
+    "main": "AAAI_IConface.tex",
+    "supplementary": "AAAI_IConface_supp.tex",
+    "supplementary_ref_gt_gap": "iconface_refgap_selected_figures.tex"
+  },
+  "main_datasets": [
+    {
+      "name": "Main Figure: Reference-Aware Qualitative Comparisons",
+      "description": "Reference-aware rows from the main paper across CelebA-Test-Ref, FFHQ-Ref Moderate, FFHQ-Ref Severe, and CelebHQRef100.",
+      "label": "fig:qual_ref_compact",
+      "type": "reference",
+      "columns": [
+        "ref1",
+        "deg",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebA-Test-Ref: 00645",
+          "images": {
+            "ref1": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/ref1.jpg",
+            "deg": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/deg.jpg",
+            "refldm": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/refldm.jpg",
+            "restorerid": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/instantrestore.jpg",
+            "faceme": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/faceme.jpg",
+            "ours": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/ours.jpg",
+            "gt": "static/gallery/paper/main-reference-aware/CelebA-Test-Ref-00645/gt.jpg"
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref Moderate: 03016",
+          "images": {
+            "ref1": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/ref1.jpg",
+            "deg": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/deg.jpg",
+            "refldm": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/refldm.jpg",
+            "restorerid": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/instantrestore.jpg",
+            "faceme": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/faceme.jpg",
+            "ours": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/ours.jpg",
+            "gt": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Moderate-03016/gt.jpg"
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref Severe: 12744",
+          "images": {
+            "ref1": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/ref1.jpg",
+            "deg": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/deg.jpg",
+            "refldm": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/refldm.jpg",
+            "restorerid": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/instantrestore.jpg",
+            "faceme": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/faceme.jpg",
+            "ours": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/ours.jpg",
+            "gt": "static/gallery/paper/main-reference-aware/FFHQ-Ref-Severe-12744/gt.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: 00002__0",
+          "images": {
+            "ref1": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/ref1.jpg",
+            "deg": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/deg.jpg",
+            "refldm": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/faceme.jpg",
+            "ours": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/ours.jpg",
+            "gt": "static/gallery/paper/main-reference-aware/CelebHQRef100-00002__0/gt.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Main Figure: No-Reference Qualitative Comparisons",
+      "description": "No-reference rows from the main paper in empty-reference mode across five benchmarks.",
+      "label": "fig:qual_noref_compact",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "LFW: Adrian_Annus_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/main-no-reference/LFW-Adrian_Annus_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: Child__040_Zooey_Deschanel_00",
+          "images": {
+            "deg": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/deg.jpg",
+            "codeformer": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/daefr.jpg",
+            "ours": "static/gallery/paper/main-no-reference/CelebChild-Child__040_Zooey_Deschanel_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: 00022_00",
+          "images": {
+            "deg": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/deg.jpg",
+            "codeformer": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/daefr.jpg",
+            "ours": "static/gallery/paper/main-no-reference/WebPhoto-00022_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: 0060",
+          "images": {
+            "deg": "static/gallery/paper/main-no-reference/Wider-Test-0060/deg.jpg",
+            "codeformer": "static/gallery/paper/main-no-reference/Wider-Test-0060/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/main-no-reference/Wider-Test-0060/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/main-no-reference/Wider-Test-0060/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/main-no-reference/Wider-Test-0060/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/main-no-reference/Wider-Test-0060/daefr.jpg",
+            "ours": "static/gallery/paper/main-no-reference/Wider-Test-0060/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: 00000216",
+          "images": {
+            "deg": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/deg.jpg",
+            "codeformer": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/daefr.jpg",
+            "ours": "static/gallery/paper/main-no-reference/CelebA-Test-00000216/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Main Figure: Reference-Aware Ablations",
+      "description": "Main-paper ablation rows showing the effect of structure, identity, and two-route degraded memory.",
+      "label": "fig:iconface_ablation_ref_compact",
+      "type": "ablation",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref Moderate: 02487",
+          "images": {
+            "ref1": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/ref1.jpg",
+            "deg": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/deg.jpg",
+            "concat": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/concat.jpg",
+            "struct": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/struct.jpg",
+            "id": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/id.jpg",
+            "1r": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/1r.jpg",
+            "full": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/full.jpg",
+            "gt": "static/gallery/paper/main-ablation/FFHQ-Ref-Moderate-02487/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.563,
+            "concat": 0.62,
+            "struct": 0.635,
+            "id": 0.684,
+            "1r": 0.693,
+            "full": 0.7,
+            "gt": 0.635
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref Severe: 54276",
+          "images": {
+            "ref1": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/ref1.jpg",
+            "deg": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/deg.jpg",
+            "concat": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/concat.jpg",
+            "struct": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/struct.jpg",
+            "id": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/id.jpg",
+            "1r": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/1r.jpg",
+            "full": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/full.jpg",
+            "gt": "static/gallery/paper/main-ablation/FFHQ-Ref-Severe-54276/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.06,
+            "concat": 0.41,
+            "struct": 0.424,
+            "id": 0.556,
+            "1r": 0.571,
+            "full": 0.613,
+            "gt": 0.574
+          }
+        }
+      ]
+    }
+  ],
+  "supplementary_datasets": [
+    {
+      "name": "Reference-GT Gap: CelebA-Test-Ref",
+      "description": "CelebA-Test-Ref reference--GT gap cases. Scores are AdaFace to GT/R1; the final row is an added low Ref1--GT case. IDs: 18646, 20257, 26060, 02060.",
+      "label": "fig:iconface_hard20_celeba_test_ref_selected",
+      "type": "refgap",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebA-Test-Ref: 18646",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-18646/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.459,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.454,
+              "r1": 0.213
+            },
+            "dmdnet": {
+              "gt": 0.45,
+              "r1": 0.228
+            },
+            "refldm": {
+              "gt": 0.509,
+              "r1": 0.447
+            },
+            "restorerid": {
+              "gt": 0.568,
+              "r1": 0.291
+            },
+            "instantrestore": {
+              "gt": 0.617,
+              "r1": 0.215
+            },
+            "faceme": {
+              "gt": 0.534,
+              "r1": 0.225
+            },
+            "ours": {
+              "gt": 0.351,
+              "r1": 0.59
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.459
+            }
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: 20257",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-20257/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.512,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.73,
+              "r1": 0.36
+            },
+            "dmdnet": {
+              "gt": 0.74,
+              "r1": 0.314
+            },
+            "refldm": {
+              "gt": 0.716,
+              "r1": 0.482
+            },
+            "restorerid": {
+              "gt": 0.636,
+              "r1": 0.473
+            },
+            "instantrestore": {
+              "gt": 0.795,
+              "r1": 0.4
+            },
+            "faceme": {
+              "gt": 0.794,
+              "r1": 0.503
+            },
+            "ours": {
+              "gt": 0.478,
+              "r1": 0.651
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.512
+            }
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: 26060",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-26060/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.573,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.711,
+              "r1": 0.476
+            },
+            "dmdnet": {
+              "gt": 0.688,
+              "r1": 0.469
+            },
+            "refldm": {
+              "gt": 0.696,
+              "r1": 0.64
+            },
+            "restorerid": {
+              "gt": 0.651,
+              "r1": 0.438
+            },
+            "instantrestore": {
+              "gt": 0.727,
+              "r1": 0.498
+            },
+            "faceme": {
+              "gt": 0.775,
+              "r1": 0.555
+            },
+            "ours": {
+              "gt": 0.498,
+              "r1": 0.813
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.573
+            }
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: 02060",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celeba_test_ref_selected/CelebA-Test-Ref-02060/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.351,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.778,
+              "r1": 0.247
+            },
+            "dmdnet": {
+              "gt": 0.733,
+              "r1": 0.271
+            },
+            "refldm": {
+              "gt": 0.705,
+              "r1": 0.295
+            },
+            "restorerid": {
+              "gt": 0.602,
+              "r1": 0.299
+            },
+            "instantrestore": {
+              "gt": 0.541,
+              "r1": 0.251
+            },
+            "faceme": {
+              "gt": 0.79,
+              "r1": 0.359
+            },
+            "ours": {
+              "gt": 0.436,
+              "r1": 0.559
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.351
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-GT Gap: FFHQ-Ref-Moderate",
+      "description": "FFHQ-Ref-Moderate reference--GT gap cases. Scores are AdaFace to GT/R1; the final row is an added low Ref1--GT case. IDs: 57244, 31223, 02293, 37245.",
+      "label": "fig:iconface_hard20_ffhq_ref_moderate_selected",
+      "type": "refgap",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Moderate: 57244",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-57244/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.509,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.834,
+              "r1": 0.495
+            },
+            "dmdnet": {
+              "gt": 0.865,
+              "r1": 0.442
+            },
+            "refldm": {
+              "gt": 0.739,
+              "r1": 0.432
+            },
+            "restorerid": {
+              "gt": 0.818,
+              "r1": 0.486
+            },
+            "instantrestore": {
+              "gt": 0.78,
+              "r1": 0.427
+            },
+            "faceme": {
+              "gt": 0.843,
+              "r1": 0.464
+            },
+            "ours": {
+              "gt": 0.592,
+              "r1": 0.663
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.509
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: 31223",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-31223/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.469,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.548,
+              "r1": 0.25
+            },
+            "dmdnet": {
+              "gt": 0.53,
+              "r1": 0.2
+            },
+            "refldm": {
+              "gt": 0.683,
+              "r1": 0.372
+            },
+            "restorerid": {
+              "gt": 0.607,
+              "r1": 0.341
+            },
+            "instantrestore": {
+              "gt": 0.759,
+              "r1": 0.313
+            },
+            "faceme": {
+              "gt": 0.644,
+              "r1": 0.355
+            },
+            "ours": {
+              "gt": 0.607,
+              "r1": 0.536
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.469
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: 02293",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-02293/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.479,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.942,
+              "r1": 0.515
+            },
+            "dmdnet": {
+              "gt": 0.946,
+              "r1": 0.487
+            },
+            "refldm": {
+              "gt": 0.873,
+              "r1": 0.45
+            },
+            "restorerid": {
+              "gt": 0.917,
+              "r1": 0.485
+            },
+            "instantrestore": {
+              "gt": 0.885,
+              "r1": 0.414
+            },
+            "faceme": {
+              "gt": 0.942,
+              "r1": 0.557
+            },
+            "ours": {
+              "gt": 0.642,
+              "r1": 0.729
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.479
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: 37245",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_moderate_selected/FFHQ-Ref-Moderate-37245/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.296,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.613,
+              "r1": 0.148
+            },
+            "dmdnet": {
+              "gt": 0.678,
+              "r1": 0.113
+            },
+            "refldm": {
+              "gt": 0.637,
+              "r1": 0.221
+            },
+            "restorerid": {
+              "gt": 0.64,
+              "r1": 0.139
+            },
+            "instantrestore": {
+              "gt": 0.634,
+              "r1": 0.238
+            },
+            "faceme": {
+              "gt": 0.765,
+              "r1": 0.197
+            },
+            "ours": {
+              "gt": 0.658,
+              "r1": 0.365
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.296
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-GT Gap: FFHQ-Ref-Severe",
+      "description": "FFHQ-Ref-Severe reference--GT gap cases. Scores are AdaFace to GT/R1; the final row is an added low Ref1--GT case. IDs: 48700, 04716, 12051, 08081.",
+      "label": "fig:iconface_hard20_ffhq_ref_severe_selected",
+      "type": "refgap",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Severe: 48700",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-48700/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.369,
+              "r1": 1
+            },
+            "deg": {
+              "gt": -0.003,
+              "r1": -0.039
+            },
+            "dmdnet": {
+              "gt": 0.179,
+              "r1": 0.126
+            },
+            "refldm": {
+              "gt": 0.469,
+              "r1": 0.321
+            },
+            "restorerid": {
+              "gt": 0.335,
+              "r1": 0.412
+            },
+            "instantrestore": {
+              "gt": 0.331,
+              "r1": 0.195
+            },
+            "faceme": {
+              "gt": 0.455,
+              "r1": 0.313
+            },
+            "ours": {
+              "gt": 0.45,
+              "r1": 0.468
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.369
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: 04716",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-04716/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.513,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.06,
+              "r1": 0.113
+            },
+            "dmdnet": {
+              "gt": 0.018,
+              "r1": 0.099
+            },
+            "refldm": {
+              "gt": 0.492,
+              "r1": 0.379
+            },
+            "restorerid": {
+              "gt": 0.456,
+              "r1": 0.368
+            },
+            "instantrestore": {
+              "gt": 0.336,
+              "r1": 0.222
+            },
+            "faceme": {
+              "gt": 0.462,
+              "r1": 0.359
+            },
+            "ours": {
+              "gt": 0.473,
+              "r1": 0.705
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.513
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: 12051",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-12051/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.449,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.357,
+              "r1": 0.16
+            },
+            "dmdnet": {
+              "gt": 0.155,
+              "r1": 0.093
+            },
+            "refldm": {
+              "gt": 0.538,
+              "r1": 0.415
+            },
+            "restorerid": {
+              "gt": 0.398,
+              "r1": 0.217
+            },
+            "instantrestore": {
+              "gt": 0.604,
+              "r1": 0.456
+            },
+            "faceme": {
+              "gt": 0.645,
+              "r1": 0.424
+            },
+            "ours": {
+              "gt": 0.483,
+              "r1": 0.724
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.449
+            }
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: 08081",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_ffhq_ref_severe_selected/FFHQ-Ref-Severe-08081/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.416,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.131,
+              "r1": 0.054
+            },
+            "dmdnet": {
+              "gt": 0.048,
+              "r1": 0.028
+            },
+            "refldm": {
+              "gt": 0.491,
+              "r1": 0.457
+            },
+            "restorerid": {
+              "gt": 0.292,
+              "r1": 0.344
+            },
+            "instantrestore": {
+              "gt": 0.402,
+              "r1": 0.315
+            },
+            "faceme": {
+              "gt": 0.325,
+              "r1": 0.231
+            },
+            "ours": {
+              "gt": 0.484,
+              "r1": 0.584
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.416
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-GT Gap: CelebHQRef100",
+      "description": "CelebHQRef100 reference--GT gap cases. Scores are AdaFace to GT/R1; the final row is an added low Ref1--GT case. IDs: 00051__0, 00074__0, 00090__0, 00072__0.",
+      "label": "fig:iconface_hard20_celebhqref100_selected",
+      "type": "refgap",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebHQRef100: 00051__0",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00051__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.395,
+              "r1": 1
+            },
+            "deg": {
+              "gt": -0.006,
+              "r1": -0.04
+            },
+            "dmdnet": {
+              "gt": 0.032,
+              "r1": -0.001
+            },
+            "refldm": {
+              "gt": 0.335,
+              "r1": 0.348
+            },
+            "restorerid": {
+              "gt": -0.008,
+              "r1": -0.003
+            },
+            "instantrestore": {
+              "gt": 0.358,
+              "r1": 0.279
+            },
+            "faceme": {
+              "gt": 0.201,
+              "r1": 0.174
+            },
+            "ours": {
+              "gt": 0.406,
+              "r1": 0.642
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.395
+            }
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: 00074__0",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00074__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.554,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.38,
+              "r1": 0.212
+            },
+            "dmdnet": {
+              "gt": 0.461,
+              "r1": 0.352
+            },
+            "refldm": {
+              "gt": 0.574,
+              "r1": 0.586
+            },
+            "restorerid": {
+              "gt": 0.547,
+              "r1": 0.426
+            },
+            "instantrestore": {
+              "gt": 0.575,
+              "r1": 0.519
+            },
+            "faceme": {
+              "gt": 0.571,
+              "r1": 0.482
+            },
+            "ours": {
+              "gt": 0.489,
+              "r1": 0.618
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.554
+            }
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: 00090__0",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00090__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.683,
+              "r1": 1
+            },
+            "deg": {
+              "gt": 0.027,
+              "r1": 0.024
+            },
+            "dmdnet": {
+              "gt": 0.489,
+              "r1": 0.535
+            },
+            "refldm": {
+              "gt": 0.458,
+              "r1": 0.293
+            },
+            "restorerid": {
+              "gt": 0.151,
+              "r1": 0.108
+            },
+            "instantrestore": {
+              "gt": 0.349,
+              "r1": 0.286
+            },
+            "faceme": {
+              "gt": 0.18,
+              "r1": 0.12
+            },
+            "ours": {
+              "gt": 0.515,
+              "r1": 0.68
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.683
+            }
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: 00072__0",
+          "images": {
+            "ref1": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/ref1.jpg",
+            "deg": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/faceme.jpg",
+            "ours": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/ours.jpg",
+            "gt": "static/gallery/paper/iconface_hard20_celebhqref100_selected/CelebHQRef100-00072__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": {
+              "gt": 0.414,
+              "r1": 1
+            },
+            "deg": {
+              "gt": -0.051,
+              "r1": -0.015
+            },
+            "dmdnet": {
+              "gt": 0.082,
+              "r1": -0.029
+            },
+            "refldm": {
+              "gt": 0.516,
+              "r1": 0.54
+            },
+            "restorerid": {
+              "gt": 0.193,
+              "r1": 0.144
+            },
+            "instantrestore": {
+              "gt": 0.482,
+              "r1": 0.267
+            },
+            "faceme": {
+              "gt": 0.291,
+              "r1": 0.214
+            },
+            "ours": {
+              "gt": 0.502,
+              "r1": 0.683
+            },
+            "gt": {
+              "gt": 1,
+              "r1": 0.414
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-aware: CelebA-Test-Ref",
+      "description": "Additional reference-aware qualitative comparisons on CelebA-Test-Ref. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ref_celeba_test_ref",
+      "type": "reference",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebA-Test-Ref: case 18646",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18646/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.213,
+            "dmdnet": 0.228,
+            "refldm": 0.447,
+            "restorerid": 0.291,
+            "instantrestore": 0.215,
+            "faceme": 0.225,
+            "ours": 0.59,
+            "gt": 0.459
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 24093",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-24093/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.293,
+            "dmdnet": 0.306,
+            "refldm": 0.338,
+            "restorerid": 0.255,
+            "instantrestore": 0.307,
+            "faceme": 0.309,
+            "ours": 0.422,
+            "gt": 0.38
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 17353",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-17353/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.195,
+            "dmdnet": 0.173,
+            "refldm": 0.272,
+            "restorerid": 0.394,
+            "instantrestore": 0.222,
+            "faceme": 0.343,
+            "ours": 0.567,
+            "gt": 0.389
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 27315",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-27315/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.235,
+            "dmdnet": 0.269,
+            "refldm": 0.513,
+            "restorerid": 0.479,
+            "instantrestore": 0.494,
+            "faceme": 0.488,
+            "ours": 0.577,
+            "gt": 0.448
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 02060",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-02060/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.247,
+            "dmdnet": 0.271,
+            "refldm": 0.295,
+            "restorerid": 0.299,
+            "instantrestore": 0.251,
+            "faceme": 0.359,
+            "ours": 0.559,
+            "gt": 0.351
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 18375",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-18375/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.273,
+            "dmdnet": 0.319,
+            "refldm": 0.395,
+            "restorerid": 0.461,
+            "instantrestore": 0.514,
+            "faceme": 0.526,
+            "ours": 0.569,
+            "gt": 0.465
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 19681",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-19681/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.212,
+            "dmdnet": 0.126,
+            "refldm": 0.323,
+            "restorerid": 0.248,
+            "instantrestore": 0.182,
+            "faceme": 0.257,
+            "ours": 0.535,
+            "gt": 0.388
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 08806",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-08806/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.296,
+            "dmdnet": 0.232,
+            "refldm": 0.413,
+            "restorerid": 0.43,
+            "instantrestore": 0.316,
+            "faceme": 0.401,
+            "ours": 0.506,
+            "gt": 0.515
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 20257",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-20257/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.36,
+            "dmdnet": 0.314,
+            "refldm": 0.482,
+            "restorerid": 0.473,
+            "instantrestore": 0.4,
+            "faceme": 0.503,
+            "ours": 0.651,
+            "gt": 0.512
+          }
+        },
+        {
+          "sample_id": "CelebA-Test-Ref: case 00218",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celeba_test_ref/CelebA-Test-Ref-case-00218/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.323,
+            "dmdnet": 0.346,
+            "refldm": 0.361,
+            "restorerid": 0.419,
+            "instantrestore": 0.366,
+            "faceme": 0.386,
+            "ours": 0.43,
+            "gt": 0.469
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-aware: FFHQ-Ref-Moderate",
+      "description": "Additional reference-aware qualitative comparisons on FFHQ-Ref Moderate. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ref_ffhq_moderate",
+      "type": "reference",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 57244",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-57244/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.495,
+            "dmdnet": 0.442,
+            "refldm": 0.432,
+            "restorerid": 0.486,
+            "instantrestore": 0.427,
+            "faceme": 0.464,
+            "ours": 0.663,
+            "gt": 0.509
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 44570",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-44570/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.374,
+            "dmdnet": 0.224,
+            "refldm": 0.356,
+            "restorerid": 0.366,
+            "instantrestore": 0.478,
+            "faceme": 0.47,
+            "ours": 0.593,
+            "gt": 0.533
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 55156",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-55156/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.315,
+            "dmdnet": 0.322,
+            "refldm": 0.436,
+            "restorerid": 0.363,
+            "instantrestore": 0.356,
+            "faceme": 0.447,
+            "ours": 0.671,
+            "gt": 0.541
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 48700",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-48700/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.262,
+            "dmdnet": 0.242,
+            "refldm": 0.4,
+            "restorerid": 0.318,
+            "instantrestore": 0.306,
+            "faceme": 0.36,
+            "ours": 0.439,
+            "gt": 0.369
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 54575",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-54575/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.521,
+            "dmdnet": 0.523,
+            "refldm": 0.587,
+            "restorerid": 0.455,
+            "instantrestore": 0.536,
+            "faceme": 0.586,
+            "ours": 0.628,
+            "gt": 0.61
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 31223",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-31223/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.25,
+            "dmdnet": 0.2,
+            "refldm": 0.372,
+            "restorerid": 0.341,
+            "instantrestore": 0.313,
+            "faceme": 0.355,
+            "ours": 0.536,
+            "gt": 0.469
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 08081",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-08081/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.386,
+            "dmdnet": 0.429,
+            "refldm": 0.471,
+            "restorerid": 0.475,
+            "instantrestore": 0.381,
+            "faceme": 0.418,
+            "ours": 0.53,
+            "gt": 0.416
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 27262",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-27262/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.346,
+            "dmdnet": 0.177,
+            "refldm": 0.507,
+            "restorerid": 0.461,
+            "instantrestore": 0.479,
+            "faceme": 0.53,
+            "ours": 0.595,
+            "gt": 0.519
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 15716",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-15716/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.376,
+            "dmdnet": 0.28,
+            "refldm": 0.536,
+            "restorerid": 0.381,
+            "instantrestore": 0.428,
+            "faceme": 0.488,
+            "ours": 0.59,
+            "gt": 0.488
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 02647",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_moderate/FFHQ-Ref-Moderate-case-02647/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.3,
+            "dmdnet": 0.292,
+            "refldm": 0.362,
+            "restorerid": 0.285,
+            "instantrestore": 0.269,
+            "faceme": 0.456,
+            "ours": 0.499,
+            "gt": 0.4
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-aware: FFHQ-Ref-Severe",
+      "description": "Additional reference-aware qualitative comparisons on FFHQ-Ref Severe. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ref_ffhq_severe",
+      "type": "reference",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 02647",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02647/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.206,
+            "dmdnet": 0.205,
+            "refldm": 0.491,
+            "restorerid": 0.323,
+            "instantrestore": 0.407,
+            "faceme": 0.373,
+            "ours": 0.52,
+            "gt": 0.4
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 17083",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-17083/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.309,
+            "dmdnet": 0.153,
+            "refldm": 0.41,
+            "restorerid": 0.381,
+            "instantrestore": 0.409,
+            "faceme": 0.407,
+            "ours": 0.515,
+            "gt": 0.513
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 04716",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-04716/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.113,
+            "dmdnet": 0.099,
+            "refldm": 0.379,
+            "restorerid": 0.368,
+            "instantrestore": 0.222,
+            "faceme": 0.359,
+            "ours": 0.705,
+            "gt": 0.513
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 12051",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-12051/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.16,
+            "dmdnet": 0.093,
+            "refldm": 0.415,
+            "restorerid": 0.217,
+            "instantrestore": 0.456,
+            "faceme": 0.424,
+            "ours": 0.724,
+            "gt": 0.449
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 48700",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-48700/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": -0.039,
+            "dmdnet": 0.126,
+            "refldm": 0.321,
+            "restorerid": 0.412,
+            "instantrestore": 0.195,
+            "faceme": 0.313,
+            "ours": 0.468,
+            "gt": 0.369
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 14836",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-14836/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.05,
+            "dmdnet": 0.094,
+            "refldm": 0.555,
+            "restorerid": 0.239,
+            "instantrestore": 0.493,
+            "faceme": 0.326,
+            "ours": 0.739,
+            "gt": 0.596
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 27211",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-27211/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.082,
+            "dmdnet": 0.136,
+            "refldm": 0.538,
+            "restorerid": 0.465,
+            "instantrestore": 0.353,
+            "faceme": 0.491,
+            "ours": 0.464,
+            "gt": 0.416
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 01829",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-01829/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.028,
+            "dmdnet": 0.042,
+            "refldm": 0.637,
+            "restorerid": 0.441,
+            "instantrestore": 0.485,
+            "faceme": 0.359,
+            "ours": 0.653,
+            "gt": 0.518
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 02293",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-02293/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.061,
+            "dmdnet": 0.16,
+            "refldm": 0.556,
+            "restorerid": 0.487,
+            "instantrestore": 0.324,
+            "faceme": 0.492,
+            "ours": 0.843,
+            "gt": 0.479
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 69793",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_ffhq_severe/FFHQ-Ref-Severe-case-69793/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.028,
+            "dmdnet": 0.104,
+            "refldm": 0.508,
+            "restorerid": 0.289,
+            "instantrestore": 0.316,
+            "faceme": 0.253,
+            "ours": 0.724,
+            "gt": 0.521
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reference-aware: CelebHQRef100",
+      "description": "Additional reference-aware qualitative comparisons on CelebHQRef100. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ref_celebhqref100",
+      "type": "reference",
+      "columns": [
+        "ref1",
+        "deg",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebHQRef100: case 00026__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00026__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.022,
+            "dmdnet": 0.134,
+            "refldm": 0.235,
+            "restorerid": 0.304,
+            "instantrestore": 0.214,
+            "faceme": 0.244,
+            "ours": 0.492,
+            "gt": 0.426
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00098__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00098__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.161,
+            "dmdnet": 0.211,
+            "refldm": 0.156,
+            "restorerid": 0.357,
+            "instantrestore": 0.3,
+            "faceme": 0.267,
+            "ours": 0.558,
+            "gt": 0.434
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00074__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00074__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.212,
+            "dmdnet": 0.352,
+            "refldm": 0.586,
+            "restorerid": 0.426,
+            "instantrestore": 0.519,
+            "faceme": 0.482,
+            "ours": 0.618,
+            "gt": 0.554
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00046__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00046__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.147,
+            "dmdnet": 0.098,
+            "refldm": 0.509,
+            "restorerid": 0.584,
+            "instantrestore": 0.518,
+            "faceme": 0.341,
+            "ours": 0.672,
+            "gt": 0.453
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00090__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00090__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.024,
+            "dmdnet": 0.535,
+            "refldm": 0.293,
+            "restorerid": 0.108,
+            "instantrestore": 0.286,
+            "faceme": 0.12,
+            "ours": 0.68,
+            "gt": 0.683
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00067__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00067__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.043,
+            "dmdnet": 0.079,
+            "refldm": 0.261,
+            "restorerid": 0.305,
+            "instantrestore": 0.329,
+            "faceme": 0.251,
+            "ours": 0.547,
+            "gt": 0.593
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00032__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00032__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.007,
+            "dmdnet": 0.137,
+            "refldm": 0.447,
+            "restorerid": 0.428,
+            "instantrestore": 0.426,
+            "faceme": 0.216,
+            "ours": 0.62,
+            "gt": 0.488
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00052__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00052__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.369,
+            "dmdnet": 0.357,
+            "refldm": 0.423,
+            "restorerid": 0.482,
+            "instantrestore": 0.496,
+            "faceme": 0.406,
+            "ours": 0.525,
+            "gt": 0.483
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00006__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00006__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.099,
+            "dmdnet": 0.171,
+            "refldm": 0.4,
+            "restorerid": 0.247,
+            "instantrestore": 0.341,
+            "faceme": 0.169,
+            "ours": 0.591,
+            "gt": 0.582
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00049__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/deg.jpg",
+            "dmdnet": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/dmdnet.jpg",
+            "refldm": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/refldm.jpg",
+            "restorerid": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/restorerid.jpg",
+            "instantrestore": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/instantrestore.jpg",
+            "faceme": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/faceme.jpg",
+            "ours": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/ours.jpg",
+            "gt": "static/gallery/paper/supp_ref_celebhqref100/CelebHQRef100-case-00049__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.312,
+            "dmdnet": 0.3,
+            "refldm": 0.359,
+            "restorerid": 0.273,
+            "instantrestore": 0.368,
+            "faceme": 0.396,
+            "ours": 0.492,
+            "gt": 0.44
+          }
+        }
+      ]
+    },
+    {
+      "name": "No-reference: CelebA-Test",
+      "description": "Additional no-reference qualitative comparisons on CelebA-Test.",
+      "label": "fig:supp_noref_celeba_test",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebA-Test: case 00000216",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000216/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00002335",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002335/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00000893",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000893/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00000894",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000894/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00001737",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00001737/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00000032",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000032/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00000060",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00000060/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00002531",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002531/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebA-Test: case 00002191",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celeba_test/CelebA-Test-case-00002191/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "No-reference: LFW",
+      "description": "Additional no-reference qualitative comparisons on LFW.",
+      "label": "fig:supp_noref_lfw",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "LFW: case Adrian_Annus_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Adrian_Annus_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Ben_Davis_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Ben_Davis_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Brad_Miller_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Brad_Miller_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Brian_Scalabrine_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Brian_Scalabrine_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Abdul_Majeed_Shobokshi_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Abdul_Majeed_Shobokshi_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Al_Pacino_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Al_Pacino_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Alfonso_Portillo_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Alfonso_Portillo_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case Alicia_Keys_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-Alicia_Keys_0001_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "LFW: case AJ_Lamas_0001_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_lfw/LFW-case-AJ_Lamas_0001_00/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "No-reference: CelebChild",
+      "description": "Additional no-reference qualitative comparisons on CelebChild.",
+      "label": "fig:supp_noref_celebchild",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebChild: case Adult__005_Chloe_Grace_Moretz_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__005_Chloe_Grace_Moretz_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Child__018_Russell_Crowe_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__018_Russell_Crowe_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Child__040_Zooey_Deschanel_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__040_Zooey_Deschanel_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Child__061_Demi_Moore_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Child__061_Demi_Moore_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Adult__002_Barack_Obama_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__002_Barack_Obama_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Adult__012_Jackie_Chan_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__012_Jackie_Chan_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Adult__007_Benedict_Cumberbatch_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__007_Benedict_Cumberbatch_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Adult__028_Brad_Pitt_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__028_Brad_Pitt_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "CelebChild: case Adult__000_Adele_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_celebchild/CelebChild-case-Adult__000_Adele_01/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "No-reference: WebPhoto",
+      "description": "Additional no-reference qualitative comparisons on WebPhoto.",
+      "label": "fig:supp_noref_webphoto",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "WebPhoto: case 00006_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00018_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00018_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00022_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00022_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00030_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00030_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00010_02",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00010_02/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00015_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00015_01/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00000_00",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00000_00/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00006_04",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00006_04/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "WebPhoto: case 00003_01",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_webphoto/WebPhoto-case-00003_01/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "No-reference: Wider-Test",
+      "description": "Additional no-reference qualitative comparisons on Wider-Test.",
+      "label": "fig:supp_noref_wider_test",
+      "type": "blind",
+      "columns": [
+        "deg",
+        "codeformer",
+        "gfpgan",
+        "vqfr",
+        "restoreformerpp",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "Wider-Test: case 0000",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0000/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0001",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0001/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0038",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0038/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0060",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0060/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0039",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0039/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0049",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0049/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0011",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0011/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0020",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0020/ours.jpg"
+          }
+        },
+        {
+          "sample_id": "Wider-Test: case 0029",
+          "images": {
+            "deg": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/deg.jpg",
+            "codeformer": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/codeformer.jpg",
+            "gfpgan": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/gfpgan.jpg",
+            "vqfr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/vqfr.jpg",
+            "restoreformerpp": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/restoreformerpp.jpg",
+            "daefr": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/daefr.jpg",
+            "ours": "static/gallery/paper/supp_noref_wider_test/Wider-Test-case-0029/ours.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ablation: Reference-aware ablation (CelebHQRef100)",
+      "description": "Reference-aware qualitative ablation on CelebHQRef100. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ablation_celebhqref100",
+      "type": "ablation",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "CelebHQRef100: case 00043__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00043__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.181,
+            "concat": 0.261,
+            "struct": 0.307,
+            "id": 0.42,
+            "1r": 0.404,
+            "full": 0.437,
+            "gt": 0.466
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00006__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00006__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.099,
+            "concat": 0.438,
+            "struct": 0.479,
+            "id": 0.568,
+            "1r": 0.577,
+            "full": 0.591,
+            "gt": 0.582
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00003__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00003__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.192,
+            "concat": 0.351,
+            "struct": 0.377,
+            "id": 0.472,
+            "1r": 0.479,
+            "full": 0.562,
+            "gt": 0.48
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00026__1",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00026__1/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.022,
+            "concat": 0.373,
+            "struct": 0.397,
+            "id": 0.46,
+            "1r": 0.443,
+            "full": 0.492,
+            "gt": 0.426
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00037__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00037__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.355,
+            "concat": 0.398,
+            "struct": 0.433,
+            "id": 0.518,
+            "1r": 0.493,
+            "full": 0.518,
+            "gt": 0.473
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00047__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00047__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": -0.037,
+            "concat": 0.404,
+            "struct": 0.39,
+            "id": 0.441,
+            "1r": 0.452,
+            "full": 0.453,
+            "gt": 0.421
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00063__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00063__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.09,
+            "concat": 0.423,
+            "struct": 0.465,
+            "id": 0.555,
+            "1r": 0.551,
+            "full": 0.562,
+            "gt": 0.557
+          }
+        },
+        {
+          "sample_id": "CelebHQRef100: case 00090__0",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_celebhqref100/CelebHQRef100-case-00090__0/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.024,
+            "concat": 0.424,
+            "struct": 0.471,
+            "id": 0.639,
+            "1r": 0.661,
+            "full": 0.679,
+            "gt": 0.683
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ablation: Reference-aware ablation (FFHQ-Ref-Moderate)",
+      "description": "Reference-aware qualitative ablation on FFHQ-Ref Moderate. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ablation_ffhq_moderate",
+      "type": "ablation",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 01198",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-01198/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.547,
+            "concat": 0.637,
+            "struct": 0.659,
+            "id": 0.7,
+            "1r": 0.701,
+            "full": 0.732,
+            "gt": 0.602
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 00717",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-00717/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.393,
+            "concat": 0.322,
+            "struct": 0.318,
+            "id": 0.405,
+            "1r": 0.417,
+            "full": 0.412,
+            "gt": 0.445
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 15714",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-15714/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.274,
+            "concat": 0.349,
+            "struct": 0.343,
+            "id": 0.39,
+            "1r": 0.396,
+            "full": 0.402,
+            "gt": 0.3
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 02487",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-02487/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.563,
+            "concat": 0.62,
+            "struct": 0.635,
+            "id": 0.684,
+            "1r": 0.693,
+            "full": 0.7,
+            "gt": 0.635
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 03234",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-03234/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.497,
+            "concat": 0.533,
+            "struct": 0.589,
+            "id": 0.635,
+            "1r": 0.638,
+            "full": 0.644,
+            "gt": 0.605
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 12192",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-12192/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.419,
+            "concat": 0.365,
+            "struct": 0.371,
+            "id": 0.428,
+            "1r": 0.412,
+            "full": 0.492,
+            "gt": 0.454
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 68241",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-68241/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.405,
+            "concat": 0.367,
+            "struct": 0.364,
+            "id": 0.43,
+            "1r": 0.421,
+            "full": 0.434,
+            "gt": 0.439
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Moderate: case 57113",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_moderate/FFHQ-Ref-Moderate-case-57113/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.386,
+            "concat": 0.375,
+            "struct": 0.392,
+            "id": 0.449,
+            "1r": 0.446,
+            "full": 0.456,
+            "gt": 0.459
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ablation: Reference-aware ablation (FFHQ-Ref-Severe)",
+      "description": "Reference-aware qualitative ablation on FFHQ-Ref Severe. Scores under images report AdaFace similarity to the first protocol reference.",
+      "label": "fig:supp_ablation_ffhq_severe",
+      "type": "ablation",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 27262",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-27262/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.283,
+            "concat": 0.374,
+            "struct": 0.397,
+            "id": 0.496,
+            "1r": 0.497,
+            "full": 0.55,
+            "gt": 0.519
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 53894",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53894/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.121,
+            "concat": 0.397,
+            "struct": 0.419,
+            "id": 0.437,
+            "1r": 0.45,
+            "full": 0.479,
+            "gt": 0.396
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 22523",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-22523/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.062,
+            "concat": 0.286,
+            "struct": 0.347,
+            "id": 0.466,
+            "1r": 0.463,
+            "full": 0.503,
+            "gt": 0.56
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 31223",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-31223/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.078,
+            "concat": 0.402,
+            "struct": 0.514,
+            "id": 0.598,
+            "1r": 0.619,
+            "full": 0.639,
+            "gt": 0.469
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 37245",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-37245/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.031,
+            "concat": 0.319,
+            "struct": 0.272,
+            "id": 0.399,
+            "1r": 0.404,
+            "full": 0.439,
+            "gt": 0.296
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 54276",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-54276/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.06,
+            "concat": 0.41,
+            "struct": 0.424,
+            "id": 0.556,
+            "1r": 0.571,
+            "full": 0.613,
+            "gt": 0.574
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 32665",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-32665/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.21,
+            "concat": 0.322,
+            "struct": 0.375,
+            "id": 0.394,
+            "1r": 0.416,
+            "full": 0.452,
+            "gt": 0.434
+          }
+        },
+        {
+          "sample_id": "FFHQ-Ref-Severe: case 53440",
+          "images": {
+            "ref1": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/ref1.jpg",
+            "deg": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/deg.jpg",
+            "concat": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/concat.jpg",
+            "struct": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/struct.jpg",
+            "id": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/id.jpg",
+            "1r": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/1r.jpg",
+            "full": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/full.jpg",
+            "gt": "static/gallery/paper/supp_ablation_ffhq_severe/FFHQ-Ref-Severe-case-53440/gt.jpg"
+          },
+          "scores": {
+            "ref1": 1,
+            "deg": 0.059,
+            "concat": 0.412,
+            "struct": 0.536,
+            "id": 0.603,
+            "1r": 0.609,
+            "full": 0.634,
+            "gt": 0.615
+          }
+        }
+      ]
+    }
+  ]
+}

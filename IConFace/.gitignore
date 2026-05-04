@@ -1,0 +1,10 @@
+# Generated PNG sources replaced by compressed JPG assets on the project page.
+static/gallery/**/*.png
+static/images/method/*.png
+static/images/teaser/**/*.png
+static/images/results/**/*.png
+static/images/social_preview.png
+
+# Keep browser icons as PNG.
+!static/images/favicon-iconface.png
+!static/images/apple-touch-icon-iconface.png

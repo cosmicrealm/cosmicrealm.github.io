@@ -1,0 +1,2838 @@
+{
+  "reference_datasets": [
+    {
+      "id": "celeba-test-ref",
+      "name": "CelebA-Test-Ref",
+      "columns": [
+        "ref1",
+        "ref2",
+        "ref3",
+        "lq",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00008",
+          "record_index": 0,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00008/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00008/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00008/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00008/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00008/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00008/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00008/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00008/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00008/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00008/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00008/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00020",
+          "record_index": 1,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00020/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00020/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00020/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00020/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00020/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00020/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00020/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00020/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00020/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00020/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00020/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00031",
+          "record_index": 2,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00031/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00031/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00031/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00031/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00031/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00031/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00031/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00031/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00031/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00031/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00031/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00051",
+          "record_index": 3,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00051/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00051/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00051/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00051/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00051/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00051/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00051/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00051/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00051/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00051/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00051/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00077",
+          "record_index": 4,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00077/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00077/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00077/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00077/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00077/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00077/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00077/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00077/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00077/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00077/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00077/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00081",
+          "record_index": 5,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00081/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00081/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00081/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00081/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00081/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00081/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00081/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00081/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00081/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00081/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00081/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00095",
+          "record_index": 6,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00095/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00095/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00095/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00095/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00095/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00095/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00095/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00095/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00095/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00095/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00095/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00120",
+          "record_index": 7,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00120/ref1.jpg",
+            "ref2": null,
+            "ref3": null,
+            "lq": "static/gallery/reference/celeba-test-ref/00120/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00120/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00120/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00120/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00120/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00120/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00120/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00120/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00128",
+          "record_index": 8,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00128/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00128/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00128/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00128/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00128/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00128/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00128/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00128/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00128/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00128/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00128/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00144",
+          "record_index": 9,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00144/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00144/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00144/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00144/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00144/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00144/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00144/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00144/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00144/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00144/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00144/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00152",
+          "record_index": 10,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00152/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00152/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00152/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00152/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00152/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00152/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00152/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00152/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00152/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00152/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00152/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00154",
+          "record_index": 11,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00154/ref1.jpg",
+            "ref2": null,
+            "ref3": null,
+            "lq": "static/gallery/reference/celeba-test-ref/00154/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00154/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00154/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00154/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00154/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00154/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00154/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00154/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00174",
+          "record_index": 12,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00174/ref1.jpg",
+            "ref2": null,
+            "ref3": null,
+            "lq": "static/gallery/reference/celeba-test-ref/00174/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00174/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00174/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00174/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00174/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00174/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00174/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00174/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00179",
+          "record_index": 13,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00179/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00179/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00179/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00179/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00179/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00179/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00179/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00179/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00179/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00179/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00179/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00187",
+          "record_index": 14,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00187/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00187/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00187/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00187/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00187/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00187/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00187/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00187/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00187/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00187/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00187/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00190",
+          "record_index": 15,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00190/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00190/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00190/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00190/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00190/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00190/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00190/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00190/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00190/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00190/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00190/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00192",
+          "record_index": 16,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00192/ref1.jpg",
+            "ref2": null,
+            "ref3": null,
+            "lq": "static/gallery/reference/celeba-test-ref/00192/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00192/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00192/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00192/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00192/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00192/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00192/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00192/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00195",
+          "record_index": 17,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00195/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00195/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00195/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00195/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00195/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00195/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00195/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00195/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00195/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00195/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00195/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00200",
+          "record_index": 18,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00200/ref1.jpg",
+            "ref2": null,
+            "ref3": null,
+            "lq": "static/gallery/reference/celeba-test-ref/00200/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00200/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00200/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00200/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00200/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00200/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00200/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00200/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00202",
+          "record_index": 19,
+          "images": {
+            "ref1": "static/gallery/reference/celeba-test-ref/00202/ref1.jpg",
+            "ref2": "static/gallery/reference/celeba-test-ref/00202/ref2.jpg",
+            "ref3": "static/gallery/reference/celeba-test-ref/00202/ref3.jpg",
+            "lq": "static/gallery/reference/celeba-test-ref/00202/lq.png",
+            "gt": "static/gallery/reference/celeba-test-ref/00202/gt.png",
+            "ours": "static/gallery/reference/celeba-test-ref/00202/ours.png",
+            "dmdnet": "static/gallery/reference/celeba-test-ref/00202/dmdnet.png",
+            "refldm": "static/gallery/reference/celeba-test-ref/00202/refldm.png",
+            "restorerid": "static/gallery/reference/celeba-test-ref/00202/restorerid.png",
+            "instantrestore": "static/gallery/reference/celeba-test-ref/00202/instantrestore.png",
+            "faceme": "static/gallery/reference/celeba-test-ref/00202/faceme.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ffhq-ref-moderate",
+      "name": "FFHQ-Ref-Moderate",
+      "columns": [
+        "ref1",
+        "ref2",
+        "ref3",
+        "lq",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00078",
+          "record_index": 0,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00078/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00078/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00078/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00078/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00078/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00078/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00078/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00078/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00078/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00078/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00078/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00101",
+          "record_index": 1,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00101/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00101/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00101/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00101/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00101/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00101/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00101/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00101/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00101/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00101/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00101/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00463",
+          "record_index": 2,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00463/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00463/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00463/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00463/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00463/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00463/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00463/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00463/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00463/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00463/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00463/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00619",
+          "record_index": 3,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00619/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00619/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00619/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00619/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00619/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00619/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00619/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00619/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00619/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00619/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00619/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00717",
+          "record_index": 4,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00717/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00717/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00717/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00717/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00717/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00717/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00717/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00717/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00717/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00717/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00717/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00721",
+          "record_index": 5,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00721/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00721/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00721/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00721/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00721/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00721/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00721/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00721/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00721/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00721/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00721/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00832",
+          "record_index": 6,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/00832/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/00832/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/00832/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/00832/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/00832/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/00832/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/00832/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/00832/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/00832/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/00832/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/00832/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01019",
+          "record_index": 7,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01019/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01019/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01019/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01019/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01019/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01019/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01019/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01019/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01019/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01019/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01019/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01075",
+          "record_index": 8,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01075/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01075/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01075/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01075/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01075/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01075/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01075/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01075/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01075/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01075/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01075/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01198",
+          "record_index": 9,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01198/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01198/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01198/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01198/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01198/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01198/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01198/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01198/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01198/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01198/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01198/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01218",
+          "record_index": 10,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01218/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01218/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01218/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01218/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01218/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01218/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01218/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01218/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01218/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01218/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01218/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01381",
+          "record_index": 11,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01381/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01381/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01381/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01381/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01381/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01381/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01381/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01381/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01381/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01381/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01381/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01529",
+          "record_index": 12,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01529/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01529/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01529/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01529/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01529/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01529/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01529/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01529/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01529/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01529/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01529/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01590",
+          "record_index": 13,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01590/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01590/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01590/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01590/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01590/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01590/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01590/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01590/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01590/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01590/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01590/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01675",
+          "record_index": 14,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01675/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01675/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01675/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01675/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01675/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01675/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01675/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01675/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01675/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01675/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01675/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01770",
+          "record_index": 15,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01770/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01770/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01770/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01770/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01770/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01770/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01770/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01770/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01770/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01770/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01770/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01829",
+          "record_index": 16,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/01829/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/01829/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/01829/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/01829/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/01829/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/01829/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/01829/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/01829/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/01829/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/01829/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/01829/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02093",
+          "record_index": 17,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/02093/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/02093/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/02093/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/02093/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/02093/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/02093/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/02093/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/02093/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/02093/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/02093/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/02093/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02123",
+          "record_index": 18,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/02123/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/02123/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/02123/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/02123/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/02123/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/02123/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/02123/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/02123/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/02123/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/02123/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/02123/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02144",
+          "record_index": 19,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-moderate/02144/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-moderate/02144/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-moderate/02144/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-moderate/02144/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-moderate/02144/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-moderate/02144/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-moderate/02144/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-moderate/02144/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-moderate/02144/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-moderate/02144/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-moderate/02144/faceme.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ffhq-ref-severe",
+      "name": "FFHQ-Ref-Severe",
+      "columns": [
+        "ref1",
+        "ref2",
+        "ref3",
+        "lq",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00078",
+          "record_index": 0,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00078/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00078/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00078/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00078/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00078/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00078/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00078/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00078/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00078/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00078/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00078/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00101",
+          "record_index": 1,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00101/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00101/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00101/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00101/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00101/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00101/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00101/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00101/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00101/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00101/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00101/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00463",
+          "record_index": 2,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00463/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00463/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00463/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00463/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00463/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00463/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00463/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00463/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00463/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00463/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00463/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00619",
+          "record_index": 3,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00619/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00619/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00619/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00619/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00619/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00619/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00619/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00619/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00619/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00619/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00619/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00717",
+          "record_index": 4,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00717/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00717/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00717/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00717/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00717/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00717/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00717/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00717/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00717/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00717/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00717/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00721",
+          "record_index": 5,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00721/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00721/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00721/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00721/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00721/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00721/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00721/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00721/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00721/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00721/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00721/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00832",
+          "record_index": 6,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/00832/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/00832/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/00832/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/00832/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/00832/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/00832/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/00832/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/00832/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/00832/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/00832/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/00832/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01019",
+          "record_index": 7,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01019/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01019/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01019/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01019/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01019/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01019/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01019/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01019/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01019/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01019/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01019/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01075",
+          "record_index": 8,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01075/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01075/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01075/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01075/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01075/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01075/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01075/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01075/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01075/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01075/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01075/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01198",
+          "record_index": 9,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01198/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01198/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01198/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01198/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01198/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01198/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01198/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01198/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01198/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01198/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01198/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01218",
+          "record_index": 10,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01218/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01218/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01218/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01218/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01218/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01218/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01218/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01218/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01218/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01218/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01218/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01381",
+          "record_index": 11,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01381/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01381/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01381/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01381/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01381/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01381/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01381/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01381/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01381/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01381/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01381/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01529",
+          "record_index": 12,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01529/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01529/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01529/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01529/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01529/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01529/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01529/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01529/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01529/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01529/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01529/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01590",
+          "record_index": 13,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01590/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01590/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01590/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01590/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01590/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01590/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01590/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01590/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01590/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01590/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01590/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01675",
+          "record_index": 14,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01675/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01675/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01675/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01675/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01675/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01675/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01675/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01675/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01675/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01675/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01675/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01770",
+          "record_index": 15,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01770/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01770/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01770/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01770/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01770/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01770/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01770/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01770/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01770/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01770/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01770/faceme.png"
+          }
+        },
+        {
+          "sample_id": "01829",
+          "record_index": 16,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/01829/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/01829/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/01829/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/01829/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/01829/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/01829/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/01829/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/01829/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/01829/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/01829/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/01829/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02093",
+          "record_index": 17,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/02093/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/02093/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/02093/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/02093/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/02093/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/02093/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/02093/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/02093/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/02093/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/02093/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/02093/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02123",
+          "record_index": 18,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/02123/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/02123/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/02123/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/02123/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/02123/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/02123/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/02123/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/02123/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/02123/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/02123/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/02123/faceme.png"
+          }
+        },
+        {
+          "sample_id": "02144",
+          "record_index": 19,
+          "images": {
+            "ref1": "static/gallery/reference/ffhq-ref-severe/02144/ref1.png",
+            "ref2": "static/gallery/reference/ffhq-ref-severe/02144/ref2.png",
+            "ref3": "static/gallery/reference/ffhq-ref-severe/02144/ref3.png",
+            "lq": "static/gallery/reference/ffhq-ref-severe/02144/lq.png",
+            "gt": "static/gallery/reference/ffhq-ref-severe/02144/gt.png",
+            "ours": "static/gallery/reference/ffhq-ref-severe/02144/ours.png",
+            "dmdnet": "static/gallery/reference/ffhq-ref-severe/02144/dmdnet.png",
+            "refldm": "static/gallery/reference/ffhq-ref-severe/02144/refldm.png",
+            "restorerid": "static/gallery/reference/ffhq-ref-severe/02144/restorerid.png",
+            "instantrestore": "static/gallery/reference/ffhq-ref-severe/02144/instantrestore.png",
+            "faceme": "static/gallery/reference/ffhq-ref-severe/02144/faceme.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "celebhqref100",
+      "name": "CelebHQRef100",
+      "columns": [
+        "ref1",
+        "ref2",
+        "ref3",
+        "lq",
+        "dmdnet",
+        "refldm",
+        "restorerid",
+        "instantrestore",
+        "faceme",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00001__0",
+          "record_index": 0,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00001__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00001__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00001__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00001__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00001__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00001__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00001__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00001__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00001__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00001__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00001__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00002__0",
+          "record_index": 1,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00002__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00002__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00002__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00002__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00002__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00002__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00002__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00002__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00002__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00002__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00002__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00003__0",
+          "record_index": 2,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00003__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00003__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00003__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00003__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00003__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00003__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00003__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00003__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00003__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00003__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00003__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00004__0",
+          "record_index": 3,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00004__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00004__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00004__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00004__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00004__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00004__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00004__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00004__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00004__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00004__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00004__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00005__0",
+          "record_index": 4,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00005__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00005__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00005__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00005__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00005__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00005__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00005__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00005__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00005__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00005__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00005__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00006__1",
+          "record_index": 5,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00006__1/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00006__1/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00006__1/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00006__1/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00006__1/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00006__1/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00006__1/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00006__1/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00006__1/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00006__1/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00006__1/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00007__0",
+          "record_index": 6,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00007__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00007__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00007__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00007__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00007__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00007__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00007__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00007__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00007__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00007__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00007__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00008__1",
+          "record_index": 7,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00008__1/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00008__1/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00008__1/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00008__1/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00008__1/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00008__1/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00008__1/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00008__1/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00008__1/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00008__1/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00008__1/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00009__0",
+          "record_index": 8,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00009__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00009__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00009__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00009__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00009__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00009__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00009__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00009__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00009__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00009__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00009__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00010__2",
+          "record_index": 9,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00010__2/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00010__2/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00010__2/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00010__2/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00010__2/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00010__2/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00010__2/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00010__2/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00010__2/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00010__2/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00010__2/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00011__0",
+          "record_index": 10,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00011__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00011__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00011__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00011__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00011__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00011__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00011__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00011__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00011__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00011__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00011__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00012__0",
+          "record_index": 11,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00012__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00012__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00012__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00012__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00012__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00012__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00012__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00012__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00012__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00012__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00012__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00013__1",
+          "record_index": 12,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00013__1/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00013__1/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00013__1/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00013__1/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00013__1/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00013__1/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00013__1/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00013__1/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00013__1/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00013__1/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00013__1/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00014__0",
+          "record_index": 13,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00014__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00014__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00014__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00014__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00014__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00014__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00014__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00014__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00014__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00014__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00014__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00015__0",
+          "record_index": 14,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00015__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00015__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00015__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00015__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00015__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00015__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00015__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00015__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00015__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00015__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00015__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00016__0",
+          "record_index": 15,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00016__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00016__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00016__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00016__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00016__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00016__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00016__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00016__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00016__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00016__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00016__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00017__1",
+          "record_index": 16,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00017__1/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00017__1/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00017__1/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00017__1/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00017__1/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00017__1/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00017__1/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00017__1/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00017__1/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00017__1/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00017__1/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00018__0",
+          "record_index": 17,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00018__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00018__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00018__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00018__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00018__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00018__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00018__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00018__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00018__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00018__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00018__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00019__0",
+          "record_index": 18,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00019__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00019__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00019__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00019__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00019__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00019__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00019__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00019__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00019__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00019__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00019__0/faceme.png"
+          }
+        },
+        {
+          "sample_id": "00020__0",
+          "record_index": 19,
+          "images": {
+            "ref1": "static/gallery/reference/celebhqref100/00020__0/ref1.png",
+            "ref2": "static/gallery/reference/celebhqref100/00020__0/ref2.png",
+            "ref3": "static/gallery/reference/celebhqref100/00020__0/ref3.png",
+            "lq": "static/gallery/reference/celebhqref100/00020__0/lq.png",
+            "gt": "static/gallery/reference/celebhqref100/00020__0/gt.png",
+            "ours": "static/gallery/reference/celebhqref100/00020__0/ours.png",
+            "dmdnet": "static/gallery/reference/celebhqref100/00020__0/dmdnet.png",
+            "refldm": "static/gallery/reference/celebhqref100/00020__0/refldm.png",
+            "restorerid": "static/gallery/reference/celebhqref100/00020__0/restorerid.png",
+            "instantrestore": "static/gallery/reference/celebhqref100/00020__0/instantrestore.png",
+            "faceme": "static/gallery/reference/celebhqref100/00020__0/faceme.png"
+          }
+        }
+      ]
+    }
+  ],
+  "blind_datasets": [
+    {
+      "id": "celeba-test",
+      "name": "CelebA-Test",
+      "columns": [
+        "lq",
+        "codeformer",
+        "gfpgan",
+        "restoreformerpp",
+        "vqfr",
+        "daefr",
+        "ours",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00000000",
+          "record_index": 0,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000000/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000000/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000000/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000000/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000000/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000000/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000000/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000000/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000001",
+          "record_index": 1,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000001/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000001/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000001/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000001/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000001/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000001/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000001/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000001/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000002",
+          "record_index": 2,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000002/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000002/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000002/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000002/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000002/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000002/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000002/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000002/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000003",
+          "record_index": 3,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000003/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000003/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000003/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000003/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000003/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000003/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000003/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000003/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000004",
+          "record_index": 4,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000004/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000004/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000004/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000004/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000004/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000004/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000004/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000004/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000005",
+          "record_index": 5,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000005/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000005/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000005/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000005/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000005/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000005/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000005/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000005/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000006",
+          "record_index": 6,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000006/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000006/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000006/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000006/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000006/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000006/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000006/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000006/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000007",
+          "record_index": 7,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000007/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000007/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000007/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000007/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000007/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000007/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000007/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000007/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000008",
+          "record_index": 8,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000008/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000008/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000008/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000008/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000008/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000008/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000008/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000008/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000009",
+          "record_index": 9,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000009/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000009/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000009/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000009/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000009/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000009/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000009/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000009/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000010",
+          "record_index": 10,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000010/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000010/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000010/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000010/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000010/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000010/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000010/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000010/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000011",
+          "record_index": 11,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000011/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000011/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000011/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000011/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000011/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000011/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000011/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000011/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000012",
+          "record_index": 12,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000012/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000012/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000012/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000012/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000012/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000012/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000012/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000012/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000013",
+          "record_index": 13,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000013/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000013/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000013/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000013/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000013/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000013/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000013/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000013/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000014",
+          "record_index": 14,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000014/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000014/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000014/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000014/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000014/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000014/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000014/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000014/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000015",
+          "record_index": 15,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000015/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000015/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000015/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000015/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000015/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000015/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000015/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000015/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000016",
+          "record_index": 16,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000016/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000016/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000016/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000016/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000016/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000016/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000016/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000016/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000017",
+          "record_index": 17,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000017/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000017/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000017/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000017/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000017/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000017/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000017/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000017/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000018",
+          "record_index": 18,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000018/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000018/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000018/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000018/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000018/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000018/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000018/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000018/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000019",
+          "record_index": 19,
+          "images": {
+            "lq": "static/gallery/blind/celeba-test/00000019/lq.png",
+            "ours": "static/gallery/blind/celeba-test/00000019/ours.png",
+            "gt": "static/gallery/blind/celeba-test/00000019/gt.png",
+            "codeformer": "static/gallery/blind/celeba-test/00000019/codeformer.png",
+            "gfpgan": "static/gallery/blind/celeba-test/00000019/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celeba-test/00000019/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celeba-test/00000019/vqfr.png",
+            "daefr": "static/gallery/blind/celeba-test/00000019/daefr.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lfw",
+      "name": "LFW",
+      "columns": [
+        "lq",
+        "codeformer",
+        "gfpgan",
+        "restoreformerpp",
+        "vqfr",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "AJ_Lamas_0001_00",
+          "record_index": 0,
+          "images": {
+            "lq": "static/gallery/blind/lfw/AJ_Lamas_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/AJ_Lamas_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/AJ_Lamas_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/AJ_Lamas_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/AJ_Lamas_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/AJ_Lamas_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/AJ_Lamas_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Aaron_Guiel_0001_00",
+          "record_index": 1,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Aaron_Guiel_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Aaron_Tippin_0001_00",
+          "record_index": 2,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Aaron_Tippin_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abba_Eban_0001_00",
+          "record_index": 3,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abba_Eban_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abba_Eban_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abba_Eban_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abba_Eban_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abba_Eban_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abba_Eban_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abba_Eban_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abdul_Majeed_Shobokshi_0001_00",
+          "record_index": 4,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abdul_Majeed_Shobokshi_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abdulaziz_Kamilov_0001_00",
+          "record_index": 5,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abdulaziz_Kamilov_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abdullah_Gul_0001_00",
+          "record_index": 6,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abdullah_Gul_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abdullatif_Sener_0001_00",
+          "record_index": 7,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abdullatif_Sener_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abel_Aguilar_0001_00",
+          "record_index": 8,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abel_Aguilar_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Abid_Hamid_Mahmud_Al-Tikriti_0001_00",
+          "record_index": 9,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Abid_Hamid_Mahmud_Al-Tikriti_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adam_Ant_0001_00",
+          "record_index": 10,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adam_Ant_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adam_Ant_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adam_Ant_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adam_Ant_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adam_Ant_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adam_Ant_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adam_Ant_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adam_Kennedy_0001_00",
+          "record_index": 11,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adam_Kennedy_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adel_Al-Jubeir_0001_00",
+          "record_index": 12,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adel_Al-Jubeir_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adrian_Annus_0001_00",
+          "record_index": 13,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adrian_Annus_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adrian_Annus_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adrian_Annus_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adrian_Annus_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adrian_Annus_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adrian_Annus_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adrian_Annus_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adrian_Murrell_0001_00",
+          "record_index": 14,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adrian_Murrell_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adriana_Lima_0001_00",
+          "record_index": 15,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adriana_Lima_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adriana_Lima_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adriana_Lima_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adriana_Lima_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adriana_Lima_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adriana_Lima_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adriana_Lima_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adriana_Perez_Navarro_0001_00",
+          "record_index": 16,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adriana_Perez_Navarro_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adrien_Brody_0001_00",
+          "record_index": 17,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Adrien_Brody_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Adrien_Brody_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Adrien_Brody_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Adrien_Brody_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Adrien_Brody_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Adrien_Brody_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Adrien_Brody_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Agbani_Darego_0001_00",
+          "record_index": 18,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Agbani_Darego_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Agbani_Darego_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Agbani_Darego_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Agbani_Darego_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Agbani_Darego_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Agbani_Darego_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Agbani_Darego_0001_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Agnelo_Queiroz_0001_00",
+          "record_index": 19,
+          "images": {
+            "lq": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/lq.png",
+            "ours": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/ours.png",
+            "codeformer": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/vqfr.png",
+            "daefr": "static/gallery/blind/lfw/Agnelo_Queiroz_0001_00/daefr.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "celebchild",
+      "name": "CelebChild",
+      "columns": [
+        "lq",
+        "codeformer",
+        "gfpgan",
+        "restoreformerpp",
+        "vqfr",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "Adult__000_Adele_01",
+          "record_index": 0,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__000_Adele_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__000_Adele_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__000_Adele_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__000_Adele_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__000_Adele_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__000_Adele_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__000_Adele_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__001_Ryan_Gosling_01",
+          "record_index": 1,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__001_Ryan_Gosling_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__002_Barack_Obama_01",
+          "record_index": 2,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__002_Barack_Obama_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__003_Angelina_Jolie_01",
+          "record_index": 3,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__003_Angelina_Jolie_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__004_Leonardo_DiCaprio_01",
+          "record_index": 4,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__004_Leonardo_DiCaprio_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__005_Chloe_Grace_Moretz_01",
+          "record_index": 5,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__005_Chloe_Grace_Moretz_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__006_Neil_Patrick_Harris_01",
+          "record_index": 6,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__006_Neil_Patrick_Harris_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__007_Benedict_Cumberbatch_01",
+          "record_index": 7,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__007_Benedict_Cumberbatch_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__008_George_Clooney_01",
+          "record_index": 8,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__008_George_Clooney_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__009_Freddie_Mercury_01",
+          "record_index": 9,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__009_Freddie_Mercury_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__010_Marilyn_Monroe_01",
+          "record_index": 10,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__010_Marilyn_Monroe_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__011_Jennifer_Aniston_01",
+          "record_index": 11,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__011_Jennifer_Aniston_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__012_Jackie_Chan_01",
+          "record_index": 12,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__012_Jackie_Chan_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__013_Elijah_Wood_01",
+          "record_index": 13,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__013_Elijah_Wood_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__014_Brooke_Shields_01",
+          "record_index": 14,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__014_Brooke_Shields_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__015_John_Travolta_01",
+          "record_index": 15,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__015_John_Travolta_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__016_Keira_Knightley_01",
+          "record_index": 16,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__016_Keira_Knightley_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__017_Amy_Winehouse_01",
+          "record_index": 17,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__017_Amy_Winehouse_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__018_Russell_Crowe_01",
+          "record_index": 18,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__018_Russell_Crowe_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "Adult__019_Anne_Hathaway_01",
+          "record_index": 19,
+          "images": {
+            "lq": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/lq.png",
+            "ours": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/ours.png",
+            "codeformer": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/vqfr.png",
+            "daefr": "static/gallery/blind/celebchild/Adult__019_Anne_Hathaway_01/daefr.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "webphoto",
+      "name": "WebPhoto",
+      "columns": [
+        "lq",
+        "codeformer",
+        "gfpgan",
+        "restoreformerpp",
+        "vqfr",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "00000_00",
+          "record_index": 0,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00000_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00000_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00000_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00000_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00000_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00000_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00000_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00000_01",
+          "record_index": 1,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00000_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00000_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00000_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00000_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00000_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00000_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00000_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00002_00",
+          "record_index": 2,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00002_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00002_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00002_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00002_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00002_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00002_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00002_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00003_00",
+          "record_index": 3,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00003_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00003_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00003_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00003_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00003_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00003_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00003_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00003_01",
+          "record_index": 4,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00003_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00003_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00003_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00003_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00003_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00003_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00003_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00004_00",
+          "record_index": 5,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00004_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00004_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00004_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00004_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00004_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00004_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00004_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00005_00",
+          "record_index": 6,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00005_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00005_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00005_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00005_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00005_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00005_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00005_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00005_01",
+          "record_index": 7,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00005_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00005_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00005_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00005_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00005_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00005_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00005_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00006_00",
+          "record_index": 8,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00006_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00006_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00006_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00006_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00006_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00006_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00006_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00006_01",
+          "record_index": 9,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00006_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00006_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00006_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00006_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00006_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00006_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00006_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00006_02",
+          "record_index": 10,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00006_02/lq.png",
+            "ours": "static/gallery/blind/webphoto/00006_02/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00006_02/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00006_02/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00006_02/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00006_02/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00006_02/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00006_03",
+          "record_index": 11,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00006_03/lq.png",
+            "ours": "static/gallery/blind/webphoto/00006_03/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00006_03/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00006_03/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00006_03/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00006_03/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00006_03/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00006_04",
+          "record_index": 12,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00006_04/lq.png",
+            "ours": "static/gallery/blind/webphoto/00006_04/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00006_04/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00006_04/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00006_04/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00006_04/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00006_04/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00007_00",
+          "record_index": 13,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00007_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00007_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00007_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00007_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00007_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00007_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00007_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00008_00",
+          "record_index": 14,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00008_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00008_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00008_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00008_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00008_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00008_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00008_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00008_01",
+          "record_index": 15,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00008_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00008_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00008_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00008_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00008_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00008_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00008_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00009_00",
+          "record_index": 16,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00009_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00009_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00009_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00009_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00009_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00009_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00009_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00009_01",
+          "record_index": 17,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00009_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00009_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00009_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00009_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00009_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00009_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00009_01/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00010_00",
+          "record_index": 18,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00010_00/lq.png",
+            "ours": "static/gallery/blind/webphoto/00010_00/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00010_00/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00010_00/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00010_00/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00010_00/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00010_00/daefr.png"
+          }
+        },
+        {
+          "sample_id": "00010_01",
+          "record_index": 19,
+          "images": {
+            "lq": "static/gallery/blind/webphoto/00010_01/lq.png",
+            "ours": "static/gallery/blind/webphoto/00010_01/ours.png",
+            "codeformer": "static/gallery/blind/webphoto/00010_01/codeformer.png",
+            "gfpgan": "static/gallery/blind/webphoto/00010_01/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/webphoto/00010_01/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/webphoto/00010_01/vqfr.png",
+            "daefr": "static/gallery/blind/webphoto/00010_01/daefr.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wider-test",
+      "name": "Wider-Test",
+      "columns": [
+        "lq",
+        "codeformer",
+        "gfpgan",
+        "restoreformerpp",
+        "vqfr",
+        "daefr",
+        "ours"
+      ],
+      "cases": [
+        {
+          "sample_id": "0000",
+          "record_index": 0,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0000/lq.png",
+            "ours": "static/gallery/blind/wider-test/0000/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0000/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0000/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0000/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0000/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0000/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0001",
+          "record_index": 1,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0001/lq.png",
+            "ours": "static/gallery/blind/wider-test/0001/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0001/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0001/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0001/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0001/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0001/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0002",
+          "record_index": 2,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0002/lq.png",
+            "ours": "static/gallery/blind/wider-test/0002/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0002/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0002/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0002/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0002/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0002/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0003",
+          "record_index": 3,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0003/lq.png",
+            "ours": "static/gallery/blind/wider-test/0003/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0003/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0003/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0003/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0003/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0003/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0004",
+          "record_index": 4,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0004/lq.png",
+            "ours": "static/gallery/blind/wider-test/0004/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0004/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0004/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0004/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0004/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0004/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0005",
+          "record_index": 5,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0005/lq.png",
+            "ours": "static/gallery/blind/wider-test/0005/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0005/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0005/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0005/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0005/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0005/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0006",
+          "record_index": 6,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0006/lq.png",
+            "ours": "static/gallery/blind/wider-test/0006/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0006/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0006/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0006/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0006/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0006/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0007",
+          "record_index": 7,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0007/lq.png",
+            "ours": "static/gallery/blind/wider-test/0007/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0007/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0007/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0007/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0007/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0007/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0008",
+          "record_index": 8,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0008/lq.png",
+            "ours": "static/gallery/blind/wider-test/0008/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0008/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0008/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0008/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0008/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0008/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0009",
+          "record_index": 9,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0009/lq.png",
+            "ours": "static/gallery/blind/wider-test/0009/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0009/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0009/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0009/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0009/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0009/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0010",
+          "record_index": 10,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0010/lq.png",
+            "ours": "static/gallery/blind/wider-test/0010/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0010/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0010/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0010/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0010/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0010/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0011",
+          "record_index": 11,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0011/lq.png",
+            "ours": "static/gallery/blind/wider-test/0011/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0011/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0011/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0011/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0011/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0011/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0012",
+          "record_index": 12,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0012/lq.png",
+            "ours": "static/gallery/blind/wider-test/0012/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0012/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0012/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0012/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0012/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0012/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0013",
+          "record_index": 13,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0013/lq.png",
+            "ours": "static/gallery/blind/wider-test/0013/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0013/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0013/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0013/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0013/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0013/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0014",
+          "record_index": 14,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0014/lq.png",
+            "ours": "static/gallery/blind/wider-test/0014/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0014/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0014/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0014/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0014/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0014/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0015",
+          "record_index": 15,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0015/lq.png",
+            "ours": "static/gallery/blind/wider-test/0015/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0015/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0015/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0015/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0015/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0015/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0016",
+          "record_index": 16,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0016/lq.png",
+            "ours": "static/gallery/blind/wider-test/0016/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0016/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0016/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0016/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0016/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0016/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0017",
+          "record_index": 17,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0017/lq.png",
+            "ours": "static/gallery/blind/wider-test/0017/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0017/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0017/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0017/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0017/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0017/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0018",
+          "record_index": 18,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0018/lq.png",
+            "ours": "static/gallery/blind/wider-test/0018/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0018/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0018/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0018/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0018/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0018/daefr.png"
+          }
+        },
+        {
+          "sample_id": "0019",
+          "record_index": 19,
+          "images": {
+            "lq": "static/gallery/blind/wider-test/0019/lq.png",
+            "ours": "static/gallery/blind/wider-test/0019/ours.png",
+            "codeformer": "static/gallery/blind/wider-test/0019/codeformer.png",
+            "gfpgan": "static/gallery/blind/wider-test/0019/gfpgan.png",
+            "restoreformerpp": "static/gallery/blind/wider-test/0019/restoreformerpp.png",
+            "vqfr": "static/gallery/blind/wider-test/0019/vqfr.png",
+            "daefr": "static/gallery/blind/wider-test/0019/daefr.png"
+          }
+        }
+      ]
+    }
+  ]
+}

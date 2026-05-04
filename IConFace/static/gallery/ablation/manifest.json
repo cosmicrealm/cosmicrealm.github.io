@@ -1,0 +1,397 @@
+{
+  "datasets": [
+    {
+      "id": "celebhqref100",
+      "name": "CelebHQRef100",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "00043__0",
+          "images": {
+            "ref1": "static/gallery/ablation/celebhqref100/00043__0/ref1.png",
+            "deg": "static/gallery/ablation/celebhqref100/00043__0/deg.png",
+            "concat": "static/gallery/ablation/celebhqref100/00043__0/concat.png",
+            "struct": "static/gallery/ablation/celebhqref100/00043__0/struct.png",
+            "id": "static/gallery/ablation/celebhqref100/00043__0/id.png",
+            "1r": "static/gallery/ablation/celebhqref100/00043__0/1r.png",
+            "full": "static/gallery/ablation/celebhqref100/00043__0/full.png",
+            "gt": "static/gallery/ablation/celebhqref100/00043__0/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.181,
+            "concat": 0.261,
+            "struct": 0.307,
+            "id": 0.42,
+            "1r": 0.404,
+            "full": 0.437,
+            "gt": 0.466
+          }
+        },
+        {
+          "sample_id": "00094__0",
+          "images": {
+            "ref1": "static/gallery/ablation/celebhqref100/00094__0/ref1.png",
+            "deg": "static/gallery/ablation/celebhqref100/00094__0/deg.png",
+            "concat": "static/gallery/ablation/celebhqref100/00094__0/concat.png",
+            "struct": "static/gallery/ablation/celebhqref100/00094__0/struct.png",
+            "id": "static/gallery/ablation/celebhqref100/00094__0/id.png",
+            "1r": "static/gallery/ablation/celebhqref100/00094__0/1r.png",
+            "full": "static/gallery/ablation/celebhqref100/00094__0/full.png",
+            "gt": "static/gallery/ablation/celebhqref100/00094__0/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.132,
+            "concat": 0.342,
+            "struct": 0.374,
+            "id": 0.483,
+            "1r": 0.476,
+            "full": 0.535,
+            "gt": 0.487
+          }
+        },
+        {
+          "sample_id": "00003__0",
+          "images": {
+            "ref1": "static/gallery/ablation/celebhqref100/00003__0/ref1.png",
+            "deg": "static/gallery/ablation/celebhqref100/00003__0/deg.png",
+            "concat": "static/gallery/ablation/celebhqref100/00003__0/concat.png",
+            "struct": "static/gallery/ablation/celebhqref100/00003__0/struct.png",
+            "id": "static/gallery/ablation/celebhqref100/00003__0/id.png",
+            "1r": "static/gallery/ablation/celebhqref100/00003__0/1r.png",
+            "full": "static/gallery/ablation/celebhqref100/00003__0/full.png",
+            "gt": "static/gallery/ablation/celebhqref100/00003__0/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.192,
+            "concat": 0.351,
+            "struct": 0.377,
+            "id": 0.472,
+            "1r": 0.479,
+            "full": 0.562,
+            "gt": 0.48
+          }
+        },
+        {
+          "sample_id": "00026__1",
+          "images": {
+            "ref1": "static/gallery/ablation/celebhqref100/00026__1/ref1.png",
+            "deg": "static/gallery/ablation/celebhqref100/00026__1/deg.png",
+            "concat": "static/gallery/ablation/celebhqref100/00026__1/concat.png",
+            "struct": "static/gallery/ablation/celebhqref100/00026__1/struct.png",
+            "id": "static/gallery/ablation/celebhqref100/00026__1/id.png",
+            "1r": "static/gallery/ablation/celebhqref100/00026__1/1r.png",
+            "full": "static/gallery/ablation/celebhqref100/00026__1/full.png",
+            "gt": "static/gallery/ablation/celebhqref100/00026__1/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.022,
+            "concat": 0.373,
+            "struct": 0.397,
+            "id": 0.46,
+            "1r": 0.443,
+            "full": 0.492,
+            "gt": 0.426
+          }
+        },
+        {
+          "sample_id": "00037__0",
+          "images": {
+            "ref1": "static/gallery/ablation/celebhqref100/00037__0/ref1.png",
+            "deg": "static/gallery/ablation/celebhqref100/00037__0/deg.png",
+            "concat": "static/gallery/ablation/celebhqref100/00037__0/concat.png",
+            "struct": "static/gallery/ablation/celebhqref100/00037__0/struct.png",
+            "id": "static/gallery/ablation/celebhqref100/00037__0/id.png",
+            "1r": "static/gallery/ablation/celebhqref100/00037__0/1r.png",
+            "full": "static/gallery/ablation/celebhqref100/00037__0/full.png",
+            "gt": "static/gallery/ablation/celebhqref100/00037__0/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.355,
+            "concat": 0.398,
+            "struct": 0.433,
+            "id": 0.518,
+            "1r": 0.493,
+            "full": 0.518,
+            "gt": 0.473
+          }
+        }
+      ]
+    },
+    {
+      "id": "ffhq-ref-moderate",
+      "name": "FFHQ-Ref Moderate",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "37245",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-moderate/37245/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-moderate/37245/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-moderate/37245/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-moderate/37245/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-moderate/37245/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-moderate/37245/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-moderate/37245/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-moderate/37245/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.149,
+            "concat": 0.295,
+            "struct": 0.272,
+            "id": 0.341,
+            "1r": 0.347,
+            "full": 0.365,
+            "gt": 0.296
+          }
+        },
+        {
+          "sample_id": "00717",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-moderate/00717/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-moderate/00717/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-moderate/00717/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-moderate/00717/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-moderate/00717/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-moderate/00717/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-moderate/00717/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-moderate/00717/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.393,
+            "concat": 0.322,
+            "struct": 0.318,
+            "id": 0.405,
+            "1r": 0.417,
+            "full": 0.412,
+            "gt": 0.445
+          }
+        },
+        {
+          "sample_id": "15714",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-moderate/15714/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-moderate/15714/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-moderate/15714/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-moderate/15714/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-moderate/15714/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-moderate/15714/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-moderate/15714/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-moderate/15714/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.274,
+            "concat": 0.349,
+            "struct": 0.343,
+            "id": 0.39,
+            "1r": 0.396,
+            "full": 0.402,
+            "gt": 0.3
+          }
+        },
+        {
+          "sample_id": "41552",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-moderate/41552/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-moderate/41552/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-moderate/41552/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-moderate/41552/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-moderate/41552/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-moderate/41552/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-moderate/41552/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-moderate/41552/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.34,
+            "concat": 0.364,
+            "struct": 0.358,
+            "id": 0.424,
+            "1r": 0.443,
+            "full": 0.441,
+            "gt": 0.377
+          }
+        },
+        {
+          "sample_id": "46459",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-moderate/46459/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-moderate/46459/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-moderate/46459/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-moderate/46459/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-moderate/46459/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-moderate/46459/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-moderate/46459/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-moderate/46459/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.387,
+            "concat": 0.364,
+            "struct": 0.382,
+            "id": 0.434,
+            "1r": 0.441,
+            "full": 0.481,
+            "gt": 0.389
+          }
+        }
+      ]
+    },
+    {
+      "id": "ffhq-ref-severe",
+      "name": "FFHQ-Ref Severe",
+      "columns": [
+        "ref1",
+        "deg",
+        "concat",
+        "struct",
+        "id",
+        "1r",
+        "full",
+        "gt"
+      ],
+      "cases": [
+        {
+          "sample_id": "55235",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-severe/55235/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-severe/55235/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-severe/55235/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-severe/55235/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-severe/55235/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-severe/55235/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-severe/55235/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-severe/55235/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.143,
+            "concat": 0.25,
+            "struct": 0.407,
+            "id": 0.538,
+            "1r": 0.559,
+            "full": 0.609,
+            "gt": 0.544
+          }
+        },
+        {
+          "sample_id": "63440",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-severe/63440/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-severe/63440/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-severe/63440/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-severe/63440/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-severe/63440/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-severe/63440/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-severe/63440/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-severe/63440/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.132,
+            "concat": 0.279,
+            "struct": 0.292,
+            "id": 0.359,
+            "1r": 0.404,
+            "full": 0.434,
+            "gt": 0.533
+          }
+        },
+        {
+          "sample_id": "22523",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-severe/22523/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-severe/22523/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-severe/22523/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-severe/22523/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-severe/22523/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-severe/22523/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-severe/22523/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-severe/22523/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.062,
+            "concat": 0.286,
+            "struct": 0.347,
+            "id": 0.466,
+            "1r": 0.463,
+            "full": 0.503,
+            "gt": 0.56
+          }
+        },
+        {
+          "sample_id": "46373",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-severe/46373/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-severe/46373/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-severe/46373/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-severe/46373/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-severe/46373/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-severe/46373/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-severe/46373/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-severe/46373/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.065,
+            "concat": 0.298,
+            "struct": 0.375,
+            "id": 0.487,
+            "1r": 0.484,
+            "full": 0.585,
+            "gt": 0.446
+          }
+        },
+        {
+          "sample_id": "37245",
+          "images": {
+            "ref1": "static/gallery/ablation/ffhq-ref-severe/37245/ref1.png",
+            "deg": "static/gallery/ablation/ffhq-ref-severe/37245/deg.png",
+            "concat": "static/gallery/ablation/ffhq-ref-severe/37245/concat.png",
+            "struct": "static/gallery/ablation/ffhq-ref-severe/37245/struct.png",
+            "id": "static/gallery/ablation/ffhq-ref-severe/37245/id.png",
+            "1r": "static/gallery/ablation/ffhq-ref-severe/37245/1r.png",
+            "full": "static/gallery/ablation/ffhq-ref-severe/37245/full.png",
+            "gt": "static/gallery/ablation/ffhq-ref-severe/37245/gt.png"
+          },
+          "scores": {
+            "ref1": 1.0,
+            "deg": 0.031,
+            "concat": 0.319,
+            "struct": 0.272,
+            "id": 0.399,
+            "1r": 0.404,
+            "full": 0.439,
+            "gt": 0.296
+          }
+        }
+      ]
+    }
+  ]
+}

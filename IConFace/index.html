@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
+  <meta name="description" content="IConFace is a unified reference-aware and no-reference face restoration framework with identity-structure asymmetric conditioning.">
+  <meta name="keywords" content="face restoration, reference-aware restoration, blind face restoration, identity preservation, image restoration, computer vision">
+  <meta name="author" content="Axi Niu, Jinyang Zhang, Senyan Qing">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="IConFace Project Page">
+  <meta property="og:title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
+  <meta property="og:description" content="Unified reference-aware face restoration with asymmetric identity-structure conditioning for reference-based and no-reference blind restoration.">
+  <meta property="og:url" content="https://cosmicrealm.github.io/IConFace/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="IConFace teaser preview">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
+  <meta name="twitter:description" content="Unified reference-aware face restoration with asymmetric identity-structure conditioning.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg">
+
+  <meta name="citation_title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
+  <meta name="citation_author" content="Axi Niu">
+  <meta name="citation_author" content="Jinyang Zhang">
+  <meta name="citation_author" content="Senyan Qing">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="AAAI 2026">
+  <meta name="citation_pdf_url" content="https://cosmicrealm.github.io/IConFace/static/pdfs/iconface_paper.pdf">
+
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>IConFace | Unified Reference-Aware Face Restoration</title>
+
+  <link rel="icon" type="image/png" href="static/images/favicon-iconface.png">
+  <link rel="apple-touch-icon" href="static/images/apple-touch-icon-iconface.png">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css?v=20260505-jpg">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/index.js?v=20260505-jpg"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration",
+    "description": "IConFace is a unified reference-aware face restoration framework for reference-based and no-reference blind restoration.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Axi Niu"
+      },
+      {
+        "@type": "Person",
+        "name": "Jinyang Zhang"
+      },
+      {
+        "@type": "Person",
+        "name": "Senyan Qing"
+      }
+    ],
+    "datePublished": "2026-01-01",
+    "url": "https://cosmicrealm.github.io/IConFace/",
+    "image": "https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg",
+    "keywords": ["face restoration", "reference-aware restoration", "blind face restoration", "identity preservation"],
+    "isAccessibleForFree": true,
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://cosmicrealm.github.io/IConFace/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration</h1>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">Axi Niu<sup>*</sup></span>
+                <span class="author-block">Jinyang Zhang<sup>*</sup></span>
+                <span class="author-block">Senyan Qing</span>
+              </div>
+              <div class="is-size-5 publication-authors publication-affiliation">
+                <span class="author-block">Northwestern Polytechnical University</span>
+              </div>
+              <div class="is-size-6 publication-authors publication-email-line">
+                <span class="author-block">nax@nwpu.edu.cn</span>
+                <span class="author-block">zhangjinyang@mail.nwpu.edu.cn</span>
+                <span class="author-block">qingsenyan@nwpu.edu.cn</span>
+              </div>
+              <div class="is-size-6 publication-authors publication-author-note">
+                <span class="author-block"><sup>*</sup>Equal contribution</span>
+              </div>
+
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://cosmicrealm.github.io/IConFace/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-globe"></i>
+                    </span>
+                    <span>Project</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="static/pdfs/iconface_paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="static/pdfs/iconface_supp.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Supplementary</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark is-disabled-link" aria-disabled="true" onclick="return false;" title="Code coming soon">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code Coming Soon</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-quote-right"></i>
+                    </span>
+                    <span>BibTeX</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <div class="teaser-grid">
+            <div class="teaser-cell">
+              <div class="teaser-label">Reference 1</div>
+              <img src="static/images/teaser/ref1.jpg" alt="Reference image 1">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">Reference 2</div>
+              <img src="static/images/teaser/ref2.jpg" alt="Reference image 2">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">Reference 3</div>
+              <img src="static/images/teaser/ref3.jpg" alt="Reference image 3">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">Degraded Input</div>
+              <img src="static/images/teaser/deg.jpg" alt="Degraded input">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">CodeFormer</div>
+              <img src="static/images/teaser/codeformer.jpg" alt="CodeFormer result">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">FaceMe</div>
+              <img src="static/images/teaser/faceme.jpg" alt="FaceMe result">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">Ours</div>
+              <img src="static/images/teaser/ours.jpg" alt="IConFace result">
+            </div>
+            <div class="teaser-cell">
+              <div class="teaser-label">Ground Truth</div>
+              <img src="static/images/teaser/gt.jpg" alt="Ground truth">
+            </div>
+          </div>
+          <p class="teaser-caption">
+            IConFace preserves reference-consistent facial details better than strong blind and reference-aware baselines while remaining anchored to the degraded input.
+          </p>
+          <div class="detail-grid teaser-detail-grid">
+            <div class="detail-card">
+              <div class="detail-header">CodeFormer</div>
+              <img src="static/images/teaser/details/detail1_codeformer.jpg" alt="CodeFormer detail crop 1">
+              <img src="static/images/teaser/details/detail2_codeformer.jpg" alt="CodeFormer detail crop 2">
+            </div>
+            <div class="detail-card">
+              <div class="detail-header">FaceMe</div>
+              <img src="static/images/teaser/details/detail1_faceme.jpg" alt="FaceMe detail crop 1">
+              <img src="static/images/teaser/details/detail2_faceme.jpg" alt="FaceMe detail crop 2">
+            </div>
+            <div class="detail-card">
+              <div class="detail-header">Ours</div>
+              <img src="static/images/teaser/details/detail1_ours.jpg" alt="IConFace detail crop 1">
+              <img src="static/images/teaser/details/detail2_ours.jpg" alt="IConFace detail crop 2">
+            </div>
+            <div class="detail-card">
+              <div class="detail-header">Ground Truth</div>
+              <img src="static/images/teaser/details/detail1_gt.jpg" alt="Ground-truth detail crop 1">
+              <img src="static/images/teaser/details/detail2_gt.jpg" alt="Ground-truth detail crop 2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Blind face restoration is highly ill-posed under severe degradation, where identity-critical details may be missing from the degraded input. Same-identity references reduce this ambiguity, but mismatched pose, expression, illumination, age, makeup, or local facial states can lead to overuse of reference appearance. We propose <strong>IConFace</strong>, a unified reference-aware and no-reference framework with identity--structure asymmetric conditioning. References are distilled into a norm-weighted global AdaFace identity anchor for image-only modulation, while the degraded image is reinforced as the spatial structure anchor through low-rank residuals and block-wise degraded cross-attention with two-route memory. The resulting single checkpoint exploits references when available and falls back to no-reference restoration when absent, improving identity consistency, fine-detail recovery, and degraded-only restoration quality in a unified model.
+              </p>
+              <ul class="contribution-list">
+                <li>A unified optional-reference formulation where one checkpoint supports reference-aware and no-reference restoration through asymmetric identity--structure conditioning.</li>
+                <li>Lightweight pathways that use norm-weighted AdaFace modulation for reference identity and low-rank residuals with two-route degraded memory for structure and detail anchoring.</li>
+                <li>Extensive results showing improved reference-aligned identity consistency, fine-detail recovery under severe degradation, and strong no-reference perceptual quality.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <h2 class="title is-3 has-text-centered">Method Overview</h2>
+            <div class="content has-text-justified method-summary">
+              <p>
+                IConFace is built on the FLUX.2-klein-base-4B hybrid concat restoration backbone. The main sequence concatenates noisy scene tokens, degraded-image tokens, and optional reference tokens, while no-reference mode removes the reference segment rather than duplicating placeholders. On top of the backbone, a global identity pathway aggregates valid references into a norm-weighted AdaFace anchor for image-only modulation, and a degraded structure pathway reinforces the spatially aligned degraded observation with low-rank input residuals plus block-wise degraded cross-attention. The two-route memory separates base structure from local detail so the model can use reference identity evidence without copying mismatched pose, expression, illumination, age, makeup, or local facial state.
+              </p>
+            </div>
+            <div class="figure-card">
+              <img src="static/images/method/iconface_framework.jpg" alt="IConFace framework diagram" class="method-figure">
+            </div>
+            <div class="sample-strip">
+              <div class="sample-item">
+                <div class="sample-label">Ref 1</div>
+                <img src="static/images/method/sample_ref1.jpg" alt="Reference image 1">
+              </div>
+              <div class="sample-item">
+                <div class="sample-label">Ref 2</div>
+                <img src="static/images/method/sample_ref2.jpg" alt="Reference image 2">
+              </div>
+              <div class="sample-item">
+                <div class="sample-label">Ref 3</div>
+                <img src="static/images/method/sample_ref3.jpg" alt="Reference image 3">
+              </div>
+              <div class="sample-item">
+                <div class="sample-label">LQ</div>
+                <img src="static/images/method/sample_deg.jpg" alt="Low-quality input">
+              </div>
+              <div class="sample-item">
+                <div class="sample-label">Ours</div>
+                <img src="static/images/method/sample_ours.jpg" alt="IConFace output">
+              </div>
+              <div class="sample-item">
+                <div class="sample-label">GT</div>
+                <img src="static/images/method/sample_gt.jpg" alt="Ground truth">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="section">
+      <div class="container is-max-widescreen gallery-wide">
+        <h2 class="title is-3 has-text-centered">Main Paper Figure Panels</h2>
+        <p class="section-intro has-text-centered">
+          Qualitative figure panels from the AAAI main paper, including reference-aware comparisons, no-reference comparisons, and ablation examples.
+        </p>
+        <div id="main-paper-figures-root" class="dataset-gallery-root"></div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-widescreen gallery-wide">
+        <h2 class="title is-3 has-text-centered">Supplementary Visual Evidence</h2>
+        <p class="section-intro has-text-centered">
+          Supplementary panels are regenerated from AAAI_IConface_supp.tex and its figure input: selected reference--GT gap diagnostics, four reference-aware datasets, five no-reference datasets, and three reference-aware ablation datasets.
+        </p>
+        <div id="supplementary-figures-root" class="dataset-gallery-root"></div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+<pre id="bibtex-code"><code>@misc{iconface2026,
+  title={IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration},
+  author={Niu, Axi and Zhang, Jinyang and Qing, Senyan},
+  year={2026},
+  note={Project page, paper PDF, and supplementary PDF},
+  url={https://cosmicrealm.github.io/IConFace/}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              The page content and visual assets are customized for the IConFace project.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
