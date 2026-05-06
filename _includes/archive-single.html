@@ -80,5 +80,24 @@
       <p><a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
     {% endif %}
 
+    {% if post.projecturl or post.codeurl or post.htmlurl %}
+      <p>
+      {% assign has_extra_link = false %}
+      {% if post.projecturl %}
+        <a href="{{ post.projecturl }}">Project</a>
+        {% assign has_extra_link = true %}
+      {% endif %}
+      {% if post.codeurl %}
+        {% if has_extra_link %} | {% endif %}
+        <a href="{{ post.codeurl }}">{{ post.codelabel | default: "Code" }}</a>
+        {% assign has_extra_link = true %}
+      {% endif %}
+      {% if post.htmlurl %}
+        {% if has_extra_link %} | {% endif %}
+        <a href="{{ post.htmlurl }}">HTML</a>
+      {% endif %}
+      </p>
+    {% endif %}
+
   </article>
 </div>

@@ -16,7 +16,7 @@ redirect_from:
 * B.S. in Computer Science, **Northwestern Polytechnical University (NWPU)**, 2013.09–2017.07
 
 ## Work Experience
-* **Xiaobing — Algorithm Engineer**  2022.11–present, Beijing  
+* **Xiaobing — Algorithm Engineer**  2022.11–2025.11, Beijing
   - Developed digital human generation models, including speech-driven facial animation and expression synthesis, leveraging Flow-Matching, diffusion and LoRA-based techniques for AIGC applications.
 
 * **Moqi — Algorithm Engineer**  2022.03–2022.10, Beijing  

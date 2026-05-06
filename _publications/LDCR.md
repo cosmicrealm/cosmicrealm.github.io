@@ -7,6 +7,7 @@ excerpt:
 date: 2019-10-01
 venue: 'IEEE Transactions on Geoscience and Remote Sensing (TGRS) '
 paperurl: 'https://ieeexplore.ieee.org/document/8741172'
+codeurl: 'https://github.com/zhangjinyangnwpu/LDCR'
 # citation: 'Your Name, You. (2024). &quot;Paper Title Number 3.&quot; <i>GitHub Journal of Bugs</i>. 1(3).'
 ---
 [Code](https://github.com/zhangjinyangnwpu/LDCR)

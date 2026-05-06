@@ -29,12 +29,14 @@ Currently, I am working in the biometric domain, addressing large-scale matching
 
 Publications
 ====== 
-1. Improving Hyperspectral Image Classification with Unsupervised Knowledge Learning. $$\textbf{Zhang Jinyang}$$, Wei Wei, Zhang Lei, et al.  IEEE International Geoscience and Remote Sensing Symposium(IGARSS). IEEE, 2019: 2722-2725.
-2. Learning Discriminative Compact Representation for Hyperspectral Imagery Classification. Zhang Lei, $$\textbf{Zhang Jinyang}$$, Wei Wei, et al. IEEE Transactions on Geoscience and Remote Sensing(TGRS), 2019, 57(10): 8276-8289. 
-3. Deep cube-pair network for hyperspectral imagery classification. Wei Wei, $$\textbf{Zhang Jinyang}$$, Zhang Lei, et al. Remote Sensing, 2018, 10(5): 783.
-4. Data-specific Activation Function Learning for Hyperspectral Image Classification. Yu Li, Wei Wei, $$\textbf{Zhang Jinyang}$$, Lei Zhang, et al. International Conference on Orange Technology (ICOT), 2019
-5. Fast-convergent fully connected deep learning model using constrained nodes input. Chen Ding,Ying Li,Lei Zhang,$$\textbf{Jinyang Zhang}$$,Lu Yang, et al. Neural Processing Letters, 2019, 49(3): 995-1005.
-6. Boosting Hyperspectral Image Classification With Unsupervised Feature Learning. Wei Wei, Songzheng Xu, Lei Zhang, $$\textbf{Zhang Jinyang}$$, Yanning Zhang. IEEE Transactions on Geoscience and Remote Sensing(TGRS), 2021, 0196-2892
+1. [IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration](https://arxiv.org/abs/2605.02814). Axi Niu, **Jinyang Zhang**, Senyan Qing. arXiv:2605.02814, 2026. [Project](https://cosmicrealm.github.io/IConFace/) / [Code Coming Soon](https://github.com/cosmicrealm/IConFace)
+2. [The Second Challenge on Real-World Face Restoration at NTIRE 2026: Methods and Results](https://arxiv.org/html/2604.10532v2). Jingkai Wang et al. NTIRE 2026 organizers and challenge participants, including Axi Niu, **Jinyang Zhang**, Zhenguo Wu, and Senyan Qing. arXiv:2604.10532v2 / CVPR 2026 Workshop, 2026.
+3. Improving Hyperspectral Image Classification with Unsupervised Knowledge Learning. **Jinyang Zhang**, Wei Wei, Lei Zhang, et al. IEEE International Geoscience and Remote Sensing Symposium (IGARSS). IEEE, 2019: 2722-2725. [Code](https://github.com/zhangjinyangnwpu/UKL)
+4. Learning Discriminative Compact Representation for Hyperspectral Imagery Classification. Lei Zhang, **Jinyang Zhang**, Wei Wei, et al. IEEE Transactions on Geoscience and Remote Sensing (TGRS), 2019, 57(10): 8276-8289. [Code](https://github.com/zhangjinyangnwpu/LDCR)
+5. Deep Cube-Pair Network for Hyperspectral Imagery Classification. Wei Wei, **Jinyang Zhang**, Lei Zhang, et al. Remote Sensing, 2018, 10(5): 783. [Code](https://github.com/zhangjinyangnwpu/DCPN)
+6. Data-specific Activation Function Learning for Hyperspectral Image Classification. Yu Li, Wei Wei, **Jinyang Zhang**, Lei Zhang, et al. International Conference on Orange Technology (ICOT), 2019.
+7. Fast-convergent fully connected deep learning model using constrained nodes input. Chen Ding, Ying Li, Lei Zhang, **Jinyang Zhang**, Lu Yang, et al. Neural Processing Letters, 2019, 49(3): 995-1005.
+8. Boosting Hyperspectral Image Classification With Unsupervised Feature Learning. Wei Wei, Songzheng Xu, Lei Zhang, **Jinyang Zhang**, Yanning Zhang. IEEE Transactions on Geoscience and Remote Sensing (TGRS), 2021, 0196-2892.
 
 Honors and Awards
 ------
