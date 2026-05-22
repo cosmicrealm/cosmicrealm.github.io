@@ -1,0 +1,66 @@
+summary:
+  actions:
+    - label: Download CV
+      url: /files/CV_zhangjinyang.pdf
+      icon: fas fa-file-arrow-down
+    - label: Email
+      url: mailto:zhangjinyang@mail.nwpu.edu.cn
+      icon: fas fa-envelope
+    - label: GitHub
+      url: https://github.com/cosmicrealm
+      icon: fab fa-github
+
+experience:
+  - company: Independent Research
+    role: Independent Researcher
+    location: Remote
+    period: 2025.12-Present
+    tags:
+      - Face Restoration
+      - NTIRE/CVPR
+      - Blind Restoration
+      - Web Coding
+    bullets:
+      - Explored real-world face restoration research, including work around the NTIRE/CVPR 2026 Real-World Face Restoration Challenge.
+      - Built practical tools and prototypes across blind and real-world face restoration, EfficientTime, and browser-based 3D viewers.
+  - company: Xiaobing
+    role: Algorithm Engineer
+    location: Beijing
+    period: 2022.11-2025.11
+    tags:
+      - Digital Human
+      - AIGC
+      - Flow Matching
+      - Diffusion
+      - LoRA
+    bullets:
+      - Developed digital human generation models, including speech-driven facial animation and expression synthesis.
+      - Connected research models with practical AIGC workflows using Flow Matching, diffusion, and LoRA-based adaptation.
+  - company: Moqi
+    role: Algorithm Engineer
+    location: Beijing
+    period: 2022.03-2022.10
+    tags:
+      - Biometrics
+      - Matching
+      - Recognition
+    bullets:
+      - Worked on biometric recognition algorithms with a focus on palmprint matching.
+  - company: Orbbec
+    role: Algorithm Engineer
+    location: Xi'an
+    period: 2020.04-2022.03
+    tags:
+      - Industrial Vision
+      - Inspection
+      - Software
+    bullets:
+      - Worked on industrial vision inspection and industrial software engineering.
+
+education:
+  - degree: M.S. in Computer Science
+    school: Northwestern Polytechnical University (NWPU)
+    period: 2017.09-2020.03
+  - degree: B.S. in Computer Science
+    school: Northwestern Polytechnical University (NWPU)
+    period: 2013.09-2017.07

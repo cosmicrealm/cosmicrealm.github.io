@@ -1,0 +1,28 @@
+{% assign project = include.project %}
+<article class="project-card{% if include.compact %} project-card--compact{% endif %}">
+  <div class="project-card__meta">
+    <span>{{ project.category }}</span>
+    <span>{{ project.status }}</span>
+  </div>
+  <h3 class="project-card__title">{{ project.name }}</h3>
+  <p class="project-card__highlight">{{ project.highlight }}</p>
+  <p class="project-card__summary">{{ project.summary }}</p>
+  {% if project.tags %}
+    <div class="project-card__tags" aria-label="Project tags">
+      {% for tag in project.tags %}
+        <span>{{ tag }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if project.links %}
+    <div class="project-card__links">
+      {% for link in project.links %}
+        {% if link.url contains "http" %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+        {% else %}
+          <a href="{{ link.url | relative_url }}">{{ link.label }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</article>

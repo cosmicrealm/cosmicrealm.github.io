@@ -1,0 +1,15 @@
+{% assign item = include.post %}
+<article class="post-card{% if include.compact %} post-card--compact{% endif %}">
+  <div class="post-card__meta">
+    <time datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: "%b %-d, %Y" }}</time>
+    {% if item.tags and item.tags.size > 0 %}
+      <span>{{ item.tags | first }}</span>
+    {% endif %}
+  </div>
+  <h3 class="post-card__title">
+    <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+  </h3>
+  {% unless include.compact %}
+    <p class="post-card__excerpt">{{ item.excerpt | markdownify | strip_html | strip_newlines | truncate: 160 }}</p>
+  {% endunless %}
+</article>

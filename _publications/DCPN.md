@@ -6,6 +6,7 @@ permalink: /publication/DCPN
 excerpt: 
 date: 2018-05-18
 venue: 'remotesensing'
+summary: 'A cube-pair CNN and 3D fully convolutional network for hyperspectral image classification under limited labeled training samples.'
 paperurl: 'https://www.mdpi.com/2072-4292/10/5/783'
 codeurl: 'https://github.com/zhangjinyangnwpu/DCPN'
 
@@ -13,4 +14,4 @@ codeurl: 'https://github.com/zhangjinyangnwpu/DCPN'
 [Code](https://github.com/zhangjinyangnwpu/DCPN)
 
 Abstract:
-Abundant spectral information of hyperspectral images (HSIs) has shown an obvious advantage in improving the performance of classification in the remote sensing domain. However, this is paid by the expensive consumption on the computation, transmission, as well as storage of HSIs. To address this problem, we propose to learn the discriminative compact representation for HSIs classification, which not only greatly reduces the data redundancy in the image but also preserves the discriminative information required for pixelwise classification in HSIs. To this end, we present a multi-task deep learning framework, which integrates HSIs autoencoding and classification into a two-branch deep neural network for jointly learning. In the network, we employ an encoder block to learn the compact representation of the input HSI via compression in the spectral domain. Being fed with the compact representation, the autoencoding branch then employs a decoder block to reconstruct the input HSI, while the classification branch utilizes a classifier block to predict the label for each pixel. Through end-to-end joint learning, the compact representation is not only informative enough to accurately reconstruct the original HSI but also discriminative enough to appropriately label each pixel with the trained classier. Sufficient experimental results on four HSIs classification data sets demonstrate the effectiveness of the proposed framework.
+Hyperspectral image classification benefits from models that exploit 3D spatial-spectral structure, but limited labeled samples make deep models difficult to train reliably. This work proposes a cube-pair-based CNN framework that augments training samples while preserving local 3D HSI structure. Within this framework, a 3D fully convolutional network named DCPN is designed with fewer parameters than conventional CNNs, allowing deeper modeling under the same amount of training data and improving generalization. Experiments on several HSI datasets show stronger classification performance than competing methods.

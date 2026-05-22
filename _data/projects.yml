@@ -1,0 +1,99 @@
+- name: IConFace
+  category: Face Restoration
+  status: Preprint
+  featured: true
+  date: 2026-05-05
+  display_date: 05/2026
+  highlight: Unified reference-aware face restoration
+  summary: A unified reference-aware and no-reference face restoration framework. It uses identity-structure asymmetric conditioning so one checkpoint can exploit same-identity references when available and fall back to degraded-only restoration when references are absent.
+  tags:
+    - Face Restoration
+    - Reference-aware
+    - FLUX
+  links:
+    - label: Project
+      url: /IConFace/
+    - label: arXiv
+      url: https://arxiv.org/abs/2605.02814
+    - label: Code
+      url: https://github.com/cosmicrealm/IConFace
+
+- name: flux-restoration
+  category: Face Restoration
+  status: Release package
+  featured: true
+  date: 2026-04-05
+  display_date: 04/2026
+  highlight: FLUX-based restoration adapter
+  summary: An inference-oriented release package for unified blind and reference-based face restoration on FLUX.2-klein-base-4B. It includes example outputs, pretrained model instructions, and a practical restoration workflow for reuse.
+  tags:
+    - Restoration
+    - Adapter
+    - Inference
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/flux-restoration
+
+- name: ComfyUI-Flux-FaceIR
+  category: Face Restoration
+  status: ComfyUI extension
+  featured: true
+  date: 2026-04-05
+  display_date: 04/2026
+  highlight: Face restoration workflow for ComfyUI
+  summary: A ComfyUI extension for aligned face restoration and full-image restoration. It supports face detection, alignment, parameter export, restoration, and paste-back so the model can be used inside visual node workflows.
+  tags:
+    - ComfyUI
+    - FaceIR
+    - Workflow
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/ComfyUI-Flux-FaceIR
+
+- name: flux-inference
+  category: FLUX Inference
+  status: Optimization tooling
+  featured: false
+  date: 2026-04-05
+  display_date: 04/2026
+  highlight: FLUX inference acceleration stack
+  summary: A FLUX.1-dev inference optimization stack covering PyTorch baseline execution, model export, ONNX Runtime, and TensorRT backends. The project focuses on practical image generation acceleration experiments.
+  tags:
+    - FLUX
+    - TensorRT
+    - ONNX
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/flux-inference
+
+- name: 3d-viewers
+  category: 3D Vision Tools
+  status: Study tooling
+  featured: true
+  date: 2026-05-18
+  display_date: 05/2026
+  highlight: Browser viewers for 3D vision and digital-human models
+  summary: Lightweight browser-based viewers for inspecting 3D vision and digital-human assets. It covers FLAME, parametric models, Gaussian avatars, topology, joints, bindings, and motion before fitting or training.
+  tags:
+    - 3D Vision
+    - Digital Human
+    - Three.js
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/3d-viewers
+
+- name: EfficientTime
+  category: Productivity Tools
+  status: macOS app preview
+  featured: true
+  date: 2026-05-21
+  display_date: 05/2026
+  highlight: Local-first AI daily planning assistant
+  summary: A local-first macOS productivity app for turning rough task notes into editable daily schedules. It keeps the current task visible and supports local reminders plus AI-assisted planning drafts.
+  tags:
+    - macOS
+    - SwiftUI
+    - AI Planning
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/EfficientTime

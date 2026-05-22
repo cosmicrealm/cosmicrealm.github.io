@@ -11,8 +11,6 @@ This directory contains the static project page for IConFace:
 - Code: https://github.com/cosmicrealm/IConFace
 - Supplementary PDF: `static/pdfs/iconface_supp.pdf`
 
-The code button intentionally keeps the label `Code Coming Soon` while linking to the GitHub repository.
-
 ## Main Files
 
 - `index.html`: page content, metadata, paper/code links, and BibTeX.

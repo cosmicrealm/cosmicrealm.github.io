@@ -1,0 +1,34 @@
+{% assign paper = include.publication %}
+{% assign summary = paper.summary | default: paper.content | markdownify | strip_html | replace: "Abstract:", "" | strip_newlines | truncate: 220 %}
+<article class="publication-card">
+  <div class="publication-card__meta">
+    <time datetime="{{ paper.date | date_to_xmlschema }}">{{ paper.date | date: "%Y" }}</time>
+    {% if include.category_title %}
+      <span>{{ include.category_title }}</span>
+    {% endif %}
+  </div>
+  <h3 class="publication-card__title">
+    <a href="{{ paper.url | relative_url }}">{{ paper.title }}</a>
+  </h3>
+  {% if paper.venue %}
+    <p class="publication-card__venue">{{ paper.venue }}</p>
+  {% endif %}
+  {% if summary %}
+    <p class="publication-card__summary">{{ summary }}</p>
+  {% endif %}
+  <div class="publication-card__links" aria-label="Publication links">
+    <a href="{{ paper.url | relative_url }}">Details</a>
+    {% if paper.paperurl %}
+      <a href="{{ paper.paperurl }}" target="_blank" rel="noopener">Paper</a>
+    {% endif %}
+    {% if paper.projecturl %}
+      <a href="{{ paper.projecturl }}" target="_blank" rel="noopener">Project</a>
+    {% endif %}
+    {% if paper.codeurl %}
+      <a href="{{ paper.codeurl }}" target="_blank" rel="noopener">{{ paper.codelabel | default: "Code" }}</a>
+    {% endif %}
+    {% if paper.htmlurl %}
+      <a href="{{ paper.htmlurl }}" target="_blank" rel="noopener">HTML</a>
+    {% endif %}
+  </div>
+</article>
