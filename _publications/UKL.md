@@ -6,6 +6,8 @@ permalink: /publication/UKL
 excerpt: 
 date: 2019-07-28
 venue: '(IGARSS) IEEE International Geoscience and Remote Sensing Symposium'
+teaser: /images/publications/ukl-framework.jpg
+teaser_alt: UKL framework figure
 summary: 'Unsupervised knowledge learning for hyperspectral image classification, injecting clustering structure into supervised learning to improve generalization.'
 paperurl: 'https://ieeexplore.ieee.org/document/8898323'
 codeurl: 'https://github.com/zhangjinyangnwpu/UKL'

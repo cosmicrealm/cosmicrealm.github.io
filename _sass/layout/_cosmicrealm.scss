@@ -312,13 +312,39 @@ body {
   font-weight: 800;
 }
 
+.list-thumb {
+  display: block;
+  width: 5rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  align-self: start;
+  border: 1px solid var(--cr-border);
+  border-radius: 0.38rem;
+  background: #fff;
+  box-shadow: 0 0.35rem 1rem color-mix(in srgb, var(--cr-shadow) 14%, transparent);
+}
+
+.list-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.list-thumb--project img {
+  object-fit: cover;
+}
+
+.list-thumb--publication img {
+  object-fit: contain;
+}
+
 .project-compact-list__body {
   display: block;
 }
 
 .project-compact-list li {
-  grid-template-columns: 1fr;
-  gap: 0.15rem;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0.85rem;
   padding: 0.78rem 0;
 }
 
@@ -339,45 +365,61 @@ body {
   line-height: 1.55;
 }
 
-.project-index-list li,
-.publication-index-list li {
-  grid-template-columns: minmax(10rem, 0.42fr) minmax(0, 1fr);
-}
-
 .project-index-list li {
-  grid-template-columns: minmax(10rem, 0.3fr) minmax(0, 1fr);
+  grid-template-columns: 5.75rem minmax(0, 1fr);
   align-items: start;
   padding: 0.86rem 0;
 }
 
-.project-index-list__title a {
+.publication-index-list li {
+  grid-template-columns: 5.75rem minmax(0, 1fr);
+  align-items: start;
+  padding: 0.86rem 0;
+}
+
+.project-index-list__title,
+.publication-index-list__title {
+  display: inline-block;
   color: var(--global-text-color);
   font-weight: 850;
   text-decoration-color: color-mix(in srgb, var(--cr-accent) 55%, transparent);
   text-underline-offset: 0.18em;
 }
 
-.project-index-list__body p {
+.project-index-list__body span,
+.publication-index-list__body span {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--cr-ink-soft);
+  font-size: $type-size-6;
+}
+
+.project-index-list__body p,
+.publication-index-list__body p {
   margin: 0;
+  margin-top: 0.32rem;
   color: var(--cr-ink-soft);
   font-size: $type-size-6;
   line-height: 1.55;
 }
 
-.project-index-list__links {
+.project-index-list__links,
+.publication-index-list__links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 0.75rem;
   margin-top: 0.45rem;
 }
 
-.project-index-list__links a {
+.project-index-list__links a,
+.publication-index-list__links a {
   color: var(--cr-accent-strong);
   font-size: $type-size-6;
   text-decoration: none !important;
 }
 
-.project-index-list__links a:hover {
+.project-index-list__links a:hover,
+.publication-index-list__links a:hover {
   color: var(--cr-accent);
 }
 
@@ -598,8 +640,8 @@ body {
 
 .publication-list li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.75rem;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0.85rem;
   align-items: start;
   padding: 0.82rem 0;
   border-bottom: 1px solid var(--cr-border);
@@ -616,12 +658,19 @@ body {
   font-size: $type-size-6;
 }
 
+.publication-list p {
+  max-width: 720px;
+  margin: 0.32rem 0 0;
+  color: var(--cr-ink-soft);
+  font-size: $type-size-6;
+  line-height: 1.55;
+}
+
 .publication-list__links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
   gap: 0.55rem;
-  padding-top: 0.1rem;
+  margin-top: 0.42rem;
 }
 
 .publication-list__links a {
@@ -632,6 +681,22 @@ body {
 
 .publication-list__links a:hover {
   color: var(--cr-accent);
+}
+
+.publication-detail-teaser {
+  width: min(100%, 12rem);
+  margin: 0 0 1.15rem;
+  padding: 0.4rem;
+  border: 1px solid var(--cr-border);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.publication-detail-teaser img {
+  display: block;
+  width: 100%;
+  max-height: 8rem;
+  object-fit: contain;
 }
 
 .project-category {
@@ -832,11 +897,21 @@ body {
   .news-list li,
   .compact-list li,
   .index-list li,
-  .project-index-list li,
-  .publication-index-list li,
   .blog-index-list li {
     grid-template-columns: 1fr;
     gap: 0.15rem;
+  }
+
+  .project-compact-list li,
+  .publication-list li,
+  .project-index-list li,
+  .publication-index-list li {
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .list-thumb {
+    width: 4.4rem;
   }
 
   .section-heading {
@@ -852,13 +927,7 @@ body {
     white-space: normal;
   }
 
-  .publication-list li {
-    grid-template-columns: 1fr;
-    gap: 0.15rem;
-  }
-
   .publication-list__links {
-    justify-content: flex-start;
     margin-top: 0.25rem;
   }
 

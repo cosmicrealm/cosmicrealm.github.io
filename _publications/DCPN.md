@@ -6,6 +6,8 @@ permalink: /publication/DCPN
 excerpt: 
 date: 2018-05-18
 venue: 'remotesensing'
+teaser: /images/publications/dcpn-network.png
+teaser_alt: DCPN network structure figure
 summary: 'A cube-pair CNN and 3D fully convolutional network for hyperspectral image classification under limited labeled training samples.'
 paperurl: 'https://www.mdpi.com/2072-4292/10/5/783'
 codeurl: 'https://github.com/zhangjinyangnwpu/DCPN'

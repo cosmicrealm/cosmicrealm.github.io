@@ -4,6 +4,8 @@
   featured: true
   date: 2026-05-05
   display_date: 05/2026
+  teaser: /images/projects/iconface.jpg
+  teaser_alt: IConFace face restoration comparison
   highlight: Unified reference-aware face restoration
   summary: A unified reference-aware and no-reference face restoration framework. It uses identity-structure asymmetric conditioning so one checkpoint can exploit same-identity references when available and fall back to degraded-only restoration when references are absent.
   tags:
@@ -24,6 +26,8 @@
   featured: true
   date: 2026-04-05
   display_date: 04/2026
+  teaser: /images/projects/flux-restoration.jpg
+  teaser_alt: Face restoration example from flux-restoration
   highlight: FLUX-based restoration adapter
   summary: An inference-oriented release package for unified blind and reference-based face restoration on FLUX.2-klein-base-4B. It includes example outputs, pretrained model instructions, and a practical restoration workflow for reuse.
   tags:
@@ -40,6 +44,8 @@
   featured: true
   date: 2026-04-05
   display_date: 04/2026
+  teaser: /images/projects/comfyui-flux-faceir.jpg
+  teaser_alt: ComfyUI Flux FaceIR restoration workflow result
   highlight: Face restoration workflow for ComfyUI
   summary: A ComfyUI extension for aligned face restoration and full-image restoration. It supports face detection, alignment, parameter export, restoration, and paste-back so the model can be used inside visual node workflows.
   tags:
@@ -56,6 +62,8 @@
   featured: false
   date: 2026-04-05
   display_date: 04/2026
+  teaser: /images/projects/flux-inference.svg
+  teaser_alt: FLUX inference backend pipeline
   highlight: FLUX inference acceleration stack
   summary: A FLUX.1-dev inference optimization stack covering PyTorch baseline execution, model export, ONNX Runtime, and TensorRT backends. The project focuses on practical image generation acceleration experiments.
   tags:
@@ -72,6 +80,8 @@
   featured: true
   date: 2026-05-18
   display_date: 05/2026
+  teaser: /images/projects/3d-viewers.jpg
+  teaser_alt: Browser-based 3D model viewer screenshot
   highlight: Browser viewers for 3D vision and digital-human models
   summary: Lightweight browser-based viewers for inspecting 3D vision and digital-human assets. It covers FLAME, parametric models, Gaussian avatars, topology, joints, bindings, and motion before fitting or training.
   tags:
@@ -88,6 +98,8 @@
   featured: true
   date: 2026-05-21
   display_date: 05/2026
+  teaser: /images/projects/efficienttime.svg
+  teaser_alt: EfficientTime daily planning interface screenshot
   highlight: Local-first AI daily planning assistant
   summary: A local-first macOS productivity app for turning rough task notes into editable daily schedules. It keeps the current task visible and supports local reminders plus AI-assisted planning drafts.
   tags:

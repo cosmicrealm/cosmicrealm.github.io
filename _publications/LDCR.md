@@ -6,6 +6,8 @@ permalink: /publication/LDCR
 excerpt: 
 date: 2019-10-01
 venue: 'IEEE Transactions on Geoscience and Remote Sensing (TGRS) '
+teaser: /images/publications/ldcr-framework.png
+teaser_alt: LDCR framework figure
 summary: 'A multi-task deep network for hyperspectral image classification that jointly learns compact spectral representation, reconstruction, and pixelwise classification.'
 paperurl: 'https://ieeexplore.ieee.org/document/8741172'
 codeurl: 'https://github.com/zhangjinyangnwpu/LDCR'

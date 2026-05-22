@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">FLUX inference pipeline</title>
+  <desc id="desc">A compact pipeline diagram showing PyTorch, ONNX Runtime, and TensorRT backends.</desc>
+  <rect width="640" height="420" fill="#f7faf8"/>
+  <rect x="46" y="54" width="548" height="312" rx="18" fill="#ffffff" stroke="#c8d7ce" stroke-width="2"/>
+  <text x="70" y="104" fill="#27362f" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">FLUX inference</text>
+  <text x="70" y="136" fill="#687a70" font-family="Inter, Arial, sans-serif" font-size="18">export and backend validation</text>
+  <g font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">
+    <rect x="70" y="190" width="132" height="74" rx="14" fill="#e8f3ee" stroke="#abc5b8"/>
+    <text x="105" y="235" fill="#23352e">PyTorch</text>
+    <path d="M218 227h62" stroke="#7d9b8e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M270 213l18 14-18 14" fill="none" stroke="#7d9b8e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="302" y="190" width="132" height="74" rx="14" fill="#eef4fb" stroke="#b6c8de"/>
+    <text x="336" y="235" fill="#23352e">ONNX</text>
+    <path d="M450 227h62" stroke="#7d9b8e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M502 213l18 14-18 14" fill="none" stroke="#7d9b8e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="534" y="190" width="36" height="74" rx="14" fill="#eaf0ff" stroke="#b8c3e0"/>
+  </g>
+  <text x="504" y="310" fill="#687a70" font-family="Inter, Arial, sans-serif" font-size="17" text-anchor="end">TensorRT</text>
+  <circle cx="548" cy="227" r="8" fill="#496d5c"/>
+</svg>

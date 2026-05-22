@@ -6,6 +6,8 @@ permalink: /publication/IConFace
 excerpt:
 date: 2026-05-04
 venue: 'arXiv preprint arXiv:2605.02814'
+teaser: /images/publications/iconface.jpg
+teaser_alt: IConFace restoration teaser
 summary: 'A unified reference-aware and no-reference face restoration framework that uses reliability-weighted identity anchors and degraded-image spatial structure anchors in one checkpoint.'
 paperurl: 'https://arxiv.org/abs/2605.02814'
 projecturl: 'https://cosmicrealm.github.io/IConFace/'

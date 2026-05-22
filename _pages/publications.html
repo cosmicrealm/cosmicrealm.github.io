@@ -11,8 +11,33 @@ author_profile: true
 <ol class="index-list publication-index-list">
 {% for publication in sorted_publications %}
   <li>
-    <a href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
-    <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
+    {% if publication.teaser %}
+      <a class="list-thumb list-thumb--publication" href="{{ publication.url | relative_url }}" aria-label="{{ publication.title }}">
+        <img src="{{ publication.teaser | relative_url }}" alt="{{ publication.teaser_alt | default: publication.title }}">
+      </a>
+    {% endif %}
+    <div class="publication-index-list__body">
+      <a class="publication-index-list__title" href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
+      <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
+      {% if publication.summary %}
+        <p>{{ publication.summary }}</p>
+      {% endif %}
+      <div class="publication-index-list__links" aria-label="{{ publication.title }} links">
+        <a href="{{ publication.url | relative_url }}">Details</a>
+        {% if publication.paperurl %}
+          <a href="{{ publication.paperurl }}" target="_blank" rel="noopener">Paper</a>
+        {% endif %}
+        {% if publication.projecturl %}
+          <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
+        {% endif %}
+        {% if publication.codeurl %}
+          <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">{{ publication.codelabel | default: "Code" }}</a>
+        {% endif %}
+        {% if publication.htmlurl %}
+          <a href="{{ publication.htmlurl }}" target="_blank" rel="noopener">HTML</a>
+        {% endif %}
+      </div>
+    </div>
   </li>
 {% endfor %}
 </ol>

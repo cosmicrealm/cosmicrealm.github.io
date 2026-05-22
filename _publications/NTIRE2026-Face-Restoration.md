@@ -6,6 +6,8 @@ permalink: /publication/NTIRE2026-Face-Restoration
 excerpt:
 date: 2026-04-15
 venue: 'arXiv preprint arXiv:2604.10532v2 / CVPR 2026 Workshop'
+teaser: /images/publications/ntire-2026.png
+teaser_alt: NTIRE 2026 face restoration challenge result examples
 summary: 'NTIRE 2026 real-world face restoration challenge report covering task design, weighted IQA evaluation, identity checking, submitted methods, and final rankings.'
 paperurl: 'https://arxiv.org/abs/2604.10532'
 htmlurl: 'https://arxiv.org/html/2604.10532v2'

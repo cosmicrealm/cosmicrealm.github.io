@@ -23,9 +23,20 @@ redirect_from:
   </div>
   {% assign featured_projects = site.data.projects | where: "featured", true | sort: "date" | reverse %}
   <ul class="compact-list project-compact-list">
-    {% for project in featured_projects limit:5 %}
+    {% for project in featured_projects limit:4 %}
       {% assign primary_link = project.links | first %}
       <li>
+        {% if project.teaser %}
+          {% if primary_link.url contains "http" %}
+            <a class="list-thumb list-thumb--project" href="{{ primary_link.url }}" target="_blank" rel="noopener" aria-label="{{ project.name }}">
+              <img src="{{ project.teaser | relative_url }}" alt="{{ project.teaser_alt | default: project.name }}">
+            </a>
+          {% else %}
+            <a class="list-thumb list-thumb--project" href="{{ primary_link.url | relative_url }}" aria-label="{{ project.name }}">
+              <img src="{{ project.teaser | relative_url }}" alt="{{ project.teaser_alt | default: project.name }}">
+            </a>
+          {% endif %}
+        {% endif %}
         <div class="project-compact-list__body">
           <div class="project-compact-list__main">
             {% if primary_link.url contains "http" %}
@@ -49,22 +60,30 @@ redirect_from:
   </div>
   {% assign selected_publications = site.publications | sort: "date" | reverse %}
   <ol class="publication-list">
-    {% for publication in selected_publications limit:5 %}
+    {% for publication in selected_publications limit:4 %}
       <li>
+        {% if publication.teaser %}
+          <a class="list-thumb list-thumb--publication" href="{{ publication.url | relative_url }}" aria-label="{{ publication.title }}">
+            <img src="{{ publication.teaser | relative_url }}" alt="{{ publication.teaser_alt | default: publication.title }}">
+          </a>
+        {% endif %}
         <div class="publication-list__main">
           <a href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
           <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
+          {% if publication.summary %}
+            <p>{{ publication.summary }}</p>
+          {% endif %}
+          {% if publication.projecturl or publication.codeurl %}
+            <div class="publication-list__links" aria-label="{{ publication.title }} links">
+              {% if publication.projecturl %}
+                <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
+              {% endif %}
+              {% if publication.codeurl %}
+                <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">{{ publication.codelabel | default: "Code" }}</a>
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
-        {% if publication.projecturl or publication.codeurl %}
-          <div class="publication-list__links" aria-label="{{ publication.title }} links">
-            {% if publication.projecturl %}
-              <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
-            {% endif %}
-            {% if publication.codeurl %}
-              <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">Code</a>
-            {% endif %}
-          </div>
-        {% endif %}
       </li>
     {% endfor %}
   </ol>

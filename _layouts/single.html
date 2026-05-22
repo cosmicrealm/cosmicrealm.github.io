@@ -45,6 +45,12 @@ layout: default
       {% endunless %}
 
       <section class="page__content" itemprop="text">
+        {% if page.collection == 'publications' and page.teaser %}
+          <figure class="publication-detail-teaser">
+            <img src="{{ page.teaser | relative_url }}" alt="{{ page.teaser_alt | default: page.title }}">
+          </figure>
+        {% endif %}
+
         {{ content }}
 
         {% if page.citation and page.paperurl and page.slidesurl and page.bibtexurl %}
