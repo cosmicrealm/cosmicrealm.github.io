@@ -12,7 +12,7 @@ layout: default
   {% endunless %}
 {% endif %}
 
-<div id="main" role="main">
+<div id="main" role="main"{% if page.blog_tag_filter %} class="blog-filter-layout"{% endif %}>
   {% include sidebar.html %}
 
   <div class="archive">

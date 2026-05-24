@@ -1,0 +1,43 @@
+{% capture tag_options_raw -%}
+  {%- for tag_entry in site.tags -%}
+    {%- assign tag_name = tag_entry[0] -%}
+    {%- assign tag_slug = tag_name | slugify -%}
+    {{ tag_slug }}::{{ tag_name }}{% unless forloop.last %}||{% endunless %}
+  {%- endfor -%}
+{%- endcapture %}
+{% assign tag_options = tag_options_raw | split: "||" | sort %}
+{% assign previous_tag_slug = "" %}
+
+<aside class="blog-filter" data-blog-filter-root aria-label="Blog tag filters">
+  <div class="blog-filter__summary">
+    <button type="button" class="blog-filter__clear is-active" data-blog-clear-filter aria-pressed="true">All</button>
+    <span class="blog-filter__count" data-blog-filter-count>{{ site.posts | size }}</span>
+  </div>
+  <div class="blog-filter__tags" aria-label="Blog tag filters">
+    {% for tag_option in tag_options %}
+      {% assign tag_data = tag_option | split: "::" %}
+      {% assign tag_slug = tag_data[0] %}
+      {% assign tag_name = tag_data[1] %}
+      {% unless tag_slug == previous_tag_slug %}
+        {% assign tag_post_count = 0 %}
+        {% for post in site.posts %}
+          {% assign post_matches_tag = false %}
+          {% for post_tag in post.tags %}
+            {% assign post_tag_slug = post_tag | slugify %}
+            {% if post_tag_slug == tag_slug %}
+              {% assign post_matches_tag = true %}
+            {% endif %}
+          {% endfor %}
+          {% if post_matches_tag %}
+            {% assign tag_post_count = tag_post_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        <button type="button" class="blog-filter__tag" data-blog-tag-filter="{{ tag_slug }}" aria-pressed="false">
+          <span>{{ tag_name }}</span>
+          <span>{{ tag_post_count }}</span>
+        </button>
+      {% endunless %}
+      {% assign previous_tag_slug = tag_slug %}
+    {% endfor %}
+  </div>
+</aside>

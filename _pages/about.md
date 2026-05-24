@@ -18,6 +18,42 @@ redirect_from:
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
+    <h2>Publications</h2>
+    <a class="section-heading__link" href="{{ '/publications/' | relative_url }}">All publications</a>
+  </div>
+  {% assign selected_publications = site.publications | sort: "date" | reverse %}
+  <ol class="publication-list">
+    {% for publication in selected_publications limit:4 %}
+      <li>
+        {% if publication.teaser %}
+          <a class="list-thumb list-thumb--publication" href="{{ publication.url | relative_url }}" aria-label="{{ publication.title }}">
+            <img src="{{ publication.teaser | relative_url }}" alt="{{ publication.teaser_alt | default: publication.title }}">
+          </a>
+        {% endif %}
+        <div class="publication-list__main">
+          <a href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
+          <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
+          {% if publication.summary %}
+            <p>{{ publication.summary }}</p>
+          {% endif %}
+          {% if publication.projecturl or publication.codeurl %}
+            <div class="publication-list__links" aria-label="{{ publication.title }} links">
+              {% if publication.projecturl %}
+                <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
+              {% endif %}
+              {% if publication.codeurl %}
+                <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">{{ publication.codelabel | default: "Code" }}</a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="home-section">
+  <div class="section-heading section-heading--line">
     <h2>Projects</h2>
     <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">All projects</a>
   </div>
@@ -51,42 +87,6 @@ redirect_from:
       </li>
     {% endfor %}
   </ul>
-</section>
-
-<section class="home-section">
-  <div class="section-heading section-heading--line">
-    <h2>Publications</h2>
-    <a class="section-heading__link" href="{{ '/publications/' | relative_url }}">All publications</a>
-  </div>
-  {% assign selected_publications = site.publications | sort: "date" | reverse %}
-  <ol class="publication-list">
-    {% for publication in selected_publications limit:4 %}
-      <li>
-        {% if publication.teaser %}
-          <a class="list-thumb list-thumb--publication" href="{{ publication.url | relative_url }}" aria-label="{{ publication.title }}">
-            <img src="{{ publication.teaser | relative_url }}" alt="{{ publication.teaser_alt | default: publication.title }}">
-          </a>
-        {% endif %}
-        <div class="publication-list__main">
-          <a href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
-          <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
-          {% if publication.summary %}
-            <p>{{ publication.summary }}</p>
-          {% endif %}
-          {% if publication.projecturl or publication.codeurl %}
-            <div class="publication-list__links" aria-label="{{ publication.title }} links">
-              {% if publication.projecturl %}
-                <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
-              {% endif %}
-              {% if publication.codeurl %}
-                <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">{{ publication.codelabel | default: "Code" }}</a>
-              {% endif %}
-            </div>
-          {% endif %}
-        </div>
-      </li>
-    {% endfor %}
-  </ol>
 </section>
 
 <section class="home-section">
