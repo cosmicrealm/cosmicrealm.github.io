@@ -1,266 +1,412 @@
 ---
-title: 'Self-Flow：自监督 Flow Matching 实现可扩展的多模态生成'
+title: 'Self-Flow：把表征学习塞回 Flow Matching 训练目标里'
 date: 2026-03-05
 permalink: /posts/2026-03-05-blog-selfflow/
 tags:
-#   - FlowMatching, multimode generation
+  - flow-matching
+  - representation-learning
+  - generative-modeling
+  - flux
+paperurl: https://arxiv.org/abs/2603.06507
+projecturl: https://bfl.ai/research/self-flow
+codeurl: https://github.com/black-forest-labs/Self-Flow
+citation: 'Hila Chefer, Patrick Esser, Dominik Lorenz, Dustin Podell, Vikash Raja, Vinh Tong, Antonio Torralba, Robin Rombach. Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis. arXiv:2603.06507, 2026.'
 ---
 
-# Self-Flow：自监督 Flow Matching 实现可扩展的多模态生成
+# Self-Flow：把表征学习塞回 Flow Matching 训练目标里
 
-> 论文：*Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis*
-> 作者：Hila Chefer, Patrick Esser 等（Black Forest Labs & MIT）
-> 发布时间：2026 年 3 月 4 日
-> 项目主页：https://bfl.ai/research/self-flow
-
----
-
-## 一、问题背景：Flow Matching 的表征困境
-
-现代生成模型（如 SiT、FLUX）基于 flow matching 训练，核心目标是预测从噪声到数据的速度场——本质上是一个去噪任务。这个目标虽然足以生成高质量样本，但存在一个根本性缺陷：**模型没有动力学习强语义表征**。去噪任务可以通过局部像素相关性完成，模型无需真正理解图像的全局语义结构。
-
-这一缺陷的直接后果是，一个 86M 参数的 DINO 判别式编码器就能显著提升数十亿参数级别生成模型的性能——这暴露了生成模型内部表征的薄弱。
-
-### 1.1 现有方案：外部表征对齐（REPA）
-
-为弥补这一缺陷，目前主流方法是将生成模型的中间层特征与外部预训练编码器对齐。代表方法 REPA（Representation Alignment）的工作流程如下：
-
-**训练阶段**：在标准 flow matching 损失之上，加一个辅助的特征对齐损失。取生成模型第 $$l$$ 层的中间特征，通过一个 MLP 投影头映射后，与冻结的外部编码器（如 DINOv2-B）的第 $$k$$ 层特征计算相似度。两个损失联合优化，只更新生成模型参数，外部编码器始终冻结。
-
-**推理阶段**：外部编码器和投影头完全丢弃，推理过程与标准 flow matching 完全一致。外部编码器仅在训练阶段充当辅助监督信号。
-
-可以将 REPA 理解为一种知识蒸馏：DINOv2 是"老师"，不教学生生成图片，而是教学生理解图片——迫使生成模型在去噪过程中构建出与语义编码器相似的内部表示。
-
-### 1.2 外部对齐的三大根本缺陷
-
-尽管 REPA 在 ImageNet 上效果显著，但 Self-Flow 的作者揭示了其三个根本性问题：
-
-**缩放行为异常。** 使用更强的外部编码器反而导致更差的结果。实验中将 REPA 的编码器从 DINOv2-B 逐步升级到 DINOv2-L、DINOv3-B、DINOv3-H+，FID 指标呈现反直觉的逆相关——最弱的 DINOv2-B 反而效果最好。这说明外部对齐会产生瓶颈，生成模型被绑定在固定的外部表征上，无法充分利用更强编码器的优势。
-
-**跨模态泛化差。** 对视频和音频生成，大多数外部编码器的对齐反而损害性能。视频专用的 V-JEPA 2 和 Depth Anything 3 对齐后的 FVD 甚至不如不做任何对齐的 vanilla flow matching。音频编码器 MERT 的对齐同样无益。
-
-**编码器选择不可预测。** SigLIP 2 拥有文本监督和多宽高比支持，理论上更适合文本到图像任务，但实际表现却不如 DINOv2。选择哪个编码器进行对齐变成了一个充满不确定性的工程问题。
+> 论文：*Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis*<br>
+> 作者：Hila Chefer, Patrick Esser, Dominik Lorenz, Dustin Podell, Vikash Raja, Vinh Tong, Antonio Torralba, Robin Rombach<br>
+> 机构：Black Forest Labs / MIT<br>
+> 版本：arXiv v1，submitted 2026-03-06 UTC；官方 GitHub README 标注 ICML'26<br>
+> 链接：[Paper](https://arxiv.org/abs/2603.06507) / [PDF](https://arxiv.org/pdf/2603.06507) / [Project](https://bfl.ai/research/self-flow) / [Code](https://github.com/black-forest-labs/Self-Flow) / [Model](https://huggingface.co/Hila/Self-Flow)<br>
+> 本文基于 arXiv PDF、arXiv TeX source、BFL project page、官方 GitHub README 和 Hugging Face model card 阅读，检索日期：2026-05-24
 
 ---
 
-## 二、Self-Flow 方法详解
+## 开篇点评：这篇论文到底解决了什么问题
 
-Self-Flow 的核心思想是：不借用外部表征，而是在 flow matching 框架内部构建自监督信号，让模型自己学出强语义表征。
+Self-Flow 讨论的不是一个新的 sampler 小技巧，而是生成模型训练目标里的一个结构性问题：**Flow Matching / diffusion 训练很擅长学从噪声到数据的速度场，但这个去噪目标本身没有强烈动机去形成全局语义表征。**
 
-### 2.1 核心机制：Dual-Timestep Scheduling（双时间步调度）
+这就是 REPA 这类方法能生效的原因。REPA 用 DINOv2 之类的外部表征模型给生成模型的中间层加一个 alignment loss。工程上看，它像是在训练阶段给生成模型接了一个语义老师；推理时老师被丢掉，所以推理开销不变。
 
-标准 flow matching 对所有 token 施加相同噪声水平，模型可以仅依赖局部关联完成去噪。要让模型学习全局语义关系，需要引入信息不对称——让一些 token 比其他 token 更"干净"，迫使模型利用干净 token 推断噪声 token。
+Self-Flow 的判断更激进一点：如果生成模型需要语义老师，问题不一定在模型容量，而可能在训练任务本身。标准 flow matching 对所有 token 使用同一个噪声时间步，模型可以大量依赖局部相关性去做 velocity prediction。它未必需要理解“这是一只猫”“这是手部结构”“这段视频的动作应该连续”。
 
-论文对比了三种引入异质噪声的策略：
+作者提出的解法是把自监督任务放回 flow matching 内部。它不依赖外部 DINO、SigLIP、V-JEPA、MERT，也不需要每个模态挑一个合适的 encoder。核心机制叫 **Dual-Timestep Scheduling**：同一个样本里，不同 token 用两个不同的噪声时间步，让模型看到一个“部分更干净、部分更脏”的输入。随后用 EMA teacher 在更干净的输入上产生特征，让 student 从混合噪声输入中重建 teacher feature。
 
-| 策略 | 做法 | 问题 |
-|------|------|------|
-| Full Masking | 随机将部分 token 设为纯噪声 ($$t=1$$) | 训练时常见"部分纯噪声+部分有信息"的组合，推理时却是均匀噪声，产生严重训推差距 |
-| Diffusion Forcing | 每个 token 独立采样不同时间步 | 同样的训推差距问题 |
-| **Dual-Timestep** | 只用两个时间步，均从同一噪声分布采样 | 保持每个 token 的边际噪声分布不变，避免训推差距 |
+我的判断是，这篇论文最有价值的点有两个。
 
-实验证实，Full Masking 和 Diffusion Forcing 严重损害生成质量（FID 大幅上升），而 Dual-Timestep Scheduling 即使不加自监督损失也能略微改善性能。
+第一，它把“为什么生成模型学不好表征”从经验观察推进到训练目标层面的解释：uniform denoising 可以被局部线索解决，因此语义表征不是必需品。第二，它给出一个可以跨图像、视频、音频使用的自监督机制，而不是继续为每个模态寻找一个外部 teacher。
 
-Dual-Timestep Scheduling 的具体操作：
+它的弱点也很明显：完整训练代码和多模态权重没有公开，文本图像、视频、音频都用了内部数据或部分内部 caption，最强的多模态实验更接近 research preview。能复现的是 ImageNet 256 x 256 inference 和官方 checkpoint，而不是论文里的完整多模态训练管线。
 
-1. 采样两个时间步 $$t, s \sim p(t)$$
-2. 随机选取一个 token 子集 $$M$$（比例 $$\mathcal{R}_M \leq 0.5$$），$$M$$ 内的 token 使用时间步 $$s$$，其余使用 $$t$$
-3. 构造异质噪声输入 $$\mathbf{x}_\tau$$：每个 token 按各自的时间步加噪
+## Paper Card
 
-这样输入中同时存在不同噪声水平的 token，形成信息不对称。关键在于每个 token 的边际噪声分布与标准 flow matching 一致，因此推理时使用均匀噪声不会产生训推差距。
+| 项目 | 信息 |
+|---|---|
+| Paper | *Self-Supervised Flow Matching for Scalable Multi-Modal Synthesis* |
+| Authors | Hila Chefer, Patrick Esser, Dominik Lorenz, Dustin Podell, Vikash Raja, Vinh Tong, Antonio Torralba, Robin Rombach |
+| Date / Version | arXiv v1，submitted 2026-03-06 UTC |
+| Category | cs.CV；flow matching, self-supervised representation learning, multimodal generation |
+| 核心方法 | Dual-Timestep Scheduling + EMA teacher feature reconstruction |
+| 主模型 | ImageNet 用 SiT-XL/2；其他实验用 FLUX.2-style Transformer，约 625M 参数；定性文字图像还展示 4B multi-modal model |
+| 数据 | ImageNet-1K；内部 image/video research datasets；FMA audio；RT-1 robotics |
+| Project / Code / Model | [BFL project](https://bfl.ai/research/self-flow) / [GitHub](https://github.com/black-forest-labs/Self-Flow) / [HF checkpoint](https://huggingface.co/Hila/Self-Flow) |
+| 公开状态 | arXiv source 和官方 project page 公开；GitHub 主要是 ImageNet 256 inference code；HF 提供 ImageNet checkpoint |
+| 复现判断 | ImageNet 采样和 ADM evaluation 路径较清楚；完整 Self-Flow 训练、多模态训练、内部数据、视频/音频模型不可完整复现 |
 
-### 2.2 自监督表征学习框架
+## Abstract：论文摘要解读
 
-在信息不对称的基础上，Self-Flow 构建了 Student-Teacher 框架来鼓励模型学习强表征：
+摘要的逻辑很直接。强语义表征可以改善 diffusion 和 flow model 的收敛速度与生成质量，但很多现有方法靠外部模型来补这个能力。外部模型有三个问题：要单独训练或下载、目标函数和生成目标不完全一致、缩放行为不稳定。
 
-**Student 网络 $$f_\theta$$（主模型）**：接收异质噪声输入 $$\mathbf{x}_\tau$$，其中不同 token 有不同噪声水平。
+Self-Flow 的核心说法是：依赖外部表征不是必然的。生成模型之所以需要外部 teacher，是因为标准 denoising / flow matching objective 本身没有鼓励模型学习全局语义。只要把训练任务改成必须跨 token 推断缺失信息，模型就会在学习生成的同时形成更好的内部表征。
 
-**Teacher 网络 $$f_{\theta'}$$（EMA 副本）**：接收更干净的输入 $$\mathbf{x}_{\tau_{\min}}$$，所有 token 统一使用两个时间步中较小的那个 $$\tau_{\min} = \min(t, s)$$ 加噪。
+Dual-Timestep Scheduling 是这件事的具体实现。它对 token 使用不同噪声水平，制造信息不对称：更干净的 token 提供上下文，更脏的 token 需要被推断。然后 student 在 mixed-noise input 上同时做两个任务：预测 flow velocity，以及重建 EMA teacher 在 cleaner input 上的特征。
 
-Teacher 始终看到比 Student 更干净（或同样干净）的输入，形成信息优势。
+摘要最后强调多模态。Self-Flow 不是只在 ImageNet 上做一个外部 DINO 的替代品，而是试图变成一种统一训练范式：图像、视频、音频都变成 latent token sequence 后，共享同一个 Transformer backbone 和同一套自监督机制。
 
-### 2.3 训练过程
+## Motivation
 
-每一步训练执行以下操作：
+论文的 motivation 可以拆成两层。
 
-**第一步：构造两个输入。** 给定干净数据 $$\mathbf{x}_0$$ 和噪声 $$\mathbf{x}_1$$，构造 Student 的异质噪声输入 $$\mathbf{x}_\tau$$ 和 Teacher 的均匀干净输入 $$\mathbf{x}_{\tau_{\min}}$$。
+第一层是对 REPA 的反思。REPA 的强处是推理无开销，并且在 ImageNet 上能明显加速和改善生成。但 Self-Flow 作者认为，这个效果有潜在偏差：DINOv2 本身大量使用了 ImageNet 相关数据，ImageNet class-to-image 可能正好是 DINO teacher 的舒适区。到了文本图像、视频、音频，外部 encoder 的目标和生成目标之间会更容易错位。
 
-**第二步：两次前向传播。** 将 $$\mathbf{x}_\tau$$ 送入 Student，将 $$\mathbf{x}_{\tau_{\min}}$$ 送入 Teacher（不计算梯度）。
+第二层是对 scaling 的反思。论文做了一个很关键的 sanity check：把 REPA teacher 从 DINOv2-B 换成更强的 DINOv2-L、DINOv3-B、DINOv3-H+。如果“更强表征 teacher 必然更好”，FID 应该改善。但实验结果相反：更强 DINO 反而让生成更差。作者把这解释为外部表征瓶颈，生成模型被迫贴近一个固定 teacher，而 teacher 的表征目标不一定对应生成质量。
 
-**第三步：计算生成损失。** 标准 flow matching 损失，注意每个 token 的 target 对应其自身的时间步：
-$$\mathcal{L}_{\text{gen}} = \mathbb{E}\|f_\theta(\mathbf{x}_\tau, \boldsymbol{\tau}) - (\mathbf{x}_1 - \mathbf{x}_0)\|^2$$
+这不是说 DINOv2 没价值。更合理的读法是：外部 alignment 是一个短期有效的训练捷径，但它把“生成模型应该学什么表征”的决定权交给了另一个模型。Self-Flow 想把这个决定权拿回来，让表征学习由生成任务自身诱导出来。
 
-模型的时间步条件从标量扩展为向量，每个 token 被告知自己的噪声水平。
+## 直观效果：先看它能做什么
 
-**第四步：计算表征对齐损失。** 取 Student 第 $$l$$ 层特征，通过 MLP 投影头映射后，与 Teacher 第 $$k$$ 层特征（$$k > l$$）计算余弦相似度：
-$$\mathcal{L}_{\text{rep}} = -\cos\left(h_\theta^{(l)}(\mathbf{x}_\tau, \boldsymbol{\tau}),\ f_{\theta'}^{(k)}(\mathbf{x}_{\tau_{\min}}, \tau_{\min})\right)$$
+论文主图很适合先看。左侧是 text-to-image FID 收敛曲线，Self-Flow 比 REPA 更快越过 vanilla flow matching，并且到 1M steps 还继续下降。右侧是定性结果：相比 vanilla flow matching，Self-Flow 在文字渲染、结构一致性和视频时间连续性上更稳。
 
-Student 只看到部分被严重破坏的输入，却要预测出 Teacher 在更干净输入下产生的特征。这迫使 Student 利用较干净的 token 推断较噪 token 的语义信息，建立超越局部的全局关联。
+![Self-Flow teaser](/files/blogs_image/260305-selfflow-teaser.png)
 
-**第五步：联合优化。** 总损失为：
-$$\mathcal{L} = \mathcal{L}_{\text{gen}} + \gamma \cdot \mathcal{L}_{\text{rep}}$$
+*图：论文 teaser。左侧展示 text-to-image FID 收敛速度，右侧展示图像结构、文字和视频连续性的定性改善。它支持的理解点是：Self-Flow 的收益不是只在一个 ImageNet 指标上，而是在收敛、结构和时间一致性上同时出现。*
 
-只更新 Student 和投影头参数，Teacher 通过 EMA 缓慢跟踪 Student：$$\theta' \leftarrow 0.9999 \cdot \theta' + 0.0001 \cdot \theta$$。
+这张图的证据强度要分开看。FID 收敛曲线是定量证据，可以支撑“Self-Flow 收敛更快”。右侧图像和视频帧是定性证据，可以说明 failure mode，但不能替代大规模用户评测。论文后面用 FID、FVD、FAD 和 ablation 来补定量支撑。
 
-### 2.4 推理过程
+## 方法总览：核心思想和系统结构
 
-推理时与标准 flow matching **完全一致**：
+标准 rectified flow matching 先把干净数据和噪声写成线性路径：
 
-1. 丢弃 Teacher 网络和投影头
-2. 所有 token 使用统一时间步（无双时间步或 mask）
-3. 从纯噪声 $$\mathbf{x}_1 \sim \mathcal{N}(0, \mathbf{I})$$ 出发
-4. 用 Student $$f_\theta$$ 预测速度场，通过 ODE 求解器从 $$t=1$$ 积分到 $$t=0$$
+$$
+\mathbf{x}_t=(1-t)\mathbf{x}_0+t\mathbf{x}_1,\qquad t\in[0,1],
+$$
 
-零额外推理开销。训练阶段的所有辅助组件都不出现在推理中。
+其中 $$t=0$$ 是干净数据，$$t=1$$ 是纯噪声。目标速度场是：
 
-### 2.5 Self-Flow 与 REPA 的关键区别
+$$
+\mathbf{v}_t=\frac{d\mathbf{x}_t}{dt}=\mathbf{x}_1-\mathbf{x}_0.
+$$
 
-| 维度 | REPA | Self-Flow |
-|------|------|-----------|
-| 表征来源 | 冻结的外部编码器（DINOv2） | 模型自身的 EMA 副本 |
-| 信息不对称来源 | 外部编码器天然拥有更好的语义表征 | Dual-Timestep Scheduling 制造的噪声差异 |
-| 跨模态泛化 | 每个模态需选择合适编码器，常常失效 | 天然适用于任何模态 |
-| 缩放行为 | 更强编码器反而可能更差 | 遵循正常缩放规律 |
-| 推理开销 | 无额外开销 | 同样无额外开销 |
+模型训练目标是预测这个速度场：
 
-更宏观地看，可以将三种方法理解为一条谱系上的三个位置：Vanilla Flow Matching（不管表征）→ REPA（借外部表征）→ Self-Flow（自己生长出表征）。
+$$
+\mathcal{L}_{gen}=
+\mathbb{E}\left\|f_\theta(\mathbf{x}_t,t)-(\mathbf{x}_1-\mathbf{x}_0)\right\|^2.
+$$
 
----
+这个目标的问题在于，所有 token 的噪声水平相同。局部相邻 token 之间仍然有很多可利用的低层统计关系，模型可能通过局部纹理、短程时间冗余或音频局部连续性解决训练任务，而不必形成强语义表征。
 
-## 三、统一的多模态架构
+Self-Flow 增加了两个东西：
 
-Self-Flow 的一大亮点是**同一个 Transformer 可以同时处理图像、视频和音频三种模态**。
+| 模块 | 做什么 | 解决什么问题 |
+|---|---|---|
+| Dual-Timestep Scheduling | 对同一样本采样两个时间步 $$t,s$$，用 mask 把不同 token 分配给不同噪声水平 | 制造信息不对称，逼模型用 cleaner tokens 推断 noisier tokens |
+| EMA teacher feature reconstruction | teacher 看更干净的输入，student 看 mixed-noise input，student 重建 teacher 中间特征 | 把“跨 token 推断”变成显式自监督表征目标 |
 
-### 3.1 设计原理
+官方方法图如下。
 
-核心思路是：不同模态的原始数据先通过各自的自编码器变成统一的"token 序列"形式，Transformer 处理的只是这些 token 序列。对 Transformer 来说，它看到的就是一串向量，不关心这些向量原本代表的是图像 patch、视频帧还是音频片段。
+![Self-Flow method overview](/files/blogs_image/260305-selfflow-method-overview.png)
 
-各模态的 token 化过程如下：
+*图：论文 Figure 3，对应 arXiv source 中 `figures/architecture.pdf`。它展示了 clean input 同时构造 student mixed-noise input 和 teacher cleaner input，student 同时承担 flow velocity prediction 和 teacher feature reconstruction。*
 
-| 模态 | 自编码器 | 输入 | Token 数量 | Token 维度 |
-|------|---------|------|-----------|-----------|
-| 图像 (256×256) | FLUX.2 AE | 原始像素 | 256 | 128 |
-| 视频 (45帧, 192p) | WAN2.2 AE | 原始视频帧 | ~3000 | 48 |
-| 音频 (10秒) | Songbloom AE | 原始音频波形 | 250 | 64 |
+这张图里有几个细节值得注意。
 
-不同模态编码出来的 token 维度不同、序列长度不同，通过**模态特定的投影层**统一到 Transformer 的隐藏维度。
+第一，student 和 teacher 不是两个独立训练的模型。teacher 是 student 的 EMA copy，论文实现里 EMA decay 是 0.9999。teacher 不反传梯度，只提供更稳定、更干净视角下的特征。
 
-### 3.2 模型结构
+第二，teacher 的输入不是完全干净的 $$x_0$$，而是所有 token 统一使用 $$\tau_{min}=\min(t,s)$$ 加噪后的输入。也就是说 teacher 的优势来自“比 student 中一部分 token 更干净”，不是来自外部标签或外部 encoder。
 
+第三，推理时没有 teacher、没有 projection head、没有 dual timestep mask。推理仍是普通 flow matching ODE 或 SDE sampling。训练时加任务，推理时不加组件。
+
+## Dual-Timestep Scheduling：为什么不是普通 masking
+
+最容易把 Self-Flow 误解成 masked autoencoder。其实它更谨慎。
+
+一个朴素做法是 full masking：随机把一部分 token 直接设成纯噪声，等价于 $$t=1$$。另一个做法是 diffusion forcing：每个 token 独立采样一个时间步。论文说这两种都产生明显训推差距。
+
+原因在于推理时模型面对的是所有 token 处于同一时间步的输入。例如 ODE 从 $$t=1$$ 逐步走向 $$t=0$$，每一步的 latent 全体处于同一个噪声强度。如果训练时经常看到“部分 token 是纯噪声，部分 token 很干净”这种分布，模型会习惯不自然的局部条件，推理时反而退化。
+
+Dual-Timestep 的折中是：
+
+1. 从同一个噪声时间步分布 $$p(t)$$ 采样两个时间步 $$t,s$$。
+2. 采样 mask $$M$$，mask ratio $$\mathcal{R}_M\leq0.5$$。
+3. 对第 $$i$$ 个 token 使用
+
+$$
+\tau^i=
+\begin{cases}
+s, & i\in M \\
+t, & i\notin M
+\end{cases}
+$$
+
+4. 构造 mixed-noise input：
+
+$$
+\mathbf{x}_{\boldsymbol{\tau}}=
+\operatorname{diag}(\mathbf{1}-\boldsymbol{\tau})\mathbf{x}_0+
+\operatorname{diag}(\boldsymbol{\tau})\mathbf{x}_1.
+$$
+
+关键是每个 token 的边际时间步仍来自同一个 $$p(t)$$。训练输入局部是异质噪声，但单个 token 看起来并没有脱离正常 flow matching 的时间步分布。这是它和 full masking / diffusion forcing 的差别。
+
+## 自监督表征目标：student 要重建谁的特征
+
+Self-Flow 的 representation loss 写成：
+
+$$
+\mathcal{L}_{rep}=
+-\mathbb{E}\cos\left(
+h_\theta^{(l)}(\mathbf{x}_{\boldsymbol{\tau}},\boldsymbol{\tau}),
+f_{\theta'}^{(k)}(\mathbf{x}_{\tau_{min}},\tau_{min})
+\right).
+$$
+
+这里：
+
+| 符号 | 含义 |
+|---|---|
+| $$f_\theta$$ | student flow model，接收 mixed-noise tokens |
+| $$f_{\theta'}$$ | EMA teacher，接收统一 cleaner timestep input |
+| $$h_\theta^{(l)}$$ | student 第 $$l$$ 层后接 MLP projection head |
+| $$f_{\theta'}^{(k)}$$ | teacher 第 $$k$$ 层 feature |
+| $$l<k$$ | student 用较浅层去对齐 teacher 较深层，论文默认 $$l=0.3D,k=0.7D$$ |
+
+总损失是：
+
+$$
+\mathcal{L}=\mathcal{L}_{gen}+\gamma\mathcal{L}_{rep}.
+$$
+
+论文 appendix 给出的默认实现包括：$$\gamma=0.8$$，EMA decay 0.9999；image mask ratio 0.25，audio 0.5，video 0.1。video 的 mask ratio 更低，是因为视频存在显著时间冗余，mask 过多可能让训练任务偏离正常生成。
+
+这个 loss 的机制不是“让 student 模仿自己”。teacher 的参数是 EMA，所以更平滑；teacher 的输入更干净，所以 feature 更有信息；student 的输入局部更脏，所以必须利用其他 cleaner tokens 补全语义。这个信息差才是自监督信号。
+
+## 数据全流程：输入、表示、shape 和语义
+
+论文把图像、视频、音频统一写成 token sequence：
+
+$$
+\mathbf{x}_0\in\mathbb{R}^{N\times C}.
+$$
+
+不同模态先通过各自 autoencoder 进入 latent token 空间，再用 modality-specific input/output projection 接到共享 Transformer。
+
+| 模态 | Autoencoder | 输入设置 | Token / Dim | 说明 |
+|---|---|---|---|---|
+| ImageNet image | SD-VAE | 256 x 256 | 256 tokens，dim 16 | 用于 ImageNet 和 T2I 可比实验 |
+| image in multimodal | FLUX.2 AE | 256 x 256 | 256 tokens，dim 128 | FLUX.2 AE 使用 2 x 2 patching，总压缩因子 16 |
+| RAE image | RAE | 256 x 256 | 256 tokens，dim 768 | 验证 Self-Flow 和 semantic latent 可互补 |
+| video | WAN2.2 AE | 45 frames，192p | 约 3k tokens，dim 48 | 时间上压缩为 $$\lfloor1+(T-1)/4\rfloor$$ 个 temporal latents |
+| audio | Songbloom AE | 10 seconds | 250 latents，dim 64 | 25 latents / second；视频音轨任务使用 48 latents |
+
+共享 Transformer 的配置来自 FLUX architecture 及 FLUX.2 修改：hidden size 1152，MLP ratio 4，16 attention heads，7 个 double MMBlocks 加 14 个 single Blocks，总规模约 625M。位置编码使用 3D RoPE，每个维度 24 channels。
+
+训练流程可以按一个 batch 来读：
+
+| 阶段 | 数据对象 | 训练时发生什么 | 推理时是否存在 |
+|---|---|---|---|
+| 1 | raw image / video / audio | modality-specific autoencoder 编成 latent tokens | 推理时从 noise latent 开始，最后 decode |
+| 2 | clean latent $$x_0$$ 和 noise $$x_1$$ | 构造标准 flow path | 存在，对应 sampler state |
+| 3 | timesteps $$t,s$$ 和 mask $$M$$ | 生成 mixed timestep vector $$\boldsymbol{\tau}$$ | 不存在，推理用统一 timestep |
+| 4 | student input $$x_{\boldsymbol{\tau}}$$ | 输入 student，预测 velocity 和中间 feature | 推理只保留 student velocity |
+| 5 | teacher input $$x_{\tau_{min}}$$ | 输入 EMA teacher，提供 feature target | 不存在 |
+| 6 | losses | $$\mathcal{L}_{gen}+\gamma\mathcal{L}_{rep}$$ | 不存在 |
+| 7 | output projection / decoder | 训练中回到模态 latent target；推理中解码成样本 | 存在 |
+
+混合多模态训练时，每个 mini-batch 只包含单一模态，不在同一个 batch 里混合 image/video/audio。论文 appendix 说 batch size 分别为 image 38、video 8、audio 16，这是为了让不同模态的 step time 接近。模态采样概率是 image 57%、video 30%、audio 13%。剩下的 tradeoff 通过模态 loss weights $$w_I,w_V,w_A$$ 控制。
+
+这意味着“统一多模态模型”不是把所有模态 token 粗暴拼到每个 batch 里，而是共享 Transformer backbone，保留模态专属投影层，训练时在不同模态 batch 之间交替。
+
+## Training：监督信号、loss 和优化目标
+
+Self-Flow 的训练目标有两个层次。
+
+第一层是标准 flow matching。模型要预测从数据到噪声的 velocity $$x_1-x_0$$。注意在 Dual-Timestep 下，每个 token 对应自己的 timestep condition，所以模型的 timestep conditioning 从单个 scalar 扩展为长度为 $$N$$ 的 vector。
+
+第二层是 feature reconstruction。student 第 $$l$$ 层经过 projection head 后，要和 teacher 第 $$k$$ 层 feature 做 cosine similarity。论文默认选择较浅 student 层和较深 teacher 层，是因为较深 teacher 更可能包含语义信息，而 student 太深会干扰生成主干。
+
+训练数据和步数如下：
+
+| 任务 | 数据 | 训练规模 | Backbone |
+|---|---|---:|---|
+| ImageNet class-to-image | ImageNet-1K，1.28M train / 50k val | 4M steps | SiT-XL/2，约 675M |
+| text-to-image | 内部 20M text-image pairs，来自 200M image research dataset subset | 1M steps | FLUX.2-style，约 625M |
+| text-to-video | 内部 6M videos，5k val | 600K steps | FLUX.2-style + WAN2.2 AE |
+| text-to-audio | 1M CC-licensed FMA audio，20k val | 350K steps | FLUX.2-style + Songbloom AE |
+| mixed multimodal | image/video/audio mixed datasets | 1M steps | shared FLUX.2-style backbone |
+| joint video-action | RT-1，73.5k episodes | 100K finetune | initialized from video-weighted multimodal model |
+
+定性样本使用 50 inference steps，image CFG scale 3.5，video/audio CFG scale 5。定量指标不使用 classifier-free guidance，这是为了避免 guidance 让不同方法的评估不公平。
+
+## Inference：测试时到底怎么生成结果
+
+推理路径和普通 flow matching 基本一致：
+
+1. 采样纯噪声 latent $$x_1\sim\mathcal{N}(0,I)$$。
+2. 选择目标模态的 input/output projection 和 autoencoder decoder。
+3. 用训练好的 student model 预测 velocity。
+4. 通过 ODE 或 SDE sampler 从 $$t=1$$ 积分到 $$t=0$$。
+5. 用对应 decoder 还原成图像、视频或音频。
+
+teacher、EMA feature target、projection head、Dual-Timestep mask 都不在推理中出现。这个性质很重要，因为它让 Self-Flow 和 REPA 一样保持零额外推理开销。
+
+但训练成本不是零。每步训练需要额外跑一次 EMA teacher forward，外加 projection head 和 representation loss。论文的论证是：更快收敛和更好 scaling 可以抵消这部分训练成本。从 FLOPs 视角看，Self-Flow 在相同 compute 下仍优于 REPA。
+
+## Evaluation：验证集、指标和 baseline 是否公平
+
+论文的评测覆盖单模态、多模态和 joint prediction。主要指标包括：
+
+| 任务 | 指标 | 评估方式 |
+|---|---|---|
+| ImageNet | FID, sFID, IS, Precision, Recall | 50k samples vs ImageNet validation；ADM evaluation code/reference batch |
+| text-to-image | FID, sFID, IS, Precision, Recall, FD-DINOv2, CLIP | 内部 holdout set；FD-DINOv2 用 DINOv2 features |
+| text-to-video | FVD, framewise FID | FVD 用 VideoMAEv2 features；framewise FID 用 Inception features |
+| text-to-audio | FAD with CLAP / CLAP-M / CLAP-A | CLAP 系列音频表征上的 Frechet distance |
+| robot video-action | SIMPLER success rate | RT-1 finetune，每个 checkpoint 运行任务组评估 |
+
+baseline 选择大体合理。外部 encoder alignment 选择 REPA，并额外测了看似更适合各模态的 encoder：T2I 用 SigLIP 2，video 用 V-JEPA2 和 Depth Anything 3，audio 用 MERT。无外部 encoder 的 alignment baseline 选择 SRA，并在 appendix 用小规模实验解释为什么没有选 LayerSync。
+
+最大风险不在 baseline 名字，而在数据公开性。T2I、T2V 和多模态核心结果都依赖内部数据集，holdout 也不是公开 benchmark。指标趋势可以读，但第三方很难完全复核。
+
+## 实验与证据：哪些 claim 被支持，哪些还不够
+
+ImageNet 上，Self-Flow 在不使用外部 representation 的情况下达到 FID 5.70，优于 REPA 的 5.89。这个结果有象征意义，因为 REPA 的 DINOv2 teacher 本身大量接触 ImageNet 相关数据。Self-Flow 能在这里追上并超过 REPA，说明它不是只靠“避开 DINO 不擅长的分布”取胜。
+
+| Model | Steps | FID ↓ | sFID ↓ | IS ↑ | Precision ↑ | Recall ↑ |
+|---|---:|---:|---:|---:|---:|---:|
+| SiT-XL/2 | 7M | 8.30 | 6.30 | 130.57 | 0.69 | 0.67 |
+| SRA | 4M | 7.27 | 5.87 | 143.06 | 0.69 | 0.68 |
+| REPA | 4M | 5.89 | 5.73 | 157.66 | 0.70 | 0.69 |
+| Self-Flow | 4M | 5.70 | 4.97 | 151.40 | 0.72 | 0.67 |
+
+T2I 结果更能说明外部 alignment 的局限。Self-Flow 的 FID 3.61，优于 SRA 3.70、REPA 3.92、SigLIP 2 3.97。更关键的是 FD-DINOv2：REPA 直接对齐 DINOv2，FD-DINOv2 是它应该占优的指标，但 Self-Flow 仍从 173.35 进一步降到 167.98。
+
+| Model | FID ↓ | FD-DINOv2 ↓ | CLIP ↑ |
+|---|---:|---:|---:|
+| Vanilla Flow | 4.08 | 204.49 | 30.66 |
+| SRA | 3.70 | 176.79 | 30.78 |
+| REPA | 3.92 | 173.35 | 30.67 |
+| SigLIP 2 alignment | 3.97 | 196.75 | 30.68 |
+| Self-Flow | 3.61 | 167.98 | 30.88 |
+
+video 和 audio 支撑了“外部 encoder 不易跨模态泛化”的 claim。video 上 Self-Flow FVD 47.81，REPA with DINOv2 是 49.59，SRA 是 49.75，vanilla flow 是 50.95。V-JEPA2 和 Depth Anything 3 这两个看似更 video/geometry-friendly 的 encoder 反而更差。
+
+audio 上，Self-Flow 在 CLAP、CLAP-M、CLAP-A 三个 FAD variant 都最好。MERT alignment 的 CLAP FAD 148.883，几乎和 vanilla flow 148.874 持平，说明“找一个音频 encoder 来对齐”没有自然解决问题。
+
+## 消融：Self-Flow 到底靠什么起作用
+
+论文的 ablation 比较关键，因为 Dual-Timestep 和 representation loss 容易被误解成可以分开随便替换。
+
+![Self-Flow ablation](/files/blogs_image/260305-selfflow-ablation.png)
+
+*图：论文 ablation figure。移除 representation loss 退化最大；保留 loss 但去掉 masking 也明显退化；把第二时间步限制在接近原时间步的范围会削弱信息不对称；用 L1 替代 cosine similarity 会在训练后期不稳定。*
+
+从结果看，Self-Flow 不是单靠“多加一个 teacher loss”生效。去掉 masking mechanism 后，即使还有 feature reconstruction，FID 仍然明显变差。这说明信息不对称本身是必要条件。
+
+第二个要点是，两个时间步需要有足够差异。把 $$s$$ 限制在 $$[t,t-0.2]$$ 这种很近的范围，退化接近去掉 masking。直觉是：如果 teacher 和 student 看到的信息差不够，student 就没有被迫做跨 token 推断。
+
+第三个要点是 cosine similarity。替换成 $$\ell_1$$ loss 后，论文报告训练后期 feature norm 增大并导致数值不稳定。这符合很多 feature distillation 经验：直接回归 feature magnitude 容易把表征空间的尺度问题带进主训练目标。
+
+## Scaling：为什么它比 REPA 更像一个长期方案
+
+论文在 290M、420M、625M、1B 四个 T2I 模型规模上比较 Self-Flow 和 REPA。结果趋势是模型越大，Self-Flow 相对 REPA 的优势越大，625M Self-Flow 甚至优于 1B REPA。
+
+这支持了一个较强的结论：外部 alignment 可能在小模型或早期训练阶段很有用，但当生成模型继续扩展时，固定外部 teacher 会变成瓶颈。Self-Flow 的 teacher 跟着 student 通过 EMA 更新，表征目标会随生成模型能力一起变化。
+
+这里要保留一个未知：论文没有公开完整训练代码和内部数据，所以 scaling curve 目前主要依赖论文报告。它的机制解释是合理的，但第三方很难低成本复刻。
+
+## 多模态：统一的是 backbone，不是所有东西都混成一个 token soup
+
+Self-Flow 的多模态实验容易被标题误导。它不是一个 fully any-to-any model，也不是每个 batch 都混合 image/video/audio tokens。它统一的是训练范式和大部分 Transformer 参数。
+
+具体做法是：
+
+| 部分 | 是否共享 |
+|---|---|
+| Transformer attention / FFN / modulation 主体 | 共享 |
+| image/video/audio input projection | 模态专属 |
+| image/video/audio output projection | 模态专属 |
+| autoencoder decoder | 模态专属 |
+| Dual-Timestep + Self-Flow loss 形式 | 共享 |
+
+混合训练结果显示，在 5 组不同 $$w_I,w_V,w_A$$ loss weights 下，Self-Flow 对 image FID、video FVD/framewise FID、audio FAD 都有改善。appendix 表格里每组权重的相对变化都为改善，例如 image-weighted、video-weighted、audio-weighted settings 下都没有出现某个模态被 Self-Flow 明显牺牲。
+
+joint video-action 和 joint video-audio 更像是验证“表征能否迁移到联合预测”。RT-1 / SIMPLER 上，Self-Flow 在 100K finetune 内持续优于 vanilla flow matching，复杂任务如 Move Near、Open and Place 差距更明显。video-audio prediction 中，multi-modal initialization 优于 video-only initialization；有意思的是 video-only Self-Flow 还能优于 multi-modal vanilla flow matching。
+
+我的读法是：这些实验支持“Self-Flow 学到的表征对复杂预测任务有帮助”，但还不能直接证明它已经是通用 world model。因为机器人实验只用 RT-1 subset，评估在 SIMPLER，任务数量有限；video/audio 数据也依赖内部 pipeline。
+
+## 复现与工程风险
+
+官方 GitHub 仓库的定位很清楚：它包含 ImageNet 256 x 256 的 inference code，可以加载 `Hila/Self-Flow` checkpoint 生成 50k images，然后用 ADM evaluation suite 评估 FID、IS、Precision、Recall。
+
+公开复现路径大致是：
+
+```bash
+python -c "
+from huggingface_hub import hf_hub_download
+hf_hub_download(
+    repo_id='Hila/Self-Flow',
+    filename='selfflow_imagenet256.pt',
+    local_dir='./checkpoints'
+)
+"
+
+torchrun --nnodes=1 --nproc_per_node=8 sample.py \
+  --ckpt checkpoints/selfflow_imagenet256.pt \
+  --output-dir ./samples \
+  --num-fid-samples 50000
 ```
-文本提示 ──────────────────────────────────────────┐
-                                                   │
-纯噪声 → 模态特定输入投影层 → 共享 Transformer → 模态特定输出投影层 → 模态特定解码器 → 输出
-         (三套，按模态选一套)     (完全共享)      (三套，按模态选一套)    (三套，按模态选一套)
-```
 
-**共享部分**包括整个 Transformer 的 attention 层、FFN 层、modulation 层等（占绝大部分参数）。**模态独立部分**仅有每个模态的输入/输出投影层，负责维度转换。
+README 里还给了 sampling 参数：默认 `--num-steps 250`，`--mode SDE`，`--seed 31`，`--cfg-scale 1.0`。HF model card 报告 ImageNet 256 checkpoint 的 FID 5.7、IS 151.40、sFID 4.97、Precision 0.72、Recall 0.67。
 
-Transformer 架构基于 FLUX，配置为隐藏维度 1152、MLP ratio 4、16 个注意力头、7 层双流 MMBlock + 14 层单流 Block，总参数量约 625M。使用 3D RoPE 位置编码，天然支持不同维度的序列。
+但训练复现存在明显缺口：
 
-### 3.3 混合模态训练
+| 项目 | 状态 |
+|---|---|
+| ImageNet checkpoint | 公开 |
+| ImageNet inference code | 公开 |
+| Self-Flow training code | not publicly specified / not included in README |
+| T2I/T2V/T2A training data | 大量内部数据，not publicly available |
+| multimodal model weights | not publicly specified |
+| full evaluation scripts for internal holdouts | not publicly specified |
+| exact data filters / captioning pipeline | partially specified，细节不足 |
 
-训练时每个 mini-batch 只包含单一模态的数据，不在一个 batch 中混合不同模态。模态之间通过采样概率交替训练（图像 57%、视频 30%、音频 13%），通过模态损失权重 $$(w_I, w_V, w_A)$$ 控制各模态优先级。
+工程上还有几个风险。
 
-每步训练流程为：按概率选择一个模态 → 取该模态的一个 batch → 通过相应自编码器编码 → 通过对应输入投影层映射到 1152 维 → 送入共享 Transformer 执行 Self-Flow 训练 → 通过对应输出投影层映射回模态维度 → 计算损失并更新共享 Transformer 和对应投影层参数。
+第一，训练成本更高。每步多一次 EMA teacher forward，大规模 video/audio 训练下成本不小。论文用收敛和 FLOPs 曲线说明这笔成本值得，但具体到自己的集群，需要重新算 wall-clock、显存和吞吐。
 
-### 3.4 推理时的模态选择
+第二，noise scheduler 敏感。appendix 明确讨论 timestep distribution，ImageNet/T2I 用 uniform，FLUX.2 AE、WAN2.2、Songbloom 各自有不同 shift。Self-Flow 的 mask 行为和 timestep distribution 耦合，换任务时不能只照搬一个默认 scheduler。
 
-推理时根据目标模态选择对应的投影层和解码器即可。生成图像时使用图像投影层 + FLUX.2 AE 解码；生成视频时使用视频投影层 + WAN2.2 AE 解码；生成音频时使用音频投影层 + Songbloom AE 解码。模型不需要显式的"模态选择"机制，选择投影层本身就决定了输出模态。
+第三，mask ratio 不是统一超参。image 0.25、audio 0.5、video 0.1。视频因为时间冗余强而使用更低比例，这说明方法虽然跨模态，但仍需要模态经验。
 
-### 3.5 联合多模态生成
+第四，多模态训练的数据配比和 loss weights 会直接影响每个模态的质量。论文用了 batch size、sampling probability、loss weight 三层手段调平，这些都不是无脑默认值。
 
-除了分别生成单一模态，模型还能同时生成多种模态。例如联合视频-音频生成任务中，序列中包含视频帧 token 和音频 token，共享 Transformer 一起处理，输出后分别通过各自的投影层和解码器还原。
+## 总结
 
----
+Self-Flow 这篇论文的核心贡献不是“又一个更好的 FID”，而是提出了一个机制上更干净的问题重构：生成模型表征弱，可能不是因为缺一个外部 teacher，而是因为标准 flow matching 的 denoising 任务没有迫使模型学习全局语义。
 
-## 四、实验全景
+Dual-Timestep Scheduling 用两个时间步在 token 之间制造信息不对称，EMA teacher feature reconstruction 把这种信息不对称变成自监督目标。训练时多一个 teacher 视角，推理时回到普通 flow matching。这个设计解释了它为什么能同时保留 REPA 的零推理开销，又避免每个模态依赖外部 encoder。
 
-### 4.1 实验概览与数据
+论文证据最强的部分是：ImageNet、T2I、T2V、T2A 多个任务都优于 REPA/SRA 等 baseline；ablation 明确显示 representation loss、masking、足够的 timestep gap 都不可或缺；scaling 实验显示 Self-Flow 比 REPA 更能利用更大模型。
 
-| 任务 | 数据集 | 数据量 | 训练步数 | 骨干网络 |
-|------|--------|--------|---------|---------|
-| ImageNet (Class→Image) | ImageNet-1K | 128万图像 | 4M步 | SiT-XL (~675M) |
-| 文本→图像 | 内部数据集 | 2000万图像 | 1M步 | FLUX.2 (~625M) |
-| 文本→视频 | 内部数据集 | 600万视频 | 600K步 | FLUX.2 (~625M) |
-| 文本→音频 | FMA (CC协议) | 100万音频 | 350K步 | FLUX.2 (~625M) |
-| 混合多模态 | 上述三者组合 | 全量 | 1M步 | FLUX.2 (~625M) |
-| 联合视频-动作 | RT-1 机器人数据 | 73,500 episodes | 100K步（微调） | FLUX.2 (~625M) |
+需要谨慎的地方也很明确：完整训练代码和多模态权重没有公开，核心 T2I/T2V 数据是内部数据，许多 evaluation holdouts 无法第三方复核。因此它目前更适合作为“训练范式和研究方向”来读，而不是一个可以马上完整复现的工程 recipe。
 
-所有单模态实验和多模态训练均从零开始。联合视频-动作实验从多模态模型微调。
+对后续研究，我觉得有三条线最值得看：
 
-### 4.2 单模态结果
+1. 把 Self-Flow 放到公开视频/音频数据上复核，确认跨模态收益不是内部数据选择带来的。
+2. 研究 mask ratio、timestep distribution 和 token topology 的关系，尤其是视频和长音频这种高冗余序列。
+3. 和 semantic autoencoder、RAE、REPA-E 类方法结合，判断“更语义化的 latent space”和“训练中自监督表征目标”到底是互补还是冗余。
 
-**ImageNet (256×256)：** Self-Flow 达到 FID 5.70，优于 REPA 的 5.89。值得注意的是，REPA 使用的 DINOv2 在 ImageNet 上大量训练过，Self-Flow 在"客场"依然胜出。据作者所知，这是首次自监督方法在 ImageNet 上超越外部对齐方法。
-
-**文本→图像：** Self-Flow 的 FID 为 3.61，超越 REPA（3.92）、SigLIP 2（3.97）和 SRA（3.70）。在以 DINOv2 特征计算的 FD-DINOv2 指标上，Self-Flow（167.98）甚至优于直接与 DINOv2 对齐的 REPA（173.35），同时 CLIP score 也最高。
-
-**文本→视频：** Self-Flow 的 FVD 为 47.81，大幅领先次优的 REPA（49.59）。视频专用编码器 V-JEPA 2 和 Depth Anything 3 的对齐反而损害性能。论文推测视频时序关系比空间关系更难学习，目标不匹配更难弥合，且视频时序冗余让模型可以走捷径——而 Self-Flow 的 masking 机制自然抑制了这种行为。
-
-**文本→音频：** Self-Flow 在所有 CLAP 变体的 FAD 指标上均最优，音频编码器 MERT 的对齐完全无益。
-
-### 4.3 缩放实验
-
-在 290M → 420M → 625M → 1B 四个模型规模上对比 Self-Flow 与 REPA，关键发现有两个：
-
-- 随模型规模增大，Self-Flow 与 REPA 的性能差距**持续扩大**
-- Self-Flow 的 625M 模型甚至优于 REPA 的 1B 模型
-
-这直接验证了论文的核心论点：外部对齐将模型绑定在固定编码器上，形成缩放瓶颈；Self-Flow 的统一框架则遵循正常的缩放规律。
-
-### 4.4 多模态实验
-
-**混合模态训练：** 测试了 5 种不同的模态损失权重配置（从图像偏重到音频偏重），Self-Flow 在**所有配置下对所有三个模态同时带来提升**，没有出现任何模态退化的情况。
-
-**联合视频-动作预测：** 在 SIMPLER 机器人模拟器上评估 4 类任务。Self-Flow 在整个微调过程中持续优于 vanilla flow matching。特别是对复杂的多物体和多步骤任务（Move Near、Open and Place），Self-Flow 保持显著优势，而简单任务（Pick Coke Can、Open/Close Drawer）两者趋于收敛。这表明 Self-Flow 学到的表征能改善复杂视觉推理能力。
-
-**联合视频-音频预测：** 多模态预训练初始化优于仅视频预训练。更有意思的是，仅视频初始化的 Self-Flow 甚至优于多模态初始化的 vanilla flow matching，进一步证明了 Self-Flow 学到的表征的通用性。
-
-### 4.5 消融实验
-
-在 ImageNet 上逐一移除或修改关键组件：
-
-| 消融项 | FID 影响 | 结论 |
-|--------|---------|------|
-| 去掉 $$\mathcal{L}_{\text{rep}}$$ | 退化 4+ 分 | 自监督表征学习是最关键组件 |
-| 去掉 masking 机制 | 退化 1+ 分 | 显式自监督范式不可或缺 |
-| 限制第二时间步 $$s \in [t, t-0.2]$$ | 退化接近去掉 masking | 需要充分的信息不对称 |
-| $$\ell_1$$ 替代余弦相似度 | 训练后期不稳定 | 余弦相似度更适合特征对齐 |
-
-层选择方面，Student 层 $$l = 0.3D$$、Teacher 层 $$k = 0.7D$$ 附近性能稳定。过浅的 Teacher 层语义信号太弱，过深的 Student 层会干扰生成。
-
-### 4.6 表征质量验证
-
-线性探测实验直接验证了表征强度：在 ImageNet 上训练 2M 步后，逐层提取特征做线性分类。Self-Flow 在早期和中间层的分类准确率显著高于 vanilla flow matching，确认表征确实随生成能力一同增强。
-
-### 4.7 自编码器泛化
-
-Self-Flow 不依赖特定自编码器。在 SD-VAE、FLUX.2 AE、RAE（表征自编码器）、WAN2.2 AE、Songbloom AE 五种不同自编码器上均展现一致提升。特别是在 RAE 这种已有语义结构的潜空间上，FID 仍从 3.24 降至 2.95，说明 Self-Flow 与语义自编码器具有互补效应。
-
-### 4.8 定性改善
-
-Self-Flow 在以下方面展现显著的定性改善：
-
-- **文字渲染**：4B 参数多模态模型在仅 100K 步高分辨率微调后，文字渲染准确度大幅提升
-- **结构一致性**：人脸、手部等挑战性结构的生成更加准确
-- **视频时序连贯性**：基线方法出现的肢体突然消失等时序伪影在 Self-Flow 中得到抑制
-
----
-
-## 五、训练开销与局限
-
-### 额外训练开销
-
-Self-Flow 相比 vanilla flow matching 的额外成本来自 Teacher 网络的前向传播（每步需要两次前向）。但加速的收敛和更好的性能抵消了这一成本。从 FLOPs 对比来看，在相同计算量下 Self-Flow 仍优于 REPA。
-
-### 噪声调度器敏感性
-
-与相关工作一致，噪声调度器 $$p(t)$$ 的选择影响较大。在文本→图像任务中，均匀调度器优于 logit-normal 调度器。虽然更好的噪声调度对 REPA 和 Self-Flow 都有益，但 Self-Flow 从中获益更大，原因在于噪声调度同时决定了 masking 行为的优化。
-
----
-
-## 六、总结与展望
-
-Self-Flow 挑战了一个普遍假设：生成模型需要外部编码器才能获得强表征。通过 Dual-Timestep Scheduling 在 flow matching 内部构建自监督信号，Self-Flow 证明生成与表征学习可以在统一框架内互相增强，且遵循预期的缩放规律。
-
-这项工作的意义超越了生成质量的提升。通过消除对外部编码器的依赖，Self-Flow 为构建真正统一的多模态世界模型开辟了道路——这些模型可以利用视觉生成模型的可扩展性和感知基础，同时不牺牲规划和理解所需的语义抽象能力。论文在机器人视频-动作预测中的初步验证已经展示了这一方向的潜力。
+如果只记一句话：Self-Flow 的意义在于，它把生成模型的表征学习从外部 encoder alignment 改成了内部训练任务设计。模型不是被 DINO 教会语义，而是在 flow matching 自己的 denoising 过程中被迫学会语义。

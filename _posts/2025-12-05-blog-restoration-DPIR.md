@@ -3,11 +3,11 @@ title: 'Dual Prompting Image Restoration with Diffusion Transformers'
 date: 2025-12-05
 permalink: /posts/2025/12/2025-12-05-blog-restoration-DPIR/
 tags:
-  - super resolution
-  - flowmatching
-  - image restoration
-  - sd3
-  - Dual Prompting
+  - super-resolution
+  - image-restoration
+  - diffusion-transformer
+  - flow-matching
+  - SD3
 
 
 ---

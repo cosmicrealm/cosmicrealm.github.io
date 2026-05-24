@@ -3,9 +3,8 @@ title: 'moco 论文摘要'
 date: 2022-07-26
 permalink: /posts/2021/05/2022-07-26-blog-deeplearning_moco/
 tags:
-  - unsupervised learning
-  - imagenet
-  - moco
+  - deeplearning
+  - representation-learning
 ---
 
 

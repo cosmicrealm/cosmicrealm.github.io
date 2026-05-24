@@ -5,9 +5,8 @@ permalink: /posts/2025/12/2025-12-03-blog-avatar-SVDF/
 tags:
   - avatar
   - diffusion
-  - aigc
-  - DiT
-  - Video Reenactment
+  - diffusion-transformer
+  - video-generation
 ---
 
 ### [Paper Reading]：Stable Video-Driven Portraits — 基于 DiT 的高保真视频驱动人像生成

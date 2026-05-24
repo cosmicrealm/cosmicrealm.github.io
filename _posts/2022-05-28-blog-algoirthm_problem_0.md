@@ -3,7 +3,6 @@ title: '小于1000的正整数立方和pair'
 date: 2022-05-28
 permalink: /posts/2022/05/2022-05-28-blog-algorithm_problem_0/
 tags:
-  - leetcode
   - algorithm
 ---
 

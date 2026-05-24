@@ -3,7 +3,8 @@
   <div class="post-card__meta">
     <time datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: "%b %-d, %Y" }}</time>
     {% if item.tags and item.tags.size > 0 %}
-      <span>{{ item.tags | first }}</span>
+      {% assign item_first_tag = item.tags | first %}
+      {% include tag-chip.html tag=item_first_tag class="post-card__tag" %}
     {% endif %}
   </div>
   <h3 class="post-card__title">

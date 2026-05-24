@@ -3,11 +3,10 @@ title: 'DiT4SR: Taming Diffusion Transformer for Real-World Image Super-Resoluti
 date: 2025-12-08
 permalink: /posts/2025/12/2025-12-08-blog-restoration-DiT4SR/
 tags:
-  - super resolution
-  - diffusion transformer
-  - image restoration
+  - super-resolution
+  - image-restoration
+  - diffusion-transformer
   - SD3
-  - Real-ISR
 ---
 
 ### [Paper Reading] 基于 Diffusion Transformer 的真实世界超分辨率方法 DiT4SR

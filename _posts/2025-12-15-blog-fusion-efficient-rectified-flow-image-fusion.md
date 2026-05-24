@@ -3,12 +3,9 @@ title: 'Efficient Rectified Flow for Image Fusion'
 date: 2025-12-15
 permalink: /posts/2025/12/2025-12-15-blog-fusion-efficient-rectified-flow-image-fusion/
 tags:
-  - image fusion
-  - rectified flow
-  - diffusion acceleration
-  - plug-and-play prior
-  - VAE
-  - IR-VIS
+  - image-fusion
+  - flow-matching
+  - generation-acceleration
 ---
 
 ### [Paper Reading] Efficient Rectified Flow for Image Fusion（RFfusion）论文解读

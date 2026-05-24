@@ -38,7 +38,9 @@ layout: default
           <div class="post-hero-meta" aria-label="Post metadata">
             <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
             {% if page.tags and page.tags.size > 0 %}
-              <span>{{ page.tags | join: " / " }}</span>
+              {% for tag in page.tags %}
+                {% include tag-chip.html tag=tag class="post-hero-meta__tag" %}
+              {% endfor %}
             {% endif %}
           </div>
         {% elsif page.modified %}
