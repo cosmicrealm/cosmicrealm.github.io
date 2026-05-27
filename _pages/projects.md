@@ -28,6 +28,34 @@ author_profile: true
       {% endif %}
       <span>{{ project.display_date }} · {{ project.highlight }}</span>
       <p>{{ project.summary }}</p>
+      {% if project.demo %}
+      <div class="project-index-list__demo">
+        <div class="project-index-list__demo-header">
+          <strong>{{ project.demo.title }}</strong>
+          {% if project.demo.duration %}
+            <span>{{ project.demo.duration }}</span>
+          {% endif %}
+        </div>
+        {% if project.demo.description %}
+          <p>{{ project.demo.description }}</p>
+        {% endif %}
+        {% if project.demo.audio_url %}
+          <audio controls preload="metadata">
+            <source src="{{ project.demo.audio_url }}" type="{{ project.demo.audio_type | default: 'audio/mpeg' }}">
+            Your browser does not support the audio element.
+          </audio>
+        {% endif %}
+        {% if project.demo.text %}
+          <details class="project-index-list__demo-text">
+            <summary>{{ project.demo.text_label | default: "Show synthesis text" }}</summary>
+            <pre>{{ project.demo.text }}</pre>
+          </details>
+        {% endif %}
+        {% if project.demo.page_url %}
+          <a class="project-index-list__demo-page" href="{{ project.demo.page_url }}" target="_blank" rel="noopener">{{ project.demo.page_label | default: "Open demo page" }}</a>
+        {% endif %}
+      </div>
+      {% endif %}
       <div class="project-index-list__links" aria-label="{{ project.name }} links">
 {% for link in project.links %}
         {% if link.url contains "http" %}

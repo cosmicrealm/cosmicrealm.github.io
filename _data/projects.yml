@@ -1,3 +1,41 @@
+- name: Voice Studio
+  category: AI Voice Tools
+  status: v0.01 release
+  featured: true
+  date: 2026-05-27
+  display_date: 05/2026
+  teaser: /images/projects/voice-studio.jpg
+  teaser_alt: Voice Studio Script Studio dialogue generation interface
+  highlight: Local voice creation workspace for Apple Silicon Macs
+  summary: A local-first macOS voice creation app for premium voice generation, voice cloning, voice design, dialogue generation, and DeepSeek-assisted dialogue rewrite. It targets novels, audio drama, narration, character dialogue, and multi-role audio export workflows.
+  tags:
+    - macOS
+    - Voice Generation
+    - Dialogue Audio
+  links:
+    - label: Code
+      url: https://github.com/cosmicrealm/VoiceStudio
+    - label: Download
+      url: https://github.com/cosmicrealm/VoiceStudio/releases/download/v0.01/Voice-Studio-0.01-macOS-arm64.dmg
+  demo:
+    title: Voice Studio 0.01 dialogue audio sample
+    description: Multi-role dialogue generated in Voice Studio, covering role voice binding, per-line synthesis, and final full-audio merge.
+    audio_url: https://github.com/cosmicrealm/VoiceStudio/releases/download/v0.01/Voice-Studio-0.01-dialogue-demo.mp3
+    audio_type: audio/mpeg
+    duration: about 9 min 52 sec
+    page_url: https://cosmicrealm.github.io/VoiceStudio/dialogue-demo.html
+    page_label: Full demo page
+    text_label: Show synthesis text excerpt
+    text: |
+      旁白: 航行又持续了两个多小时，如果在三维，太空艇已经航行了二十万千米左右。突然间，硬币大小的“魔戒”顶天立地地出现在前方。
+      卓文: 紧急转向！
+      旁白: 卓文用目光操纵太空艇紧急转向，使撞向环箍的太空艇从“魔戒”的圆环中穿过。从艇中看去，像是通过了太空中一道巨大的拱门。太空艇全力减速，然后返回，悬停在距“魔戒”的圆心不远处。
+      关一帆: 我看不出后六个数的规律。
+      韦斯特: 那就假设没有规律。前六个数是我们发送的，最可能的含义就是表示我们，后六个数没有规律且不断出现不同的组合，可能代表“一切”，我们的一切。
+      魔戒: 我是墓地。
+      关一帆: 谁的墓地？
+      魔戒: 这个墓地的建造者的墓地。
+
 - name: IConFace
   category: Face Restoration
   status: Preprint
