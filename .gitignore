@@ -21,3 +21,6 @@ package-lock.json
 
 # Ignore files created by MacOS
 .DS_Store
+
+# Style-Talking media is hosted on R2; keep local video copies out of git.
+style-talking/static/videos/

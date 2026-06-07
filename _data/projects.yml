@@ -1,3 +1,23 @@
+- name: Style-Talking
+  category: Digital Human
+  status: Project page
+  featured: true
+  date: 2026-06-06
+  display_date: 06/2026
+  teaser: /style-talking/static/images/teaser.jpg
+  teaser_alt: Style-Talking audio-driven digital human result
+  highlight: Zero-shot speaking-style clone for video-driven avatars
+  summary: A zero-shot audio-driven digital human system that builds speaking-style prompts from a reference video, predicts LivePortrait expression motion from wav2vec audio features, and renders talking videos while preserving the original non-face regions.
+  tags:
+    - Digital Human
+    - Audio-Driven Video
+    - Style Clone
+  links:
+    - label: Project
+      url: /style-talking/
+    - label: Code
+      url: https://github.com/cosmicrealm/style-talking
+
 - name: Voice Studio
   category: AI Voice Tools
   status: v0.01 release

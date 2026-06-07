@@ -38,6 +38,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.project-home-link {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 700;
+  gap: 0.45rem;
+  left: 1rem;
+  padding: 0.55rem 0.8rem;
+  position: fixed;
+  text-decoration: none;
+  top: 1rem;
+  transition: var(--transition);
+  z-index: 40;
+}
+
+.project-home-link:hover {
+  background: var(--text-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
 
 /* Modern Button Styles */
 .button {

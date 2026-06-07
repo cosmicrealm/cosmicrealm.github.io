@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="Style-Talking: Zero-Shot Audio-Driven Digital Human">
+  <meta name="description" content="Style-Talking clones speaking style from a reference video and drives a digital human from target audio.">
+  <meta name="keywords" content="audio-driven digital human, talking head, speaking style clone, zero-shot avatar, LivePortrait">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Style-Talking">
+  <meta property="og:description" content="Zero-shot audio-driven digital human with speaking-style cloning.">
+  <meta property="og:url" content="https://cosmicrealm.github.io/style-talking/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/style-talking/static/images/teaser.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Style-Talking">
+  <meta name="twitter:description" content="Zero-shot audio-driven digital human with speaking-style cloning.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/style-talking/static/images/teaser.jpg">
+  <title>Style-Talking | Audio-Driven Digital Human</title>
+  <link rel="icon" href="../images/favicon.ico">
+  <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+  <a class="project-home-link" href="https://cosmicrealm.github.io/" aria-label="Go to Jinyang Zhang homepage">
+    <span>Home</span>
+  </a>
+
+  <main>
+    <header class="site-header">
+      <a href="https://cosmicrealm.github.io/" aria-label="Jinyang Zhang home">Jinyang Zhang</a>
+      <nav aria-label="Project navigation">
+        <a href="/projects/">Projects</a>
+        <a href="#results">Results</a>
+        <a href="#comparison">Comparison</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Zero-shot audio-driven digital human</p>
+        <h1>Style-Talking</h1>
+        <p class="lead">
+          Style-Talking clones speaking style from a reference video, predicts
+          LivePortrait expression motion from target audio, and renders a
+          talking video while preserving the original non-face regions.
+        </p>
+        <div class="project-actions" aria-label="Project links">
+          <a href="https://github.com/cosmicrealm/style-talking" target="_blank" rel="noopener">
+            <span class="action-label">Code</span>
+            <span>cosmicrealm/style-talking</span>
+          </a>
+        </div>
+        <div class="pill-row" aria-label="Project highlights">
+          <span>Speaking-style prompt</span>
+          <span>wav2vec audio features</span>
+          <span>LivePortrait rendering</span>
+          <span>Video-driven identity</span>
+        </div>
+      </div>
+      <div class="hero-video">
+        <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="metadata" playsinline></video>
+        <p>Trump / English style-clone result, driven by cloned English speech.</p>
+      </div>
+    </section>
+
+    <section class="section compact">
+      <div class="section-heading">
+        <p class="eyebrow">Pipeline</p>
+        <h2>Audio to expression to video</h2>
+      </div>
+      <div class="pipeline">
+        <span>source video</span>
+        <span>wav2vec</span>
+        <span>style-prompted expression</span>
+        <span>renderer</span>
+        <span>face blend</span>
+      </div>
+    </section>
+
+    <section class="section" id="results">
+      <div class="section-heading">
+        <p class="eyebrow">Multilingual style clone</p>
+        <h2>One reference, four target languages</h2>
+      </div>
+      <div class="video-grid four-up">
+        <article>
+          <h3>Chinese</h3>
+          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+        </article>
+        <article>
+          <h3>English</h3>
+          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video>
+        </article>
+        <article>
+          <h3>Japanese</h3>
+          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+        </article>
+        <article>
+          <h3>Korean</h3>
+          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_korean_style_talking.jpg" controls preload="none" playsinline></video>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <p class="eyebrow">Cross-identity samples</p>
+        <h2>Source video and generated result</h2>
+      </div>
+      <div class="paired-list">
+        <article class="pair">
+          <div>
+            <h3>Michelle Yeoh / English source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/michelle_yeoh_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/michelle_yeoh_english_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/michelle_yeoh_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Zendaya / English source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/zendaya_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/zendaya_english_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/zendaya_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Liu Yifei / Chinese source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/liu_yifei_chinese_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/liu_yifei_chinese_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/liu_yifei_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Morgan Freeman / English source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/morgan_freeman_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/morgan_freeman_english_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/morgan_freeman_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Jake Gyllenhaal / Japanese source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/jake_gyllenhaal_japanese_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/jake_gyllenhaal_japanese_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Timothee Chalamet / Korean source</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/timothee_chalamet_korean_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/timothee_chalamet_korean_source.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="comparison">
+      <div class="section-heading">
+        <p class="eyebrow">Method comparison</p>
+        <h2>Same source and target audio settings</h2>
+      </div>
+      <div class="comparison-block">
+        <h3>Trump / English</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Liu Yifei / Chinese</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/liu_yifei_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Morgan Freeman / English</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/morgan_freeman_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Michelle Yeoh / English</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/michelle_yeoh_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Zendaya / English</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/zendaya_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Jake Gyllenhaal / Japanese</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+      <div class="comparison-block">
+        <h3>Timothee Chalamet / Korean</h3>
+        <div class="method-grid">
+          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_wav2lip.jpg" controls preload="none" playsinline></video></article>
+          <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_musetalk.jpg" controls preload="none" playsinline></video></article>
+          <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_latentsync.jpg" controls preload="none" playsinline></video></article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
