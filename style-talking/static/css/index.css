@@ -273,6 +273,10 @@ h3 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.pair.triple-pair {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .comparison-block {
   margin-top: 30px;
 }
@@ -299,6 +303,10 @@ h3 {
   .hero,
   .pair {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pair.triple-pair {
+    grid-template-columns: 1fr;
   }
 
   .pipeline {

@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="title" content="Style-Talking: Zero-Shot Audio-Driven Digital Human">
-  <meta name="description" content="Style-Talking clones speaking style from a reference video and drives a digital human from target audio.">
-  <meta name="keywords" content="audio-driven digital human, talking head, speaking style clone, zero-shot avatar, LivePortrait">
+  <meta name="description" content="Style-Talking clones speaking style from a reference video and drives a digital human from target audio with an optional RefGAN renderer.">
+  <meta name="keywords" content="audio-driven digital human, talking head, speaking style clone, zero-shot avatar, LivePortrait, RefGAN">
   <meta name="author" content="Jinyang Zhang">
   <meta property="og:type" content="article">
   <meta property="og:title" content="Style-Talking">
-  <meta property="og:description" content="Zero-shot audio-driven digital human with speaking-style cloning.">
+  <meta property="og:description" content="Zero-shot audio-driven digital human with speaking-style cloning and reference-enhanced rendering.">
   <meta property="og:url" content="https://cosmicrealm.github.io/style-talking/">
   <meta property="og:image" content="https://cosmicrealm.github.io/style-talking/static/images/teaser.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -31,6 +31,7 @@
       <nav aria-label="Project navigation">
         <a href="/projects/">Projects</a>
         <a href="#results">Results</a>
+        <a href="#renderer-comparison">Renderer</a>
         <a href="#comparison">Comparison</a>
       </nav>
     </header>
@@ -42,7 +43,8 @@
         <p class="lead">
           Style-Talking clones speaking style from a reference video, predicts
           LivePortrait expression motion from target audio, and renders a
-          talking video while preserving the original non-face regions.
+          talking video with an optional RefGAN renderer while preserving the
+          original non-face regions.
         </p>
         <div class="project-actions" aria-label="Project links">
           <a href="https://github.com/cosmicrealm/style-talking" target="_blank" rel="noopener">
@@ -53,13 +55,13 @@
         <div class="pill-row" aria-label="Project highlights">
           <span>Speaking-style prompt</span>
           <span>wav2vec audio features</span>
-          <span>LivePortrait rendering</span>
+          <span>RefGAN renderer</span>
           <span>Video-driven identity</span>
         </div>
       </div>
       <div class="hero-video">
-        <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="metadata" playsinline></video>
-        <p>Trump / English style-clone result, driven by cloned English speech.</p>
+        <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_english_style_talking.jpg" controls preload="metadata" playsinline></video>
+        <p>Trump / English style-clone result, driven by cloned English speech and rendered with RefGAN.</p>
       </div>
     </section>
 
@@ -72,7 +74,7 @@
         <span>source video</span>
         <span>wav2vec</span>
         <span>style-prompted expression</span>
-        <span>renderer</span>
+        <span>original or RefGAN renderer</span>
         <span>face blend</span>
       </div>
     </section>
@@ -85,19 +87,19 @@
       <div class="video-grid four-up">
         <article>
           <h3>Chinese</h3>
-          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_chinese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_chinese_style_talking.jpg" controls preload="none" playsinline></video>
         </article>
         <article>
           <h3>English</h3>
-          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video>
+          <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video>
         </article>
         <article>
           <h3>Japanese</h3>
-          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_japanese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_japanese_style_talking.jpg" controls preload="none" playsinline></video>
         </article>
         <article>
           <h3>Korean</h3>
-          <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_korean_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_korean_style_talking.jpg" controls preload="none" playsinline></video>
         </article>
       </div>
     </section>
@@ -105,10 +107,10 @@
     <section class="section">
       <div class="section-heading">
         <p class="eyebrow">Cross-identity samples</p>
-        <h2>Source video and generated result</h2>
+        <h2>Source video, original decoder, and RefGAN result</h2>
       </div>
       <div class="paired-list">
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Michelle Yeoh / English source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/michelle_yeoh_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/michelle_yeoh_english_source.jpg" controls preload="none" playsinline></video>
@@ -117,8 +119,12 @@
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/michelle_yeoh_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/michelle_yeoh_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
         </article>
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Zendaya / English source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/zendaya_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/zendaya_english_source.jpg" controls preload="none" playsinline></video>
@@ -127,8 +133,12 @@
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/zendaya_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/zendaya_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
         </article>
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Liu Yifei / Chinese source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/liu_yifei_chinese_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/liu_yifei_chinese_source.jpg" controls preload="none" playsinline></video>
@@ -137,8 +147,12 @@
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/liu_yifei_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/liu_yifei_chinese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
         </article>
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Morgan Freeman / English source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/morgan_freeman_english_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/morgan_freeman_english_source.jpg" controls preload="none" playsinline></video>
@@ -147,8 +161,12 @@
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/morgan_freeman_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/morgan_freeman_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
         </article>
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Jake Gyllenhaal / Japanese source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/jake_gyllenhaal_japanese_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/jake_gyllenhaal_japanese_source.jpg" controls preload="none" playsinline></video>
@@ -157,8 +175,12 @@
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
         </article>
-        <article class="pair">
+        <article class="pair triple-pair">
           <div>
             <h3>Timothee Chalamet / Korean source</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/sources/timothee_chalamet_korean_source.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/sources/timothee_chalamet_korean_source.jpg" controls preload="none" playsinline></video>
@@ -166,6 +188,120 @@
           <div>
             <h3>Style-Talking</h3>
             <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Style-Talking RefGAN</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="renderer-comparison">
+      <div class="section-heading">
+        <p class="eyebrow">Renderer comparison</p>
+        <h2>Original LivePortrait decoder vs RefGAN renderer</h2>
+        <p>The same Audio2Motion output and target audio are used in each pair; only the rendering path changes.</p>
+      </div>
+      <div class="paired-list">
+        <article class="pair">
+          <div>
+            <h3>Trump / Chinese original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Trump / Chinese RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_chinese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Trump / English original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Trump / English RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Trump / Japanese original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Trump / Japanese RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_japanese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Trump / Korean original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Trump / Korean RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_korean_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Michelle Yeoh / English original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/michelle_yeoh_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Michelle Yeoh / English RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/michelle_yeoh_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Zendaya / English original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/zendaya_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Zendaya / English RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/zendaya_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Liu Yifei / Chinese original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/liu_yifei_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Liu Yifei / Chinese RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/liu_yifei_chinese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Morgan Freeman / English original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/morgan_freeman_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Morgan Freeman / English RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/morgan_freeman_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Jake Gyllenhaal / Japanese original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Jake Gyllenhaal / Japanese RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+        </article>
+        <article class="pair">
+          <div>
+            <h3>Timothee Chalamet / Korean original decoder</h3>
+            <video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video>
+          </div>
+          <div>
+            <h3>Timothee Chalamet / Korean RefGAN renderer</h3>
+            <video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video>
           </div>
         </article>
       </div>
@@ -179,7 +315,7 @@
       <div class="comparison-block">
         <h3>Trump / English</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/trump_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/trump_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/trump_english_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/trump_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/trump_english_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -188,7 +324,7 @@
       <div class="comparison-block">
         <h3>Liu Yifei / Chinese</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/liu_yifei_chinese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/liu_yifei_chinese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/liu_yifei_chinese_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/liu_yifei_chinese_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/liu_yifei_chinese_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -197,7 +333,7 @@
       <div class="comparison-block">
         <h3>Morgan Freeman / English</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/morgan_freeman_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/morgan_freeman_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/morgan_freeman_english_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/morgan_freeman_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/morgan_freeman_english_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -206,7 +342,7 @@
       <div class="comparison-block">
         <h3>Michelle Yeoh / English</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/michelle_yeoh_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/michelle_yeoh_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/michelle_yeoh_english_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/michelle_yeoh_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/michelle_yeoh_english_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -215,7 +351,7 @@
       <div class="comparison-block">
         <h3>Zendaya / English</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/zendaya_english_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/zendaya_english_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/zendaya_english_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/zendaya_english_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/zendaya_english_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -224,7 +360,7 @@
       <div class="comparison-block">
         <h3>Jake Gyllenhaal / Japanese</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/jake_gyllenhaal_japanese_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/jake_gyllenhaal_japanese_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/jake_gyllenhaal_japanese_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/jake_gyllenhaal_japanese_latentsync.jpg" controls preload="none" playsinline></video></article>
@@ -233,7 +369,7 @@
       <div class="comparison-block">
         <h3>Timothee Chalamet / Korean</h3>
         <div class="method-grid">
-          <article><span>Style-Talking</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video></article>
+          <article><span>Style-Talking RefGAN</span><video src="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/project/effects/timothee_chalamet_korean_style_talking.mp4" poster="file:///Users/zhangjinyang/code/cosmicrealm/flow-talking/release/style-talking/docs/assets/refgan_jitter235k/posters/project/effects/timothee_chalamet_korean_style_talking.jpg" controls preload="none" playsinline></video></article>
           <article><span>Wav2Lip</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_wav2lip.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_wav2lip.jpg" controls preload="none" playsinline></video></article>
           <article><span>MuseTalk</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_musetalk.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_musetalk.jpg" controls preload="none" playsinline></video></article>
           <article><span>LatentSync</span><video src="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/project/comparisons/timothee_chalamet_korean_latentsync.mp4" poster="https://pub-36121c3d7fa84c3f8de1728263cd1284.r2.dev/style-talking/assets_v1/posters/project/comparisons/timothee_chalamet_korean_latentsync.jpg" controls preload="none" playsinline></video></article>
