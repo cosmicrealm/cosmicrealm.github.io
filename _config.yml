@@ -184,6 +184,15 @@ exclude:
   - LICENSE
   - local
   - log
+  - knowledge
+  - foundations/codex_generation_model_acceleration_page_guide.md
+  - foundations/codex_image_generation_webpage_spec.md
+  - foundations/codex_video_generation_webpage_guidance.md
+  - foundations/diffusion-distillation-math-lab/README.md
+  - foundations/diffusion-distillation-math-lab/codex_generation_distillation_page_guide.md
+  - foundations/diffusion-distillation-math-lab/static
+  - foundations/generation-math/codex_generation_math_refactor_guide.md
+  - Projects/diffusion-distillation-math-lab/README.md
   - node_modules
   - package.json*
   - Rakefile

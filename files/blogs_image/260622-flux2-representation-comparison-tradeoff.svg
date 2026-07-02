@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="700" viewBox="0 0 1100 700" role="img" aria-labelledby="title desc">
+  <title id="title">FLUX.2 representation trade-off</title>
+  <desc id="desc">Scatter plot comparing gFID and LPIPS for FLUX.2, FLUX.1, SD, and RAE autoencoders based on the BFL representation comparison blog.</desc>
+  <defs>
+    <style>
+      .axis { stroke: #1f2937; stroke-width: 2; }
+      .grid { stroke: #d8dee9; stroke-width: 1; stroke-dasharray: 4 6; }
+      .label { font: 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .small { font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .title { font: 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 700; fill: #111827; }
+      .note { font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .flux2 { fill: #2563eb; stroke: #0f172a; stroke-width: 2; }
+      .flux1 { fill: #f97316; stroke: #0f172a; stroke-width: 2; }
+      .sd { fill: #16a34a; stroke: #0f172a; stroke-width: 2; }
+      .rae { fill: #9333ea; stroke: #0f172a; stroke-width: 2; }
+      .guide { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 6 6; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="700" fill="#ffffff"/>
+  <text class="title" x="95" y="56">Learnability vs. reconstruction fidelity</text>
+  <text class="note" x="95" y="84">Lower-left is better. Data from BFL Figure 1.</text>
+  <text class="note" x="95" y="104">gFID measures latent-space learnability; LPIPS measures reconstruction distortion.</text>
+
+  <line class="grid" x1="120" y1="540" x2="940" y2="540"/>
+  <line class="grid" x1="120" y1="417.8" x2="940" y2="417.8"/>
+  <line class="grid" x1="120" y1="295.6" x2="940" y2="295.6"/>
+  <line class="grid" x1="120" y1="173.3" x2="940" y2="173.3"/>
+  <line class="grid" x1="120" y1="80" x2="940" y2="80"/>
+
+  <line class="grid" x1="120" y1="80" x2="120" y2="540"/>
+  <line class="grid" x1="269" y1="80" x2="269" y2="540"/>
+  <line class="grid" x1="418" y1="80" x2="418" y2="540"/>
+  <line class="grid" x1="567" y1="80" x2="567" y2="540"/>
+  <line class="grid" x1="716" y1="80" x2="716" y2="540"/>
+  <line class="grid" x1="865" y1="80" x2="865" y2="540"/>
+  <line class="grid" x1="940" y1="80" x2="940" y2="540"/>
+
+  <line class="axis" x1="120" y1="540" x2="940" y2="540"/>
+  <line class="axis" x1="120" y1="80" x2="120" y2="540"/>
+
+  <text class="small" x="113" y="566">0</text>
+  <text class="small" x="262" y="566">2</text>
+  <text class="small" x="411" y="566">4</text>
+  <text class="small" x="560" y="566">6</text>
+  <text class="small" x="709" y="566">8</text>
+  <text class="small" x="852" y="566">10</text>
+  <text class="small" x="926" y="566">11</text>
+
+  <text class="small" x="74" y="545">0.0</text>
+  <text class="small" x="74" y="423">0.5</text>
+  <text class="small" x="74" y="301">1.0</text>
+  <text class="small" x="74" y="179">1.5</text>
+  <text class="small" x="74" y="86">1.8</text>
+
+  <text class="label" x="430" y="625">Learnability: generative FID / gFID</text>
+  <text class="label" x="-430" y="40" transform="rotate(-90)">Fidelity: LPIPS reconstruction distortion</text>
+
+  <line class="guide" x1="395.8" y1="471.8" x2="874.6" y2="453.6"/>
+  <line class="guide" x1="395.8" y1="471.8" x2="695.5" y2="296.8"/>
+  <line class="guide" x1="395.8" y1="471.8" x2="351.3" y2="112.2"/>
+
+  <circle class="flux2" cx="395.8" cy="471.8" r="12"/>
+  <text class="label" x="414" y="463">FLUX.2</text>
+  <text class="small" x="414" y="485">gFID 3.70, LPIPS 0.27</text>
+
+  <circle class="flux1" cx="874.6" cy="453.6" r="10"/>
+  <text class="label" x="797" y="433">FLUX.1</text>
+  <text class="small" x="764" y="455">10.13, 0.34</text>
+
+  <circle class="sd" cx="695.5" cy="296.8" r="10"/>
+  <text class="label" x="712" y="296">SD</text>
+  <text class="small" x="712" y="318">7.73, 0.95</text>
+
+  <circle class="rae" cx="351.3" cy="112.2" r="10"/>
+  <text class="label" x="368" y="111">RAE</text>
+  <text class="small" x="368" y="133">3.10, 1.67</text>
+
+  <rect x="692" y="588" width="320" height="54" rx="8" fill="#f8fafc" stroke="#d1d5db"/>
+  <text class="note" x="710" y="612">Interpretation: FLUX.2 gives up some learnability</text>
+  <text class="note" x="710" y="632">relative to RAE, but preserves much more fidelity.</text>
+</svg>

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="980" viewBox="0 0 900 980" role="img" aria-labelledby="title desc">
+  <title id="title">FLUX.2 representation comparison data flow</title>
+  <desc id="desc">A vertical flow diagram showing autoencoder comparison, latent flow matching training, reconstruction metrics, and generation metrics used in the BFL representation comparison blog.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .title { font: 26px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 700; fill: #0f172a; }
+      .section { font: 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 700; fill: #111827; }
+      .label { font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+      .small { font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #374151; }
+      .tiny { font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.6; rx: 12; }
+      .blue { fill: #eff6ff; stroke: #60a5fa; }
+      .green { fill: #ecfdf5; stroke: #34d399; }
+      .orange { fill: #fff7ed; stroke: #fb923c; }
+      .purple { fill: #faf5ff; stroke: #a855f7; }
+      .gray { fill: #f8fafc; stroke: #cbd5e1; }
+      .line { stroke: #334155; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="900" height="980" fill="#ffffff"/>
+  <text class="title" x="48" y="52">Representation comparison protocol</text>
+  <text class="tiny" x="48" y="78">Hold a latent flow model mostly fixed, then tune timestep schedules for each autoencoder latent space.</text>
+
+  <rect class="box gray" x="48" y="108" width="804" height="170"/>
+  <text class="section" x="72" y="140">Autoencoder candidates</text>
+  <rect class="box blue" x="72" y="162" width="170" height="72"/>
+  <text class="label" x="94" y="192">SD-VAE</text>
+  <text class="small" x="94" y="214">16 channels / token</text>
+  <rect class="box blue" x="260" y="162" width="170" height="72"/>
+  <text class="label" x="282" y="192">FLUX.1 VAE</text>
+  <text class="small" x="282" y="214">64 channels / token</text>
+  <rect class="box blue" x="448" y="162" width="170" height="72"/>
+  <text class="label" x="470" y="192">FLUX.2 VAE</text>
+  <text class="small" x="470" y="214">128 channels / token</text>
+  <rect class="box blue" x="636" y="162" width="170" height="72"/>
+  <text class="label" x="658" y="192">RAE</text>
+  <text class="small" x="658" y="214">768 channels / token</text>
+  <text class="tiny" x="72" y="254">All are arranged to 256 latent tokens in the proxy ImageNet experiment.</text>
+
+  <rect class="box green" x="110" y="326" width="250" height="94"/>
+  <text class="section" x="132" y="356">ImageNet image u</text>
+  <text class="small" x="132" y="382">256 x 256 training image</text>
+  <text class="small" x="132" y="402">random class for sampling</text>
+
+  <rect class="box green" x="520" y="326" width="250" height="94"/>
+  <text class="section" x="542" y="356">Frozen encoder E</text>
+  <text class="small" x="542" y="382">one AE candidate</text>
+  <text class="small" x="542" y="402">latent E(u)</text>
+
+  <path class="line" d="M360 373 H520"/>
+
+  <rect class="box purple" x="72" y="488" width="328" height="122"/>
+  <text class="section" x="96" y="522">Reconstruction branch</text>
+  <text class="small" x="96" y="548">decode D(E(u)) back to RGB</text>
+  <text class="small" x="96" y="572">metrics: LPIPS, SSIM, PSNR, rFID</text>
+  <text class="small" x="96" y="596">ImageNet validation set</text>
+
+  <rect class="box orange" x="500" y="474" width="328" height="150"/>
+  <text class="section" x="524" y="508">CFM training pair</text>
+  <text class="small" x="524" y="534">sample t from ts / ln / pln</text>
+  <text class="small" x="524" y="558">alpha in {1.00, 1.78, 2.95, 4.63, 6.93}</text>
+  <text class="small" x="524" y="582">v_t = (1-t)E(u) + t eps</text>
+  <text class="small" x="524" y="606">target velocity: eps - E(u)</text>
+
+  <path class="dash" d="M612 420 C560 450, 430 470, 330 488"/>
+  <path class="line" d="M645 420 V474"/>
+
+  <rect class="box orange" x="500" y="692" width="328" height="112"/>
+  <text class="section" x="524" y="726">DiT-XL latent flow</text>
+  <text class="small" x="524" y="752">most hyperparameters held constant</text>
+  <text class="small" x="524" y="776">with / without REPA objective</text>
+
+  <path class="line" d="M664 624 V692"/>
+
+  <rect class="box purple" x="72" y="692" width="328" height="112"/>
+  <text class="section" x="96" y="726">Generation branch</text>
+  <text class="small" x="96" y="752">sample latent with 50 Euler steps</text>
+  <text class="small" x="96" y="776">50k random ImageNet classes, metric: gFID</text>
+
+  <path class="line" d="M500 748 H400"/>
+
+  <rect class="box gray" x="132" y="858" width="636" height="76"/>
+  <text class="section" x="156" y="890">Protocol caveat</text>
+  <text class="small" x="156" y="916">Best timestep schedule is searched per latent; rankings can change without tuning.</text>
+</svg>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="生成模型加速原理：从算法、架构、数值计算到系统调度">
+  <meta name="description" content="中文生成模型加速讲义：从 roofline、FlashAttention、KV cache、PagedAttention、continuous batching、量化、speculative decoding、diffusion sampler/cache、token reduction 到分布式训练。">
+  <meta name="keywords" content="generative model acceleration, FlashAttention, KV cache, PagedAttention, quantization, speculative decoding, diffusion sampler, DiT cache, continuous batching, FSDP, ZeRO, MoE">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="生成模型加速原理">
+  <meta property="og:description" content="从采样步数、注意力内核、KV cache、量化、缓存、批处理和分布式训练理解现代生成模型如何提速。">
+  <meta property="og:url" content="https://cosmicrealm.github.io/foundations/generation-acceleration/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/generation-acceleration.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="生成模型加速原理">
+  <meta name="twitter:description" content="Acceleration notes for sampling, attention, quantization, caching, serving, and training.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/generation-acceleration.svg">
+  <title>生成模型加速原理 | Sampling, Attention, Quantization, Serving</title>
+  <link rel="canonical" href="/foundations/generation-acceleration/">
+  <link rel="icon" href="../../images/favicon.svg">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+  <script defer src="../generation-math/static/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+  <header class="site-header">
+    <a class="brand" href="/">Jinyang Zhang</a>
+    <nav class="module-nav" aria-label="Foundation module navigation">
+      <a href="/">返回主页</a>
+      <a href="/foundations/">返回 Foundations</a>
+    </nav>
+  </header>
+
+  <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
+  <aside class="lecture-toc" id="lectureToc" aria-label="生成模型加速目录">
+    <p>目录</p>
+    <nav>
+      <a href="#problem">总体问题</a>
+      <a href="#roofline">Roofline</a>
+      <a href="#attention-kernels">Attention Kernel</a>
+      <a href="#kv-cache">KV Cache</a>
+      <a href="#serving-batching">Serving & Batching</a>
+      <a href="#quantization">Quantization</a>
+      <a href="#speculative-decoding">Speculative Decoding</a>
+      <a href="#diffusion-samplers">Diffusion Samplers</a>
+      <a href="#diffusion-cache">Diffusion Cache</a>
+      <a href="#token-reduction">Token Reduction</a>
+      <a href="#training-acceleration">Training Acceleration</a>
+      <a href="#peft-runtime">LoRA / Runtime</a>
+      <a href="#architecture-acceleration">Sparse Architecture</a>
+      <a href="#timeline">演化路线</a>
+      <a href="#decision-map">诊断地图</a>
+      <a href="#misconceptions">常见误解</a>
+    </nav>
+  </aside>
+
+  <main id="main" class="lecture">
+    <header class="paper-header">
+      <p class="kicker">Acceleration notes</p>
+      <h1>生成模型加速原理</h1>
+      <p class="subtitle">从采样步数、注意力内核、KV cache、量化、缓存、批处理和分布式训练理解现代生成模型如何提速。</p>
+    </header>
+
+    <section class="chapter problem" id="problem">
+      <header class="chapter-header">
+        <h2>总体问题：慢在哪里，才能快在哪里</h2>
+        <p class="chapter-summary">生成模型加速不是单纯压缩模型。核心问题是：如何用更少的计算、更少的内存、更少的数据搬运、更少的同步等待，近似或等价地得到同一个生成分布。</p>
+      </header>
+      <div class="intuition-section">
+        <h3>一句话直觉</h3>
+        <p>参数多只是表象；很多真实瓶颈来自串行生成、HBM 数据搬运、KV cache 膨胀、请求长度不规则，以及 GPU 调度空泡。</p>
+      </div>
+      <div class="derivation-section">
+        <h3>统一代价模型</h3>
+        <p>单步延迟的下界可以拆成计算、带宽、通信、同步和调度几项：</p>
+        <div class="equation">
+\[
+T_{\text{step}}\approx
+\max\left(
+\frac{\text{FLOPs}}{\text{compute throughput}},
+\frac{\text{bytes moved}}{\text{memory bandwidth}}
+\right)
++T_{\text{comm}}+T_{\text{sync}}+T_{\text{schedule}}.
+\]
+        </div>
+        <p>不同加速技术本质上是在压缩某一项：NFE、token 数、precision bytes、KV cache、HBM traffic、batch 空泡或通信等待。</p>
+      </div>
+      <div class="lever-grid" aria-label="Acceleration levers">
+        <article><strong>更少步数</strong><span>DDIM, DPM-Solver, UniPC, ODE solver</span></article>
+        <article><strong>更少搬运</strong><span>FlashAttention, kernel fusion, activation recomputation</span></article>
+        <article><strong>更少 KV</strong><span>MQA, GQA, MLA, PagedAttention, prefix cache</span></article>
+        <article><strong>更少精度</strong><span>FP8, INT8, INT4, GPTQ, AWQ, SmoothQuant, KV quant</span></article>
+        <article><strong>更高利用率</strong><span>continuous batching, chunked prefill, request scheduling</span></article>
+        <article><strong>更稀疏激活</strong><span>MoE, sparse attention, token pruning, dynamic halting</span></article>
+      </div>
+      <div class="visual-example">
+        <div class="visual-copy">
+          <h3>可视化：瓶颈地图</h3>
+          <p>调节 workload 类型，观察主要瓶颈如何从 compute 转移到 memory、serial depth 或 scheduling。</p>
+        </div>
+        <div class="lab-card">
+          <div class="segmented" role="group" aria-label="Workload bottleneck">
+            <button class="active" type="button" data-bottleneck-mode="llm-decode">LLM decode</button>
+            <button type="button" data-bottleneck-mode="llm-prefill">LLM prefill</button>
+            <button type="button" data-bottleneck-mode="diffusion">Diffusion</button>
+            <button type="button" data-bottleneck-mode="training">Training</button>
+          </div>
+          <div id="bottleneckBars" class="bottleneck-bars" aria-label="Bottleneck contribution bars"></div>
+          <p id="bottleneckReadout" class="lab-readout">decode 常被 KV cache 带宽、串行 token 和 batch 利用率限制。</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="roofline">
+        <div class="panel-title">
+          <h3>伪代码：统一延迟估计</h3>
+          <div class="segmented" role="tablist" aria-label="roofline train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="roofline"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="roofline">
+      <header class="chapter-header">
+        <h2>Roofline 视角：算力瓶颈还是带宽瓶颈</h2>
+        <p class="chapter-summary">GPU 很快，但把数据从显存搬到计算单元也很慢。很多快算法不是少算了，而是少搬了。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>数学对象 / 代价模型</h3>
+        <p>定义 arithmetic intensity：</p>
+        <div class="equation">
+\[
+I=\frac{\text{FLOPs}}{\text{bytes moved}},\qquad
+T\ge \max\left(\frac{\text{FLOPs}}{P_{\max}},\frac{\text{bytes moved}}{B_{\max}}\right).
+\]
+        </div>
+        <p>当 \(I\) 很低时，模型更像 memory-bound；当 \(I\) 很高时，模型更可能被 compute throughput 限制。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="roofline-lab">
+        <div class="visual-copy">
+          <h3>Roofline Calculator</h3>
+          <p>输入每步 FLOPs、数据搬运和硬件峰值，估计 compute time、memory time 与瓶颈类型。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>FLOPs / step (TF)<input id="roofFlops" type="range" min="1" max="900" value="160"><output id="roofFlopsOut">160</output></label>
+            <label>Bytes moved (GB)<input id="roofBytes" type="range" min="1" max="900" value="220"><output id="roofBytesOut">220</output></label>
+            <label>Peak TFLOP/s<input id="roofPeak" type="range" min="20" max="2400" value="900"><output id="roofPeakOut">900</output></label>
+            <label>Bandwidth TB/s<input id="roofBandwidth" type="range" min="1" max="12" step="0.1" value="3.4"><output id="roofBandwidthOut">3.4</output></label>
+            <label>Batch size<input id="roofBatch" type="range" min="1" max="64" value="8"><output id="roofBatchOut">8</output></label>
+            <label>Precision bytes<input id="roofPrecision" type="range" min="1" max="4" value="2"><output id="roofPrecisionOut">2</output></label>
+          </div>
+          <canvas id="rooflineCanvas" class="lab-canvas roofline-chart" width="900" height="360" aria-label="Roofline calculator chart"></canvas>
+          <p id="rooflineReadout" class="lab-readout">latency lower bound = 0 ms</p>
+        </div>
+      </div>
+      <div class="judgement-card">
+        <h3>优点、风险、诊断信号</h3>
+        <div class="judgement-grid">
+          <div><strong>优点</strong><p>先判断瓶颈，避免盲目追逐 FLOPs。</p></div>
+          <div><strong>风险</strong><p>实际 runtime 还有 kernel launch、shape、cache miss、通信和调度成本。</p></div>
+          <div><strong>诊断信号</strong><p>TFLOP/s、HBM bandwidth、kernel utilization、prefill/decode 分开测。</p></div>
+          <div><strong>工程动作</strong><p>memory-bound 优先看 IO-aware kernel、量化、cache；compute-bound 再看并行和低精度 tensor core。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="attention-kernels">
+      <header class="chapter-header">
+        <h2>Attention Kernel：FlashAttention 的原理</h2>
+        <p class="chapter-summary">FlashAttention 仍然计算 exact attention，但用分块和在线 softmax 避免把完整 \(T\times T\) score matrix 写回 HBM。</p>
+      </header>
+      <div class="intuition-section">
+        <h3>一句话直觉</h3>
+        <p>标准 attention 慢，不只是 \(O(T^2)\)；更关键是巨大中间矩阵的显存读写。FlashAttention 尽量让中间状态停留在 SRAM / shared memory。</p>
+      </div>
+      <div class="derivation-section">
+        <h3>数学对象 / 在线 softmax</h3>
+        <div class="equation">
+\[
+\operatorname{Attn}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt d}\right)V,\qquad
+m_{\text{new}}=\max(m_{\text{old}},m_{\text{block}})
+\]
+\[
+l_{\text{new}}=e^{m_{\text{old}}-m_{\text{new}}}l_{\text{old}}+
+e^{m_{\text{block}}-m_{\text{new}}}l_{\text{block}}.
+\]
+        </div>
+        <p>通过递推维护每行最大值和分母，就不需要显式保存完整 attention matrix。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="attention-memory-lab">
+        <div class="visual-copy">
+          <h3>Attention Memory Visualizer</h3>
+          <p>比较 standard attention 与 FlashAttention 在 score matrix materialization 和 HBM traffic 上的差异。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>sequence length T<input id="attnSeq" type="range" min="128" max="8192" step="128" value="2048"><output id="attnSeqOut">2048</output></label>
+            <label>head dim d<input id="attnDim" type="range" min="32" max="256" step="16" value="128"><output id="attnDimOut">128</output></label>
+            <label>mode<select id="attnMode"><option value="standard">standard attention</option><option value="flash">FlashAttention</option></select></label>
+          </div>
+          <canvas id="attentionCanvas" class="lab-canvas" width="900" height="360" aria-label="Attention memory visualizer"></canvas>
+          <p id="attentionReadout" class="lab-readout">attention matrix = 0 GB</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="flash">
+        <div class="panel-title">
+          <h3>伪代码：Blocked Exact Attention</h3>
+          <div class="segmented" role="tablist" aria-label="flash train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="flash"></code></pre>
+      </div>
+      <div class="warning-card">
+        <h3>风险与诊断</h3>
+        <ul>
+          <li>不同 kernel 对 mask、dropout、head dim、causal attention 和硬件代际支持不同。</li>
+          <li>低精度 attention 要做 numerical parity test，尤其是长上下文和高温采样。</li>
+          <li>prefill 与 decode 要分开 benchmark；decode 往往还需要 KV cache 与 serving 优化。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="kv-cache">
+      <header class="chapter-header">
+        <h2>KV Cache：从重新计算到记忆历史</h2>
+        <p class="chapter-summary">自回归模型每生成一个 token 都要看历史。KV cache 把每层历史 key/value 存起来，避免每步重复计算整段上下文。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>KV cache 内存公式</h3>
+        <p>设 batch \(B\)、层数 \(L\)、上下文长度 \(T\)、KV heads \(H_{kv}\)、head dim \(D\)、每元素字节 \(b\)，则：</p>
+        <div class="equation">
+\[
+M_{KV}=2\cdot B\cdot L\cdot T\cdot H_{kv}\cdot D\cdot b.
+\]
+        </div>
+        <p>MQA 令 \(H_{kv}=1\)，GQA 令 \(1&lt;H_{kv}&lt;H_q\)，因此 KV cache 可线性下降。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="kv-cache-lab">
+        <div class="visual-copy">
+          <h3>KV Cache Memory Calculator</h3>
+          <p>比较 MHA、GQA 和 MQA 在同一 batch/context 下的 KV 显存占用。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>layers L<input id="kvLayers" type="range" min="8" max="128" step="4" value="32"><output id="kvLayersOut">32</output></label>
+            <label>context T<input id="kvContext" type="range" min="512" max="131072" step="512" value="8192"><output id="kvContextOut">8192</output></label>
+            <label>batch B<input id="kvBatch" type="range" min="1" max="128" value="16"><output id="kvBatchOut">16</output></label>
+            <label>query heads Hq<input id="kvHq" type="range" min="8" max="128" step="4" value="32"><output id="kvHqOut">32</output></label>
+            <label>KV heads Hkv<input id="kvHkv" type="range" min="1" max="32" value="8"><output id="kvHkvOut">8</output></label>
+            <label>head dim D<input id="kvDim" type="range" min="64" max="256" step="16" value="128"><output id="kvDimOut">128</output></label>
+          </div>
+          <div id="kvMemoryBars" class="memory-bars" aria-label="KV cache memory bars"></div>
+          <p id="kvReadout" class="lab-readout">GQA cache = 0 GB</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="kv">
+        <div class="panel-title">
+          <h3>伪代码：KV Cache Decode Loop</h3>
+          <div class="segmented" role="tablist" aria-label="kv train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="kv"></code></pre>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="paged">
+        <div class="panel-title">
+          <h3>伪代码：Paged KV Allocation + Prefix Sharing</h3>
+          <div class="segmented" role="tablist" aria-label="paged train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="paged"></code></pre>
+      </div>
+      <div class="judgement-card">
+        <h3>PagedAttention 与 Prefix Cache</h3>
+        <div class="judgement-grid">
+          <div><strong>PagedAttention</strong><p>把 KV cache 切成固定 block，用 block table 映射逻辑序列和物理显存，减少碎片。</p></div>
+          <div><strong>Prefix cache</strong><p>多个请求共享 system prompt、few-shot 或文档前缀时，只 prefill 一次并复用 KV。</p></div>
+          <div><strong>风险</strong><p>prefix 命中率低、block 太粗或太细、多租户隔离不足都会削弱收益。</p></div>
+          <div><strong>诊断信号</strong><p>KV hit rate、fragmentation、active/free blocks、tokens/sec、TTFT 与 TPOT。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="serving-batching">
+      <header class="chapter-header">
+        <h2>Serving & Continuous Batching：让 GPU 不等慢请求</h2>
+        <p class="chapter-summary">静态 batch 会被长请求拖住；continuous batching 允许新请求在旧请求 decode 过程中动态加入，填补 GPU 空泡。</p>
+      </header>
+      <div class="intuition-section">
+        <h3>一句话直觉</h3>
+        <p>普通 batching 像等整桌人都吃完再换桌；continuous batching 是谁吃完谁走，新请求立刻补位。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="batching-lab">
+        <div class="visual-copy">
+          <h3>Continuous Batching Timeline</h3>
+          <p>对比静态 batch 和 continuous batch 的空白 slot、平均 latency 与 GPU utilization。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>max batch slots<input id="batchSlots" type="range" min="2" max="12" value="6"><output id="batchSlotsOut">6</output></label>
+            <label>request variance<input id="batchVariance" type="range" min="0" max="100" value="58"><output id="batchVarianceOut">58</output></label>
+            <label>arrival rate<input id="batchArrival" type="range" min="1" max="10" value="5"><output id="batchArrivalOut">5</output></label>
+          </div>
+          <canvas id="batchingCanvas" class="lab-canvas timeline-scheduler" width="900" height="410" aria-label="Continuous batching timeline"></canvas>
+          <p id="batchingReadout" class="lab-readout">continuous batching utilization = 0%</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="batching">
+        <div class="panel-title">
+          <h3>伪代码：Serving Scheduler</h3>
+          <div class="segmented" role="tablist" aria-label="batching train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="batching"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="quantization">
+      <header class="chapter-header">
+        <h2>Quantization：用更少 bit 表示权重、激活和 KV</h2>
+        <p class="chapter-summary">量化不是随便截断 float。好的量化要回答 scale 怎么选、outlier 怎么处理、误差对输出是否敏感、硬件 kernel 是否真正加速。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>基本公式</h3>
+        <div class="equation">
+\[
+s=\frac{\max |x|}{2^{b-1}-1},\qquad
+q=\operatorname{clip}\left(\operatorname{round}(x/s),-2^{b-1},2^{b-1}-1\right),\qquad
+\hat{x}=sq.
+\]
+        </div>
+        <p>SmoothQuant 用 \(Y=XW=(XS)(S^{-1}W)\) 把 activation outlier 的难度迁移给 weight；GPTQ 用近似二阶信息补偿逐列量化误差；AWQ 用 activation-aware scaling 保护 salient channels。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="quantization-lab">
+        <div class="visual-copy">
+          <h3>Quantization Error Lab</h3>
+          <p>调节 bit 数、scale 类型、outlier 强度和方法，观察重构误差与动态范围浪费。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>bits<select id="quantBits"><option value="16">16</option><option value="8">8</option><option value="4" selected>4</option><option value="3">3</option><option value="2">2</option></select></label>
+            <label>scale type<select id="quantScale"><option value="tensor">per-tensor</option><option value="channel">per-channel</option></select></label>
+            <label>outlier strength<input id="quantOutlier" type="range" min="0" max="100" value="45"><output id="quantOutlierOut">45</output></label>
+            <label>method<select id="quantMethod"><option value="naive">naive</option><option value="smooth">SmoothQuant-like</option><option value="awq">AWQ-like</option></select></label>
+          </div>
+          <canvas id="quantCanvas" class="lab-canvas quantization-grid" width="900" height="360" aria-label="Quantization error lab"></canvas>
+          <p id="quantReadout" class="lab-readout">relative error = 0%</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="quant">
+        <div class="panel-title">
+          <h3>伪代码：PTQ Calibration + Quantized Linear</h3>
+          <div class="segmented" role="tablist" aria-label="quant train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="quant"></code></pre>
+      </div>
+      <div class="warning-card">
+        <h3>风险与诊断</h3>
+        <ul>
+          <li>权重量化通常减显存和权重带宽，但不保证端到端 latency 更低。</li>
+          <li>KV quant 会影响 long-context retrieval；数学、代码和精确复制任务更敏感。</li>
+          <li>诊断要分开看 perplexity、exact match、pass@k、long-context accuracy、prefill latency 和 decode latency。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="speculative-decoding">
+      <header class="chapter-header">
+        <h2>Speculative Decoding：小模型草稿，大模型验收</h2>
+        <p class="chapter-summary">小模型先猜多个 token，目标模型一次性验证，减少大模型串行 forward 次数；正确的 rejection sampling 可以保持目标分布。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>接受概率</h3>
+        <p>目标模型 \(p\)，draft 模型 \(q\)。候选 token \(\tilde{x}\) 的接受概率为：</p>
+        <div class="equation">
+\[
+a=\min\left(1,\frac{p(\tilde{x}\mid h)}{q(\tilde{x}\mid h)}\right).
+\]
+        </div>
+        <p>被拒绝时从残差分布采样，因此最终输出仍来自目标模型 \(p\)。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="speculative-lab">
+        <div class="visual-copy">
+          <h3>Speculative Acceptance Simulator</h3>
+          <p>调节 draft quality、proposal length、draft cost 和 temperature，估计接受长度与 speedup。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>draft quality<input id="specQuality" type="range" min="5" max="98" value="72"><output id="specQualityOut">72</output></label>
+            <label>K proposal<input id="specK" type="range" min="1" max="12" value="5"><output id="specKOut">5</output></label>
+            <label>draft cost<input id="specCost" type="range" min="2" max="80" value="18"><output id="specCostOut">18%</output></label>
+            <label>temperature<input id="specTemp" type="range" min="0" max="120" value="65"><output id="specTempOut">0.65</output></label>
+          </div>
+          <canvas id="specCanvas" class="lab-canvas" width="900" height="360" aria-label="Speculative decoding simulator"></canvas>
+          <p id="specReadout" class="lab-readout">expected speedup = 1.0x</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="spec">
+        <div class="panel-title">
+          <h3>伪代码：Draft / Verify Loop</h3>
+          <div class="segmented" role="tablist" aria-label="spec train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="spec"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="diffusion-samplers">
+      <header class="chapter-header">
+        <h2>Diffusion / Flow 采样器：从一阶小步到高阶大步</h2>
+        <p class="chapter-summary">快速 sampler 的目标是不重新训练模型，也尽量用更少 NFE 解出相似的反向轨迹。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>DDIM 与 ODE solver 视角</h3>
+        <div class="equation">
+\[
+\hat{x}_0=\frac{x_t-\sqrt{1-\bar{\alpha}_t}\epsilon_\theta(x_t,t)}{\sqrt{\bar{\alpha}_t}},\qquad
+x_s=\sqrt{\bar{\alpha}_s}\hat{x}_0+\sqrt{1-\bar{\alpha}_s}\epsilon_\theta(x_t,t).
+\]
+\[
+\frac{dx}{dt}=f_\theta(x,t),\qquad
+\text{error}=O(\Delta t^p).
+\]
+        </div>
+        <p>DPM-Solver、DPM-Solver++、UniPC、DEIS 等方法利用 diffusion ODE 的结构，以少量 denoiser evaluations 得到更高阶近似。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="diffusion-nfe-lab">
+        <div class="visual-copy">
+          <h3>NFE vs Quality Simulator</h3>
+          <p>比较 DDPM、DDIM、DPM-Solver 和 UniPC 在不同 NFE、guidance scale 与 solver order 下的速度和误差趋势。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>sampler<select id="nfeSampler"><option value="ddpm">DDPM</option><option value="ddim">DDIM</option><option value="dpm">DPM-Solver</option><option value="unipc">UniPC</option></select></label>
+            <label>num steps<input id="nfeSteps" type="range" min="4" max="100" value="24"><output id="nfeStepsOut">24</output></label>
+            <label>guidance scale<input id="nfeGuidance" type="range" min="0" max="120" value="70"><output id="nfeGuidanceOut">7.0</output></label>
+            <label>solver order<input id="nfeOrder" type="range" min="1" max="3" value="2"><output id="nfeOrderOut">2</output></label>
+          </div>
+          <canvas id="nfeCanvas" class="lab-canvas" width="900" height="360" aria-label="Diffusion NFE simulator"></canvas>
+          <p id="nfeReadout" class="lab-readout">estimated latency = 0 ms</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="diffusion">
+        <div class="panel-title">
+          <h3>伪代码：Fast Diffusion Scheduler Loop</h3>
+          <div class="segmented" role="tablist" aria-label="diffusion train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="diffusion"></code></pre>
+      </div>
+      <div class="warning-card">
+        <h3>风险与诊断</h3>
+        <ul>
+          <li>少步采样容易丢细节；高阶 solver 在强 CFG 下可能过冲。</li>
+          <li>不同模型的 prediction type 不同，epsilon / x0 / v 的 scheduler 公式不能混用。</li>
+          <li>视频生成要同时看 quality、FVD、motion score 和 temporal consistency。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="diffusion-cache">
+      <header class="chapter-header">
+        <h2>Diffusion / DiT / Video Cache：复用跨时间步特征</h2>
+        <p class="chapter-summary">相邻 denoising step 的 latent 与中间特征常有冗余。Cache 方法把变化不大的部分复用起来，少跑一部分网络。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>缓存成立的近似</h3>
+        <div class="equation">
+\[
+h_l(x_t,t)\approx h_l(x_{t-1},t-1),\qquad
+h_{t,\text{frame}=i}\approx h_{t,\text{frame}=i+1}.
+\]
+        </div>
+        <p>U-Net 可高频更新低层、低频更新高层；DiT 可按 block 与 denoising stage 动态刷新；视频还要避免画面发粘和 subtle motion 丢失。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="diffusion-cache-lab">
+        <div class="visual-copy">
+          <h3>Diffusion Cache Timeline</h3>
+          <p>横轴是 denoising step，纵轴是 network block，颜色表示 compute、reuse 或 forced refresh。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>cache interval<input id="cacheInterval" type="range" min="1" max="6" value="2"><output id="cacheIntervalOut">2</output></label>
+            <label>reuse threshold<input id="cacheThreshold" type="range" min="0" max="100" value="62"><output id="cacheThresholdOut">62</output></label>
+            <label>late refresh<input id="cacheRefresh" type="range" min="0" max="100" value="70"><output id="cacheRefreshOut">70</output></label>
+          </div>
+          <canvas id="cacheCanvas" class="lab-canvas cache-timeline" width="900" height="360" aria-label="Diffusion cache timeline"></canvas>
+          <p id="cacheReadout" class="lab-readout">estimated speedup = 1.0x</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="cache">
+        <div class="panel-title">
+          <h3>伪代码：Diffusion Feature Cache Loop</h3>
+          <div class="segmented" role="tablist" aria-label="cache train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="cache"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="token-reduction">
+      <header class="chapter-header">
+        <h2>Token Reduction：少处理一些 token / patch</h2>
+        <p class="chapter-summary">图像、视频和长文本里有大量冗余 token。Token reduction 通过合并、剪枝或延后计算降低 attention 和 MLP 负担。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>Token merging 与 pruning</h3>
+        <div class="equation">
+\[
+s_{ij}=\frac{h_i^\top h_j}{\|h_i\|\|h_j\|},\qquad
+\tilde{h}_{ij}=\frac{w_i h_i+w_j h_j}{w_i+w_j},\qquad
+O(T^2d)\rightarrow O(T'^2d).
+\]
+        </div>
+      </div>
+      <div class="visual-example interactive-lab" id="token-reduction-lab">
+        <div class="visual-copy">
+          <h3>Patch Merge Lab</h3>
+          <p>调节 merge ratio，观察哪些图像 patch 被合并，以及 attention token count 如何下降。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>merge ratio<input id="tokenMerge" type="range" min="0" max="70" value="28"><output id="tokenMergeOut">28%</output></label>
+            <label>importance sharpness<input id="tokenSharp" type="range" min="0" max="100" value="50"><output id="tokenSharpOut">50</output></label>
+            <label>mode<select id="tokenMode"><option value="merge">merge</option><option value="prune">prune</option></select></label>
+          </div>
+          <canvas id="tokenCanvas" class="lab-canvas" width="900" height="360" aria-label="Token reduction patch grid"></canvas>
+          <p id="tokenReadout" class="lab-readout">attention cost reduction = 0%</p>
+        </div>
+      </div>
+      <div class="warning-card">
+        <h3>风险与诊断</h3>
+        <ul>
+          <li>训练时启用可让模型适应 token reduction；推理 plug-and-play 质量风险更高。</li>
+          <li>文本 LLM 删除历史 token 会破坏事实检索和长程依赖，比视觉 patch merging 更危险。</li>
+          <li>诊断应同时看速度、细节丢失、文本一致性和 long-context retrieval。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="training-acceleration">
+      <header class="chapter-header">
+        <h2>Training Acceleration：让训练放进显存、跑满集群</h2>
+        <p class="chapter-summary">训练加速要同时处理参数、梯度、optimizer state、activation、temporary buffers 与通信。多卡如果通信设计不好，可能只是放大等待。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>训练显存组成与 ZeRO / FSDP</h3>
+        <div class="equation">
+\[
+M_{\text{per GPU}}\approx \frac{M_{\text{parameters}}+M_{\text{gradients}}+M_{\text{optimizer}}}{N_{\text{gpu}}}
++M_{\text{activation}}+M_{\text{communication buffer}}.
+\]
+        </div>
+        <p>Activation checkpointing 用重算换显存；ZeRO/FSDP 把 optimizer states、gradients 和 parameters 分片；tensor/pipeline/sequence/expert parallel 分别切单层矩阵、层、序列和 expert。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="training-memory-lab">
+        <div class="visual-copy">
+          <h3>Training Memory Simulator</h3>
+          <p>估计参数、梯度、optimizer state 和 activation 在不同 GPU 数、precision 与 checkpoint 策略下的 per-GPU memory。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>parameters (B)<input id="trainParams" type="range" min="1" max="180" value="32"><output id="trainParamsOut">32</output></label>
+            <label>precision bytes<input id="trainPrecision" type="range" min="1" max="4" value="2"><output id="trainPrecisionOut">2</output></label>
+            <label>optimizer<select id="trainOptimizer"><option value="sgd">SGD</option><option value="adam" selected>Adam</option></select></label>
+            <label>num GPUs<input id="trainGpus" type="range" min="1" max="128" value="8"><output id="trainGpusOut">8</output></label>
+            <label>sequence length<input id="trainSeq" type="range" min="512" max="32768" step="512" value="4096"><output id="trainSeqOut">4096</output></label>
+            <label>checkpoint<select id="trainCheckpoint"><option value="off">off</option><option value="on" selected>on</option></select></label>
+          </div>
+          <div id="trainingMemoryBars" class="memory-bars" aria-label="Training memory bars"></div>
+          <p id="trainingReadout" class="lab-readout">per-GPU memory = 0 GB</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="checkpoint">
+        <div class="panel-title">
+          <h3>伪代码：Activation Checkpointing</h3>
+          <div class="segmented" role="tablist" aria-label="checkpoint train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="checkpoint"></code></pre>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="fsdp">
+        <div class="panel-title">
+          <h3>伪代码：FSDP / ZeRO-3 Conceptual Step</h3>
+          <div class="segmented" role="tablist" aria-label="fsdp train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="fsdp"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="peft-runtime">
+      <header class="chapter-header">
+        <h2>LoRA / QLoRA 与 Runtime Engine：训练省钱，不等于推理魔法</h2>
+        <p class="chapter-summary">LoRA 加速的是微调：少训练参数、少存 optimizer state。推理是否更快取决于 adapter 是否合并、kernel 是否融合、动态多 adapter 是否引入额外调度。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>LoRA 数学与图编译</h3>
+        <div class="equation">
+\[
+W'=W+\Delta W,\qquad \Delta W=BA,\qquad
+A\in\mathbb{R}^{r\times d_{in}},\;B\in\mathbb{R}^{d_{out}\times r}.
+\]
+        </div>
+        <p>Runtime engine 通过 graph capture、operator fusion、layout transformation、shape specialization、kernel autotuning 和 CUDA graph replay 减少临时 tensor、kernel launch 和 Python 调度。</p>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="lora">
+        <div class="panel-title">
+          <h3>伪代码：LoRA / QLoRA Training and Merge</h3>
+          <div class="segmented" role="tablist" aria-label="lora train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="lora"></code></pre>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="compile">
+        <div class="panel-title">
+          <h3>伪代码：Graph Capture / Kernel Fusion</h3>
+          <div class="segmented" role="tablist" aria-label="compile train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="compile"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="architecture-acceleration">
+      <header class="chapter-header">
+        <h2>Architecture Acceleration：从 dense 到 conditional compute</h2>
+        <p class="chapter-summary">MoE、稀疏 attention、动态深度等方法让不同 token 只走部分计算路径，但通信、router 和负载均衡会决定真实速度。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>MoE 与 sparse attention</h3>
+        <div class="equation">
+\[
+g(x)=\operatorname{TopK}(\operatorname{softmax}(W_rx),k),\qquad
+y=\sum_{i\in \operatorname{TopK}}g_i(x)E_i(x).
+\]
+\[
+\text{local attention: }O(T^2)\rightarrow O(Tw).
+\]
+        </div>
+      </div>
+      <div class="visual-example interactive-lab" id="moe-lab">
+        <div class="visual-copy">
+          <h3>MoE Routing Lab</h3>
+          <p>调节 expert 数、top-k、batch size、router imbalance 和 capacity，观察 active parameters、dropped tokens 与 expert utilization。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>num experts<input id="moeExperts" type="range" min="4" max="32" value="12"><output id="moeExpertsOut">12</output></label>
+            <label>top-k<input id="moeTopk" type="range" min="1" max="4" value="2"><output id="moeTopkOut">2</output></label>
+            <label>batch tokens<input id="moeBatch" type="range" min="64" max="4096" step="64" value="1024"><output id="moeBatchOut">1024</output></label>
+            <label>router imbalance<input id="moeImbalance" type="range" min="0" max="100" value="35"><output id="moeImbalanceOut">35</output></label>
+            <label>capacity factor<input id="moeCapacity" type="range" min="80" max="180" value="120"><output id="moeCapacityOut">1.20</output></label>
+          </div>
+          <canvas id="moeCanvas" class="lab-canvas routing-heatmap" width="900" height="360" aria-label="MoE routing heatmap"></canvas>
+          <p id="moeReadout" class="lab-readout">dropped tokens = 0%</p>
+        </div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="moe">
+        <div class="panel-title">
+          <h3>伪代码：MoE Routing Forward</h3>
+          <div class="segmented" role="tablist" aria-label="moe train or inference">
+            <button class="active" type="button" data-flow-mode="train">训练</button>
+            <button type="button" data-flow-mode="infer">推理</button>
+          </div>
+        </div>
+        <pre class="algorithm"><code data-flow-output="moe"></code></pre>
+      </div>
+    </section>
+
+    <section class="chapter" id="timeline">
+      <header class="chapter-header">
+        <h2>生成模型加速路线演化</h2>
+        <p class="chapter-summary">不要只记论文名；更重要的是每个节点解决了哪种瓶颈。</p>
+      </header>
+      <div class="timeline-roadmap">
+        <article><time>2017</time><strong>Transformer</strong><p>去掉 RNN recurrence，让训练序列并行。</p></article>
+        <article><time>2019</time><strong>MQA / Megatron / ZeRO</strong><p>减少 decode KV 带宽；解决大模型训练显存和并行。</p></article>
+        <article><time>2020</time><strong>DDIM</strong><p>不重训 DDPM 也能跳步采样，把 diffusion 推向几十步。</p></article>
+        <article><time>2022</time><strong>FlashAttention / GPTQ / SmoothQuant / DPM-Solver</strong><p>IO-aware attention、PTQ 与高阶 solver 同时成熟。</p></article>
+        <article><time>2023</time><strong>vLLM / PagedAttention / AWQ / QLoRA / UniPC</strong><p>LLM serving 进入动态批处理与 KV 管理；低比特部署和低显存微调普及。</p></article>
+        <article><time>2024</time><strong>FlashAttention-3 / DeepCache / DiT Cache</strong><p>注意力 kernel 适配新硬件；diffusion 开始系统复用跨步特征。</p></article>
+        <article><time>2025-2026</time><strong>KV compression / adaptive serving / FP4-FP8</strong><p>长上下文与多模态 serving 进一步转向 memory hierarchy、跨请求复用和硬件低精度。</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="decision-map">
+      <header class="chapter-header">
+        <h2>决策地图：遇到慢，先判断慢在哪里</h2>
+        <p class="chapter-summary">可操作的加速流程不是“把所有优化都上”，而是先分解瓶颈，再选择最少的干预。</p>
+      </header>
+      <div class="decision-grid">
+        <article>
+          <h3>LLM 推理慢</h3>
+          <p><strong>prefill 慢：</strong>FlashAttention、chunked prefill、prompt prefix cache、FP8/INT8、tensor parallel。</p>
+          <p><strong>decode 慢：</strong>KV cache、MQA/GQA/MLA、PagedAttention、continuous batching、speculative decoding、KV quant。</p>
+        </article>
+        <article>
+          <h3>Diffusion 图像慢</h3>
+          <p><strong>NFE 太高：</strong>DDIM、DPM-Solver、DPM-Solver++、UniPC、better timestep schedule。</p>
+          <p><strong>单步太慢：</strong>FlashAttention、token merging、DeepCache / DiT cache、lower latent resolution、compiled runtime。</p>
+        </article>
+        <article>
+          <h3>视频生成慢</h3>
+          <p>瓶颈通常是 frames × resolution × denoising steps × temporal attention。优先看 video DiT cache、temporal window attention、frame chunking、decoder slicing 和 latent temporal compression。</p>
+        </article>
+        <article>
+          <h3>训练慢 / 显存不够</h3>
+          <p><strong>显存：</strong>mixed precision、activation checkpointing、gradient accumulation、ZeRO/FSDP、QLoRA、sequence packing。</p>
+          <p><strong>吞吐：</strong>FlashAttention、fused optimizer、data loader profiling、parallel degrees、communication overlap。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="chapter" id="misconceptions">
+      <header class="chapter-header">
+        <h2>常见误解</h2>
+        <p class="chapter-summary">加速问题里最危险的是把不同瓶颈混成同一个词。</p>
+      </header>
+      <div class="misconception-card">
+        <ul>
+          <li><strong>FLOPs 少一定更快：</strong>不一定。LLM decode 经常 memory-bandwidth bound；不规则访存和 kernel launch 可能抵消 FLOPs 下降。</li>
+          <li><strong>量化一定加速：</strong>量化会降低存储，但是否降低 latency 取决于硬件低精度 kernel、batch size、dequant 是否融合和真实瓶颈。</li>
+          <li><strong>FlashAttention 是近似 attention：</strong>不是。它是 exact attention 的 IO-aware 实现，不是 low-rank 或 sparse approximation。</li>
+          <li><strong>KV cache 只会加速：</strong>KV cache 避免重复计算，但长上下文和高并发下会成为主要显存与带宽瓶颈。</li>
+          <li><strong>Diffusion 加速只有蒸馏：</strong>蒸馏很重要，但 DDIM、DPM-Solver、UniPC、cache、token merging、scheduler 和 attention kernel 也能加速。</li>
+          <li><strong>MoE 参数多所以一定慢：</strong>MoE 每 token 只激活少数 expert，真正瓶颈常在 router imbalance 和 all-to-all communication。</li>
+        </ul>
+      </div>
+      <div class="source-note">
+        <h3>阅读边界</h3>
+        <p>本页是机制地图，不替代真实 profiling。任何加速方案落地前，都应分开测 prefill / decode、单请求 / batch、TTFT / TPOT、显存峰值、kernel utilization 和质量指标。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <a href="/">返回主页</a>
+    <a href="/foundations/">返回 Foundations</a>
+  </footer>
+  <script src="./static/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+- name: LeetCode 热题 100
+  category: 算法与数据结构
+  status: Python 题解与复杂度分析
+  featured: true
+  date: 2026-07-02
+  display_date: 07/2026
+  url: /foundations/leetcode-hot100/
+  teaser: /images/projects/leetcode-hot100.svg
+  teaser_alt: LeetCode Hot100 Python 解法整理缩略图
+  highlight: 100 道 Hot100 题目的题意、分析、复杂度与 Python 解法
+  summary: >-
+    按官方 LeetCode 热题 100 学习计划整理哈希、双指针、滑动窗口、数组、矩阵、链表、二叉树、
+    图论、回溯、二分、栈、堆、贪心和动态规划题。每题给出自写题意摘要、解题思路、
+    Python 3 代码注释和复杂度分析，便于系统复盘算法不变量。
+  tags:
+    - LeetCode
+    - Hot100
+    - Python
+    - 算法题
+- name: 视频生成技术
+  category: 生成式视频
+  status: Video VAE 到 Wan / LTX
+  featured: true
+  date: 2026-07-01
+  display_date: 07/2026
+  url: /foundations/video-generation/
+  teaser: /images/projects/video-generation.svg
+  teaser_alt: 从 Video VAE latent tokens 到 Wan 与 LTX 生态分支的视频生成技术图
+  highlight: Video VAE、DiT、Flow Matching、Wan、LTX、VACE、IC-LoRA 与音视频生成
+  summary: >-
+    Video VAE latent tokens 决定视频生成可扩展性：它们把高维像素视频压到可训练的
+    时空 latent space，让 DiT 与 Flow Matching 能在更低成本下建模运动、镜头和语义。
+    Wan 与 LTX 因此走向两条路线：Wan 更偏向高质量生成、角色动画和统一编辑，LTX 更偏向
+    高压缩、蒸馏、多尺度超分、IC-LoRA 和联合音视频生产工作流。
+  tags:
+    - 视频生成
+    - Wan
+    - LTX
+    - 音视频生成
+- name: 图像生成技术
+  category: 生成式系统
+  status: 数据、训练、RL 与蒸馏
+  featured: true
+  date: 2026-07-01
+  display_date: 07/2026
+  url: /foundations/image-generation-data-training/
+  teaser: /images/projects/image-generation-data-training.svg
+  teaser_alt: 图像生成模型的数据工程、caption、VAE、奖励学习与蒸馏技术图
+  highlight: FLUX、Qwen-Image、Z-Image 的数据治理、训练、RL 与蒸馏
+  summary: >-
+    训练现代图像生成模型，关键不只是 DiT 主干。FLUX / FLUX.2、
+    Qwen-Image / Qwen-Image-2.0 和 Z-Image 的差异，更多体现在数据治理、
+    caption/OCR 系统、编辑对构造、VAE latent 保真度、多阶段训练、奖励后训练、
+    GRPO、OPD、Prompt Enhancer 和 few-step distillation。
+  tags:
+    - 图像生成
+    - 数据治理
+    - 文字渲染
+    - RLHF
+- name: 生成模型加速技术
+  category: 生成式系统
+  status: 采样、缓存、量化与 serving
+  featured: true
+  date: 2026-07-01
+  display_date: 07/2026
+  url: /foundations/generation-acceleration/
+  teaser: /images/projects/generation-acceleration.svg
+  teaser_alt: 覆盖采样、attention、cache、量化、serving 与训练的生成模型加速技术图
+  highlight: 采样、attention kernels、KV cache、量化、serving 与分布式训练
+  summary: >-
+    生成模型加速要先定位瓶颈：compute、memory bandwidth、串行采样深度、调度、
+    cache 和通信往往限制在不同层面。这里用公式、伪代码和交互实验串起
+    FlashAttention、KV cache、PagedAttention、continuous batching、量化、
+    speculative decoding、diffusion samplers 与 caches、token reduction、
+    LoRA/QLoRA、ZeRO/FSDP 和 sparse architectures。
+  tags:
+    - 模型加速
+    - KV Cache
+    - 量化
+    - Serving
+- name: 生成模型原理介绍
+  category: 生成式建模
+  status: 概率建模到采样过程
+  featured: true
+  date: 2026-06-27
+  display_date: 06/2026
+  url: /foundations/generation-math/
+  teaser: /images/projects/generation-math.svg
+  teaser_alt: 覆盖模型目标、训练、采样和对齐的生成模型推导技术笔记
+  highlight: 从概率建模一路接到训练、采样和对齐
+  summary: >-
+    从概率模型出发，不同生成范式可以统一理解为目标函数、采样过程和后训练约束的组合。
+    这里从目标函数到采样过程推导 VAE、VQ-VAE/VQGAN、GAN、diffusion、
+    Flow Matching、MeanFlow、autoregressive models，以及 RLHF/PPO、DPO、
+    GRPO、DDPO、Flow-DPO 等后训练方法。
+  tags:
+    - 生成模型
+    - ELBO
+    - 训练与采样
+    - RL 对齐
+- name: 生成模型蒸馏技术介绍
+  category: 生成式蒸馏
+  status: teacher trajectory 到 fast student sampler
+  featured: true
+  date: 2026-06-27
+  display_date: 06/2026
+  url: /foundations/generation-distillation/
+  teaser: /images/projects/diffusion-distillation-math-lab.svg
+  teaser_alt: 从 teacher trajectory 到 fast student sampler 的生成模型蒸馏技术图
+  highlight: 从经典 KD 到 trajectory、consistency、DMD2、LADD 与 Self-Forcing
+  summary: >-
+    生成式蒸馏不是经典 KD 的 logits 模仿。核心问题是怎样把 teacher 的生成轨迹、
+    score/velocity 信息和少步采样行为压进 fast student sampler。这里用训练和推理伪代码、
+    交互机制实验串联 trajectory distillation、guided distillation、consistency、
+    DMD/DMD2、ADD/LADD、rectified-flow shortcuts、Self Forcing 和 Self-Forcing++。
+  tags:
+    - Diffusion
+    - 蒸馏
+    - 快速生成

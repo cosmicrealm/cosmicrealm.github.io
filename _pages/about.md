@@ -1,8 +1,8 @@
 ---
 permalink: /
 title: "Jinyang Zhang"
-seo_title: "Jinyang Zhang - Projects, Publications, Blogs, and CV"
-excerpt: "Personal website for projects, publications, blogs, and CV."
+seo_title: "Jinyang Zhang - Projects, Publications, Foundations, Blogs, and CV"
+excerpt: "Personal website for projects, publications, foundations, blogs, and CV."
 author_profile: true
 redirect_from:
   - /about/
@@ -83,6 +83,32 @@ redirect_from:
             <span>{{ project.display_date }} · {{ project.highlight }}</span>
           </div>
           <p>{{ project.summary }}</p>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="home-section">
+  <div class="section-heading section-heading--line">
+    <h2>Foundations</h2>
+    <a class="section-heading__link" href="{{ '/foundations/' | relative_url }}">All foundations</a>
+  </div>
+  {% assign featured_foundations = site.data.foundations | where: "featured", true %}
+  <ul class="compact-list project-compact-list foundation-compact-list">
+    {% for foundation in featured_foundations limit:3 %}
+      <li>
+        {% if foundation.teaser %}
+          <a class="list-thumb list-thumb--project" href="{{ foundation.url | relative_url }}" aria-label="{{ foundation.name }}">
+            <img src="{{ foundation.teaser | relative_url }}" alt="{{ foundation.teaser_alt | default: foundation.name }}">
+          </a>
+        {% endif %}
+        <div class="project-compact-list__body">
+          <div class="project-compact-list__main">
+            <a href="{{ foundation.url | relative_url }}">{{ foundation.name }}</a>
+            <span>{{ foundation.display_date }} · {{ foundation.status }}</span>
+          </div>
+          <p>{{ foundation.highlight }}</p>
         </div>
       </li>
     {% endfor %}

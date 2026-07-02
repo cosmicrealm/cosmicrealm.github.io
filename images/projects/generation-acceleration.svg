@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Generation Acceleration Foundations</title>
+  <desc id="desc">A technical diagram showing compute, memory, cache, quantization, serving, and training acceleration paths.</desc>
+  <rect width="1200" height="760" fill="#fbfaf6"/>
+  <path d="M0 120H1200M0 260H1200M0 400H1200M0 540H1200M180 0V760M360 0V760M540 0V760M720 0V760M900 0V760M1080 0V760" stroke="#d7cdbc" stroke-width="2" opacity=".55"/>
+  <rect x="72" y="76" width="1056" height="608" rx="22" fill="#fffdf8" stroke="#171817" stroke-width="4"/>
+  <text x="112" y="150" fill="#171817" font-family="Georgia,serif" font-size="58" font-weight="700">Generative Model Acceleration</text>
+  <text x="116" y="196" fill="#5f625e" font-family="ui-sans-serif,system-ui,sans-serif" font-size="24" font-weight="700">Sampling · Attention · KV Cache · Quantization · Serving · Training</text>
+  <g transform="translate(116 262)">
+    <rect width="250" height="118" rx="10" fill="#f0ece4" stroke="#d7cdbc" stroke-width="3"/>
+    <text x="24" y="44" fill="#084a45" font-family="ui-sans-serif,system-ui,sans-serif" font-size="26" font-weight="800">Less NFE</text>
+    <text x="24" y="80" fill="#5f625e" font-family="ui-sans-serif,system-ui,sans-serif" font-size="18">DDIM · Solver · Cache</text>
+  </g>
+  <g transform="translate(474 262)">
+    <rect width="250" height="118" rx="10" fill="#f0ece4" stroke="#d7cdbc" stroke-width="3"/>
+    <text x="24" y="44" fill="#314f78" font-family="ui-sans-serif,system-ui,sans-serif" font-size="26" font-weight="800">Less IO</text>
+    <text x="24" y="80" fill="#5f625e" font-family="ui-sans-serif,system-ui,sans-serif" font-size="18">FlashAttention · Fusion</text>
+  </g>
+  <g transform="translate(832 262)">
+    <rect width="250" height="118" rx="10" fill="#f0ece4" stroke="#d7cdbc" stroke-width="3"/>
+    <text x="24" y="44" fill="#a9432f" font-family="ui-sans-serif,system-ui,sans-serif" font-size="26" font-weight="800">Less Memory</text>
+    <text x="24" y="80" fill="#5f625e" font-family="ui-sans-serif,system-ui,sans-serif" font-size="18">KV · INT4 · FP8</text>
+  </g>
+  <path d="M366 322H474M724 322H832" stroke="#0f6f68" stroke-width="8" stroke-linecap="round"/>
+  <path d="M458 306 482 322 458 338M816 306 840 322 816 338" fill="none" stroke="#0f6f68" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(150 468)">
+    <rect width="900" height="96" rx="12" fill="#171817"/>
+    <rect x="34" y="28" width="178" height="18" rx="9" fill="#0f6f68"/>
+    <rect x="234" y="28" width="118" height="18" rx="9" fill="#314f78"/>
+    <rect x="374" y="28" width="252" height="18" rx="9" fill="#9a6d19"/>
+    <rect x="648" y="28" width="194" height="18" rx="9" fill="#a9432f"/>
+    <text x="34" y="70" fill="#f8f0de" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18">latency = max(compute, memory) + comm + sync + schedule</text>
+  </g>
+  <circle cx="218" cy="626" r="18" fill="#0f6f68"/>
+  <circle cx="338" cy="626" r="18" fill="#314f78"/>
+  <circle cx="458" cy="626" r="18" fill="#9a6d19"/>
+  <circle cx="578" cy="626" r="18" fill="#a9432f"/>
+  <circle cx="698" cy="626" r="18" fill="#67518e"/>
+  <circle cx="818" cy="626" r="18" fill="#171817"/>
+  <path d="M236 626H320M356 626H440M476 626H560M596 626H680M716 626H800" stroke="#171817" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+</svg>

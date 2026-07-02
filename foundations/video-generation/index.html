@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="视频生成模型技术原理：从 Video VAE、DiT 到 Wan 与 LTX 生态">
+  <meta name="description" content="中文视频生成技术笔记：解释 Video VAE、latent token、DiT、Flow Matching、Wan 生态、LTX 生态、音视频生成、控制模型、工程部署和研究阅读路线。">
+  <meta name="keywords" content="video generation, Video VAE, DiT, Flow Matching, Rectified Flow, Wan, LTX, VACE, IC-LoRA, audio-video generation">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="视频生成模型技术原理">
+  <meta property="og:description" content="从 Video VAE、DiT 和 Flow Matching 解释现代视频生成，再横向解析 Wan 与 LTX 生态。">
+  <meta property="og:url" content="https://cosmicrealm.github.io/foundations/video-generation/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/video-generation.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="视频生成模型技术原理">
+  <meta name="twitter:description" content="Technical notes on video latent generation, Wan ecosystem, and LTX ecosystem.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/video-generation.svg">
+  <title>视频生成模型技术原理 | Video VAE, DiT, Wan, LTX</title>
+  <link rel="canonical" href="/foundations/video-generation/">
+  <link rel="icon" href="../../images/favicon.svg">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+  <script defer src="../generation-math/static/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+  <header class="site-header">
+    <a class="brand" href="/">Jinyang Zhang</a>
+    <nav class="module-nav" aria-label="Foundation module navigation">
+      <a href="/">返回主页</a>
+      <a href="/foundations/">返回 Foundations</a>
+    </nav>
+  </header>
+
+  <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
+  <aside class="lecture-toc" id="lectureToc" aria-label="视频生成模型技术原理目录">
+    <p>目录</p>
+    <nav>
+      <a href="#problem">总体问题</a>
+      <a href="#principles">通用原理</a>
+      <a href="#wan">Wan 生态</a>
+      <a href="#ltx">LTX 生态</a>
+      <a href="#comparison">横向比较</a>
+      <a href="#bottlenecks">技术瓶颈</a>
+      <a href="#reading-route">阅读路线</a>
+      <a href="#glossary">术语表</a>
+      <a href="#references">参考资料</a>
+    </nav>
+  </aside>
+
+  <main id="main" class="lecture">
+    <header class="paper-header">
+      <p class="kicker">Video generation foundations</p>
+      <h1>视频生成模型技术原理</h1>
+      <p class="subtitle">从 Video VAE、DiT 与 Flow Matching 理解现代视频生成，再系统解析 Wan 与 LTX 两条生态路线。</p>
+      <div class="keyword-row" aria-label="Core keywords">
+        <span>Video VAE</span>
+        <span>DiT</span>
+        <span>Flow Matching</span>
+        <span>Wan</span>
+        <span>LTX</span>
+        <span>VACE</span>
+        <span>IC-LoRA</span>
+        <span>Audio-Video</span>
+      </div>
+    </header>
+
+    <section class="chapter problem" id="problem">
+      <header class="chapter-header">
+        <h2>总体问题：视频生成为什么需要 latent space</h2>
+        <p class="chapter-summary">现代视频生成模型的核心不是直接生成像素，而是在 Video VAE 压缩后的时空 latent token 上，用 DiT 和 Flow Matching 学习从噪声到视频的生成过程。</p>
+      </header>
+
+      <div class="thesis-grid" aria-label="Core conclusions">
+        <article>
+          <strong>通用机制</strong>
+          <p>视频先被压缩为更少的时空 latent tokens，DiT 在这些 token 上建模空间、时间和语义关系，再由 Video VAE decoder 还原视频。</p>
+        </article>
+        <article>
+          <strong>Wan 路线</strong>
+          <p>Wan 更像开放高质量视频生成与角色/编辑能力平台，重点在 T2V、I2V、VACE、Wan-Animate、Wan-S2V 与控制生态。</p>
+        </article>
+        <article>
+          <strong>LTX 路线</strong>
+          <p>LTX 更像高效率视频/音视频生产栈，重点在高压缩 latent、distillation、FP8、多尺度 pipeline、IC-LoRA 与 joint audio-video。</p>
+        </article>
+      </div>
+
+      <div class="visual-example pipeline-module">
+        <div class="visual-copy">
+          <h3>统一 pipeline</h3>
+          <p>视频生成的基础抽象是：像素视频进入 Video VAE encoder，得到 latent tokens；DiT / Flow Matching 在 latent 空间去噪或积分；最终由 decoder 还原为视频。</p>
+        </div>
+        <svg class="pipeline-svg" viewBox="0 0 960 310" role="img" aria-label="Video generation pipeline from video frames to latent tokens, DiT denoising, and decoded video">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z"></path>
+            </marker>
+          </defs>
+          <g class="pipe-node" transform="translate(30 60)">
+            <rect width="145" height="110" rx="8"></rect>
+            <text x="72" y="42">video frames</text>
+            <text x="72" y="70">T × H × W × 3</text>
+          </g>
+          <path class="pipe-arrow" d="M190 115 H280"></path>
+          <g class="pipe-node accent-wan" transform="translate(295 60)">
+            <rect width="145" height="110" rx="8"></rect>
+            <text x="72" y="42">Video VAE</text>
+            <text x="72" y="70">encoder</text>
+          </g>
+          <path class="pipe-arrow" d="M455 115 H545"></path>
+          <g class="pipe-node" transform="translate(560 60)">
+            <rect width="145" height="110" rx="8"></rect>
+            <text x="72" y="42">latent tokens</text>
+            <text x="72" y="70">zT → z0</text>
+          </g>
+          <path class="pipe-arrow" d="M720 115 H810"></path>
+          <g class="pipe-node accent-ltx" transform="translate(825 60)">
+            <rect width="105" height="110" rx="8"></rect>
+            <text x="52" y="42">decoder</text>
+            <text x="52" y="70">x_hat</text>
+          </g>
+          <g class="pipe-band" transform="translate(230 210)">
+            <rect width="500" height="56" rx="8"></rect>
+            <text x="250" y="23">DiT / Flow Matching</text>
+            <text x="250" y="43">text, image, control, audio, LoRA, adapters</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="equation">
+\[
+x\in\mathbb{R}^{T\times H\times W\times 3},\quad
+z=\mathrm{VAE}_{enc}(x),\quad
+z_0=\mathrm{DiT}_{denoise}(z_T,c),\quad
+\hat{x}=\mathrm{VAE}_{dec}(z_0).
+\]
+      </div>
+      <div class="equation">
+\[
+N=\frac{T}{s_t}\times\frac{H}{s_h}\times\frac{W}{s_w},\qquad
+\text{Self-Attention Cost}\approx O(N^2).
+\]
+      </div>
+      <p>这两个式子给出核心取舍：VAE 压缩率越高，token 数越少、推理越快；但压缩越强，细节和短时运动越容易丢失，decoder、upscaler、detailer 和多尺度推理就要承担更多补偿责任。</p>
+    </section>
+
+    <section class="chapter" id="principles">
+      <header class="chapter-header">
+        <h2>视频生成通用原理：从 token 成本到条件注入</h2>
+        <p class="chapter-summary">Video VAE、DiT、Flow Matching / Rectified Flow、条件注入、多尺度推理、蒸馏与 LoRA 构成现代视频模型的共同工程骨架。</p>
+      </header>
+
+      <div class="principle-grid">
+        <article>
+          <h3>Video VAE 与 latent token</h3>
+          <p>Video VAE 将 \(T\times H\times W\times3\) 视频压缩成更少的时空 latent tokens。3D causal VAE 还会在时间维保持因果结构，使长视频、分段编码和流式解码更可控。</p>
+        </article>
+        <article>
+          <h3>DiT 与时空注意力</h3>
+          <p>DiT 用 Transformer 替代传统 U-Net，在 latent tokens 上建模空间结构、时间运动、镜头节奏和语义条件。视频场景中 token 数快速增长，因此注意力成本和显存占用成为主瓶颈。</p>
+        </article>
+        <article>
+          <h3>Flow Matching / Rectified Flow</h3>
+          <p>Flow Matching 学习从噪声分布到数据分布的连续速度场。Rectified Flow 相关训练和采样范式常与大规模 DiT 结合，适合少步生成和更直接的 ODE 轨迹学习。</p>
+        </article>
+        <article>
+          <h3>条件注入</h3>
+          <p>文本、图像、视频、mask、pose、depth、camera、audio 等条件可通过 cross-attention、adapter、latent concat、LoRA 或专用分支注入。不同注入方式决定控制强度、训练成本和组合能力。</p>
+        </article>
+        <article>
+          <h3>多尺度推理与 upscaler</h3>
+          <p>基础模型可先负责低分辨率构图、运动和镜头，再由 spatial upscaler、temporal upscaler、tile-based detailer 补回分辨率、帧率、边缘和局部纹理。</p>
+        </article>
+        <article>
+          <h3>蒸馏、FP8 与 LoRA</h3>
+          <p>distillation 减少采样步数，FP8/量化降低显存，LoRA/IC-LoRA 让控制和任务适配不必训练完整模型。这些工程路线决定视频模型能否进入可部署生产流。</p>
+        </article>
+      </div>
+
+      <div class="visual-example interactive-lab">
+        <div class="visual-copy">
+          <h3>Token Cost Lab</h3>
+          <p>调节帧数、分辨率和压缩率，观察 latent token 数与注意力成本如何变化。这里用简化估算展示趋势，不代表具体模型的真实吞吐。</p>
+        </div>
+        <div class="lab-card" data-lab="token-cost">
+          <div class="lab-controls lab-controls-grid">
+            <label>frames T<input id="frameCount" type="range" min="8" max="160" step="8" value="80"><output id="frameCountOut">80</output></label>
+            <label>width W<input id="videoWidth" type="range" min="512" max="1920" step="128" value="1280"><output id="videoWidthOut">1280</output></label>
+            <label>height H<input id="videoHeight" type="range" min="288" max="1080" step="72" value="720"><output id="videoHeightOut">720</output></label>
+            <label>temporal stride<input id="strideT" type="range" min="1" max="8" step="1" value="4"><output id="strideTOut">4</output></label>
+            <label>spatial stride<input id="strideS" type="range" min="4" max="32" step="4" value="16"><output id="strideSOut">16</output></label>
+            <label>steps<input id="sampleSteps" type="range" min="4" max="60" step="2" value="20"><output id="sampleStepsOut">20</output></label>
+          </div>
+          <div class="token-bars" aria-label="Estimated pixel tokens, latent tokens, and attention cost bars">
+            <div><span>pixel tokens</span><i id="pixelTokenBar"></i><b id="pixelTokenText">0</b></div>
+            <div><span>latent tokens</span><i id="latentTokenBar"></i><b id="latentTokenText">0</b></div>
+            <div><span>attention N²</span><i id="attentionCostBar"></i><b id="attentionCostText">0</b></div>
+            <div><span>sampler work</span><i id="samplerWorkBar"></i><b id="samplerWorkText">0</b></div>
+          </div>
+          <p id="tokenCostReadout" class="lab-readout">N = 0, attention cost ≈ 0</p>
+          <p id="tokenCostExplanation" class="lab-explanation">提高压缩率会降低 token 数，但 decoder 与 upscaler 必须补偿细节损失。</p>
+        </div>
+      </div>
+
+      <div class="algorithm-panel">
+        <div class="panel-title"><h3>训练与采样骨架</h3></div>
+        <div class="algorithm-grid">
+          <article>
+            <h4>训练</h4>
+            <pre class="algorithm"><code>for video, condition in dataloader:
+    z0 = video_vae.encode(video)
+    t = sample_time()
+    noise = randn_like(z0)
+    zt = interpolate_or_noise(z0, noise, t)
+    target = flow_or_denoising_target(z0, noise, t)
+    pred = dit(zt, t, condition)
+    loss = mse(pred, target)
+    update(model, loss)</code></pre>
+          </article>
+          <article>
+            <h4>采样 / 推断</h4>
+            <pre class="algorithm"><code>z = sample_noise(latent_shape)
+for t in scheduler.timesteps(num_steps):
+    condition = encode_text_image_audio_control(inputs)
+    velocity_or_noise = dit(z, t, condition)
+    z = scheduler.step(z, t, velocity_or_noise)
+video = video_vae.decode(z)
+return postprocess(video)</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="wan">
+      <header class="chapter-header">
+        <h2>Wan 生态：开放高质量视频生成与角色/编辑能力平台</h2>
+        <p class="chapter-summary">Wan 不是一个单模型，而是一组围绕 Wan-VAE、Video DiT、Flow Matching、条件控制、角色动画、音频驱动和视频编辑发展的模型族。</p>
+      </header>
+
+      <div class="ecosystem-map wan-map" aria-label="Wan ecosystem map">
+        <div class="hub">WAN</div>
+        <article><strong>Wan2.1</strong><span>T2V / I2V / FLF2V / VACE</span></article>
+        <article><strong>Wan2.2</strong><span>A14B MoE / TI2V-5B / S2V / Animate</span></article>
+        <article><strong>VACE</strong><span>VCU + Context Adapter</span></article>
+        <article><strong>Wan-Animate</strong><span>身份保持、动作迁移、替换融合</span></article>
+        <article><strong>Wan-S2V</strong><span>audio-driven character video</span></article>
+        <article><strong>Wan-Fun</strong><span>Control / Camera / trajectory</span></article>
+      </div>
+
+      <div class="model-toolbar" aria-label="Wan model filters">
+        <button class="active" type="button" data-model-filter="all">全部</button>
+        <button type="button" data-model-filter="t2v">T2V/I2V</button>
+        <button type="button" data-model-filter="edit">编辑</button>
+        <button type="button" data-model-filter="character">角色</button>
+        <button type="button" data-model-filter="control">控制</button>
+      </div>
+      <div id="wanModelGrid" class="model-grid" aria-live="polite"></div>
+
+      <div class="visual-example interactive-lab">
+        <div class="visual-copy">
+          <h3>Wan2.2 MoE：按去噪阶段拆专家</h3>
+          <p>Wan2.2 的 MoE 可理解为 timestep-level expert routing：高噪早期专家负责整体结构，低噪后期专家负责纹理和边缘。它不是 LLM 常见的 token-level router。</p>
+        </div>
+        <div class="moe-lab" data-lab="moe-stage">
+          <div class="segmented" role="group" aria-label="Wan2.2 denoising expert stage">
+            <button class="active" type="button" data-moe-stage="high">High-noise stage</button>
+            <button type="button" data-moe-stage="low">Low-noise stage</button>
+          </div>
+          <div class="noise-rail" aria-label="Noise stage and expert responsibility">
+            <span class="noise-fill" id="moeNoiseFill"></span>
+            <span class="stage-pin" id="moeStagePin"></span>
+          </div>
+          <div class="moe-cards">
+            <article id="moeHighCard" class="active"><strong>High-noise Expert</strong><span>整体构图、主体关系、镜头运动、低频结构</span></article>
+            <article id="moeLowCard"><strong>Low-noise Expert</strong><span>纹理、边缘、清晰度、细节修复</span></article>
+          </div>
+          <p id="moeReadout" class="lab-readout">高噪阶段先决定 layout / motion；低噪阶段再强化 detail / texture。</p>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <article>
+          <h3>VACE：统一生成与编辑协议</h3>
+          <p>VACE = Base Video DiT + Video Condition Unit + Context Adapter。它支持 R2V、V2V、MV2V 与多任务组合，将 reference、editing video、mask 等条件统一成 VCU，再通过 Context Adapter 注入视频 DiT。</p>
+          <ul>
+            <li>典型任务：Move-Anything、Swap-Anything、Reference-Anything、Expand-Anything、Animate-Anything、Masked Video-to-Video editing。</li>
+            <li>VACE 既有 Wan 版本，也有 LTX-Video 版本，因此它是两个生态之间的重要桥梁。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Wan-Animate：角色动画与角色替换</h3>
+          <p>Wan-Animate 输入角色图和参考视频，输出目标角色模仿参考动作/表情的视频，或将参考视频中的人物替换为目标角色。它不是普通 I2V，而是身份保持、动作迁移、表情迁移与替换融合的任务模型。</p>
+          <table class="compact-table">
+            <thead><tr><th>模式</th><th>输入</th><th>作用</th></tr></thead>
+            <tbody>
+              <tr><td>Animation mode</td><td>角色图 + 参考视频</td><td>身份保持 + 动作/表情迁移</td></tr>
+              <tr><td>Replacement mode</td><td>角色图 + 参考视频</td><td>人物替换 + 环境光照融合</td></tr>
+            </tbody>
+          </table>
+          <p>replacement mode 中的 Relighting LoRA 用于改善光照、色调和环境融合。</p>
+        </article>
+        <article>
+          <h3>Wan-S2V / Wan2.2-S2V</h3>
+          <p>Wan-S2V / Wan2.2-S2V 是 audio-driven video：音频作为输入条件，驱动人物图像中的角色说话、唱歌或表演。它关注口型、表情、身体动作和电影镜头感。</p>
+          <p>适合唱歌、对白、配音驱动、角色表演、半身或全身人物视频。注意：它的音频是输入条件，不是生成目标本身。</p>
+        </article>
+        <article>
+          <h3>Wan-Fun / Fun-Control / Fun-Camera</h3>
+          <p>Wan-Fun 是 Wan 生态的可控生成分支。Control 支持 Canny、Depth、Pose、MLSD、trajectory 等结构控制，Control-Camera 聚焦相机运动控制，更接近 ControlNet / T2V-Control 风格的专门控制模型。</p>
+          <p class="distinction">Wan-Fun 偏结构和相机控制；VACE 偏统一生成/编辑任务协议；Wan-Animate 偏角色动作、表情和替换；Wan-S2V 偏音频驱动角色视频。</p>
+        </article>
+      </div>
+
+      <div class="source-note">
+        <h3>社区/研究扩展</h3>
+        <p>DiffSynth-Studio、ComfyUI-WanVideoWrapper、LightX2V、TeaCache、Video-As-Prompt、Wan-Move、Helios、DriVerse、AniCrafter、HyperMotion、UniAnimate-DiT 等应标注为社区或研究扩展，不应描述成官方核心能力。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="ltx">
+      <header class="chapter-header">
+        <h2>LTX 生态：高效率视频/音视频生产栈</h2>
+        <p class="chapter-summary">LTX 的关键词是高压缩 latent、实时/快速生成、distillation、FP8、多尺度 upscaling、IC-LoRA、音视频联合生成和 production workflow。</p>
+      </header>
+
+      <div class="ecosystem-map ltx-map" aria-label="LTX ecosystem map">
+        <div class="hub">LTX</div>
+        <article><strong>LTX-Video / LTXV</strong><span>高压缩 VAE + DiT + denoising decoder</span></article>
+        <article><strong>2B / 13B</strong><span>distilled / FP8 / fast iteration</span></article>
+        <article><strong>Upscalers</strong><span>spatial / temporal / detailer</span></article>
+        <article><strong>IC-LoRA</strong><span>depth / pose / canny / union / detailer</span></article>
+        <article><strong>LTX-2 / 2.3</strong><span>joint audio-video generation</span></article>
+        <article><strong>Creative Lab</strong><span>VFX / restoration / editing LoRA</span></article>
+      </div>
+
+      <div class="model-toolbar" aria-label="LTX model filters">
+        <button class="active" type="button" data-ltx-filter="all">全部</button>
+        <button type="button" data-ltx-filter="base">基础模型</button>
+        <button type="button" data-ltx-filter="efficiency">效率组件</button>
+        <button type="button" data-ltx-filter="control">IC-LoRA</button>
+        <button type="button" data-ltx-filter="audio">Audio-Video</button>
+      </div>
+      <div id="ltxModelGrid" class="model-grid" aria-live="polite"></div>
+
+      <div class="visual-example">
+        <div class="visual-copy">
+          <h3>LTX multiscale pipeline</h3>
+          <p>低分辨率阶段负责全局构图、主体运动和镜头节奏；upscaler 提升分辨率和帧率；detail/refinement 补充纹理、边缘、局部运动和光照。</p>
+        </div>
+        <div class="pipeline-steps" aria-label="LTX multiscale pipeline">
+          <article><strong>Base generation</strong><span>全局构图、主体运动、镜头节奏</span></article>
+          <article><strong>Spatial latent upscaling</strong><span>提升空间分辨率</span></article>
+          <article><strong>Temporal upscaling</strong><span>提升帧率或时间分辨率</span></article>
+          <article><strong>Tile refinement / detailer</strong><span>纹理、边缘、局部光照</span></article>
+          <article><strong>Final video</strong><span>生产流输出</span></article>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <article>
+          <h3>LTX-Video / LTXV 基础模型</h3>
+          <p>LTX-Video / LTXV 是 Lightricks 的视频生成基础模型路线，使用高压缩 Video VAE 和 DiT，目标是减少 latent token 数并提升推理速度。</p>
+          <p>它支持 T2V、I2V、多关键帧 conditioning、video extension、video-to-video。高压缩会损失细节，因此 denoising decoder、multiscale pipeline 和 upscaler 需要补回细节。</p>
+        </article>
+        <article>
+          <h3>LTXV 版本谱系</h3>
+          <ul class="dense-list">
+            <li><strong>LTXV 2B</strong>：轻量、低显存、快速实验。</li>
+            <li><strong>LTXV 2B distilled</strong>：更快的蒸馏版本。</li>
+            <li><strong>LTXV 13B</strong>：高质量视频生成基座。</li>
+            <li><strong>LTXV 13B distilled</strong>：少步采样、快速迭代。</li>
+            <li><strong>FP8 variants</strong>：量化部署、降低显存。</li>
+            <li><strong>Spatial upscaler / Temporal upscaler / Detailer</strong>：补空间、时间与局部细节。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>LTX IC-LoRA 控制模型</h3>
+          <p>IC-LoRA, In-Context LoRA，是 LTX 的轻量控制路线。与训练完整控制模型相比，它更容易组合，也更适合生产流中按任务接入条件。</p>
+          <div class="equation code-equation">Base LTX Model + ΔW_IC-LoRA(condition) → Controlled Generation / Editing</div>
+          <p>常见类型包括 Depth Control、Pose Control、Canny / Edge Control、Union IC-LoRA、Detailer LoRA 和 Creative Lab LoRA。</p>
+        </article>
+        <article>
+          <h3>LTX-2 / LTX-2.3</h3>
+          <p>LTX-2 / LTX-2.3 从 video-only 扩展到 joint audio-video generation：在统一模型内同时生成同步的视频和音频。</p>
+          <p>核心结构可理解为非对称双流 DiT：视频流更大，音频流较小；视频 latent 和音频 latent 分别由不同 VAE 编码；双向 audio-video cross-attention 负责同步语义、动作、口型、环境音和视觉事件；modality-aware CFG 分别控制文本遵循和跨模态一致性。</p>
+        </article>
+      </div>
+
+      <div class="visual-example">
+        <div class="visual-copy">
+          <h3>LTX-2 / LTX-2.3 双流结构</h3>
+          <p>与 Wan-S2V 不同，LTX-2 / LTX-2.3 的音频不是外部驱动条件，而是模型需要生成的目标之一。</p>
+        </div>
+        <div class="dual-stream" aria-label="LTX joint audio-video two stream structure">
+          <div class="stream-source">Text prompt</div>
+          <div class="stream-grid">
+            <article><strong>Video latent stream</strong><span>larger DiT branch</span></article>
+            <article><strong>Audio latent stream</strong><span>mel / audio VAE / vocoder route</span></article>
+          </div>
+          <div class="cross-link">Bidirectional audio-video cross-attention</div>
+          <div class="stream-output">Synchronized video + audio</div>
+        </div>
+      </div>
+
+      <div class="source-note">
+        <h3>LTX-2.3 Creative Lab</h3>
+        <p>Creative Lab 可理解为围绕 LTX-2.3 的任务型 LoRA / IC-LoRA 集合，用于视频增强、视频编辑、VFX、修复和风格/场景转换，例如 Day-To-Night、Colorization、Decompression、Deblur、Inpainting / Outpainting、Water Simulation、Ingredients / Reference-based video 和 Instant-Shave。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="comparison">
+      <header class="chapter-header">
+        <h2>Wan vs LTX：质量、速度、控制与音频能力</h2>
+        <p class="chapter-summary">Wan 更像开放高质量视频生成与角色/编辑能力平台；LTX 更像高效率视频/音视频生产栈。</p>
+      </header>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>维度</th><th>Wan 生态</th><th>LTX 生态</th></tr>
+          </thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
+      </div>
+      <div id="comparisonCards" class="comparison-cards" aria-label="Mobile comparison cards"></div>
+
+      <div class="visual-example">
+        <div class="visual-copy">
+          <h3>Audio-driven vs Joint audio-video</h3>
+          <p>这一区分很关键：Wan-S2V 用音频驱动视频；LTX-2 / LTX-2.3 同时生成音频和视频。</p>
+        </div>
+        <div class="audio-compare" aria-label="Wan-S2V and LTX audio video comparison">
+          <article>
+            <strong>Wan-S2V</strong>
+            <span>image + audio + prompt → character video</span>
+            <p>音频是输入条件，目标是口型、表情、身体动作和表演同步。</p>
+          </article>
+          <article>
+            <strong>LTX-2 / LTX-2.3</strong>
+            <span>text prompt → synchronized video + audio</span>
+            <p>音频是生成目标之一，目标是视觉事件、环境音、foley 或语音与视频同步生成。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="bottlenecks">
+      <header class="chapter-header">
+        <h2>关键技术瓶颈：从长视频一致性到部署成本</h2>
+        <p class="chapter-summary">视频生成的难点不是单一指标，而是长时序、物理、控制、音画同步和硬件预算共同约束。</p>
+      </header>
+
+      <div class="bottleneck-grid">
+        <article><strong>长视频一致性</strong><p>角色身份、背景布局、物体状态和镜头语义需要跨 clip 保持一致。诊断时应看跨段 identity drift、场景重置和运动断裂。</p></article>
+        <article><strong>物理与交互</strong><p>接触、碰撞、液体、布料、手部操作和多主体交互仍容易出现局部合理但全局不守恒的问题。</p></article>
+        <article><strong>文本遵循与细粒度控制</strong><p>prompt 只能给出弱约束时，模型容易忽略数量、方向、镜头和对象关系。pose、depth、mask、reference 和 camera control 可增强约束。</p></article>
+        <article><strong>音视频同步</strong><p>audio-driven video 关注输入音频到口型/动作的对齐；joint audio-video 还要同时保证生成音频、视觉事件和场景语义同步。</p></article>
+        <article><strong>显存、速度与部署</strong><p>长视频和高分辨率放大 token 数、KV/activation、VAE decode 和 upscaler 成本。distilled、FP8、offload、cache、tile refinement 与多尺度 pipeline 是常见缓解路径。</p></article>
+      </div>
+
+      <div class="warning-card">
+        <h3>内容准确性边界</h3>
+        <ul>
+          <li>不要把社区项目说成官方核心模型。</li>
+          <li>不要把 Wan-S2V 说成“生成音频”的模型。</li>
+          <li>不要把 LTX-2 / LTX-2.3 说成“只是音频驱动视频”。</li>
+          <li>不要把 Wan2.2 的 MoE 解释成普通 LLM token router。</li>
+          <li>不要把 VACE 只描述成普通视频编辑器。</li>
+          <li>不要声称所有模型都一定可商用，除非具体项目 license 已确认。</li>
+          <li>不要使用未经确认的 benchmark 排名或绝对优劣判断。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="reading-route">
+      <header class="chapter-header">
+        <h2>研究阅读路线：从基础机制到生态模型</h2>
+        <p class="chapter-summary">建议先读 VAE / DiT / Flow Matching，再进入 Wan、LTX、VACE、Wan-Animate 和 LTX-2。</p>
+      </header>
+
+      <div class="route-timeline" aria-label="Research reading route">
+        <article><span>1</span><strong>Video VAE</strong><p>理解 latent compression、3D causal VAE、decoder 重建边界。</p></article>
+        <article><span>2</span><strong>DiT</strong><p>理解时空 tokens、attention 成本、文本和多模态条件注入。</p></article>
+        <article><span>3</span><strong>Flow Matching</strong><p>理解 velocity field、Rectified Flow、少步采样和 scheduler。</p></article>
+        <article><span>4</span><strong>Wan</strong><p>读 Wan2.1 / Wan2.2、VACE、Wan-Animate、Wan-S2V 与 Wan-Fun。</p></article>
+        <article><span>5</span><strong>LTX</strong><p>读 LTX-Video / LTXV、distilled / FP8 / upscaler、IC-LoRA。</p></article>
+        <article><span>6</span><strong>Audio-Video</strong><p>比较 Wan-S2V 与 LTX-2 / LTX-2.3 的任务定义和结构差异。</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="glossary">
+      <header class="chapter-header">
+        <h2>Glossary：关键术语</h2>
+        <p class="chapter-summary">这些术语用于区分通用视频生成机制、Wan 任务模型和 LTX 生产栈组件。</p>
+      </header>
+      <div id="glossaryGrid" class="glossary-grid"></div>
+    </section>
+
+    <section class="chapter" id="references">
+      <header class="chapter-header">
+        <h2>参考资料与进一步阅读</h2>
+        <p class="chapter-summary">这里列出应优先核对的来源类型。具体模型能力、license 与部署细节应以官方仓库、论文、模型卡或项目页为准。</p>
+      </header>
+      <div class="reference-list" aria-label="Reference source checklist">
+        <article><strong>Wan2.1 / Wan2.2</strong><span>官方仓库与模型卡。</span></article>
+        <article><strong>VACE</strong><span>Wan2.1 / Wan2.2 VACE 论文与仓库。</span></article>
+        <article><strong>Wan-Animate</strong><span>论文与模型卡。</span></article>
+        <article><strong>Wan-S2V / Wan2.2-S2V</strong><span>论文、项目页与模型卡。</span></article>
+        <article><strong>Wan-Fun / Wan2.1-Fun</strong><span>模型卡与控制生态说明。</span></article>
+        <article><strong>LTX-Video</strong><span>论文、官方仓库与模型卡。</span></article>
+        <article><strong>LTXV variants</strong><span>2B、13B、distilled、FP8、upscaler 相关模型卡。</span></article>
+        <article><strong>LTX-2 / LTX-2.3</strong><span>论文、模型卡与官方仓库。</span></article>
+        <article><strong>LTX-2.3 Creative Lab</strong><span>collection 与任务型 LoRA / IC-LoRA 说明。</span></article>
+        <article><strong>工程工作流</strong><span>ComfyUI-LTXVideo、LTX-Video-Trainer、LTX-2 Trainer。</span></article>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/">返回主页</a>
+      <a href="/foundations/">返回 Foundations</a>
+    </footer>
+  </main>
+
+  <script defer src="./static/js/index.js"></script>
+</body>
+</html>

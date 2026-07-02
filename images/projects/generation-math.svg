@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Generative Model Math Map thumbnail</title>
+  <desc id="desc">A layered technical map linking model families, mathematical objectives, and post-training alignment.</desc>
+  <rect width="1200" height="720" fill="#f4f6f2"/>
+  <path d="M0 120h1200M0 240h1200M0 360h1200M0 480h1200M0 600h1200M150 0v720M300 0v720M450 0v720M600 0v720M750 0v720M900 0v720M1050 0v720" stroke="#d9dfd7" stroke-width="2"/>
+  <rect x="78" y="66" width="1044" height="588" fill="#fff" stroke="#151719" stroke-width="5"/>
+  <path d="M145 178h176M145 214h108M145 250h142" stroke="#151719" stroke-width="13" stroke-linecap="round"/>
+  <path d="M140 438C202 338 270 516 350 412s145-188 236-78 168 160 292-12 174-84 224 10" fill="none" stroke="#08756f" stroke-width="17" stroke-linecap="round"/>
+  <g fill="#fff" stroke="#151719" stroke-width="6">
+    <circle cx="180" cy="530" r="25"/>
+    <circle cx="330" cy="530" r="25"/>
+    <circle cx="480" cy="530" r="25"/>
+    <circle cx="630" cy="530" r="25"/>
+    <circle cx="780" cy="530" r="25"/>
+    <circle cx="930" cy="530" r="25"/>
+  </g>
+  <path d="M205 530h100M355 530h100M505 530h100M655 530h100M805 530h100" stroke="#a97812" stroke-width="10" stroke-linecap="round"/>
+  <path d="M180 586h750" stroke="#151719" stroke-width="9" stroke-linecap="round"/>
+  <path d="M180 610h510" stroke="#151719" stroke-width="9" stroke-linecap="round" opacity=".62"/>
+  <g font-family="SFMono-Regular, Menlo, monospace" font-size="36" font-weight="700" fill="#151719">
+    <text x="408" y="192">AR</text>
+    <text x="526" y="192">VAE</text>
+    <text x="657" y="192">GAN</text>
+    <text x="782" y="192">DIFF</text>
+    <text x="944" y="192">FLOW</text>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M166 344h130M246 344l-34-26M246 344l-34 26M414 344H286M334 344l34-26M334 344l34 26M552 344h138M642 344l-34-26M642 344l-34 26M835 344H690M738 344l34-26M738 344l34 26M956 344h102M1024 344l-34-26M1024 344l-34 26" stroke="#bc4b35" stroke-width="11"/>
+    <path d="M918 248c58-44 140-44 198 0" stroke="#285f94" stroke-width="12"/>
+    <path d="M1116 248v-72h-72" stroke="#bc4b35" stroke-width="10"/>
+    <path d="M1104 176l-22-18M1104 176l-22 18" stroke="#bc4b35" stroke-width="10"/>
+  </g>
+  <circle cx="918" cy="248" r="17" fill="#fff" stroke="#151719" stroke-width="7"/>
+  <circle cx="1018" cy="226" r="17" fill="#fff" stroke="#151719" stroke-width="7"/>
+  <circle cx="1116" cy="248" r="17" fill="#fff" stroke="#151719" stroke-width="7"/>
+  <g font-family="SFMono-Regular, Menlo, monospace" font-size="30" font-weight="700" fill="#08756f">
+    <text x="145" y="118">MATH BACKBONE</text>
+  </g>
+  <g font-family="SFMono-Regular, Menlo, monospace" font-size="24" font-weight="700" fill="#4d565d">
+    <text x="142" y="646">KL  JS  ELBO  SCORE  MARKOV  RLHF  DPO  GRPO</text>
+  </g>
+</svg>

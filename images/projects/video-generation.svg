@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Video generation foundations teaser</title>
+  <desc id="desc">A local SVG diagram showing a video latent generation pipeline and Wan versus LTX ecosystem branches.</desc>
+  <rect width="1200" height="630" fill="#f9faf6"/>
+  <g opacity="0.42" stroke="#d4ddd7" stroke-width="1">
+    <path d="M0 92H1200M0 184H1200M0 276H1200M0 368H1200M0 460H1200M0 552H1200"/>
+    <path d="M100 0V630M200 0V630M300 0V630M400 0V630M500 0V630M600 0V630M700 0V630M800 0V630M900 0V630M1000 0V630M1100 0V630"/>
+  </g>
+  <text x="72" y="96" fill="#171b1c" font-family="Georgia, serif" font-size="54" font-weight="700">Video Generation Foundations</text>
+  <text x="72" y="142" fill="#5c6466" font-family="Arial, sans-serif" font-size="24">Video VAE · DiT · Flow Matching · Wan · LTX</text>
+  <g transform="translate(72 230)">
+    <rect width="170" height="96" rx="10" fill="#ffffff" stroke="#d4ddd7"/>
+    <text x="85" y="40" text-anchor="middle" fill="#171b1c" font-family="Arial, sans-serif" font-size="21" font-weight="700">video frames</text>
+    <text x="85" y="68" text-anchor="middle" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">T × H × W × 3</text>
+    <path d="M190 48H285" fill="none" stroke="#7b8585" stroke-width="3" stroke-linecap="round"/>
+    <path d="M285 48l-13-8v16z" fill="#7b8585"/>
+    <rect x="300" width="170" height="96" rx="10" fill="#eef3ef" stroke="#0f766e"/>
+    <text x="385" y="40" text-anchor="middle" fill="#171b1c" font-family="Arial, sans-serif" font-size="21" font-weight="700">Video VAE</text>
+    <text x="385" y="68" text-anchor="middle" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">latent tokens</text>
+    <path d="M490 48H585" fill="none" stroke="#7b8585" stroke-width="3" stroke-linecap="round"/>
+    <path d="M585 48l-13-8v16z" fill="#7b8585"/>
+    <rect x="600" width="170" height="96" rx="10" fill="#ffffff" stroke="#d4ddd7"/>
+    <text x="685" y="40" text-anchor="middle" fill="#171b1c" font-family="Arial, sans-serif" font-size="21" font-weight="700">DiT / Flow</text>
+    <text x="685" y="68" text-anchor="middle" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">zT → z0</text>
+    <path d="M790 48H885" fill="none" stroke="#7b8585" stroke-width="3" stroke-linecap="round"/>
+    <path d="M885 48l-13-8v16z" fill="#7b8585"/>
+    <rect x="900" width="170" height="96" rx="10" fill="#fff7ea" stroke="#b46b13"/>
+    <text x="985" y="40" text-anchor="middle" fill="#171b1c" font-family="Arial, sans-serif" font-size="21" font-weight="700">decoder</text>
+    <text x="985" y="68" text-anchor="middle" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">generated video</text>
+  </g>
+  <g transform="translate(72 420)">
+    <rect width="500" height="118" rx="12" fill="#eef3ef" stroke="#0f766e"/>
+    <text x="28" y="40" fill="#0f766e" font-family="Arial, sans-serif" font-size="24" font-weight="700">WAN</text>
+    <text x="28" y="76" fill="#171b1c" font-family="Arial, sans-serif" font-size="22">High-quality video, character animation, editing</text>
+    <text x="28" y="103" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">Wan2.1 · Wan2.2 · VACE · Animate · S2V</text>
+    <rect x="560" width="500" height="118" rx="12" fill="#fff7ea" stroke="#b46b13"/>
+    <text x="588" y="40" fill="#b46b13" font-family="Arial, sans-serif" font-size="24" font-weight="700">LTX</text>
+    <text x="588" y="76" fill="#171b1c" font-family="Arial, sans-serif" font-size="22">Efficient video and audio-video production stack</text>
+    <text x="588" y="103" fill="#5c6466" font-family="Arial, sans-serif" font-size="17">LTXV · distilled · FP8 · IC-LoRA · LTX-2.3</text>
+  </g>
+</svg>

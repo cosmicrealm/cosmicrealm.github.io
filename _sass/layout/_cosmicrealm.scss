@@ -497,6 +497,27 @@ body {
   color: var(--cr-accent);
 }
 
+.foundation-index-list__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+  margin-top: 0.5rem;
+}
+
+.foundation-index-list__tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: 0.18rem 0.5rem;
+  color: var(--cr-accent-strong);
+  font-family: $sans-serif;
+  font-size: $type-size-7;
+  font-weight: 800;
+  border: 1px solid var(--cr-border-strong);
+  border-radius: 999px;
+  background: var(--cr-accent-soft);
+}
+
 .blog-index-list li {
   grid-template-columns: 7rem minmax(0, 1fr);
 }

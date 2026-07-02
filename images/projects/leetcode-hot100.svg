@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">LeetCode Hot100 Python 解法整理</title>
+  <desc id="desc">算法题单、Python 代码和数据结构主题组成的技术笔记缩略图</desc>
+  <rect width="1200" height="630" fill="#f7f4ee"/>
+  <rect x="80" y="78" width="1040" height="474" rx="18" fill="#fffdf8" stroke="#d9d0c0" stroke-width="2"/>
+  <path d="M160 180h420M160 238h320M160 296h460" stroke="#24231f" stroke-width="20" stroke-linecap="round"/>
+  <g fill="none" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M740 190l-72 72 72 72" stroke="#127a76"/>
+    <path d="M890 190l72 72-72 72" stroke="#315f9e"/>
+    <path d="M825 168l-54 190" stroke="#b46a00"/>
+  </g>
+  <g font-family="Inter, system-ui, sans-serif" font-weight="800" letter-spacing="0">
+    <text x="160" y="414" fill="#127a76" font-size="64">Hot100</text>
+    <text x="160" y="478" fill="#24231f" font-size="44">Python Solutions</text>
+  </g>
+  <g transform="translate(684 404)">
+    <rect width="330" height="76" rx="12" fill="#171b1f"/>
+    <text x="24" y="48" fill="#edf3f8" font-family="SFMono-Regular, Consolas, monospace" font-size="28">class Solution:</text>
+  </g>
+</svg>
