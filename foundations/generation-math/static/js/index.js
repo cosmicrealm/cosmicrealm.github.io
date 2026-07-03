@@ -24,6 +24,11 @@
         body: 'non-saturating loss 在判别器较强时给生成器更有用的梯度。'
       },
       {
+        title: 'hinge / LSGAN / PatchGAN',
+        formula: '\\[\\mathcal{L}_{D}^{hinge}=\\mathbb{E}\\max(0,1-D(x))+\\mathbb{E}\\max(0,1+D(G(z)))\\]',
+        body: 'hinge 用 margin 改善梯度，LSGAN 用平方误差缓解饱和，PatchGAN 把判别约束放到局部纹理网格上。'
+      },
+      {
         title: 'Wasserstein 与 gradient penalty',
         formula: '\\[\\lambda\\mathbb{E}_{\\hat{x}}(\\|\\nabla_{\\hat{x}}f(\\hat{x})\\|_2-1)^2\\]',
         body: 'WGAN-GP 用 Lipschitz 约束让 critic 提供更平滑的训练信号。'
@@ -120,122 +125,245 @@
   const flowData = {
     vae: {
       train: [
-        'for x in dataset:',
-        '  mu, logvar = Encoder_phi(x)',
-        '  epsilon ~ Normal(0, I)',
-        '  z = mu + exp(0.5 * logvar) * epsilon',
-        '  x_hat ~ Decoder_theta(z)',
-        '  loss = reconstruction_loss(x, x_hat) + KL(q_phi(z|x) || Normal(0, I))',
-        '  update theta, phi'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each minibatch x:',
+            '  mu, logvar = Encoder_phi(x)',
+            '  sigma = exp(0.5 * logvar)',
+            '  epsilon ~ Normal(0, I)',
+            '  z = mu + sigma * epsilon',
+            '  recon_params = Decoder_theta(z)',
+            '  recon_loss = -log p_theta(x | z)',
+            '  kl = KL(N(mu, diag(sigma^2)) || N(0, I))',
+            '  loss = recon_loss + beta * kl',
+            '  update phi, theta by gradient descent'
+          ].join('\n'),
+          note: '随机量只来自 epsilon；reparameterization 让 z 的采样路径仍能对 encoder 参数反向传播。'
+        }
       ],
       sample: [
-        'z ~ Normal(0, I)',
-        'x ~ p_theta(x | z)',
-        'return x'
+        {
+          title: '采样伪代码',
+          code: [
+            'z ~ Normal(0, I)',
+            'recon_params = Decoder_theta(z)',
+            'if decoder is Gaussian:',
+            '  x_hat = mean(recon_params) or sample Normal(recon_params)',
+            'else if decoder is Bernoulli:',
+            '  x_hat = sample Bernoulli(logits)',
+            'return x_hat'
+          ].join('\n'),
+          note: '采样从 prior 开始，而不是从 q_phi(z|x) 开始；prior-posterior gap 会直接影响新样本质量。'
+        }
       ]
     },
     vqvae: {
       train: [
-        'for x in dataset:',
-        '  z_e = Encoder(x)',
-        '  k = nearest_codebook_index(z_e)',
-        '  z_q = codebook[k]',
-        '  x_hat = Decoder(z_q)',
-        '  loss = reconstruction + codebook_loss + commitment_loss',
-        '  if EMA codebook: update N_i, m_i, e_i as online k-means statistics',
-        '  if VQGAN: add perceptual_loss and adversarial_loss',
-        '  update encoder, decoder, codebook, discriminator if used'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each minibatch x:',
+            '  z_e = Encoder_phi(x)',
+            '  k = argmin_j ||z_e - e_j||_2',
+            '  z_q = e_k with straight-through gradient',
+            '  x_hat = Decoder_theta(z_q)',
+            '  loss = reconstruction(x, x_hat)',
+            '       + ||sg(z_e) - e_k||_2^2',
+            '       + beta * ||z_e - sg(e_k)||_2^2',
+            '  if EMA codebook:',
+            '    update N_i, m_i, e_i by moving averages',
+            '  update encoder, decoder, and codebook state'
+          ].join('\n'),
+          note: '最近邻选择是离散操作；straight-through 负责传梯度，EMA 更新负责让 code center 更像 online k-means。'
+        }
       ],
       sample: [
-        'sample code indices from an autoregressive prior or other prior model',
-        'z_q = lookup codebook vectors',
-        'x = Decoder(z_q)',
-        'return x'
+        {
+          title: '采样伪代码',
+          code: [
+            'code_indices = Prior.sample(condition)',
+            'z_q = lookup(codebook, code_indices)',
+            'x_hat = Decoder_theta(z_q)',
+            'return x_hat'
+          ].join('\n'),
+          note: 'VQ 模型本身更像 tokenizer；真正的生成通常由离散 prior 决定全局结构。'
+        }
       ]
     },
     gan: {
       train: [
-        'repeat:',
-        '  sample real x ~ p_data and noise z ~ p(z)',
-        '  update D to separate x from G_theta(z)',
-        '  update G with non-saturating, WGAN, or other stable generator objective',
-        '  monitor discriminator saturation, mode collapse, and diversity'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each step:',
+            '  x_real ~ p_data',
+            '  z ~ p(z)',
+            '  x_fake = G_theta(z).detach()',
+            '  loss_D = discriminator_loss(D_psi(x_real), D_psi(x_fake))',
+            '  if WGAN-GP:',
+            '    loss_D += lambda * (||grad_x D_psi(x_hat)||_2 - 1)^2',
+            '  update psi',
+            '',
+            '  z ~ p(z)',
+            '  x_fake = G_theta(z)',
+            '  loss_G = generator_loss(D_psi(x_fake))',
+            '  update theta'
+          ].join('\n'),
+          note: '训练是两方优化；hinge、LSGAN、non-saturating、WGAN-GP 都是在改善同一分布匹配博弈的梯度形态。'
+        }
       ],
       sample: [
-        'z ~ p(z)',
-        'x = G_theta(z)',
-        'return x'
+        {
+          title: '采样伪代码',
+          code: [
+            'z ~ p(z)',
+            'x_hat = G_theta(z)',
+            'return x_hat'
+          ].join('\n'),
+          note: 'GAN 推断通常只需一次生成器前向，速度快；风险主要在训练稳定性和 mode coverage。'
+        }
       ]
     },
     diffusion: {
       train: [
-        'for x_0 in dataset:',
-        '  t ~ Uniform({1, ..., T})',
-        '  epsilon ~ Normal(0, I)',
-        '  x_t = sqrt(alpha_bar_t) * x_0 + sqrt(1 - alpha_bar_t) * epsilon',
-        '  loss = ||epsilon - epsilon_theta(x_t, t, condition)||^2',
-        '  update theta'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each minibatch x_0, condition c:',
+            '  t ~ Uniform({1, ..., T})',
+            '  epsilon ~ Normal(0, I)',
+            '  x_t = sqrt(alpha_bar_t) * x_0',
+            '      + sqrt(1 - alpha_bar_t) * epsilon',
+            '  epsilon_hat = epsilon_theta(x_t, t, c)',
+            '  loss = ||epsilon - epsilon_hat||_2^2',
+            '  update theta'
+          ].join('\n'),
+          note: '前向 q 是固定加噪过程；训练只学习反向去噪所需的信息。'
+        }
       ],
       sample: [
-        'x_T ~ Normal(0, I)',
-        'for t = T ... 1:',
-        '  epsilon_hat = epsilon_theta(x_t, t, condition)',
-        '  x0_hat = (x_t - sqrt(1-alpha_bar_t) * epsilon_hat) / sqrt(alpha_bar_t)',
-        '  mu = (x_t - beta_t / sqrt(1-alpha_bar_t) * epsilon_hat) / sqrt(alpha_t)',
-        '  if DDPM: x_{t-1} = mu + sigma_t * z, z ~ Normal(0, I)',
-        '  if DDIM / probability-flow: use deterministic update without fresh z',
-        'return x_0'
+        {
+          title: '反向采样伪代码',
+          code: [
+            'x_T ~ Normal(0, I)',
+            'for t = T, ..., 1:',
+            '  epsilon_hat = epsilon_theta(x_t, t, c)',
+            '  mu = (1 / sqrt(alpha_t))',
+            '       * (x_t - beta_t / sqrt(1 - alpha_bar_t) * epsilon_hat)',
+            '  if DDPM and t > 1:',
+            '    z ~ Normal(0, I)',
+            '    x_{t-1} = mu + sigma_t * z',
+            '  else:',
+            '    x_{t-1} = deterministic DDIM/probability-flow step',
+            'return x_0'
+          ].join('\n'),
+          note: 'DDPM 是随机反向链；DDIM/probability flow ODE 使用同一网络但减少或移除随机噪声。'
+        }
       ]
     },
     flow: {
       train: [
-        'sample x_0 ~ base distribution and x_1 ~ p_data',
-        'sample t in [0, 1]',
-        'construct x_t on the probability path',
-        'compute target velocity u_t',
-        'loss = ||v_theta(x_t, t, condition) - u_t||^2',
-        'for MeanFlow: regress an interval average velocity',
-        'update theta'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each minibatch:',
+            '  x_base ~ p_0',
+            '  x_data ~ p_data',
+            '  t ~ Uniform(0, 1)',
+            '  x_t = psi_t(x_base, x_data)',
+            '  u_t = d psi_t(x_base, x_data) / dt',
+            '  v_hat = v_theta(x_t, t, c)',
+            '  loss = ||v_hat - u_t||_2^2',
+            '  update theta'
+          ].join('\n'),
+          note: '训练时可以构造 endpoints；采样时没有真实 x_data，只能沿学到的速度场积分。'
+        }
       ],
       sample: [
-        'x_0 ~ base distribution',
-        'for t_k from 0 to 1:',
-        '  x_{t_{k+1}} = x_{t_k} + Delta_t * v_theta(x_{t_k}, t_k, condition)',
-        '  or use Heun / Runge-Kutta / another ODE solver',
-        'for MeanFlow: predict interval average velocity for one/few-step update',
-        'return x_1'
+        {
+          title: 'ODE 采样伪代码',
+          code: [
+            'x = sample p_0',
+            'for k = 0, ..., K - 1:',
+            '  t = k / K',
+            '  dt = 1 / K',
+            '  v = v_theta(x, t, c)',
+            '  x = x + dt * v       # Euler',
+            'return x'
+          ].join('\n'),
+          note: 'Flow Matching 通常不是 learned reverse Markov chain；核心是从 base distribution 积分到 data distribution。'
+        }
       ]
     },
     ar: {
       train: [
-        'for token sequence x_1...x_T:',
-        '  input true prefix x_{<t} with causal mask',
-        '  logits_t = Transformer_theta(x_{<t})',
-        '  loss = -sum_t log softmax(logits_t)[x_t]',
-        '  update theta'
+        {
+          title: '训练伪代码',
+          code: [
+            'for each sequence x_1, ..., x_T and condition c:',
+            '  input = [BOS, x_1, ..., x_{T-1}]',
+            '  targets = [x_1, ..., x_T]',
+            '  logits = Transformer_theta(input, c, causal_mask=True)',
+            '  loss = sum_t CrossEntropy(logits_t, targets_t)',
+            '  update theta'
+          ].join('\n'),
+          note: 'teacher forcing 使用真实前缀，训练可并行计算所有位置的 next-token loss。'
+        }
       ],
       sample: [
-        'prefix = prompt tokens',
-        'while not stop:',
-        '  logits = Transformer_theta(prefix)',
-        '  sample next token with temperature, top-k, top-p, or greedy decoding',
-        '  append token to prefix',
-        'return generated sequence'
+        {
+          title: '逐 token 采样伪代码',
+          code: [
+            'prefix = prompt tokens',
+            'while not stop and len(prefix) < max_len:',
+            '  logits = Transformer_theta(prefix, c)',
+            '  probs = softmax(logits[-1] / temperature)',
+            '  probs = apply_top_k_top_p_filter(probs)',
+            '  token = sample(probs)',
+            '  prefix.append(token)',
+            'return prefix'
+          ].join('\n'),
+          note: 'decoding 改变取样策略，不更新模型参数；过低温度易重复，过高温度易漂移。'
+        }
       ]
     },
     post: {
       train: [
-        'start from pretrained or SFT policy pi_theta',
-        'collect demonstrations, preference pairs, verifier scores, or reward-model scores',
-        'choose objective: SFT, PPO/RLHF, DPO, GRPO, DDPO, or Flow-DPO',
-        'optimize reward or preference while constraining drift from pi_ref',
-        'audit reward hacking, KL drift, safety regressions, and capability loss'
+        {
+          title: '后训练伪代码',
+          code: [
+            'start from pi_ref or SFT policy',
+            'collect demonstrations / preferences / rewards',
+            'if SFT:',
+            '  minimize token-level conditional NLL',
+            'if PPO or GRPO:',
+            '  rollout y ~ pi_theta(. | x)',
+            '  compute reward and KL to pi_ref',
+            '  estimate advantage and update policy',
+            'if DPO:',
+            '  read (x, y_w, y_l)',
+            '  optimize reference log-ratio margin',
+            'if DDPO / Flow-DPO:',
+            '  assign final reward or preference to generation trajectory'
+          ].join('\n'),
+          note: '后训练改变参数与条件分布；post-processing 只筛选或修补当前样本，不改变下一次采样分布。'
+        }
       ],
       sample: [
-        'given condition x or prompt c:',
-        '  generate y or visual sample using the post-trained model',
-        '  optional post-processing may filter or repair the sample',
-        'return output without changing model parameters'
+        {
+          title: '推断伪代码',
+          code: [
+            'given condition x or c:',
+            '  use post-trained policy/model pi_theta',
+            '  if LLM: autoregressive token sampling',
+            '  if diffusion: reverse denoising sampler',
+            '  if flow: ODE velocity sampler',
+            '  optionally apply post-processing filters',
+            'return output'
+          ].join('\n'),
+          note: '推断仍沿用基础生成器的 sampler；后训练让 sampler 背后的条件分布更偏向被奖励或被偏好的输出。'
+        }
       ]
     }
   };
@@ -249,6 +377,15 @@
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise(element ? [element] : undefined).catch(function () {});
     }
+  }
+
+  function escapeHTML(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function setActive(buttons, selected) {
@@ -301,7 +438,12 @@
       if (!flowData[key] || !output || !buttons.length) return;
 
       function render() {
-        output.textContent = flowData[key][mode].join('\n');
+        const cards = flowData[key][mode] || [];
+        output.innerHTML = cards.map(function (card) {
+          const note = card.note ? '<p class="algorithm-note">' + escapeHTML(card.note) + '</p>' : '';
+          return '<article class="flow-card"><h4>' + escapeHTML(card.title) + '</h4><pre class="algorithm"><code>' + escapeHTML(card.code || '') + '</code></pre>' + note + '</article>';
+        }).join('');
+        typeset(output);
       }
 
       buttons.forEach(function (button) {

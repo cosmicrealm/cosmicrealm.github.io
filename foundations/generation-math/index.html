@@ -58,7 +58,7 @@
     <header class="paper-header"><p class="kicker">Formal derivation notes</p><h1>生成模型数学推导</h1><p class="subtitle">从数据分布的概率建模出发，推导典型生成模型如何训练、如何采样，以及偏好后训练如何改变模型分布。</p></header>
 <section class="chapter problem" id="problem" data-part="part0">
 <header class="chapter-header"><h2>总体问题：从数据分布到可采样模型</h2><p class="chapter-summary">生成模型的共同目标是用可训练、可采样的模型分布逼近未知数据分布。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>需要理解随机变量、概率密度、经验样本和条件分布。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>随机变量：</strong>\(x\) 表示可能出现的数据对象，例如文本序列、图像 latent 或视频片段；生成模型要描述这些对象出现的概率规律。</li><li><strong>概率密度：</strong>\(p(x)\) 给连续样本附近分配概率质量，密度本身不是单点概率，但可用于比较哪些区域更可能。</li><li><strong>经验样本：</strong>训练集 \(\{x_i\}_{i=1}^{N}\) 是从未知 \(p_{\mathrm{data}}\) 抽到的有限观测，真实期望通常用样本平均近似。</li><li><strong>条件分布：</strong>\(p_\theta(x|c)\) 表示给定条件 \(c\) 时模型对输出 \(x\) 的分布；文本提示、类别、音频和图像上下文都可以作为条件。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>训练集给出的是样本，不是密度；生成模型要选择一个可计算接口，把样本变成目标函数，再把简单随机源变成新样本。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(p_{\mathrm{data}}(x)\)</td><td>真实数据分布。</td><td>只通过样本观测，密度通常未知。</td></tr><tr><td>\(p_\theta(x|c)\)</td><td>条件生成模型。</td><td>由神经网络参数 \(\theta\) 定义或隐式采样。</td></tr><tr><td>\(c\)</td><td>条件变量，例如文本提示、类别、音频、视频上下文。</td><td>训练数据提供或推断时由用户给定。</td></tr><tr><td>\(z, x_T, x_0\)</td><td>不同模型的采样入口：latent、纯噪声或干净样本。</td><td>由模型族决定。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：把未知的 \(p_{\mathrm{data}}\) 与可训练的 \(p_\theta\) 对齐。若模型可以计算 likelihood，就可以从 forward KL 推出最大似然。</p><div class="equation" data-eq="P-1">\[
@@ -71,30 +71,40 @@ D_{KL}(p_{\mathrm{data}}\Vert p_\theta)
 \]<span class="eq-number">(P-1)</span></div><p>常数 \(C\) 不含 \(\theta\)，所以最小化 forward KL 等价于最大化数据样本的 log-likelihood。</p></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="P-2">\[
 \theta^*=\arg\max_\theta\frac{1}{N}\sum_{i=1}^{N}\log p_\theta(x_i|c_i).
-\]<span class="eq-number">(P-2)</span></div><p>用训练集均值近似真实期望。无条件生成时去掉 \(c_i\)。</p><p class="derivation-note">使用：Monte Carlo estimate。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="P-3">\[
+\]<span class="eq-number">(P-2)</span></div><p>用训练集均值近似真实期望。无条件生成时去掉 \(c_i\)。</p><p class="derivation-note">本步使用经验平均，也就是 Monte Carlo 估计：真实期望 \(\mathbb{E}_{p_{\mathrm{data}}}\) 需要知道完整数据分布，但训练时只有有限样本。把每个样本的 log-likelihood 求平均，就是用训练集的经验分布近似真实分布；样本越多、覆盖越充分，这个平均值通常越接近真实期望。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="P-3">\[
 \text{samples }x\sim p_{\mathrm{data}}\rightarrow \text{computable interface}\rightarrow \text{objective}\rightarrow p_\theta\rightarrow \text{samples}.
-\]<span class="eq-number">(P-3)</span></div><p>不同模型族的差异来自可计算接口，而不是任务目标不同。</p><p class="derivation-note">使用：分布匹配视角。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>collect samples x ~ p_data
-choose computable interface
-define objective
-optimize theta
-diagnose mismatch</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>sample simple source: prefix / z / x_T / x_0
-apply model sampling rule
-compare output statistics with p_data</code></pre></article></div></div>
-<div class="roadmap-grid"><article><h3>快速直觉路线</h3><p>读每章 0、5、8 小节，先建立模型机制。</p></article><article><h3>数学推导路线</h3><p>读每章 1–4 小节，追踪目标函数来源。</p></article><article><h3>研究/工程路线</h3><p>重点看算法、交互实验、误解和诊断信号。</p></article></div>
+\]<span class="eq-number">(P-3)</span></div><p>不同模型族的差异来自可计算接口，而不是任务目标不同。</p><p class="derivation-note">本步使用分布匹配视角：所有方法都希望让模型分布接近数据分布，真正不同的是“能算什么”。能算 likelihood 时可做 MLE；只能采样时需要判别器、score、velocity 或 reward 信号；训练目标的形状来自这个可计算接口。</p></li></ol></div>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>训练伪代码</h4><pre class="algorithm"><code>given dataset D = {(c_i, x_i)}
+choose a computable interface:
+  likelihood / ELBO / discriminator / score / velocity / reward
+for each minibatch:
+  sample training examples from D
+  sample auxiliary variables if needed
+  compute objective from the chosen interface
+  update model parameters theta
+  log diagnostics matched to that interface</code></pre><p class="algorithm-note">同一个分布匹配任务会因为“能计算什么”而变成不同 objective。</p></article><article class="flow-card"><h4>采样 / 推断伪代码</h4><pre class="algorithm"><code>given condition c if conditional generation:
+initialize from model-specific source:
+  prefix / latent z / noise x_T / base sample / policy state
+run the sampler:
+  autoregressive decoding
+  decoder forward
+  reverse denoising
+  ODE integration
+  policy rollout
+return generated sample x_hat or response y</code></pre><p class="algorithm-note">采样入口和训练目标相关，但训练 loss 本身不是 sampler。</p></article></div></div>
 <div class="interface-table" aria-label="模型族总览表"><div class="interface-row interface-head"><span>模型族</span><span>显式密度</span><span>可计算对象</span><span>训练目标</span><span>采样入口</span><span>主要代价</span></div><div class="interface-row"><span>AR</span><span>是</span><span>链式条件概率</span><span>NLL / cross entropy</span><span>prompt prefix</span><span>长序列采样慢</span></div><div class="interface-row"><span>Normalizing Flow</span><span>是</span><span>Jacobian determinant</span><span>exact likelihood</span><span>base latent z</span><span>可逆架构受限</span></div><div class="interface-row"><span>VAE</span><span>下界</span><span>ELBO</span><span>reconstruction + KL</span><span>prior z</span><span>样本偏平滑</span></div><div class="interface-row"><span>VQ-VAE/VQGAN</span><span>压缩接口</span><span>codebook token</span><span>quantization + perceptual</span><span>code indices</span><span>dead codes / 伪细节</span></div><div class="interface-row"><span>GAN</span><span>否</span><span>判别密度比</span><span>adversarial / WGAN</span><span>noise z</span><span>训练不稳定</span></div><div class="interface-row"><span>Score/Diffusion</span><span>隐式</span><span>score / denoising transition</span><span>DSM / noise prediction</span><span>x_T noise</span><span>多步采样</span></div><div class="interface-row"><span>Flow Matching</span><span>隐式</span><span>velocity field</span><span>velocity regression</span><span>base x_0</span><span>ODE 误差</span></div><div class="interface-row"><span>Post-training</span><span>policy</span><span>preference / reward</span><span>KL-regularized objective</span><span>trained policy</span><span>reward hacking</span></div></div>
 <div class="visual-example interactive-lab" data-visual="problem-overview"><div class="visual-copy"><h3>5. 可视化实验：统一问题图</h3><p>样本、可计算接口、目标函数和采样入口构成同一条分布匹配管线。</p></div><div class="diagram-flow overview-diagram" aria-label="Generative modeling overview"><div class="flow-node">samples<small>\(x\sim p_{\mathrm{data}}\)</small></div><div class="flow-arrow">choose interface</div><div class="flow-node">objective<small>likelihood / score / reward</small></div><div class="flow-arrow">train</div><div class="flow-node">sampler<small>\(p_\theta(x|c)\)</small></div></div></div>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>不同模型不是不同任务；它们都在做分布匹配。</li>
-<li>post-processing 不改变模型分布；post-training 改变参数和条件分布。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>统一分布匹配问题，模型差异来自可计算接口。</p></div><div><strong>诊断信号</strong><p>看 likelihood、FID/LPIPS、reward、KL drift、采样速度和失败模式。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能说明为什么生成模型都在逼近 \(p_{\mathrm{data}}\)。</li>
-<li>能区分可计算密度、隐式密度、score、velocity 和 reward 接口。</li>
-<li>能说明训练目标与采样入口的对应关系。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>模型族不同不代表任务不同。</strong>AR、VAE、GAN、Diffusion 和 Flow Matching 都在让 \(p_\theta(x|c)\) 接近目标数据分布，只是选择了不同的可计算信号。</li>
+<li><strong>post-processing 与 post-training 的边界在于是否更新模型。</strong>post-processing 是对已生成样本做筛选、重排、修补或 best-of-N，不改变参数，也不改变下一次采样的 \(p_\theta(x|c)\)。post-training 会用示范、偏好或 reward 继续更新参数，使同一条件下模型更倾向某类输出，因此改变条件分布。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>这一章给出统一问题：训练目标并不是凭空设计，而是从“未知数据分布 + 可计算模型接口”推出来。理解这一点后，后面的模型差异会变成接口差异，而不是零散公式。</p></div><div><strong>适用场景</strong><p>阅读任何新生成模型时，先问它能显式算密度、只能采样、能构造噪声监督、能定义速度场，还是只拿得到偏好信号。</p></div><div><strong>典型问题</strong><p>若混淆训练目标和采样过程，会把 NLL、score、velocity、reward 当成同一类对象；若混淆后训练和后处理，会误判方法是否真的改变模型行为。</p></div><div><strong>诊断信号</strong><p>likelihood/perplexity 反映概率建模，FID/LPIPS 反映感知质量，coverage 与 diversity 反映模式覆盖，reward/KL drift 反映对齐时的分布移动幅度。</p></div><div><strong>工程判断</strong><p>选择模型族时先看数据形态和约束：离散序列通常适合 AR，高维连续视觉更常用 latent diffusion 或 flow，偏好对齐则应在已有模型附近小心移动分布。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>为什么生成模型都在逼近 \(p_{\mathrm{data}}\)：</strong>训练集是从真实分布采样得到的有限观测，模型训练就是让 \(p_\theta\) 在这些观测及其邻域上分配合理概率，并在采样时产生同类数据。</li>
+<li><strong>为什么会出现多种方法：</strong>差异来自可计算接口。显式密度可以直接做 MLE；隐式采样需要 adversarial、score 或 velocity 监督；偏好对齐需要 reward 或 preference signal。</li>
+<li><strong>训练目标和采样入口如何对应：</strong>训练目标决定模型学到的对象，采样入口决定生成路径；例如 Diffusion 学噪声预测并从 \(x_T\) 去噪，Flow Matching 学速度场并从 base distribution 积分。</li></ul></div>
 </section>
 
 <section class="chapter" id="likelihood-kl" data-part="part0">
 <header class="chapter-header"><h2>最大似然、交叉熵与 KL 散度</h2><p class="chapter-summary">生成建模的第一条主线是把数据样本变成 likelihood 或 divergence。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>需要理解概率密度、经验平均和负对数似然。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>MLE：</strong>MLE 是 Maximum Likelihood Estimation，即最大似然估计；在生成建模中就是选择参数 \(\theta\)，让训练样本在 \(p_\theta\) 下的概率尽可能大。</li><li><strong>likelihood：</strong>\(p_\theta(x)\) 是模型给观测样本的密度或概率；最大似然就是提高真实样本在模型下的概率。</li><li><strong>NLL：</strong>\(-\log p_\theta(x)\) 是负对数似然，模型对真实样本越不自信，惩罚越大。</li><li><strong>cross entropy：</strong>\(H(p,q)=\mathbb{E}_{x\sim p}[-\log q(x)]\)，在经验数据上就是平均 NLL。</li><li><strong>KL 散度：</strong>\(D_{KL}(p\Vert q)=\mathbb{E}_{p}\log\frac{p(x)}{q(x)}\)，方向不同会导致 mode-covering 与 mode-seeking 行为差异。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>最大似然不是孤立技巧；它等价于最小化 \(KL(p_{\mathrm{data}}\Vert p_\theta)\)，而 cross entropy 是 NLL 的期望形式。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(p_{\mathrm{data}}(x)\)</td><td>真实数据分布。</td><td>只通过样本观测，密度通常未知。</td></tr><tr><td>\(p_\theta(x|c)\)</td><td>条件生成模型。</td><td>由神经网络参数 \(\theta\) 定义或隐式采样。</td></tr><tr><td>\(H(p,q)\)</td><td>cross entropy，\(\mathbb{E}_{p}[-\log q]\)。</td><td>分类和语言模型中的平均 NLL。</td></tr><tr><td>\(D_{KL}(p\Vert q)\)</td><td>非对称散度。</td><td>forward/reverse 方向决定优化行为。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：说明经验 NLL 为什么对应 forward KL，并解释 KL 方向如何影响 mode-covering 与 mode-seeking。</p><div class="equation" data-eq="KL-1">\[
@@ -102,81 +112,121 @@ compare output statistics with p_data</code></pre></article></div></div>
 \]<span class="eq-number">(KL-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="KL-2">\[
 \mathbb{E}_{p_{\mathrm{data}}}[-\log p_\theta(x)]=H(p_{\mathrm{data}})+D_{KL}(p_{\mathrm{data}}\Vert p_\theta).
-\]<span class="eq-number">(KL-2)</span></div><p>数据熵不依赖模型参数，因此最小化 cross entropy 等价于最小化 forward KL。</p><p class="derivation-note">使用：熵与 KL 的定义。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="KL-3">\[
+\]<span class="eq-number">(KL-2)</span></div><p>数据熵不依赖模型参数，因此最小化 cross entropy 等价于最小化 forward KL。</p><p class="derivation-note">本步展开 entropy 与 KL 的定义：\(H(p,q)\) 比 \(D_{KL}(p\Vert q)\) 多出的只是数据自身熵 \(H(p)\)。训练时 \(\theta\) 只出现在 \(q=p_\theta\) 里，所以这个常数不影响最优模型。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="KL-3">\[
 D_{KL}(p_{\mathrm{data}}\Vert p_\theta)=\mathbb{E}_{p_{\mathrm{data}}}\left[\log p_{\mathrm{data}}(x)-\log p_\theta(x)\right].
-\]<span class="eq-number">(KL-3)</span></div><p>若数据处有质量而模型给出低概率，forward KL 会强惩罚，因此偏 mode-covering。</p><p class="derivation-note">使用：KL 非负性与非对称性。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="KL-4">\[
+\]<span class="eq-number">(KL-3)</span></div><p>若数据处有质量而模型给出低概率，forward KL 会强惩罚，因此偏 mode-covering。</p><p class="derivation-note">本步依赖 KL 的非负性和方向性：期望从 \(p_{\mathrm{data}}\) 取样，真实数据覆盖到的区域都会被检查；模型在这些区域给出过小概率会产生很大惩罚，因此更倾向覆盖所有真实模式。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="KL-4">\[
 D_{KL}(p_\theta\Vert p_{\mathrm{data}})=\mathbb{E}_{p_\theta}\left[\log p_\theta(x)-\log p_{\mathrm{data}}(x)\right].
-\]<span class="eq-number">(KL-4)</span></div><p>reverse KL 更惩罚模型落在数据低密度区域，常表现为 mode-seeking。</p><p class="derivation-note">使用：交换 KL 方向。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>estimate empirical NLL on data samples
-choose divergence surrogate if likelihood unavailable
-optimize theta with minibatch gradients</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>sample model distribution
-compare support coverage, sharpness, and mismatch diagnostics</code></pre></article></div></div>
+\]<span class="eq-number">(KL-4)</span></div><p>reverse KL 更惩罚模型落在数据低密度区域，常表现为 mode-seeking。</p><p class="derivation-note">本步只是交换 KL 的采样方向，但行为会明显改变：期望从 \(p_\theta\) 取样，模型自己没有采到的真实 mode 不会被直接惩罚；落到真实低密度区域反而代价很高，所以常出现选择少数安全 mode 的倾向。</p></li></ol></div>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>训练伪代码</h4><pre class="algorithm"><code>for each minibatch {x_i}:
+  logp = model.log_prob(x_i)
+  nll = -mean(logp)
+  update theta to minimize nll
+
+estimate:
+  E_{p_data}[-log p_theta(x)]
+  by empirical average over the minibatch</code></pre><p class="algorithm-note">这一步只适用于能显式计算或估计 log likelihood 的模型。</p></article><article class="flow-card"><h4>采样 / 推断伪代码</h4><pre class="algorithm"><code>if model provides ancestral sampler:
+  sample from its factorization
+elif model provides latent sampler:
+  z ~ base distribution
+  x = decoder_or_transform(z)
+else:
+  use the sampler defined by that model family
+
+evaluate:
+  likelihood if available
+  sample quality and coverage otherwise</code></pre><p class="algorithm-note">KL/cross entropy 是训练目标，不直接告诉你如何采样；采样规则由模型结构决定。</p></article></div></div>
 <div class="visual-example interactive-lab" data-visual="kl-lab"><div class="visual-copy"><h3>5. 可视化实验：KL Lab</h3><p>调节模型分布 \(q\) 的均值、方差和 mixture 权重，比较 KL/JS/Wasserstein 的方向差异。</p></div><div class="lab-grid" data-lab="kl"><div class="lab-controls lab-controls-grid"><label>q mean<input id="klMean" type="range" min="-3" max="3" step="0.05" value="0.8"><output id="klMeanOut">0.80</output></label><label>q sigma<input id="klSigma" type="range" min="0.35" max="2.5" step="0.05" value="1.0"><output id="klSigmaOut">1.00</output></label><label>q mixture<input id="klMix" type="range" min="0" max="1" step="0.05" value="0.5"><output id="klMixOut">0.50</output></label><label>metric<select id="klMetric" aria-label="Divergence metric"><option value="fkl">KL(p||q)</option><option value="rkl">KL(q||p)</option><option value="js">JS</option><option value="w1">Wasserstein-1</option></select></label></div><canvas id="klCanvas" class="lab-canvas" width="900" height="360" aria-label="KL divergence one dimensional distribution lab"></canvas><p id="klReadout" class="lab-readout">metric = 0</p><p id="klExplanation" class="lab-explanation">forward KL 会惩罚漏掉真实 mode。</p></div></div>
-<details class="advanced-derivation"><summary>展开 forward KL 与 cross entropy 的完整关系</summary><div class="equation" data-eq="KL-5">\[
-H(p,q)=-\mathbb{E}_{p}\log q(x)=H(p)+D_{KL}(p\Vert q).
-\]<span class="eq-number">(KL-5)</span></div><p>其中 \(H(p)\) 与 \(q\) 无关，优化 \(q=p_\theta\) 时可以视为常数。</p></details>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>KL 是非对称的，不能把两个方向混用。</li>
-<li>GAN、Diffusion、Flow Matching 形式不同，但仍是在做分布匹配。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>提供 likelihood-based 训练的基础解释。</p></div><div><strong>适用场景</strong><p>语言模型 NLL、分类 cross entropy、显式密度模型评估。</p></div><div><strong>典型问题</strong><p>likelihood 高不一定感知质量高，KL 方向会改变覆盖行为。</p></div><div><strong>诊断信号</strong><p>NLL、support coverage、mode dropping、样本质量之间的矛盾。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能推导 NLL、cross entropy 与 forward KL 的关系。</li>
-<li>能解释 forward KL 和 reverse KL 的行为差异。</li>
-<li>能说明为什么隐式模型需要 surrogate objective。</li></ul></div>
+<details class="advanced-derivation" open><summary>为什么 \(H(p,q)=H(p)+D_{KL}(p\Vert q)\)</summary><p>这个等式只是在展开三个定义：entropy 衡量真实分布自身的不确定性，cross entropy 衡量用 \(q\) 去编码来自 \(p\) 的样本时的平均代价，KL 衡量二者之间多出的编码代价。</p><ol class="mini-derivation"><li><strong>先写出三个定义：</strong><div class="equation" data-eq="KL-5">\[
+\begin{aligned}
+H(p,q)&=-\mathbb{E}_{x\sim p}\log q(x),\\
+H(p)&=-\mathbb{E}_{x\sim p}\log p(x),\\
+D_{KL}(p\Vert q)&=\mathbb{E}_{x\sim p}\log\frac{p(x)}{q(x)}.
+\end{aligned}
+\]<span class="eq-number">(KL-5)</span></div></li><li><strong>展开 KL 的对数比：</strong><div class="equation" data-eq="KL-6">\[
+\begin{aligned}
+D_{KL}(p\Vert q)
+&=\mathbb{E}_{p}\left[\log p(x)-\log q(x)\right]\\
+&=\mathbb{E}_{p}\log p(x)-\mathbb{E}_{p}\log q(x).
+\end{aligned}
+\]<span class="eq-number">(KL-6)</span></div><p>这里使用的数学工具只是 \(\log\frac{a}{b}=\log a-\log b\)，以及期望的线性性。</p></li><li><strong>把 entropy 和 cross entropy 代回去：</strong><div class="equation" data-eq="KL-7">\[
+\begin{aligned}
+D_{KL}(p\Vert q)
+&=-H(p)+H(p,q),\\
+H(p,q)&=H(p)+D_{KL}(p\Vert q).
+\end{aligned}
+\]<span class="eq-number">(KL-7)</span></div><p>因此，当 \(q=p_\theta\) 是待训练模型时，\(H(p)\) 只由真实数据分布决定，不含 \(\theta\)。最小化 cross entropy \(H(p_{\mathrm{data}},p_\theta)\)，等价于最小化 \(D_{KL}(p_{\mathrm{data}}\Vert p_\theta)\)。在有限训练集上，\(H(p_{\mathrm{data}},p_\theta)\) 就由平均 NLL \(-\frac{1}{N}\sum_i\log p_\theta(x_i)\) 近似。</p></li></ol></details>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>KL 不能随意交换方向。</strong>\(D_{KL}(p_{\mathrm{data}}\Vert p_\theta)\) 检查真实样本所在区域是否被模型覆盖；\(D_{KL}(p_\theta\Vert p_{\mathrm{data}})\) 检查模型采样是否落到真实低密度区域。方向变了，优化行为也变了。</li>
+<li><strong>likelihood 高不等于样本一定好看。</strong>显式密度模型可以在 NLL 上表现很好，但高维视觉任务中的感知质量还受 inductive bias、decoder 形式和采样机制影响。</li>
+<li><strong>隐式模型不是脱离分布匹配。</strong>GAN、Diffusion、Flow Matching 只是不能直接用同一个 likelihood 目标，因此换成 density ratio、score 或 velocity 监督。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>这一章提供 likelihood-based 训练的地基：NLL、cross entropy 和 forward KL 是同一件事的不同写法，区别只在是否把数据熵常数显式写出。</p></div><div><strong>适用场景</strong><p>语言模型、分类器、Normalizing Flow 和任何能显式给出 \(p_\theta(x)\) 的模型，都可以直接用这个框架解释训练目标。</p></div><div><strong>典型问题</strong><p>forward KL 倾向覆盖真实模式，但可能给低质量区域也留概率；reverse KL 倾向避开低密度区域，但可能忽略一部分真实 mode。</p></div><div><strong>诊断信号</strong><p>NLL/perplexity 看平均概率分配，support coverage 看是否漏 mode，样本质量指标看人眼或感知空间结果，三者不一致时需要回到目标函数判断。</p></div><div><strong>工程判断</strong><p>如果任务需要稳定训练和可比较 likelihood，优先选择显式密度或可估计 likelihood 的路线；如果视觉质量优先，则 likelihood 只是诊断之一。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>NLL、cross entropy 与 forward KL 的关系：</strong>\(\mathbb{E}_{p_{\mathrm{data}}}[-\log p_\theta]\) 等于 \(H(p_{\mathrm{data}})+D_{KL}(p_{\mathrm{data}}\Vert p_\theta)\)，其中数据熵不含 \(\theta\)，所以优化 NLL 等价于优化 forward KL。</li>
+<li><strong>KL 方向为什么重要：</strong>forward KL 由真实数据采样，漏掉真实 mode 会受罚；reverse KL 由模型采样，更惩罚模型落在真实低密度区域，因此常表现为 mode-seeking。</li>
+<li><strong>隐式模型为什么需要 surrogate：</strong>当 \(p_\theta(x)\) 不可计算时，无法直接写 NLL，只能通过判别器、score、velocity 或 reward 构造可优化的替代信号。</li></ul></div>
 </section>
 
 <section class="chapter" id="autoregressive" data-part="part1">
-<header class="chapter-header"><h2>Autoregressive / Transformer：链式分解与 next-token MLE</h2><p class="chapter-summary">自回归模型用链式法则把联合分布拆成可计算的 next-token 条件分布。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 MLE/KL。</p></div>
+<header class="chapter-header"><h2>Autoregressive：链式分解与 next-token 最大似然</h2><p class="chapter-summary">自回归模型用链式法则把联合分布拆成可计算的 next-token 条件分布；Transformer 是实现这种条件分布的常见网络架构，而不是链式分解本身。</p></header>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>链式法则：</strong>\(p(x_1,\ldots,x_T)=\prod_t p(x_t|x_{\lt t})\)，它把联合分布拆成 next-token 条件分布。</li><li><strong>softmax：</strong>\(\operatorname{softmax}(l_i)=\exp(l_i)/\sum_j\exp(l_j)\)，把 logits 归一化为 token 概率。</li><li><strong>teacher forcing：</strong>训练时用真实前缀 \(x_{\lt t}\) 预测真实 token \(x_t\)，因此所有位置可以并行算 cross entropy。</li><li><strong>decoding：</strong>temperature、top-k、top-p 和 beam search 是推断时的采样策略，会改变输出但不更新模型参数。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>如果能预测下一个 token，就能按顺序生成整个序列。</p></div>
-<div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(p_{\mathrm{data}}(x)\)</td><td>真实数据分布。</td><td>只通过样本观测，密度通常未知。</td></tr><tr><td>\(x_1,\ldots,x_T\)</td><td>离散 token 序列。</td><td>来自文本、图像 token、音频 token 或动作序列。</td></tr><tr><td>\(p_\theta(x_t|x_{\lt t},c)\)</td><td>给定前缀的 next-token 分布。</td><td>Transformer logits 经 softmax 得到。</td></tr><tr><td>\(T_{temp}, k, p\)</td><td>temperature、top-k、top-p decoding 参数。</td><td>推断时改变采样策略，不改变参数。</td></tr></tbody></table></div>
+<div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(p_{\mathrm{data}}(x)\)</td><td>真实数据分布。</td><td>只通过样本观测，密度通常未知。</td></tr><tr><td>\(x_1,\ldots,x_T\)</td><td>离散 token 序列。</td><td>来自文本、图像 token、音频 token 或动作序列。</td></tr><tr><td>\(p_\theta(x_t|x_{\lt t},c)\)</td><td>给定前缀的 next-token 分布。</td><td>由序列网络输出 logits 后经 softmax 得到；Transformer 是最常见实现之一。</td></tr><tr><td>\(T_{temp}, k, p\)</td><td>temperature、top-k、top-p decoding 参数。</td><td>推断时改变采样策略，不改变参数。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：把序列 likelihood 精确分解成每个位置的条件 likelihood。</p><div class="equation" data-eq="AR-1">\[
 p_\theta(x_1,\ldots,x_T|c)=\prod_{t=1}^{T}p_\theta(x_t|x_{\lt t},c).
 \]<span class="eq-number">(AR-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="AR-2">\[
 \mathcal{J}_{AR}=-\sum_{t=1}^{T}\log p_\theta(x_t|x_{\lt t},c).
-\]<span class="eq-number">(AR-2)</span></div><p>训练时真实前缀作为输入，这就是 teacher forcing。</p><p class="derivation-note">使用：chain rule + MLE。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="AR-3">\[
+\]<span class="eq-number">(AR-2)</span></div><p>训练时真实前缀作为输入，这就是 teacher forcing。</p><p class="derivation-note">本步使用概率链式法则和 MLE（Maximum Likelihood Estimation，最大似然估计）：联合序列概率可以精确拆成每个 token 的条件概率，最大化整句 likelihood 等价于最小化所有位置的 next-token NLL。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="AR-3">\[
 p_i(T_{temp})=\frac{\exp(l_i/T_{temp})}{\sum_j\exp(l_j/T_{temp})}.
-\]<span class="eq-number">(AR-3)</span></div><p>推断时 temperature 改变 logits 的 sharpness；top-k/top-p 截断候选集。</p><p class="derivation-note">使用：softmax 重标定。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="ar"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="ar training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="ar"></code></pre></div>
-<div class="visual-example interactive-lab" data-visual="ar-decoding-lab"><div class="visual-copy"><h3>5. 可视化实验：AR Decoding Lab</h3><p>观察 temperature、top-k 和 top-p 如何改变 token 采样分布。</p></div><div class="lab-grid" data-lab="ar-decoding"><div class="lab-controls lab-controls-grid"><label>temperature<input id="arTemp" type="range" min="0.2" max="2.2" step="0.05" value="0.9"><output id="arTempOut">0.90</output></label><label>top-k<input id="arTopK" type="range" min="1" max="6" step="1" value="5"><output id="arTopKOut">5</output></label><label>top-p<input id="arTopP" type="range" min="0.3" max="1" step="0.05" value="0.9"><output id="arTopPOut">0.90</output></label></div><div id="arDecodingBars" class="lab-bars" aria-label="Autoregressive decoding probabilities"></div><p id="arDecodeFormula" class="lab-readout">p_i(T)=softmax(l_i / T)</p><p id="arDecodeExplanation" class="lab-explanation">低 temperature 让分布更尖，高 temperature 让分布更平。</p></div></div>
-<div id="causalMask" class="causal-mask" aria-label="Autoregressive causal mask"></div>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>decoding 改变输出分布，但不改变模型参数。</li>
-<li>训练时前缀来自真实数据；推断时前缀来自模型自己生成，因此存在 exposure bias。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>精确 likelihood、训练稳定、可扩展到任意 token 序列。</p></div><div><strong>适用场景</strong><p>LLM、离散视觉 token、语音 token、动作序列。</p></div><div><strong>典型问题</strong><p>长序列逐 token 采样慢，错误会累积。</p></div><div><strong>诊断信号</strong><p>NLL/perplexity、重复率、长度偏置、事实性、条件遵循。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能写出链式分解。</li>
-<li>能解释 teacher forcing 与 sampling mismatch。</li>
-<li>能区分模型分布和 decoding 策略。</li></ul></div>
+\]<span class="eq-number">(AR-3)</span></div><p>推断时 temperature 改变 logits 的 sharpness；top-k/top-p 截断候选集。</p><p class="derivation-note">本步使用 softmax 重标定：logits 除以 temperature 后再归一化，低温会放大最大 logit 的优势，高温会让尾部 token 更容易被采到；top-k/top-p 则是在归一化前裁剪候选集合。</p></li></ol></div>
+<div class="algorithm-panel" data-flow-panel="ar"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="ar training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="ar"></div></div>
+<div class="visual-example interactive-lab" data-visual="ar-decoding-lab"><div class="visual-copy"><h3>5. 可视化实验：AR Decoding Lab</h3><p>观察 temperature、top-k 和 top-p 如何改变候选集合、采样 token 与后续前缀。</p></div><div class="lab-grid ar-compact" data-lab="ar-decoding"><div class="lab-controls lab-controls-grid"><label>temperature<input id="arTemp" type="range" min="0.2" max="2.2" step="0.05" value="0.9"><output id="arTempOut">0.90</output></label><label>top-k<input id="arTopK" type="range" min="1" max="6" step="1" value="5"><output id="arTopKOut">5</output></label><label>top-p<input id="arTopP" type="range" min="0.3" max="1" step="0.05" value="0.9"><output id="arTopPOut">0.90</output></label><button id="arSampleNext" class="lab-action" type="button">sample next token</button></div><div class="ar-visual-stack"><div id="arDecodingBars" class="lab-bars" aria-label="Autoregressive decoding probabilities"></div><div class="ar-side-panel"><p class="mini-label">causal mask</p><div id="causalMask" class="causal-mask" aria-label="Autoregressive causal mask"></div><p class="mini-label">generated prefix</p><div id="arTokenStream" class="token-stream" aria-label="Generated token stream"></div></div></div><p id="arDecodeFormula" class="lab-readout">p_i(T)=softmax(l_i / T)</p><p id="arDecodeExplanation" class="lab-explanation">低 temperature 让分布更尖，高 temperature 让分布更平。</p></div></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>decoding 不是训练。</strong>temperature、top-k、top-p 和 beam search 改变推断时如何从同一个 next-token 分布取样，但不会更新参数。</li>
+<li><strong>teacher forcing 不等于真实部署条件。</strong>训练时前缀来自数据，推断时前缀来自模型自己生成；早期错误会改变后续条件，这就是 sampling mismatch 的来源。</li>
+<li><strong>perplexity 低不保证回答一定好。</strong>perplexity 衡量平均 next-token 概率，但事实性、指令遵循和安全性还依赖数据、后训练和 decoding。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>AR 的优势是联合概率可以精确链式分解，训练目标清晰、稳定，并且天然适配文本和离散 token。</p></div><div><strong>适用场景</strong><p>LLM、代码模型、离散视觉 token、语音 token、动作序列和任何可以序列化的多模态表示。</p></div><div><strong>典型问题</strong><p>逐 token 采样导致延迟随长度线性增长；长上下文中错误会累积，过低 temperature 易重复，过高 temperature 易漂移。</p></div><div><strong>诊断信号</strong><p>perplexity 看语言建模，重复率和 distinct-n 看多样性，长度分布看偏置，事实性和条件遵循需要任务级评估。</p></div><div><strong>工程判断</strong><p>当输出天然是离散序列时，AR 通常是强基线；当需要极快并行生成大尺寸图像时，逐 token 采样可能成为瓶颈。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>链式分解的结论：</strong>任意序列联合概率都可以写成 \(\prod_t p_\theta(x_t|x_{\lt t},c)\)，因此 next-token MLE（Maximum Likelihood Estimation，最大似然估计）就是最大化整段序列 likelihood。</li>
+<li><strong>teacher forcing 的利弊：</strong>它让训练稳定并可并行计算所有位置 loss，但推断时模型要条件于自己生成的前缀，因此会出现训练/采样分布不一致。</li>
+<li><strong>模型分布与 decoding 的区别：</strong>模型给出 logits 和 softmax 分布，decoding 只是从该分布中选择 token 的策略；换 decoding 不等于完成后训练。</li></ul></div>
 </section>
 
 <section class="chapter" id="normalizing-flow" data-part="part1">
 <header class="chapter-header"><h2>Normalizing Flow：变量替换与 exact likelihood</h2><p class="chapter-summary">Normalizing Flow 用可逆变换把 base density 映射到数据空间，并用 Jacobian determinant 修正密度。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 MLE/KL。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>显式密度：</strong>模型能直接计算 \(\log p_\theta(x)\)，因此可以用 exact likelihood 训练。</li><li><strong>可逆映射：</strong>\(x=f_\theta(z)\) 必须有逆 \(z=f_\theta^{-1}(x)\)，否则无法把数据点映回 base density。</li><li><strong>Jacobian 矩阵：</strong>\(J_f(z)=\partial f_\theta(z)/\partial z\)，描述局部各方向如何被线性近似地拉伸。</li><li><strong>Jacobian determinant：</strong>\(|\det J_f|\) 是局部体积缩放因子；概率质量守恒时，密度会按体积缩放的倒数变化。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>可逆映射会拉伸或压缩体积；密度必须用体积缩放项校正。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(z\sim p_Z(z)\)</td><td>简单 base 分布。</td><td>通常为标准高斯。</td></tr><tr><td>\(x=f_\theta(z)\)</td><td>可逆变换。</td><td>要求能计算 \(f_\theta^{-1}\)。</td></tr><tr><td>\(J_f\)</td><td>Jacobian 矩阵。</td><td>determinant 表示局部体积缩放。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：通过变量替换精确计算 \(p_X(x)\)，从而直接最大化 likelihood。</p></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="NF-1">\[
 p_X(x)=p_Z(f_\theta^{-1}(x))\left|\det\frac{\partial f_\theta^{-1}(x)}{\partial x}\right|.
-\]<span class="eq-number">(NF-1)</span></div><p>密度随体积变化反向缩放。</p><p class="derivation-note">使用：change of variables。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="NF-2">\[
+\]<span class="eq-number">(NF-1)</span></div><p>密度随体积变化反向缩放。</p><p class="derivation-note">本步使用变量替换公式：可逆变换会改变局部体积，同样的概率质量被拉伸到更大区域时密度下降，被压缩到更小区域时密度上升；Jacobian determinant 正是这个局部体积因子。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="NF-2">\[
 \log p_X(x)=\log p_Z(z)-\log\left|\det\frac{\partial f_\theta(z)}{\partial z}\right|.
-\]<span class="eq-number">(NF-2)</span></div><p>训练目标可以精确写成 log likelihood。</p><p class="derivation-note">使用：Jacobian determinant 方向转换。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>sample minibatch x
-z = f_theta^{-1}(x)
-compute log p_Z(z) and log |det J|
-maximize exact log p_X(x)</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>z ~ p_Z
+\]<span class="eq-number">(NF-2)</span></div><p>训练目标可以精确写成 log likelihood。</p><p class="derivation-note">本步把逆变换形式改写为正向 Jacobian：训练给定 \(x\)，先求 \(z=f_\theta^{-1}(x)\)，再扣除正向映射的 \(\log|\det J_f|\)。这个符号方向保证概率质量守恒。</p></li></ol></div>
+<details class="advanced-derivation" open><summary>变量替换公式逐步展开</summary><ol class="mini-derivation"><li><strong>从集合概率守恒开始：</strong>对数据空间任意小区域 \(A_x\)，它在 base space 中的原像是 \(A_z=f_\theta^{-1}(A_x)\)，因此 \(P_X(A_x)=P_Z(A_z)\)。</li><li><strong>局部线性化：</strong>在 \(z\) 附近，可逆映射近似为 \(x\approx f_\theta(z)+J_f(z)\Delta z\)。小体积满足 \(dx\approx |\det J_f(z)|dz\)。</li><li><strong>概率质量不变：</strong>同一小块概率质量可以写成 \(p_X(x)dx=p_Z(z)dz\)。代入体积关系得到 \(p_X(x)=p_Z(z)/|\det J_f(z)|\)。</li><li><strong>换成逆映射形式：</strong>因为 \(z=f_\theta^{-1}(x)\)，且 \(J_{f^{-1}}(x)=J_f(z)^{-1}\)，所以 \(\left|\det J_{f^{-1}}(x)\right|=1/\left|\det J_f(z)\right|\)。</li><li><strong>得到最终公式：</strong>\(p_X(x)=p_Z(f_\theta^{-1}(x))\left|\det\frac{\partial f_\theta^{-1}(x)}{\partial x}\right|\)。这不是附加技巧，而是密度随局部体积变化的必然校正。</li></ol></details>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>训练伪代码</h4><pre class="algorithm"><code>for each minibatch x:
+  z = f_theta^{-1}(x)
+  log_base = log p_Z(z)
+  log_det = log |det d f_theta(z) / d z|
+  logp_x = log_base - log_det
+  loss = -mean(logp_x)
+  update theta</code></pre><p class="algorithm-note">训练给定数据点 \(x\)，所以先走逆变换回 base space，再用体积校正项计算 exact likelihood。</p></article><article class="flow-card"><h4>采样伪代码</h4><pre class="algorithm"><code>z ~ p_Z(z)
 x = f_theta(z)
-return x</code></pre></article></div></div>
+return x
+
+optional density evaluation:
+  z_check = f_theta^{-1}(x)
+  logp_x = log p_Z(z_check) - log |det J_f(z_check)|</code></pre><p class="algorithm-note">采样只需正向可逆映射；密度评估需要逆映射和 Jacobian determinant。</p></article></div></div>
 <div class="visual-example interactive-lab" data-visual="flow-jacobian-lab"><div class="visual-copy"><h3>5. 可视化实验：Jacobian Warp Lab</h3><p>调节尺度项，观察可逆网格形变与 log determinant 如何改变密度。</p></div><div class="lab-grid" data-lab="normalizing-flow"><div class="lab-controls lab-controls-grid"><label>scale a<input id="nfA" type="range" min="-1" max="1" step="0.05" value="0.35"><output id="nfAOut">0.35</output></label><label>scale b<input id="nfB" type="range" min="-1" max="1" step="0.05" value="-0.15"><output id="nfBOut">-0.15</output></label></div><canvas id="nfCanvas" class="lab-canvas" width="900" height="360" aria-label="Normalizing flow Jacobian warp lab"></canvas><p id="nfReadout" class="lab-readout">log |det J| = 0.20</p><p class="lab-explanation">Normalizing Flow 的 flow 是可逆显式密度变换，不是 Flow Matching 的 velocity field。</p></div></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>Normalizing Flow 和 Flow Matching 的 “flow” 不是同一个概念。</li>
-<li>能 exact likelihood 的代价是结构必须可逆且 determinant 可计算。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>显式密度、exact likelihood、采样快。</p></div><div><strong>适用场景</strong><p>需要可逆映射和密度评估的生成建模。</p></div><div><strong>典型问题</strong><p>架构受 determinant 和 invertibility 限制。</p></div><div><strong>诊断信号</strong><p>NLL、Jacobian 数值稳定性、采样多样性。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能推导变量替换公式。</li>
-<li>能解释 determinant 是局部体积项。</li>
-<li>能区分 Normalizing Flow 与 Flow Matching。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>Normalizing Flow 和 Flow Matching 不是同一类 flow。</strong>前者是可逆变换和 exact likelihood，后者是连续时间 velocity field 和 ODE sampling。</li>
+<li><strong>exact likelihood 有结构代价。</strong>为了计算逆变换和 determinant，网络必须采用 coupling、autoregressive transform 或其他受限结构。</li>
+<li><strong>快速采样不代表表达无限。</strong>一次正向映射很快，但可逆性可能限制模型对复杂感知结构的表达。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>Normalizing Flow 同时提供可采样性和 exact likelihood；这是许多隐式模型做不到的。</p></div><div><strong>适用场景</strong><p>需要密度评估、异常检测、可逆表示、latent prior 建模或小中规模连续数据生成的场景。</p></div><div><strong>典型问题</strong><p>可逆架构约束表达能力，Jacobian determinant 计算可能昂贵或不稳定，高维图像上的 likelihood 与感知质量仍可能脱节。</p></div><div><strong>诊断信号</strong><p>NLL、bits/dim、Jacobian log-det 范围、逆变换误差、样本多样性和样本感知质量需要一起看。</p></div><div><strong>工程判断</strong><p>若必须精确密度，Flow 很有价值；若目标是最高保真图像，现代系统更常选择 diffusion/flow matching 并在 latent space 中工作。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>变量替换公式的含义：</strong>概率质量守恒，密度会随局部体积变化反向缩放，因此必须乘上逆变换 Jacobian determinant。</li>
+<li><strong>determinant 为什么出现：</strong>\(|\det J|\) 衡量局部小体积被映射后放大或缩小多少，是把 base density 转成 data density 的体积校正项。</li>
+<li><strong>与 Flow Matching 的区别：</strong>Normalizing Flow 需要可逆映射并可算密度，Flow Matching 学速度场并通过 ODE 采样，通常不提供 exact likelihood。</li></ul></div>
 </section>
 
 <section class="chapter" id="vae" data-part="part1">
 <header class="chapter-header"><h2>VAE：从隐变量边缘似然到 ELBO</h2><p class="chapter-summary">VAE 用可学习后验近似不可解真实后验，把边缘似然优化变成 ELBO 优化。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>需要理解 MLE/KL 和 latent variable。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>隐变量：</strong>\(z\) 是不可直接观测的生成原因，模型假设先采 \(z\sim p(z)\)，再由 \(p_\theta(x|z)\) 生成 \(x\)。</li><li><strong>后验分布：</strong>\(p_\theta(z|x)\) 表示看到 \(x\) 后 latent 可能是什么；它通常不可解，因此引入 \(q_\phi(z|x)\) 近似。</li><li><strong>Jensen 不等式：</strong>对凹函数 \(\log\)，有 \(\log\mathbb{E}[A]\ge\mathbb{E}\log A\)，这是 ELBO 下界的关键。</li><li><strong>变分下界：</strong>ELBO 是 \(\log p_\theta(x)\) 的可优化下界，由 reconstruction 项和 \(D_{KL}(q_\phi(z|x)\Vert p(z))\) 组成。</li><li><strong>重参数化：</strong>\(z=\mu+\sigma\odot\epsilon\) 把随机性移到外部噪声 \(\epsilon\)，使 encoder 可反向传播。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>VAE 是概率化 autoencoder：encoder 推断 latent，decoder 定义生成分布，KL 让训练 posterior 与采样 prior 对齐。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(z\)</td><td>连续 latent variable。</td><td>训练时由 encoder posterior 采样，生成时由 prior 采样。</td></tr><tr><td>\(q_\phi(z|x)\)</td><td>amortized inference posterior。</td><td>encoder 输出 \(\mu,\sigma\)。</td></tr><tr><td>\(p_\theta(x|z)\)</td><td>decoder likelihood。</td><td>决定 reconstruction loss 形式。</td></tr><tr><td>\(\beta\)</td><td>beta-VAE 的 KL 权重。</td><td>控制 rate-distortion trade-off。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：把不可计算的 \(\log p_\theta(x)=\log\int p(z)p_\theta(x|z)\,dz\) 转成可优化下界。</p><div class="equation" data-eq="VAE-1">\[
@@ -184,58 +234,61 @@ p_\theta(x)=\int p(z)p_\theta(x|z)\,dz.
 \]<span class="eq-number">(VAE-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="VAE-2">\[
 \log p_\theta(x)=\log\int q_\phi(z|x)\frac{p(z)p_\theta(x|z)}{q_\phi(z|x)}dz\ge \mathbb{E}_{q_\phi}\log p_\theta(x|z)-D_{KL}(q_\phi(z|x)\Vert p(z)).
-\]<span class="eq-number">(VAE-2)</span></div><p>在积分中乘除 \(q_\phi\)，用 Jensen 得到 ELBO。</p><p class="derivation-note">使用：Jensen 不等式。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="VAE-3">\[
+\]<span class="eq-number">(VAE-2)</span></div><p>在积分中乘除 \(q_\phi\)，用 Jensen 得到 ELBO。</p><p class="derivation-note">本步使用 Jensen 不等式：\(\log\) 是凹函数，所以 \(\log\mathbb{E}[A]\ge \mathbb{E}\log A\)。引入 \(q_\phi(z|x)\) 后，原本不可直接求的 latent integral 变成对 encoder posterior 的期望下界。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="VAE-3">\[
 \log p_\theta(x)=\mathcal{L}_{ELBO}(x)+D_{KL}(q_\phi(z|x)\Vert p_\theta(z|x)).
-\]<span class="eq-number">(VAE-3)</span></div><p>ELBO gap 是近似后验与真实后验的 KL。</p><p class="derivation-note">使用：Bayes rule + KL 非负性。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="VAE-4">\[
+\]<span class="eq-number">(VAE-3)</span></div><p>ELBO gap 是近似后验与真实后验的 KL。</p><p class="derivation-note">本步使用 Bayes rule 和 KL 非负性：把真实后验 \(p_\theta(z|x)\) 代入后，\(\log p_\theta(x)\) 可分解为 ELBO 加一个 KL gap。最大化 ELBO 会同时提高证据下界并推动 \(q_\phi\) 接近真实后验。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="VAE-4">\[
 D_{KL}(\mathcal{N}(\mu,\operatorname{diag}(\sigma^2))\Vert\mathcal{N}(0,I))=\frac{1}{2}\sum_i(\mu_i^2+\sigma_i^2-\log\sigma_i^2-1).
-\]<span class="eq-number">(VAE-4)</span></div><p>对 diagonal Gaussian posterior，KL 有闭式。</p><p class="derivation-note">使用：Gaussian KL identity。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="VAE-5">\[
+\]<span class="eq-number">(VAE-4)</span></div><p>对 diagonal Gaussian posterior，KL 有闭式。</p><p class="derivation-note">本步使用 Gaussian KL identity：当 posterior 和 prior 都是高斯且 covariance 对角时，积分可以解析化为每个维度的均值偏移、方差偏移和 log 方差项，因此训练不需要采样估计这个 KL。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="VAE-5">\[
 z=\mu_\phi(x)+\sigma_\phi(x)\odot\epsilon,\quad \epsilon\sim\mathcal{N}(0,I).
-\]<span class="eq-number">(VAE-5)</span></div><p>随机性移到外部噪声，允许对 encoder 参数反向传播。</p><p class="derivation-note">使用：reparameterization trick。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="VAE-6">\[
+\]<span class="eq-number">(VAE-5)</span></div><p>随机性移到外部噪声，允许对 encoder 参数反向传播。</p><p class="derivation-note">本步使用 reparameterization trick：采样 \(z\sim q_\phi(z|x)\) 本身不可直接对 \(\phi\) 求导，改写为确定性函数 \(\mu_\phi+\sigma_\phi\epsilon\) 后，随机性只在外部噪声 \(\epsilon\)，梯度可以穿过 encoder。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="VAE-6">\[
 \mathcal{J}_{\beta\text{-VAE}}=-\mathbb{E}_{q_\phi(z|x)}\log p_\theta(x|z)+\beta D_{KL}(q_\phi(z|x)\Vert p(z)).
-\]<span class="eq-number">(VAE-6)</span></div><p>Gaussian decoder 对应 L2/MSE，Bernoulli decoder 对应 BCE；\(\beta\) 控制信息率。</p><p class="derivation-note">使用：decoder likelihood 与 rate-distortion。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="vae"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="vae training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="vae"></code></pre></div>
+\]<span class="eq-number">(VAE-6)</span></div><p>Gaussian decoder 对应 L2/MSE，Bernoulli decoder 对应 BCE；\(\beta\) 控制信息率。</p><p class="derivation-note">本步把 decoder likelihood 解释为重构损失：选择高斯观测模型会得到类似 MSE 的惩罚，选择 Bernoulli 观测模型会得到 BCE。\(\beta\) 放大 KL 项时 latent 信息率下降，压缩更强但重构细节可能损失。</p></li></ol></div>
+<div class="algorithm-panel" data-flow-panel="vae"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="vae training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="vae"></div></div>
 <div class="visual-example interactive-lab" data-visual="vae-kl-lab"><div class="visual-copy"><h3>5. 可视化实验：VAE KL / Beta Lab</h3><p>调节 \(\mu,\sigma,\beta\)，观察 KL、重构压力和 posterior collapse 风险。</p></div><div class="lab-grid" data-lab="vae-beta"><div class="lab-controls lab-controls-grid"><label>mu<input id="vaeLabMu" type="range" min="-3" max="3" step="0.1" value="0.8"><output id="vaeLabMuOut">0.8</output></label><label>sigma<input id="vaeLabSigma" type="range" min="0.2" max="3" step="0.1" value="1.2"><output id="vaeLabSigmaOut">1.2</output></label><label>beta<input id="vaeBeta" type="range" min="0" max="4" step="0.1" value="1"><output id="vaeBetaOut">1.0</output></label></div><canvas id="vaePlaneCanvas" class="lab-canvas" width="900" height="360" aria-label="VAE latent plane and posterior ellipse toy lab"></canvas><p id="vaeLabReadout" class="lab-readout">KL = 0</p><p id="vaeLabExplanation" class="lab-explanation">beta 增大时 posterior 更靠近 prior，但重构细节可能损失。</p></div></div>
 <div class="derivation-section vae-position"><h3>VAE 的价值与现代位置</h3><p>vanilla VAE 很少作为最高保真图像生成器，但它系统化了概率编码、可微后验推断和连续 latent space。Latent Diffusion、latent Flow Matching、SD3/rectified flow 常先用 autoencoder 压缩像素，再在 latent space 中做主要分布生成。</p></div>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>ELBO 是下界，不等于真实 likelihood。</li>
-<li>生成过于平滑常来自 decoder likelihood 和重构目标对多解平均。</li>
-<li>VAE 今天的重要性更多是构建 latent interface，而不是单独生成最锐利图像。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>概率化 autoencoder、amortized inference、连续 latent space。</p></div><div><strong>适用场景</strong><p>latent diffusion、latent flow、representation compression、controllable latent editing。</p></div><div><strong>典型问题</strong><p>posterior collapse、生成过于平滑、prior-posterior gap、rate-distortion trade-off。</p></div><div><strong>诊断信号</strong><p>blur、FID/LPIPS、KL vanishing、active units、reconstruction vs prior sampling gap。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能推导 ELBO 和 ELBO gap。</li>
-<li>能解释 decoder likelihood 如何决定 reconstruction loss。</li>
-<li>能说明 VAE 在现代 latent 生成系统中的位置。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>ELBO 是下界，不是真实 likelihood。</strong>只有当 \(q_\phi(z|x)\) 等于真实后验时，ELBO gap 才为零；实际训练通常是在可优化性与近似误差之间折中。</li>
+<li><strong>生成过于平滑不是简单的“VAE 不行”。</strong>Gaussian decoder 与 L2/MSE 会在多个合理输出之间取平均，高频纹理和感知细节容易被抹掉。</li>
+<li><strong>VAE 的现代价值不主要是直接生成最锐利图片。</strong>它更重要的作用是提供可编码、可压缩、可解码的 latent interface，让更强的 diffusion 或 flow 在低维 latent 中建模。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>VAE 把 autoencoder 概率化：encoder 做 amortized inference，decoder 定义 \(p_\theta(x|z)\)，ELBO 把不可解边缘似然变成可训练目标。</p></div><div><strong>适用场景</strong><p>latent diffusion、latent flow、representation compression、controllable latent editing、变分推断教学和需要 encoder/decoder 双向接口的系统。</p></div><div><strong>典型问题</strong><p>posterior collapse 表示 latent 不携带信息；过平滑来自观测 likelihood 与重构平均；prior-posterior gap 会让 prior sample 弱于 reconstruction。</p></div><div><strong>诊断信号</strong><p>blur、FID/LPIPS、KL vanishing、active units、reconstruction 与 prior sampling 的质量差距，以及 beta 调整后的 rate-distortion 曲线。</p></div><div><strong>工程判断</strong><p>把 VAE 当作最高质量采样器通常不是现代最优选择；把它当作 latent space 构造器和感知压缩前端，反而是高分辨率图像/视频生成系统的关键接口。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>ELBO 的来源：</strong>在 \(\log\int p(z)p_\theta(x|z)dz\) 中引入 \(q_\phi(z|x)\)，再用 Jensen 得到 reconstruction term 减 KL term 的下界。</li>
+<li><strong>ELBO gap 的含义：</strong>\(\log p_\theta(x)=\mathcal{L}_{ELBO}+D_{KL}(q_\phi(z|x)\Vert p_\theta(z|x))\)，gap 衡量近似后验与真实后验的距离。</li>
+<li><strong>reconstruction loss 为什么有不同形式：</strong>decoder likelihood 的选择决定 loss；Gaussian decoder 导向 MSE，Bernoulli decoder 导向 BCE。</li>
+<li><strong>VAE 的现代位置：</strong>它奠定 latent generative modeling 接口，常作为 Latent Diffusion 和 latent Flow Matching 的压缩与解码模块。</li></ul></div>
 </section>
 
 <section class="chapter" id="vqvae" data-part="part1">
 <header class="chapter-header"><h2>VQ-VAE / VQGAN：从连续 latent 到离散视觉 token</h2><p class="chapter-summary">VQ 系列把连续 encoder 输出量化到 codebook，使图像、音频、视频可进入 token 建模。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 VAE 和 AR。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>encoder/decoder：</strong>encoder 把输入压成 latent，decoder 从 latent 重构数据；VQ 系列在二者之间加入离散瓶颈。</li><li><strong>codebook：</strong>\(\{e_k\}_{k=1}^{K}\) 是可学习向量表，连续 \(z_e(x)\) 会被替换成最近的 code 向量。</li><li><strong>最近邻量化：</strong>\(k^*=\arg\min_k\|z_e-e_k\|_2\)，它把连续表示变成离散 index。</li><li><strong>stop-gradient：</strong>\(\operatorname{sg}(\cdot)\) 前向保持数值、反向截断梯度，用于分开 encoder 与 codebook 的更新责任。</li><li><strong>codebook perplexity：</strong>\(\exp(-\sum_k\hat p_k\log\hat p_k)\) 衡量有效 code 使用数，用于诊断 dead codes 和 usage imbalance。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>VQ-VAE 是视觉 tokenizer；VQGAN 在 tokenizer 上加感知和对抗目标，让重构更锐利。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(z_e(x)\)</td><td>encoder 连续输出。</td><td>由输入样本计算。</td></tr><tr><td>\(e_k\)</td><td>codebook 第 k 个向量。</td><td>可梯度或 EMA 更新。</td></tr><tr><td>\(k^*\)</td><td>最近 code index。</td><td>nearest neighbor assignment。</td></tr><tr><td>\(\hat p_k\)</td><td>code usage 频率。</td><td>用于 perplexity 和 dead code 诊断。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：学习离散 latent bottleneck，使 decoder 可从 code index 重构数据，并让上游 token prior 更容易建模。</p></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="VQ-1">\[
 k^*=\arg\min_k\|z_e(x)-e_k\|_2,\quad z_q=e_{k^*}.
-\]<span class="eq-number">(VQ-1)</span></div><p>forward 使用最近 code 替换连续 latent。</p><p class="derivation-note">使用：nearest neighbor quantization。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="VQ-2">\[
+\]<span class="eq-number">(VQ-1)</span></div><p>forward 使用最近 code 替换连续 latent。</p><p class="derivation-note">本步使用 nearest neighbor quantization：encoder 输出仍是连续向量，但前向传播只保留最近 code 的 index。这样 decoder 看到的是有限 vocabulary 中的视觉 token，而不是任意连续 latent。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="VQ-2">\[
 z_q=z_e+\operatorname{sg}(e_{k^*}-z_e).
-\]<span class="eq-number">(VQ-2)</span></div><p>forward 等于 code，backward 梯度近似传给 encoder。</p><p class="derivation-note">使用：straight-through estimator。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="VQ-3">\[
+\]<span class="eq-number">(VQ-2)</span></div><p>forward 等于 code，backward 梯度近似传给 encoder。</p><p class="derivation-note">本步使用 straight-through estimator：最近邻选择是离散操作，严格梯度为零或不可导；实践中前向用 codebook 向量，反向近似把 decoder 梯度传给 encoder 输出，使 tokenizer 可以端到端训练。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="VQ-3">\[
 \mathcal{J}_{VQ}=\|x-\hat{x}\|+\|\operatorname{sg}(z_e)-e\|_2^2+\beta\|z_e-\operatorname{sg}(e)\|_2^2.
-\]<span class="eq-number">(VQ-3)</span></div><p>codebook loss 移动 code，commitment loss 防止 encoder 漂移。</p><p class="derivation-note">使用：stop-gradient。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="VQ-4">\[
+\]<span class="eq-number">(VQ-3)</span></div><p>codebook loss 移动 code，commitment loss 防止 encoder 漂移。</p><p class="derivation-note">本步使用 stop-gradient 分离责任：一项只移动 codebook 靠近 encoder 输出，另一项只约束 encoder 承诺使用当前 code。没有这种分离时，encoder 与 codebook 可能互相追逐导致量化不稳定。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="VQ-4">\[
 N_i^{(t)}=\gamma N_i^{(t-1)}+(1-\gamma)n_i^{(t)},\quad e_i^{(t)}=\frac{m_i^{(t)}}{N_i^{(t)}}.
-\]<span class="eq-number">(VQ-4)</span></div><p>EMA 更新类似 online k-means，可稳定 codebook。</p><p class="derivation-note">使用：moving average。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="VQ-5">\[
+\]<span class="eq-number">(VQ-4)</span></div><p>EMA 更新类似 online k-means，可稳定 codebook。</p><p class="derivation-note">本步使用 moving average：每个 code 维护被分配次数 \(N_i\) 和向量和 \(m_i\)，再用指数滑动平均更新中心。直觉上它像在线 k-means，比纯梯度更新更稳定，但长期无人分配的 code 仍会变成 dead code。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="VQ-5">\[
 \operatorname{perplexity}=\exp\left(-\sum_k \hat{p}_k\log \hat{p}_k\right).
-\]<span class="eq-number">(VQ-5)</span></div><p>perplexity 反映 codebook 使用是否均衡。</p><p class="derivation-note">使用：entropy effective support。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="vqvae"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="vqvae training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="vqvae"></code></pre></div>
+\]<span class="eq-number">(VQ-5)</span></div><p>perplexity 反映 codebook 使用是否均衡。</p><p class="derivation-note">本步使用 entropy effective support：若所有 code 使用均匀，entropy 高，perplexity 接近 code 数；若少数 code 垄断，entropy 低，perplexity 下降，说明 tokenizer 容量没有被充分利用。</p></li></ol></div>
+<div class="algorithm-panel" data-flow-panel="vqvae"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="vqvae training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="vqvae"></div></div>
 <div class="visual-example interactive-lab" data-visual="vq-codebook-lab"><div class="visual-copy"><h3>5. 可视化实验：VQ Codebook Lab</h3><p>拖动 encoder point，观察最近 code、usage histogram、perplexity 和 dead code 标记。</p></div><div class="lab-grid" data-lab="vq-codebook"><div class="lab-controls lab-controls-grid"><label>encoder x<input id="vqPointX" type="range" min="0" max="1" step="0.01" value="0.55"><output id="vqPointXOut">0.55</output></label><label>encoder y<input id="vqPointY" type="range" min="0" max="1" step="0.01" value="0.42"><output id="vqPointYOut">0.42</output></label><label>update<select id="vqUpdateMode"><option value="ema">EMA</option><option value="gradient">gradient</option></select></label></div><canvas id="vqCanvas" class="lab-canvas" width="900" height="360" aria-label="VQ codebook nearest code lab"></canvas><div id="vqPerplexity" class="lab-readout">perplexity = 0</div><div id="vqUsageBars" class="code-usage-bars" aria-label="VQ code usage bars"></div><p class="lab-explanation">dead codes 长期不用，即使 EMA 更新也可能需要重启策略。</p></div></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>VQ-VAE 不是最终图像 prior；它通常先把图像变成 token。</li>
-<li>VQGAN 的锐度可能来自 perceptual/adversarial 目标，也可能引入伪细节。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>离散 codebook 将连续表示转成 token。</p></div><div><strong>适用场景</strong><p>视觉 tokenizer、多模态 token、latent diffusion 压缩前端。</p></div><div><strong>典型问题</strong><p>dead codes、usage imbalance、perplexity 过低、伪细节。</p></div><div><strong>诊断信号</strong><p>code usage histogram、perplexity、reconstruction error、下游 token prior NLL。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能写出 nearest neighbor quantization。</li>
-<li>能解释 straight-through 的 forward/backward 差异。</li>
-<li>能用 perplexity 诊断 codebook 使用。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>VQ-VAE 通常不是完整生成器。</strong>它更像 tokenizer 或 compression front-end，后续还需要 AR、Diffusion 或其他 prior 在 code index 上建模。</li>
+<li><strong>EMA 不能自动解决所有 codebook 问题。</strong>EMA 稳定 code 更新，但长期无人分配的 code 仍可能死亡，仍需要监控 usage、重启或调整容量。</li>
+<li><strong>VQGAN 的锐度不是免费午餐。</strong>perceptual/adversarial loss 会提升视觉细节，但也可能生成与输入不完全一致的伪纹理。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>VQ 系列把连续 latent 变成有限 codebook index，让图像、音频、视频进入 token 化建模框架。</p></div><div><strong>适用场景</strong><p>视觉 tokenizer、多模态 token、离散 latent prior、压缩感知表示，以及需要把连续信号交给 Transformer 的系统。</p></div><div><strong>典型问题</strong><p>dead codes 表示部分词表没有使用；usage imbalance 会降低有效容量；VQGAN 的对抗目标可能牺牲精确重构。</p></div><div><strong>诊断信号</strong><p>code usage histogram、perplexity、dead-code ratio、reconstruction error、LPIPS/FID、下游 token prior NLL 和生成样本的局部纹理一致性。</p></div><div><strong>工程判断</strong><p>codebook 大小要服务下游任务：太小会丢细节，太大会增加 prior 建模难度；EMA 适合稳定训练，但必须配合 usage 诊断。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>量化公式的含义：</strong>\(k^*=\arg\min_k\|z_e-e_k\|\) 把连续 encoder 输出映射到最近 code，forward 使用 \(e_{k^*}\) 作为离散 latent。</li>
+<li><strong>straight-through 的作用：</strong>前向是离散查表，反向近似把 decoder 梯度传给 encoder，让不可导的最近邻选择可以参与端到端训练。</li>
+<li><strong>EMA 更新的意义：</strong>它用滑动计数和向量均值更新 code center，类似 online k-means，稳定但仍要处理 dead codes。</li>
+<li><strong>perplexity 如何诊断：</strong>perplexity 接近有效 code 数表示使用均衡，显著偏低说明少数 code 垄断，tokenizer 容量浪费。</li></ul></div>
 </section>
 
 <section class="chapter" id="gan" data-part="part2">
 <header class="chapter-header"><h2>GAN：从密度比估计到 adversarial divergence</h2><p class="chapter-summary">GAN 用判别器估计真实分布与生成分布的密度比，训练隐式生成器。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 KL 与显式/隐式密度区别。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>隐式分布：</strong>生成器 \(G_\theta(z)\) 能采样 \(x\)，但通常不能直接计算 \(p_g(x)\)。</li><li><strong>二分类交叉熵：</strong>判别器用真实/生成标签训练，最优解会变成 \(p_{\mathrm{data}}\) 与 \(p_g\) 的密度比。</li><li><strong>JS divergence：</strong>原始 minimax GAN 在最优判别器下对应 \(D_{JS}(p_{\mathrm{data}}\Vert p_g)\)。</li><li><strong>hinge / least-squares loss：</strong>hinge 用 margin 改善梯度，LSGAN 用平方误差把判别目标改成最小二乘形式。</li><li><strong>PatchGAN：</strong>判别器输出局部 patch 网格，loss 对局部 logits 求平均，常用于图像翻译、超分和 tokenizer decoder 的纹理约束。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>生成器不会显式写密度；判别器告诉它样本像不像真实数据。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(G_\theta(z)\)</td><td>生成器。</td><td>把噪声映射成样本。</td></tr><tr><td>\(D_\psi(x)\)</td><td>判别器概率。</td><td>估计样本来自真实分布的概率。</td></tr><tr><td>\(p_g\)</td><td>生成器诱导分布。</td><td>隐式可采样，通常不可算密度。</td></tr><tr><td>\(f_\psi\)</td><td>WGAN critic。</td><td>输出不是概率。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：用二分类器提供分布差异信号，训练只能采样、不能算 likelihood 的生成器。</p><div class="equation" data-eq="GAN-1">\[
@@ -243,28 +296,42 @@ N_i^{(t)}=\gamma N_i^{(t-1)}+(1-\gamma)n_i^{(t)},\quad e_i^{(t)}=\frac{m_i^{(t)}
 \]<span class="eq-number">(GAN-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="GAN-2">\[
 \frac{p_{\mathrm{data}}(x)}{D(x)}-\frac{p_g(x)}{1-D(x)}=0\quad\Rightarrow\quad D^*(x)=\frac{p_{\mathrm{data}}(x)}{p_{\mathrm{data}}(x)+p_g(x)}.
-\]<span class="eq-number">(GAN-2)</span></div><p>固定生成器时，对每个 \(x\) 单独求最优判别器。</p><p class="derivation-note">使用：一阶最优条件。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="GAN-3">\[
+\]<span class="eq-number">(GAN-2)</span></div><p>固定生成器时，对每个 \(x\) 单独求最优判别器。</p><p class="derivation-note">本步使用一阶最优条件：固定 \(G\) 后，判别器目标在每个 \(x\) 上都是关于 \(D(x)\) 的二分类 log-likelihood。令导数为零，就得到真实密度与生成密度的比值形式。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="GAN-3">\[
 V(G,D^*)=-\log4+2D_{JS}(p_{\mathrm{data}}\Vert p_g).
-\]<span class="eq-number">(GAN-3)</span></div><p>原始 GAN 理论上最小化 JS divergence。</p><p class="derivation-note">使用：代回 optimal discriminator。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="GAN-4">\[
+\]<span class="eq-number">(GAN-3)</span></div><p>原始 GAN 理论上最小化 JS divergence。</p><p class="derivation-note">本步把 \(D^*(x)\) 代回 minimax 目标：二分类最优值可以整理成 Jensen-Shannon divergence。这个结论解释了 GAN 的分布匹配意义，也解释了分布支撑几乎不重叠时梯度容易退化。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="GAN-4">\[
 \mathcal{J}_{G,ns}=-\mathbb{E}_{z}\log D(G_\theta(z)).
-\]<span class="eq-number">(GAN-4)</span></div><p>non-saturating loss 在判别器很强时给生成器更有效梯度。</p><p class="derivation-note">使用：目标重参数化。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="GAN-5">\[
+\]<span class="eq-number">(GAN-4)</span></div><p>non-saturating loss 在判别器很强时给生成器更有效梯度。</p><p class="derivation-note">本步是生成器目标的重参数化：不再最小化 \(\log(1-D(G(z)))\)，而是最大化 \(\log D(G(z))\)。最优点不变，但当判别器很确信“假”时，生成器获得的梯度更强。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="GAN-5">\[
 \lambda\mathbb{E}_{\hat{x}}(\|\nabla_{\hat{x}}f_\psi(\hat{x})\|_2-1)^2.
-\]<span class="eq-number">(GAN-5)</span></div><p>WGAN-GP 用 gradient penalty 近似 1-Lipschitz 约束，critic 不是概率。</p><p class="derivation-note">使用：Kantorovich-Rubinstein duality 的工程近似。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="gan"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="gan training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="gan"></code></pre></div>
+\]<span class="eq-number">(GAN-5)</span></div><p>WGAN-GP 用 gradient penalty 近似 1-Lipschitz 约束，critic 不是概率。</p><p class="derivation-note">本步来自 Kantorovich-Rubinstein duality 的工程近似：Wasserstein-1 距离可由 1-Lipschitz critic 表示，gradient penalty 通过惩罚 \(\|\nabla f\|\) 偏离 1 来近似这个约束，使训练信号更平滑。</p></li></ol></div>
+<div class="derivation-section"><h3>经典 GAN loss 的稳定化形式</h3><p>这些目标不是在解决不同任务，而是在同一个真实/生成分布匹配博弈中改变判别器输出尺度、梯度形态或局部约束。</p><div class="equation" data-eq="GAN-6">\[
+\mathcal{L}_{D}^{hinge}=\mathbb{E}_{x\sim p_{\mathrm{data}}}\max(0,1-D(x))+\mathbb{E}_{z}\max(0,1+D(G(z))),\quad
+\mathcal{L}_{G}^{hinge}=-\mathbb{E}_{z}D(G(z)).
+\]<span class="eq-number">(GAN-6)</span></div><p>Hinge loss 把判别器看成 margin classifier，真实样本打分应高于 1，生成样本打分应低于 -1，常见于现代图像 GAN。</p><div class="equation" data-eq="GAN-7">\[
+\mathcal{L}_{D}^{LS}=\frac{1}{2}\mathbb{E}_{x}(D(x)-1)^2+\frac{1}{2}\mathbb{E}_{z}D(G(z))^2,\quad
+\mathcal{L}_{G}^{LS}=\frac{1}{2}\mathbb{E}_{z}(D(G(z))-1)^2.
+\]<span class="eq-number">(GAN-7)</span></div><p>LSGAN 用 least-squares 代替 BCE，目标是让判别器输出接近标签值，常用于缓解 BCE 饱和导致的梯度问题。</p><div class="equation" data-eq="GAN-8">\[
+\mathcal{L}_{D}^{patch}=\frac{1}{|\Omega|}\sum_{(u,v)\in\Omega}\ell\left(D_{u,v}(x),D_{u,v}(G(z))\right).
+\]<span class="eq-number">(GAN-8)</span></div><p>PatchGAN / patch loss 让判别器输出局部网格 logits，并在 patch 维度平均 loss。它强化局部纹理真实感，适合图像翻译、超分和 VQGAN decoder，但不能单独保证全局结构正确。</p></div>
+<div class="derivation-section"><h3>训练好的 GAN 应该是什么样子</h3><p>理想状态不是“生成器 loss 很低”，而是生成器诱导出的分布 \(p_g\) 已经接近真实数据分布 \(p_{\mathrm{data}}\)。此时判别器难以区分真实样本和生成样本，是因为两类样本来自几乎相同的分布，而不是因为判别器能力不足。</p><div class="equation" data-eq="GAN-9">\[
+p_g(x)\approx p_{\mathrm{data}}(x)\quad\Longrightarrow\quad D^*(x)=\frac{p_{\mathrm{data}}(x)}{p_{\mathrm{data}}(x)+p_g(x)}\approx \frac{1}{2}.
+\]<span class="eq-number">(GAN-9)</span></div><p>当 \(p_g=p_{\mathrm{data}}\) 时，最优判别器在每个样本上只能给出 \(1/2\)，原始 GAN 对应的 JS divergence 达到最小值 0。这个结论说明了 GAN 的理论终点：不是让生成器欺骗一个坏判别器，而是让真实分布和生成分布本身不可区分。</p><ul class="diagnostic-list"><li><strong>样本逼真：</strong>局部纹理、颜色、边缘、结构和训练数据域一致，但不能只看少数 cherry-picked 样本。</li><li><strong>模式覆盖充分：</strong>不同 \(z\) 应覆盖真实数据中的类别、姿态、风格和长尾变化；只生成少数高质量样本仍是 mode collapse。</li><li><strong>多样性正常：</strong>相邻 latent 可以平滑变化，随机 latent 不应反复落到同一模板。</li><li><strong>不简单记忆：</strong>nearest-neighbor 检查不应显示生成样本只是训练图像的复制。</li><li><strong>条件一致：</strong>conditional GAN 中，输出应满足类别、文本、边缘图、姿态或其他条件 \(c\)，否则只是无条件真实感。</li></ul><p>因此，\(D\) 的准确率接近 50% 只能作为弱信号：如果判别器容量足够、训练正常、验证集判别也失效，才可能表示 \(p_g\) 接近 \(p_{\mathrm{data}}\)。如果判别器过弱、过拟合、训练不同步，50% 准确率也可能是失效而不是收敛。</p></div>
+<div class="algorithm-panel" data-flow-panel="gan"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="gan training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="gan"></div></div>
 <div class="visual-example interactive-lab" data-visual="gan-lab"><div class="visual-copy"><h3>5. 可视化实验：GAN Gradient Lab</h3><p>切换 original、non-saturating、WGAN，观察 toy 判别边界和生成器梯度方向。</p></div><div class="lab-grid" data-lab="gan"><div class="lab-controls lab-controls-grid"><label>loss<select id="ganLoss"><option value="ns">non-saturating</option><option value="minimax">original minimax</option><option value="wgan">WGAN</option></select></label><label>mode<select id="ganModeLab"><option value="balanced">balanced</option><option value="collapse">mode collapse</option></select></label></div><canvas id="ganLabCanvas" class="lab-canvas" width="900" height="360" aria-label="GAN discriminator and gradient toy lab"></canvas><p id="ganLabReadout" class="lab-readout">non-saturating gives stronger gradient when D is confident.</p><p class="lab-explanation">这是 toy simulation，不是完整 GAN 训练。</p></div></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>critic 不是概率。</li>
-<li>GAN 采样快不代表训练简单。</li>
-<li>mode collapse 是分布覆盖失败，不只是视觉问题。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>隐式分布、感知质量高、采样快。</p></div><div><strong>适用场景</strong><p>图像生成、风格迁移、adversarial perceptual objective。</p></div><div><strong>典型问题</strong><p>训练不稳定、mode collapse、判别器过强或过弱。</p></div><div><strong>诊断信号</strong><p>mode coverage、FID、precision/recall、critic gradient norm。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能推导 optimal discriminator。</li>
-<li>能解释 JS divergence 和 non-saturating loss。</li>
-<li>能说明 WGAN-GP 的 Lipschitz 约束意义。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>WGAN critic 不是概率。</strong>原始 GAN 的 \(D(x)\) 可解释为真实概率，WGAN、hinge GAN 的 critic 输出是打分函数或 margin，不能当作概率读。</li>
+<li><strong>采样快不代表训练简单。</strong>GAN 推断只需一次前向，但训练是两方博弈，判别器过强、过弱或优化不同步都会破坏梯度。</li>
+<li><strong>mode collapse 是分布覆盖失败。</strong>少数样本看起来很清晰并不能证明生成分布覆盖了真实数据的多样性。</li><li><strong>PatchGAN 不是全局判别器的替代品。</strong>局部 patch loss 能强化纹理，但如果缺少全局条件或重构约束，可能出现局部真实、整体结构错误的样本。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>GAN 用隐式采样分布和判别信号训练生成器，不需要显式 likelihood，推断速度非常快。训练完成的目标是 \(p_g\approx p_{\mathrm{data}}\)，而不是某个单独 loss 数值最小。</p></div><div><strong>适用场景</strong><p>图像生成、风格迁移、超分辨率、感知损失辅助训练，以及需要 adversarial realism 的 decoder/tokenizer。</p></div><div><strong>典型问题</strong><p>训练不稳定、mode collapse、梯度消失、判别器过拟合和评价困难；PatchGAN 可能局部纹理逼真但全局结构错误。</p></div><div><strong>诊断信号</strong><p>FID、precision/recall、mode coverage、判别器验证准确率、critic gradient norm、hinge margin 饱和比例、patch 判别热图、nearest-neighbor 记忆检查、条件一致性、样本多样性和训练曲线振荡。</p></div><div><strong>工程判断</strong><p>不要只看 \(D\) accuracy 或 \(G\) loss。判别器接近随机猜测只有在判别器足够强、未过拟合且样本覆盖充分时才是好信号；若需要稳定大规模条件生成，Diffusion/Flow Matching 往往更容易扩展。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>最优判别器的结论：</strong>固定生成器时，\(D^*(x)=p_{\mathrm{data}}(x)/(p_{\mathrm{data}}(x)+p_g(x))\)，它本质上估计密度比。</li>
+<li><strong>JS divergence 的来源：</strong>把 \(D^*\) 代回原始 minimax 目标，会得到 \(-\log4+2D_{JS}(p_{\mathrm{data}}\Vert p_g)\)。</li>
+<li><strong>训练完成的理想状态：</strong>当 \(p_g=p_{\mathrm{data}}\) 时，最优判别器输出 \(D^*(x)=1/2\)，但工程上必须同时检查样本质量、模式覆盖、多样性、记忆风险和条件一致性。</li>
+<li><strong>non-saturating 为什么更常用：</strong>它保留相同最优点，但在判别器很强时给生成器更大的有效梯度。</li>
+<li><strong>WGAN-GP 的意义：</strong>gradient penalty 近似 1-Lipschitz 约束，使 critic 的训练信号与 Wasserstein 距离的对偶形式更一致。</li><li><strong>hinge、LSGAN、PatchGAN 的位置：</strong>它们分别改变 margin 梯度、平方误差标签拟合和局部 patch 判别约束，目标都是让对抗训练更稳定或更贴近视觉纹理。</li></ul></div>
 </section>
 
 <section class="chapter" id="score-matching" data-part="part2">
 <header class="chapter-header"><h2>Score Matching：从 log-density 梯度到去噪方向</h2><p class="chapter-summary">Score 是 log-density 对样本的梯度；它给出样本应向高概率区域移动的方向。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 KL 和 GAN，再进入 Diffusion。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>log-density：</strong>\(\log p(x)\) 把密度转成可加的标量场，梯度方向表示局部上升最快方向。</li><li><strong>score：</strong>\(s(x)=\nabla_x\log p(x)\)，这里对样本 \(x\) 求梯度，不是对模型参数求梯度。</li><li><strong>Gaussian score：</strong>若 \(\tilde{x}\sim\mathcal{N}(x,\sigma^2I)\)，则 \(\nabla_{\tilde{x}}\log p(\tilde{x}|x)=-(\tilde{x}-x)/\sigma^2\)。</li><li><strong>DSM：</strong>denoising score matching 用人为加噪得到闭式 score target，绕开真实数据 score 不可观测的问题。</li><li><strong>Langevin dynamics：</strong>\(x_{k+1}=x_k+\eta s_\theta(x_k)+\sqrt{2\eta}\xi_k\)，用 score 上升方向和噪声共同采样。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>score 不是样本本身，而是 \(\nabla_x\log p(x)\)：指向 log-density 上升最快方向。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(s(x)=\nabla_x\log p(x)\)</td><td>score field。</td><td>真实数据 score 通常不可直接获得。</td></tr><tr><td>\(\tilde{x}=x+\sigma\epsilon\)</td><td>加噪样本。</td><td>DSM 训练时构造。</td></tr><tr><td>\(s_\theta(\tilde{x},\sigma)\)</td><td>score 网络。</td><td>近似加噪分布的 score。</td></tr><tr><td>\(E_\theta(x)\)</td><td>energy function。</td><td>score 与 \(-\nabla_xE\) 相关。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：学习不依赖归一化常数的 log-density 梯度，并连接到 diffusion 的噪声预测。</p><div class="equation" data-eq="SM-1">\[
@@ -272,31 +339,55 @@ s(x)=\nabla_x\log p(x).
 \]<span class="eq-number">(SM-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="SM-2">\[
 \nabla_x\log \frac{\exp(-E(x))}{Z}=-\nabla_xE(x).
-\]<span class="eq-number">(SM-2)</span></div><p>归一化常数 \(Z\) 与 \(x\) 无关，求梯度后消失。</p><p class="derivation-note">使用：对样本变量求梯度。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="SM-3">\[
+\]<span class="eq-number">(SM-2)</span></div><p>归一化常数 \(Z\) 与 \(x\) 无关，求梯度后消失。</p><p class="derivation-note">本步对样本变量 \(x\) 求梯度，而不是对参数求梯度。因为 \(Z\) 不随 \(x\) 变化，\(\nabla_x\log Z=0\)，所以即便归一化常数不可算，score 仍可由能量梯度表示。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="SM-3">\[
 \nabla_{\tilde{x}}\log p(\tilde{x}|x)=-\frac{\tilde{x}-x}{\sigma^2}=-\frac{\epsilon}{\sigma}.
-\]<span class="eq-number">(SM-3)</span></div><p>条件高斯加噪的 score 有闭式。</p><p class="derivation-note">使用：Gaussian score identity。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="SM-4">\[
+\]<span class="eq-number">(SM-3)</span></div><p>条件高斯加噪的 score 有闭式。</p><p class="derivation-note">本步使用 Gaussian score identity：高斯 log-density 是二次函数，对 \(\tilde{x}\) 求梯度会得到指向均值 \(x\) 的线性向量。这个闭式 target 让 denoising score matching 可以构造监督信号。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="SM-4">\[
 \mathcal{J}_{DSM}=\mathbb{E}_{x,\epsilon,\sigma}\left\|s_\theta(x+\sigma\epsilon,\sigma)+\frac{\epsilon}{\sigma}\right\|_2^2.
-\]<span class="eq-number">(SM-4)</span></div><p>denoising score matching 用可构造噪声提供监督信号。</p><p class="derivation-note">使用：DSM surrogate。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="SM-5">\[
+\]<span class="eq-number">(SM-4)</span></div><p>denoising score matching 用可构造噪声提供监督信号。</p><p class="derivation-note">本步使用 DSM surrogate：真实数据分布的 score 不可直接观测，但我们可以人为加高斯噪声，并知道“加噪样本应往干净样本方向移动”的解析 score。网络学习的是不同噪声尺度下的去噪方向。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="SM-5">\[
 x_{k+1}=x_k+\eta s_\theta(x_k)+\sqrt{2\eta}\xi_k,\quad \xi_k\sim\mathcal{N}(0,I).
-\]<span class="eq-number">(SM-5)</span></div><p>Langevin dynamics 沿 score 上升方向并注入噪声采样。</p><p class="derivation-note">使用：stochastic dynamics。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>sample x ~ p_data, epsilon ~ N(0,I), sigma
-construct x_tilde = x + sigma * epsilon
-fit s_theta(x_tilde, sigma) to -epsilon/sigma</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>initialize x from noise
-repeat Langevin or reverse-time updates
-move using learned score field</code></pre></article></div></div>
+\]<span class="eq-number">(SM-5)</span></div><p>Langevin dynamics 沿 score 上升方向并注入噪声采样。</p><p class="derivation-note">本步使用 stochastic dynamics：score 项把样本推向更高 log-density，\(\sqrt{2\eta}\xi\) 保留随机探索。只做梯度上升会塌到局部高密度点，加入噪声才对应采样而不是优化。</p></li></ol></div>
+<div class="derivation-section"><h3>Score 视角下的噪声预测与速度场</h3><p>Diffusion 的噪声预测、\(\hat{x}_0\) 预测和 score 预测在给定噪声日程时是同一反向信息的不同参数化。Flow Matching 的 velocity 也能在常见 Gaussian probability path 下由 score 表示，但一般不是单纯的常数倍；它还包含由路径系数决定的线性漂移项。</p><div class="equation" data-eq="SM-6">\[
+x_t=a_t x_{\mathrm{data}}+\sigma_t\epsilon,\quad \epsilon\sim\mathcal{N}(0,I),\quad s_t(x)=\nabla_x\log p_t(x).
+\]<span class="eq-number">(SM-6)</span></div><p>这里 \(p_t\) 是中间噪声分布。对 Gaussian corruption，score、噪声和去噪均值之间有解析关系。</p><div class="equation" data-eq="SM-7">\[
+s_t(x)=-\frac{1}{\sigma_t}\mathbb{E}[\epsilon\mid x_t=x],\quad
+\epsilon^*(x,t)=-\sigma_t s_t(x),\quad
+\mathbb{E}[x_{\mathrm{data}}\mid x_t=x]=\frac{x+\sigma_t^2s_t(x)}{a_t}.
+\]<span class="eq-number">(SM-7)</span></div><p>因此在 DDPM/score-based diffusion 中，最优噪声预测器 \(\epsilon_\theta\) 本质上就是负 score 乘以时间相关尺度 \(\sigma_t\)。这就是“噪声预测和 score 只差尺度”的严格含义。</p><div class="equation" data-eq="SM-8">\[
+\begin{aligned}
+v_t(x)
+&=\mathbb{E}\left[\dot{a}_t x_{\mathrm{data}}+\dot{\sigma}_t\epsilon\mid x_t=x\right]\\
+&=\frac{\dot{a}_t}{a_t}x+
+\left(\frac{\dot{a}_t}{a_t}\sigma_t^2-\dot{\sigma}_t\sigma_t\right)s_t(x).
+\end{aligned}
+\]<span class="eq-number">(SM-8)</span></div><p>这说明 Flow Matching 的速度场和 score 描述的是同一条概率路径的局部几何，但 velocity 通常是“已知线性漂移 + score 乘以时间系数”。若使用线性插值、OT path 或 rectified path，具体系数会随路径定义变化；不能简单说所有 velocity prediction 都只是 score 的常数缩放。</p></div>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>训练伪代码</h4><pre class="algorithm"><code>for each minibatch x:
+  sigma ~ noise_scale_distribution
+  epsilon ~ Normal(0, I)
+  x_tilde = x + sigma * epsilon
+  target_score = -epsilon / sigma
+  score_hat = s_theta(x_tilde, sigma)
+  loss = ||score_hat - target_score||_2^2
+  update theta</code></pre><p class="algorithm-note">真实数据 score 不可见；人为加高斯噪声后，条件 Gaussian score 有闭式。</p></article><article class="flow-card"><h4>Langevin 采样伪代码</h4><pre class="algorithm"><code>x = initial_noise_or_corrupted_sample
+for k = 0, ..., K - 1:
+  xi ~ Normal(0, I)
+  x = x + eta * s_theta(x, sigma_k)
+        + sqrt(2 * eta) * xi
+  optionally decrease sigma_k
+return x</code></pre><p class="algorithm-note">score 项让样本走向高密度区域；噪声项保持采样性，避免只做局部优化。</p></article></div></div>
 <div class="visual-example interactive-lab" data-visual="score-field-lab"><div class="visual-copy"><h3>5. 可视化实验：Score Field Lab</h3><p>切换 Gaussian/Laplace/Mixture，调节噪声平滑 sigma，点击点可观察沿 score 的 toy 轨迹。</p></div><div class="lab-grid" data-lab="score-field"><div class="lab-controls lab-controls-grid"><label>distribution<select id="scoreDist"><option value="gaussian">Gaussian</option><option value="laplace">Laplace</option><option value="mixture">Mixture</option></select></label><label>noise sigma<input id="scoreSigma" type="range" min="0.2" max="2" step="0.05" value="0.7"><output id="scoreSigmaOut">0.70</output></label></div><canvas id="scoreFieldCanvas" class="lab-canvas" width="900" height="360" aria-label="Score field density and vector lab"></canvas><p id="scoreFieldReadout" class="lab-readout">Gaussian score points linearly to the mean.</p></div></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>score 是梯度方向，不是概率值。</li>
-<li>加噪后的 score 更平滑，通常比真实数据流形上的 score 更容易学习。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>绕开密度归一化常数，直接学习 log-density 梯度。</p></div><div><strong>适用场景</strong><p>Diffusion、EBM、Langevin sampling、denoising。</p></div><div><strong>典型问题</strong><p>多噪声等级权重、score 数值尺度和采样稳定性。</p></div><div><strong>诊断信号</strong><p>向量场方向、denoising error、采样轨迹是否回到高密度区域。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能定义 score。</li>
-<li>能推导高斯 DSM target。</li>
-<li>能解释 score 与 diffusion 噪声预测的关系。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>score 不是概率值。</strong>score 是 \(\nabla_x\log p(x)\)，表示样本在空间中应往哪里移动才能更快提高 log-density。</li>
+<li><strong>score 的梯度对象是样本，不是参数。</strong>参数梯度用于训练网络，score field 是对 \(x\) 求梯度，两者语义不同。</li>
+<li><strong>加噪不是附属技巧。</strong>真实数据分布可能集中在低维流形上，直接学习 score 很难；加噪后的分布更平滑，才给 DSM 提供可稳定学习的目标。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>Score Matching 绕开不可计算的归一化常数，直接学习 log-density 的空间梯度，是 Diffusion 和 EBM 之间的关键桥梁。</p></div><div><strong>适用场景</strong><p>Diffusion 噪声预测、Langevin sampling、能量模型、图像去噪、分布修复和 score-based inverse problem。</p></div><div><strong>典型问题</strong><p>不同噪声等级的 loss 权重会影响训练重点；score 尺度过大或方向错误会导致采样发散或陷入局部区域。</p></div><div><strong>诊断信号</strong><p>向量场是否指向高密度区域、denoising error、不同 sigma 下的误差、Langevin 轨迹是否回到真实 mode。</p></div><div><strong>工程判断</strong><p>若任务能构造可靠噪声监督，score 是强接口；若只能得到最终偏好或 reward，直接学 score 往往不是最自然的选择。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>score 的定义：</strong>\(s(x)=\nabla_x\log p(x)\)，它是样本空间中的方向场，不是概率大小。</li>
+<li><strong>高斯 DSM target 的来源：</strong>\(\tilde{x}=x+\sigma\epsilon\) 时，\(\nabla_{\tilde{x}}\log p(\tilde{x}|x)=-(\tilde{x}-x)/\sigma^2=-\epsilon/\sigma\)。</li>
+<li><strong>与 Diffusion 的关系：</strong>DDPM 中预测噪声 \(\epsilon_\theta\) 等价于预测 \(-\sigma_t s_t(x_t)\)，因此噪声预测和 score learning 是同一反向信息的两种参数化。</li><li><strong>与 Flow Matching 的关系：</strong>在 Gaussian probability path 下，velocity field 可写成已知漂移项加 score 项；它与 score 共享同一概率路径信息，但一般不只是常数倍缩放。</li></ul></div>
 </section>
 
 <section class="chapter" id="diffusion" data-part="part2">
 <header class="chapter-header"><h2>Diffusion / Score-based：从 Markov 加噪到反向去噪</h2><p class="chapter-summary">Diffusion 固定前向加噪链，再学习从噪声回到数据的反向 transition。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 VAE 和 Score Matching。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>Markov chain：</strong>\(q(x_t|x_{t-1})\) 只依赖上一步状态；Diffusion 前向链是固定加噪链。</li><li><strong>线性高斯变换：</strong>\(x_t=\sqrt{\alpha_t}x_{t-1}+\sqrt{1-\alpha_t}\epsilon_t\)，多步叠加后仍是高斯。</li><li><strong>Gaussian product / posterior：</strong>\(q(x_{t-1}|x_t,x_0)\propto q(x_t|x_{t-1})q(x_{t-1}|x_0)\)，两个高斯相乘仍给出高斯 posterior。</li><li><strong>ELBO：</strong>DDPM 用固定前向链构造 likelihood 下界，核心项是每一步 posterior KL。</li><li><strong>参数化：</strong>\(\epsilon\)-prediction、\(\hat{x}_0\)-prediction、score 和 \(v\)-prediction 都表达从 \(x_t\) 回到数据方向的信息。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>训练时随机破坏数据并学习噪声；采样时从纯噪声逐步去噪。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(x_0\)</td><td>干净数据。</td><td>来自训练集。</td></tr><tr><td>\(x_t\)</td><td>第 t 个噪声状态。</td><td>由 forward noising 构造。</td></tr><tr><td>\(\beta_t,\alpha_t,\bar\alpha_t\)</td><td>噪声日程。</td><td>人为设定。</td></tr><tr><td>\(\epsilon_\theta(x_t,t,c)\)</td><td>噪声预测网络。</td><td>训练得到。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：让 \(p_\theta(x_{t-1}|x_t,c)\) 逼近固定前向过程可解析得到的真实 posterior。</p><div class="equation" data-eq="DDPM-1">\[
@@ -304,93 +395,114 @@ q(x_t|x_{t-1})=\mathcal{N}(\sqrt{1-\beta_t}x_{t-1},\beta_tI).
 \]<span class="eq-number">(DDPM-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="DDPM-2">\[
 \alpha_t=1-\beta_t,\quad \bar{\alpha}_t=\prod_{s=1}^{t}\alpha_s,\quad q(x_t|x_0)=\mathcal{N}(\sqrt{\bar{\alpha}_t}x_0,(1-\bar{\alpha}_t)I).
-\]<span class="eq-number">(DDPM-2)</span></div><p>前向链是高斯马尔可夫链，因此任意 t 可闭式采样。</p><p class="derivation-note">使用：Gaussian composition。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="DDPM-3">\[
+\]<span class="eq-number">(DDPM-2)</span></div><p>前向链是高斯马尔可夫链，因此任意 t 可闭式采样。</p><p class="derivation-note">本步使用 Gaussian composition：每一步都是线性高斯变换，多步叠加后仍是高斯。于是 \(x_t\) 可以直接从 \(x_0\) 和一个标准高斯噪声构造，不必真的模拟 \(1\) 到 \(t\) 的完整加噪链。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="DDPM-3">\[
 x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon,\quad \epsilon\sim\mathcal{N}(0,I).
-\]<span class="eq-number">(DDPM-3)</span></div><p>训练无需逐步运行前向链。</p><p class="derivation-note">使用：reparameterization。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="DDPM-4">\[
+\]<span class="eq-number">(DDPM-3)</span></div><p>训练无需逐步运行前向链。</p><p class="derivation-note">本步使用 reparameterization：随机性来自外部 \(\epsilon\sim\mathcal{N}(0,I)\)，\(x_t\) 是 \(x_0,t,\epsilon\) 的确定函数。这让训练可以随机抽一个时间步、直接构造噪声样本并反向传播。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="DDPM-4">\[
 q(x_{t-1}|x_t,x_0)=\mathcal{N}(\tilde{\mu}_t(x_t,x_0),\tilde{\beta}_t I).
-\]<span class="eq-number">(DDPM-4)</span></div><p>前向过程固定，所以 posterior 可解析。</p><p class="derivation-note">使用：Gaussian posterior identity。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="DDPM-5">\[
+\]<span class="eq-number">(DDPM-4)</span></div><p>前向过程固定，所以 posterior 可解析。</p><p class="derivation-note">本步使用 Gaussian posterior identity：\(q(x_t|x_{t-1})\) 和 \(q(x_{t-1}|x_0)\) 都是线性高斯，条件化到 \(x_t,x_0\) 后仍是高斯。这个解析 posterior 是反向模型要逼近的老师。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="DDPM-5">\[
 \tilde{\mu}_t=\frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_0+\frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t}x_t,\quad \tilde{\beta}_t=\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\beta_t.
-\]<span class="eq-number">(DDPM-5)</span></div><p>反向模型学习逼近这个 posterior 的 mean/variance。</p><p class="derivation-note">使用：Gaussian conditioning。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="DDPM-6">\[
+\]<span class="eq-number">(DDPM-5)</span></div><p>反向模型学习逼近这个 posterior 的 mean/variance。</p><p class="derivation-note">本步使用 Gaussian conditioning：解析 posterior 的均值由 \(x_t\) 和 \(x_0\) 的线性组合给出。采样时 \(x_0\) 不可知，因此网络通过预测噪声或 \(\hat{x}_0\) 来间接构造反向均值。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="DDPM-6">\[
 L_{t-1}=D_{KL}\left(q(x_{t-1}|x_t,x_0)\Vert p_\theta(x_{t-1}|x_t,c)\right).
-\]<span class="eq-number">(DDPM-6)</span></div><p>DDPM ELBO 的核心项是每一步 posterior matching。</p><p class="derivation-note">使用：variational bound。</p></li><li><p class="step-label">Step 6</p><div class="equation" data-eq="DDPM-7">\[
+\]<span class="eq-number">(DDPM-6)</span></div><p>DDPM ELBO 的核心项是每一步 posterior matching。</p><p class="derivation-note">本步使用 variational bound：真实反向链不可直接最大似然，于是用固定前向链构造下界。下界中的主要训练项，是让 \(p_\theta(x_{t-1}|x_t,c)\) 匹配解析 posterior \(q(x_{t-1}|x_t,x_0)\)。</p></li><li><p class="step-label">Step 6</p><div class="equation" data-eq="DDPM-7">\[
 \mathcal{J}_{simple}=\mathbb{E}_{x_0\sim p_{\mathrm{data}},\epsilon\sim\mathcal{N}(0,I),t}\left\|\epsilon-\epsilon_\theta(x_t,t,c)\right\|_2^2.
-\]<span class="eq-number">(DDPM-7)</span></div><p>实践中常用噪声预测简化目标。</p><p class="derivation-note">使用：fixed variance Gaussian KL 到 MSE。</p></li><li><p class="step-label">Step 7</p><div class="equation" data-eq="DDPM-8">\[
+\]<span class="eq-number">(DDPM-7)</span></div><p>实践中常用噪声预测简化目标。</p><p class="derivation-note">本步把固定方差 Gaussian KL 化简为 MSE：若方差日程固定，posterior matching 的主要差异落在均值；均值又可由噪声 \(\epsilon\) 参数化，所以训练常写成预测真实噪声的平方误差。</p></li><li><p class="step-label">Step 7</p><div class="equation" data-eq="DDPM-8">\[
 \hat{x}_0=\frac{x_t-\sqrt{1-\bar{\alpha}_t}\epsilon_\theta(x_t,t,c)}{\sqrt{\bar{\alpha}_t}},\quad s_\theta(x_t,t)\approx-\frac{\epsilon_\theta(x_t,t)}{\sqrt{1-\bar{\alpha}_t}}.
-\]<span class="eq-number">(DDPM-8)</span></div><p>epsilon、x0、score 是同一反向信息的不同参数化。</p><p class="derivation-note">使用：DDPM parameterization。</p></li><li><p class="step-label">Step 8</p><div class="equation" data-eq="DDPM-9">\[
+\]<span class="eq-number">(DDPM-8)</span></div><p>epsilon、x0、score 是同一反向信息的不同参数化。</p><p class="derivation-note">本步使用 DDPM 参数化关系：若 \(x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon\)，最优噪声预测满足 \(\epsilon^*(x_t,t)=-\sqrt{1-\bar{\alpha}_t}\nabla_{x_t}\log p_t(x_t)\)。所以 \(\epsilon\)-prediction 与 score prediction 只差一个时间相关尺度；\(\hat{x}_0\) 则由同一个 score 通过 Tweedie identity 还原。</p></li><li><p class="step-label">Step 8</p><div class="equation" data-eq="DDPM-9">\[
 v=\sqrt{\bar{\alpha}_t}\epsilon-\sqrt{1-\bar{\alpha}_t}x_0.
-\]<span class="eq-number">(DDPM-9)</span></div><p>v-parameterization 改善不同噪声等级的数值平衡。</p><p class="derivation-note">使用：signal/noise rotation。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="diffusion"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="diffusion training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="diffusion"></code></pre></div>
+\]<span class="eq-number">(DDPM-9)</span></div><p>v-parameterization 改善不同噪声等级的数值平衡。</p><p class="derivation-note">本步使用 signal/noise rotation：\(v\) 可以看成在 \(x_0\) 与 \(\epsilon\) 之间旋转后的目标，使高噪声和低噪声时间步的尺度更平衡，常有利于稳定训练和少步采样。</p></li></ol></div>
+<details class="advanced-derivation" open><summary>前向闭式、后验高斯与反向采样公式</summary><ol class="mini-derivation"><li><strong>一步加噪写成重参数化：</strong>\(x_t=\sqrt{\alpha_t}x_{t-1}+\sqrt{1-\alpha_t}\epsilon_t\)，其中 \(\epsilon_t\sim\mathcal{N}(0,I)\)。这是线性函数加高斯噪声，所以结果仍是高斯。</li><li><strong>多步叠加仍是高斯：</strong>不断代入 \(x_{t-1}\) 后，所有独立高斯噪声的线性组合仍是高斯，其总方差合并为 \(1-\bar{\alpha}_t\)，得到 \(x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon\)。</li><li><strong>用 Bayes rule 得到 posterior：</strong>\(q(x_{t-1}|x_t,x_0)\propto q(x_t|x_{t-1})q(x_{t-1}|x_0)\)。右边两个因子都是关于 \(x_{t-1}\) 的高斯，乘积仍是高斯。</li><li><strong>高斯乘积给出均值：</strong>把两个二次型按 \(x_{t-1}\) 合并，得到 \(\tilde{\mu}_t=\frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_0+\frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t}x_t\)。</li><li><strong>采样时 \(x_0\) 不可见：</strong>网络先预测 \(\epsilon_\theta(x_t,t,c)\)，再用 \(\hat{x}_0=\frac{x_t-\sqrt{1-\bar{\alpha}_t}\epsilon_\theta}{\sqrt{\bar{\alpha}_t}}\) 代入 posterior mean。</li><li><strong>DDPM 反向均值：</strong>整理后得到 \(\mu_\theta(x_t,t)=\frac{1}{\sqrt{\alpha_t}}\left(x_t-\frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_\theta(x_t,t,c)\right)\)。随机采样步为 \(x_{t-1}=\mu_\theta(x_t,t)+\sigma_tz,\;z\sim\mathcal{N}(0,I)\)。</li><li><strong>DDIM / probability flow ODE：</strong>若去掉或重写随机噪声项，就得到确定性轨迹版本。它使用同一个去噪网络，但采样路径不再是原始 DDPM 的随机 Markov chain。</li></ol></details>
+<div class="algorithm-panel" data-flow-panel="diffusion"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="diffusion training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="diffusion"></div></div>
 <div class="visual-example interactive-lab" data-visual="diffusion-noise-lab"><div class="visual-copy"><h3>5. 可视化实验：Diffusion Noise / SNR Lab</h3><p>调节 t 和 schedule，观察 signal coefficient、noise coefficient、SNR 与 DDPM/DDIM toy path。</p></div><div class="lab-grid" data-lab="diffusion"><div class="lab-controls lab-controls-grid"><label>t<input id="diffT" type="range" min="0" max="1" step="0.01" value="0.55"><output id="diffTOut">0.55</output></label><label>schedule<select id="diffSchedule"><option value="linear">linear</option><option value="cosine">cosine</option></select></label><label>sampler<select id="diffSampler"><option value="ddpm">DDPM stochastic</option><option value="ddim">DDIM deterministic</option></select></label></div><canvas id="diffCanvas" class="lab-canvas" width="900" height="360" aria-label="Diffusion noise schedule and sampler lab"></canvas><p id="diffReadout" class="lab-readout">SNR = 0</p><p id="diffExplanation" class="lab-explanation">t 增大时 signal 衰减，noise 增强。</p></div></div>
 <details class="advanced-derivation"><summary>展开 DDPM ELBO 分解</summary><div class="equation" data-eq="DDPM-10">\[
 -\log p_\theta(x_0)\le L_T+\sum_{t=2}^{T}L_{t-1}+L_0.
 \]<span class="eq-number">(DDPM-10)</span></div><p>核心项是每个时间步的 posterior KL；在固定方差与噪声参数化下可化简为加权噪声 MSE。</p></details>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>前向 \(q\) 是固定破坏过程，反向 \(p_\theta\) 才是学习的生成过程。</li>
-<li>DDIM 是去掉新噪声的确定性轨迹，不等于重新训练一个模型。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>强感知质量、可条件控制、训练稳定。</p></div><div><strong>适用场景</strong><p>图像、视频、音频、3D、latent generation。</p></div><div><strong>典型问题</strong><p>多步采样慢、schedule 和 guidance 敏感、视频 credit assignment。</p></div><div><strong>诊断信号</strong><p>噪声预测 MSE、SNR 曲线、采样步数质量曲线、CFG 过强伪影。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能写出 \(q(x_t|x_0)\) 闭式。</li>
-<li>能说明 posterior KL 如何导向噪声预测。</li>
-<li>能区分 epsilon/x0/v 参数化。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>前向 \(q\) 不需要学习。</strong>它是固定破坏过程，用来产生训练监督；真正学习的是反向 \(p_\theta(x_{t-1}|x_t,c)\)。</li>
+<li><strong>DDIM 不是重新训练模型。</strong>DDIM 使用同一个噪声预测网络，把随机反向步改成确定性或半确定性轨迹。</li>
+<li><strong>score、epsilon、x0、v 不是四个无关任务。</strong>它们在给定噪声日程时可以互相转换；其中 \(\epsilon_\theta\) 是 score 的负向时间尺度重标定，\(v\)-prediction 是信号与噪声坐标的旋转。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>Diffusion 把复杂生成拆成许多局部去噪步骤，训练稳定、条件控制强，并能通过 score 视角统一到连续 SDE/ODE。</p></div><div><strong>适用场景</strong><p>图像、视频、音频、3D、inverse problem、editing、latent generation 和高质量多模态条件生成。</p></div><div><strong>典型问题</strong><p>多步采样带来延迟；noise schedule、SNR weighting 和 guidance 强度会影响细节、颜色、文本一致性和伪影。</p></div><div><strong>诊断信号</strong><p>噪声预测 MSE、分时间步误差、SNR 曲线、采样步数-质量曲线、CFG 过强伪影、视频时序一致性和 reward/偏好泛化。</p></div><div><strong>工程判断</strong><p>若追求高感知质量和可控生成，Diffusion 是强路线；若追求极低延迟，则需要 DDIM、distillation、consistency、rectified flow 或 latent-space 加速。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>\(q(x_t|x_0)\) 的闭式：</strong>由于前向链是线性高斯组合，任意时间步都可写成 \(\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon\)。</li>
+<li><strong>posterior KL 到噪声预测：</strong>DDPM ELBO 的核心项让反向模型匹配解析 posterior；在固定方差与噪声参数化下，这可化简为预测 \(\epsilon\) 的 MSE。</li>
+<li><strong>反向采样如何执行：</strong>从 \(x_T\sim\mathcal{N}(0,I)\) 开始，逐步用 \(\epsilon_\theta\) 构造 \(\mu_\theta\)，再按 DDPM 随机步或 DDIM 确定性步得到 \(x_{t-1}\)。</li>
+<li><strong>参数化差异：</strong>epsilon、x0、score 和 v 都表达反向信息；epsilon 与 score 只差 \(\sqrt{1-\bar{\alpha}_t}\) 这样的时间尺度，选择哪一种主要影响数值尺度、训练稳定性和采样器实现。</li></ul></div>
 </section>
 
 <section class="chapter" id="flow-matching" data-part="part2">
 <header class="chapter-header"><h2>Flow Matching / Rectified Flow / MeanFlow：从 probability path 到 velocity field</h2><p class="chapter-summary">Flow Matching 学习从 base distribution 到 data distribution 的速度场，采样时解 ODE。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 Score Matching 和 Diffusion。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>probability path：</strong>\(\{p_t\}_{t\in[0,1]}\) 连接 base distribution \(p_0\) 和 data distribution \(p_1\)。</li><li><strong>velocity field：</strong>\(v_t(x)\) 表示样本在时间 \(t\)、位置 \(x\) 的瞬时移动方向和速度。</li><li><strong>continuity equation：</strong>\(\partial_t p_t+\nabla\cdot(p_tv_t)=0\)，描述密度在速度场推动下如何守恒流动。</li><li><strong>ODE sampling：</strong>\(\frac{dx_t}{dt}=v_\theta(x_t,t,c)\)，采样时从 \(p_0\) 沿 learned velocity 积分到 \(p_1\)。</li><li><strong>numerical solver：</strong>Euler、Heun、Runge-Kutta 都是把连续 ODE 离散成有限步的近似方法，步数越少越依赖速度场精度。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>Diffusion 学反向去噪 transition；Flow Matching 学让样本沿路径移动的速度。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(p_0,p_1\)</td><td>base distribution 与 data distribution。</td><td>\(p_0\) 可采样，\(p_1=p_{\mathrm{data}}\)。</td></tr><tr><td>\(x_t=\psi_t(x_0,x_1)\)</td><td>条件概率路径。</td><td>由 paired endpoints 构造。</td></tr><tr><td>\(u_t\)</td><td>条件速度。</td><td>路径对时间的导数。</td></tr><tr><td>\(v_\theta(x_t,t,c)\)</td><td>学习到的 velocity field。</td><td>采样时用于 ODE integration。</td></tr></tbody></table></div>
-<div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：不学习 score，也不学习 Markov transition，而是回归路径上的 velocity field。</p><div class="equation" data-eq="FM-1">\[
+<div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：训练时直接回归路径上的 velocity field，而不是显式训练 score 或 Markov transition。但在 Gaussian probability path 下，最优 velocity 可以由中间分布的 score 和路径系数表示，因此它与 score 是同一概率流的不同坐标表达。</p><div class="equation" data-eq="FM-1">\[
 \partial_t p_t(x)+\nabla\cdot(p_t(x)v_t(x))=0.
 \]<span class="eq-number">(FM-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="FM-2">\[
 x_t=\psi_t(x_0,x_1),\quad x_0\sim p_0,\quad x_1\sim p_{\mathrm{data}}.
-\]<span class="eq-number">(FM-2)</span></div><p>训练时用 endpoints 构造路径状态。</p><p class="derivation-note">使用：conditional probability path。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="FM-3">\[
+\]<span class="eq-number">(FM-2)</span></div><p>训练时用 endpoints 构造路径状态。</p><p class="derivation-note">本步使用 conditional probability path：训练时可以同时拿到 base 样本 \(x_0\) 和数据样本 \(x_1\)，人为定义二者之间的中间状态 \(x_t\)。这条路径提供监督信号，但采样时不会知道真实终点 \(x_1\)。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="FM-3">\[
 u_t=\frac{d}{dt}\psi_t(x_0,x_1),\quad \mathcal{J}_{FM}=\mathbb{E}_{t,x_0,x_1}\left\|v_\theta(x_t,t,c)-u_t\right\|_2^2.
-\]<span class="eq-number">(FM-3)</span></div><p>监督目标是速度回归。</p><p class="derivation-note">使用：least-squares velocity matching。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="FM-4">\[
+\]<span class="eq-number">(FM-3)</span></div><p>监督目标是速度回归。</p><p class="derivation-note">本步使用 least-squares velocity matching：路径对时间求导给出目标速度 \(u_t\)，网络只需在随机时间点回归这个速度。它不是在估计密度值，而是在学习“样本此刻应该往哪里移动”。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="FM-4">\[
 x_t=(1-t)x_0+t x_1,\quad u_t=x_1-x_0.
-\]<span class="eq-number">(FM-4)</span></div><p>Rectified Flow 常用线性路径。</p><p class="derivation-note">使用：linear interpolation。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="FM-5">\[
+\]<span class="eq-number">(FM-4)</span></div><p>Rectified Flow 常用线性路径。</p><p class="derivation-note">本步使用 linear interpolation：若 \(x_t=(1-t)x_0+tx_1\)，路径速度就是常量 \(x_1-x_0\)。这让监督目标非常简单，也解释了 rectified path 为什么追求更直、更少步可积分的轨迹。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="FM-5">\[
 \frac{dx_t}{dt}=v_\theta(x_t,t,c),\quad x_0\sim p_0,\quad t:0\to1.
-\]<span class="eq-number">(FM-5)</span></div><p>采样时没有真实 \(x_1\)，只能沿模型速度场积分。</p><p class="derivation-note">使用：ODE sampling。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="FM-6">\[
+\]<span class="eq-number">(FM-5)</span></div><p>采样时没有真实 \(x_1\)，只能沿模型速度场积分。</p><p class="derivation-note">本步使用 ODE sampling：采样不是 Diffusion 那样的 learned reverse Markov chain，而是从 base distribution 的样本出发，沿 \(dx_t/dt=v_\theta(x_t,t,c)\) 积分到数据时间。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="FM-6">\[
 x_{t+\Delta t}=x_t+\Delta t\,v_\theta(x_t,t,c).
-\]<span class="eq-number">(FM-6)</span></div><p>Euler 是最简单 ODE solver；步数减少会增大轨迹误差。</p><p class="derivation-note">使用：numerical integration。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="flow"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="flow training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><pre class="algorithm"><code data-flow-output="flow"></code></pre></div>
+\]<span class="eq-number">(FM-6)</span></div><p>Euler 是最简单 ODE solver；步数减少会增大轨迹误差。</p><p class="derivation-note">本步使用 numerical integration：连续 ODE 必须离散化执行。Euler 每一步只看当前速度，简单但误差较大；Heun 或 Runge-Kutta 会多次评估速度，用计算量换更准确的轨迹。</p></li></ol></div>
+<details class="advanced-derivation" open><summary>velocity field 与 score 的关系</summary><p>若 probability path 写成 \(x_t=a_tx_{\mathrm{data}}+\sigma_t\epsilon\)，则 score \(s_t(x)=\nabla_x\log p_t(x)\) 已经包含“从当前中间分布往数据高密度区域移动”的信息。Flow Matching 的 marginal velocity 可写成：</p><div class="equation" data-eq="FM-7">\[
+v_t(x)=\frac{\dot{a}_t}{a_t}x+
+\left(\frac{\dot{a}_t}{a_t}\sigma_t^2-\dot{\sigma}_t\sigma_t\right)s_t(x).
+\]<span class="eq-number">(FM-7)</span></div><p>这个公式的含义是：velocity field 与 score 并不矛盾，它们都描述同一条 \(p_0\to p_1\) 概率路径；但 velocity 通常还含有 \(\frac{\dot{a}_t}{a_t}x\) 这样的已知线性漂移项。只有在特定路径和参数化下，去掉已知项后才会退化成 score 的时间尺度重标定。</p></details>
+<div class="algorithm-panel" data-flow-panel="flow"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="flow training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">采样</button></div></div><div class="flow-output" data-flow-output="flow"></div></div>
 <div class="visual-example interactive-lab" data-visual="flow-velocity-lab"><div class="visual-copy"><h3>5. 可视化实验：Flow Velocity Lab</h3><p>调节 t、路径形状和步数，区分 instantaneous velocity 与 MeanFlow average velocity。</p></div><div class="lab-grid" data-lab="flow-velocity"><div class="lab-controls lab-controls-grid"><label>t<input id="flowT" type="range" min="0" max="1" step="0.01" value="0.45"><output id="flowTOut">0.45</output></label><label>path<select id="flowPath"><option value="linear">linear</option><option value="curved">curved</option></select></label><label>velocity<select id="flowVelocityMode"><option value="instant">instantaneous</option><option value="average">average</option></select></label><label>steps<input id="flowSteps" type="range" min="1" max="12" step="1" value="5"><output id="flowStepsOut">5</output></label></div><canvas id="flowLabCanvas" class="lab-canvas" width="900" height="360" aria-label="Flow matching velocity and ODE lab"></canvas><p id="flowLabReadout" class="lab-readout">Euler step shown.</p></div></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>Flow Matching 的 flow 不是 Normalizing Flow 的可逆显式密度。</li>
-<li>MeanFlow average velocity 是 few-step surrogate，不是逐步求瞬时速度。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>速度场回归，采样为 ODE integration。</p></div><div><strong>适用场景</strong><p>高分辨率 latent 生成、少步采样、rectified path。</p></div><div><strong>典型问题</strong><p>路径选择影响训练难度，ODE solver 误差累积，one-step 压缩损失细节。</p></div><div><strong>诊断信号</strong><p>velocity loss、trajectory straightness、步数-质量曲线。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能写出 continuity equation。</li>
-<li>能区分训练时 endpoints 和采样时 ODE。</li>
-<li>能解释 instantaneous velocity 与 average velocity。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>Flow Matching 不是 Normalizing Flow。</strong>它通常不要求可逆网络和 exact likelihood，而是学习连续路径上的 velocity field。</li>
+<li><strong>采样不是反向 Markov 链。</strong>Flow Matching 从 base distribution 沿 ODE 积分到 data distribution；若论文用 \(t=1\to0\) 的约定，本质只是时间命名不同。</li>
+<li><strong>velocity 不总是 score 的常数倍。</strong>在 Gaussian path 下它可以写成已知漂移项加 score 项；换成 rectified path、OT path 或其他路径时，系数和几何含义都会变化。</li>
+<li><strong>MeanFlow 的 average velocity 不是瞬时速度。</strong>它试图直接预测时间区间上的平均移动量，用来压缩 one-step/few-step 生成。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>Flow Matching 用回归速度场替代反向去噪 transition，采样时解 ODE；路径越直，少步积分越容易。</p></div><div><strong>适用场景</strong><p>高分辨率 latent 生成、少步采样、rectified flow、图像/视频 transformer 生成和需要 deterministic sampler 的场景。</p></div><div><strong>典型问题</strong><p>路径选择会影响速度学习难度；ODE solver 步数少会累积误差；one-step 目标压缩过强时可能损失细节或条件一致性。</p></div><div><strong>诊断信号</strong><p>velocity loss、trajectory straightness、curvature、步数-质量曲线、solver 误差、MeanFlow one-step 与 multi-step 质量差距。</p></div><div><strong>工程判断</strong><p>当想在 diffusion 质量和低步数采样之间折中，Flow Matching 是核心路线；真正部署时要同时调路径、solver 和 latent 表示。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>continuity equation 的含义：</strong>\(\partial_t p_t+\nabla\cdot(p_tv_t)=0\) 描述样本沿速度场移动时，密度如何随时间守恒地变化。</li>
+<li><strong>训练和采样的区别：</strong>训练时可以用 \(x_0,x_1\) 构造路径点和目标速度；采样时没有真实 \(x_1\)，只能从 base 样本沿 \(v_\theta\) 积分。</li>
+<li><strong>ODE sampling 的核心：</strong>\(x_{t+\Delta t}=x_t+\Delta t v_\theta(x_t,t,c)\) 是 Euler 版本，更高阶 solver 用更多速度评估换更小误差。</li>
+<li><strong>score 与 velocity 的统一：</strong>在 Gaussian probability path 下，velocity 可以写成线性漂移项加 score 项；它与 diffusion 的 score 视角相容，但不能简单等同为 score 的常数倍。</li><li><strong>instantaneous 与 average velocity：</strong>前者描述某一时刻的切向速度，后者描述一个时间区间的平均位移，MeanFlow 依赖后者减少步数。</li></ul></div>
 </section>
 
 <section class="chapter" id="energy-based-model" data-part="part2">
 <header class="chapter-header"><h2>Energy-Based Model：能量函数、归一化常数与 Langevin 采样</h2><p class="chapter-summary">EBM 用未归一化能量定义密度，难点在 partition function 和采样。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议先读 Score Matching。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>未归一化密度：</strong>\(\exp(-E_\theta(x))\) 只给相对概率，还不是完整密度。</li><li><strong>partition function：</strong>\(Z_\theta=\int\exp(-E_\theta(x))dx\)，负责把相对概率归一化，但高维积分通常不可算。</li><li><strong>energy：</strong>\(E_\theta(x)\) 越低，样本相对概率越高；训练希望真实样本低能量、负样本高能量。</li><li><strong>score 连接：</strong>\(\nabla_x\log p_\theta(x)=-\nabla_xE_\theta(x)\)，因为 \(Z_\theta\) 对样本 \(x\) 是常数。</li><li><strong>negative sampling：</strong>EBM 训练常需要模型样本或对比负样本，采样质量会直接影响能量景观。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>低能量区域对应高概率，但归一化常数通常不可计算。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(E_\theta(x)\)</td><td>能量函数。</td><td>神经网络输出标量。</td></tr><tr><td>\(Z_\theta\)</td><td>partition function。</td><td>高维积分通常不可解。</td></tr><tr><td>\(\nabla_x\log p_\theta(x)\)</td><td>EBM score。</td><td>等于 \(-\nabla_xE_\theta(x)\)。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：理解未归一化密度为什么自然连接 score 和 Langevin sampling。</p></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="EBM-1">\[
 p_\theta(x)=\frac{\exp(-E_\theta(x))}{Z_\theta},\quad Z_\theta=\int\exp(-E_\theta(x))dx.
-\]<span class="eq-number">(EBM-1)</span></div><p>定义密度容易，归一化和采样困难。</p><p class="derivation-note">使用：Boltzmann form。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="EBM-2">\[
+\]<span class="eq-number">(EBM-1)</span></div><p>定义密度容易，归一化和采样困难。</p><p class="derivation-note">本步使用 Boltzmann form：能量越低，\(\exp(-E_\theta(x))\) 越大，样本概率越高。但要变成真正密度，必须除以所有 \(x\) 上的积分 \(Z_\theta\)，高维场景下这个积分通常不可计算。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="EBM-2">\[
 \nabla_x\log p_\theta(x)=-\nabla_xE_\theta(x).
-\]<span class="eq-number">(EBM-2)</span></div><p>对样本求梯度时 \(Z_\theta\) 消失。</p><p class="derivation-note">使用：归一化常数对 (x) 为常数。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>fit energy contrastively or with score objective
-estimate positive and negative samples
-update energy landscape</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>initialize x from noise
-run Langevin updates using -grad E
-collect low energy samples</code></pre></article></div></div>
+\]<span class="eq-number">(EBM-2)</span></div><p>对样本求梯度时 \(Z_\theta\) 消失。</p><p class="derivation-note">本步利用归一化常数对样本 \(x\) 为常数：\(\nabla_x\log Z_\theta=0\)。因此 EBM 的 score 可以写成 \(-\nabla_xE_\theta(x)\)，这也是它与 score matching 和 Langevin sampling 的连接点。</p></li></ol></div>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>训练伪代码</h4><pre class="algorithm"><code>for each minibatch x_pos:
+  x_neg = sample_negative_examples(E_theta)
+  energy_pos = E_theta(x_pos)
+  energy_neg = E_theta(x_neg)
+  loss = mean(energy_pos) - mean(energy_neg)
+       + regularization
+  update theta
+
+negative examples may come from:
+  replay buffer / Langevin chain / contrastive noise</code></pre><p class="algorithm-note">负样本质量决定模型在哪些区域抬高能量；采样混合差会导致能量景观局部正确。</p></article><article class="flow-card"><h4>Langevin 采样伪代码</h4><pre class="algorithm"><code>x = initial_noise_or_replay_sample
+for k = 0, ..., K - 1:
+  xi ~ Normal(0, I)
+  grad = -grad_x E_theta(x)
+  x = x + eta * grad + sqrt(2 * eta) * xi
+return x</code></pre><p class="algorithm-note">EBM 写出相对密度容易，真正难点在 partition function 与可混合的采样链。</p></article></div></div>
 <div class="visual-example interactive-lab" data-visual="energy-lab"><div class="visual-copy"><h3>5. 可视化实验：Energy Landscape</h3><p>能量越低概率越高，Langevin 轨迹沿低能量区域移动。</p></div><canvas id="ebmCanvas" class="lab-canvas" width="900" height="320" aria-label="Energy landscape and Langevin path"></canvas></div>
 
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>EBM 定义概率形式不代表 likelihood 容易训练。</li>
-<li>EBM 是理解 score-based model 的桥，不必让它抢主线。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>未归一化密度、能量景观、score 关系清晰。</p></div><div><strong>典型问题</strong><p>partition function、负样本采样、mixing 慢。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能写出 EBM 密度。</li>
-<li>能解释 \(Z\) 为什么采样和训练困难。</li>
-<li>能连接 EBM、score 和 Langevin。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>写出 \(p_\theta(x)\) 不等于能训练 likelihood。</strong>EBM 的 \(Z_\theta\) 是全空间积分，高维下通常不可计算。</li>
+<li><strong>负样本不是普通数据增强。</strong>负样本决定模型在哪里抬高能量，采样混合不好会让能量景观只在局部正确。</li>
+<li><strong>EBM 在这里是桥接章节。</strong>它帮助理解 score 和 Langevin，不需要把它误当成当前高分辨率生成主线。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>EBM 用未归一化能量定义相对概率，形式非常通用，并且与 score \(-\nabla_xE\) 关系直接。</p></div><div><strong>适用场景</strong><p>能量景观建模、约束建模、score-based 方法理解、Langevin sampling 和某些需要打分而非显式 decoder 的任务。</p></div><div><strong>典型问题</strong><p>partition function 难算，negative sampling 昂贵，MCMC mixing 慢，训练容易受缓存样本和采样器质量影响。</p></div><div><strong>诊断信号</strong><p>正负样本能量间隔、Langevin 轨迹、mixing 速度、样本多样性、能量是否在数据附近形成合理低谷。</p></div><div><strong>工程判断</strong><p>EBM 适合作为通用建模语言和局部约束模块；若目标是稳定大规模生成，通常会采用 score/diffusion 这类更可训练的变体。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>EBM 密度形式：</strong>\(p_\theta(x)=\exp(-E_\theta(x))/Z_\theta\)，低能量意味着相对高概率。</li>
+<li><strong>\(Z_\theta\) 为什么难：</strong>它需要对所有可能 \(x\) 积分，高维连续空间不可穷举，因此 likelihood 梯度和精确采样都困难。</li>
+<li><strong>与 score 和 Langevin 的连接：</strong>对 \(x\) 求梯度时 \(Z_\theta\) 消失，得到 \(\nabla_x\log p_\theta(x)=-\nabla_xE_\theta(x)\)，可用于 Langevin 更新。</li></ul></div>
 </section>
 
 <section class="chapter" id="post-training" data-part="part3">
 <header class="chapter-header"><h2>后训练：从条件 MLE 到偏好优化</h2><p class="chapter-summary">后训练在 reference model 附近移动条件分布，使输出符合示范、偏好、奖励或安全约束。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>需要理解条件生成分布和 KL。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>policy：</strong>\(\pi_\theta(y|x)\) 是给定 prompt 或条件 \(x\) 时输出 \(y\) 的条件分布；LLM 与多模态生成器都可这样看。</li><li><strong>reference model：</strong>\(\pi_{\mathrm{ref}}\) 是预训练或 SFT 后的基准模型，KL 约束会限制新策略不要漂移太远。</li><li><strong>Bradley-Terry preference：</strong>\(P(y_w\succ y_l|x)=\sigma(r(x,y_w)-r(x,y_l))\)，把成对偏好转成 reward 差。</li><li><strong>policy gradient：</strong>\(\nabla_\theta\mathbb{E}_{y\sim\pi_\theta}R(y)=\mathbb{E}[R(y)\nabla_\theta\log\pi_\theta(y)]\)，用于把 reward 传回采样动作。</li><li><strong>advantage：</strong>\(A=R-\text{baseline}\) 衡量样本相对基线好多少；GRPO 用同 prompt 组内归一化构造 advantage。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>预训练学习基础分布；后训练用示范、偏好或 reward 改变模型在同一条件下更倾向哪些输出。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>\(\pi_\theta(y|x)\)</td><td>可训练 policy。</td><td>LLM 或视觉生成器的条件分布。</td></tr><tr><td>\(\pi_{\mathrm{ref}}(y|x)\)</td><td>reference policy。</td><td>通常为 SFT 或预训练模型。</td></tr><tr><td>\(r_\phi(x,y)\)</td><td>reward model。</td><td>从偏好对训练。</td></tr><tr><td>\(A_i\)</td><td>advantage。</td><td>PPO/GRPO/DDPO 中的相对收益。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>目标：在提升 reward 或 preference win-rate 的同时约束模型不要远离 reference。</p><div class="equation" data-eq="PT-1">\[
@@ -398,54 +510,71 @@ collect low energy samples</code></pre></article></div></div>
 \]<span class="eq-number">(PT-1)</span></div></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="PT-2">\[
 \mathcal{J}_{SFT}=-\sum_t\log \pi_\theta(y_t^*|x,y_{\lt t}^*).
-\]<span class="eq-number">(PT-2)</span></div><p>SFT 是条件最大似然 / imitation learning。</p><p class="derivation-note">使用：conditional MLE。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="PT-3">\[
+\]<span class="eq-number">(PT-2)</span></div><p>SFT 是条件最大似然 / imitation learning。</p><p class="derivation-note">本步使用 conditional MLE：示范回答 \(y^*\) 被视为给定 prompt \(x\) 时的目标样本，训练就是提高这些 token 在 \(\pi_\theta(\cdot|x)\) 下的条件概率。它能教格式和任务行为，但不直接表达两个回答哪个更好。</p></li><li><p class="step-label">Step 2</p><div class="equation" data-eq="PT-3">\[
 P(y_w\succ y_l|x)=\sigma(r_\phi(x,y_w)-r_\phi(x,y_l)).
-\]<span class="eq-number">(PT-3)</span></div><p>Reward Model 用 Bradley-Terry 把 pairwise preference 转成标量 reward。</p><p class="derivation-note">使用：Bradley-Terry model。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="DPO-1">\[
+\]<span class="eq-number">(PT-3)</span></div><p>Reward Model 用 Bradley-Terry 把 pairwise preference 转成标量 reward。</p><p class="derivation-note">本步使用 Bradley-Terry model：人类或模型偏好只告诉我们 \(y_w\) 胜过 \(y_l\)，不是绝对分数。用两个 reward 的差经过 sigmoid 表示胜率，就能把 pairwise preference 转成可训练的概率模型。</p></li><li><p class="step-label">Step 3</p><div class="equation" data-eq="DPO-1">\[
 \pi^*(y|x)=\frac{1}{Z(x)}\pi_{\mathrm{ref}}(y|x)\exp\left(\frac{1}{\beta}r(x,y)\right).
-\]<span class="eq-number">(DPO-1)</span></div><p>KL-regularized RL 有闭式最优策略。</p><p class="derivation-note">使用：拉格朗日最优条件。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="DPO-2">\[
+\]<span class="eq-number">(DPO-1)</span></div><p>KL-regularized RL 有闭式最优策略。</p><p class="derivation-note">本步使用带归一化约束的拉格朗日最优条件：最大化 reward 的同时惩罚偏离 \(\pi_{\mathrm{ref}}\)，最优策略会等于 reference policy 乘上 reward 的指数加权，再由 \(Z(x)\) 归一化。</p></li><li><p class="step-label">Step 4</p><div class="equation" data-eq="DPO-2">\[
 r(x,y)=\beta\log\frac{\pi^*(y|x)}{\pi_{\mathrm{ref}}(y|x)}+\beta\log Z(x).
-\]<span class="eq-number">(DPO-2)</span></div><p>反解 reward；同一 prompt 的 chosen/rejected 比较中 \(\log Z(x)\) 抵消。</p><p class="derivation-note">使用：log-ratio reward parameterization。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="DPO-3">\[
+\]<span class="eq-number">(DPO-2)</span></div><p>反解 reward；同一 prompt 的 chosen/rejected 比较中 \(\log Z(x)\) 抵消。</p><p class="derivation-note">本步使用 log-ratio reward parameterization：由最优策略形式反解 \(r(x,y)\)，reward 可以写成 policy 相对 reference 的 log-ratio 加上 \(\log Z(x)\)。同一个 prompt 内比较 chosen/rejected 时，\(\log Z(x)\) 是同一个常数，会相互抵消。</p></li><li><p class="step-label">Step 5</p><div class="equation" data-eq="DPO-3">\[
 \mathcal{J}_{DPO}=-\log\sigma\left(\beta\left[\log\frac{\pi_\theta(y_w|x)}{\pi_{\mathrm{ref}}(y_w|x)}-\log\frac{\pi_\theta(y_l|x)}{\pi_{\mathrm{ref}}(y_l|x)}\right]\right).
-\]<span class="eq-number">(DPO-3)</span></div><p>DPO 不需要显式 reward model 和在线 rollout，但 KL 约束被吸收到 reference log-ratio。</p><p class="derivation-note">使用：Bradley-Terry + optimal policy substitution。</p></li><li><p class="step-label">Step 6</p><div class="equation" data-eq="PT-4">\[
+\]<span class="eq-number">(DPO-3)</span></div><p>DPO 不需要显式 reward model 和在线 rollout，但 KL 约束被吸收到 reference log-ratio。</p><p class="derivation-note">本步把 Bradley-Terry 偏好概率与最优策略替换结合：用 policy/reference 的 log-ratio margin 直接预测 chosen 胜过 rejected 的概率。DPO 不是没有 KL，而是把 KL 正则化的结构吸收到 reference log-ratio 中。</p></li><li><p class="step-label">Step 6</p><div class="equation" data-eq="PT-4">\[
 A_i=\frac{R_i-\operatorname{mean}(R_1,\ldots,R_G)}{\operatorname{std}(R_1,\ldots,R_G)+\epsilon}.
-\]<span class="eq-number">(PT-4)</span></div><p>GRPO 用同 prompt 组内样本做 baseline，减少 critic 依赖。</p><p class="derivation-note">使用：group-relative normalization。</p></li><li><p class="step-label">Step 7</p><div class="equation" data-eq="PT-5">\[
+\]<span class="eq-number">(PT-4)</span></div><p>GRPO 用同 prompt 组内样本做 baseline，减少 critic 依赖。</p><p class="derivation-note">本步使用 group-relative normalization：同一个 prompt 下生成一组候选，用组内均值和标准差把 reward 转成相对 advantage。这样每个样本的好坏由同组候选作参照，减少对额外 value critic 的依赖。</p></li><li><p class="step-label">Step 7</p><div class="equation" data-eq="PT-5">\[
 \nabla_\theta J\approx\mathbb{E}_\tau\left[R(c,x_0)\sum_t\nabla_\theta\log p_\theta(x_{t-1}|x_t,c)\right].
-\]<span class="eq-number">(PT-5)</span></div><p>DDPO/DPOK 把 diffusion 去噪轨迹当作 policy rollout。</p><p class="derivation-note">使用：policy gradient on trajectory。</p></li></ol></div>
-<div class="algorithm-panel" data-flow-panel="post"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="post training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推断</button></div></div><pre class="algorithm"><code data-flow-output="post"></code></pre></div>
+\]<span class="eq-number">(PT-5)</span></div><p>DDPO/DPOK 把 diffusion 去噪轨迹当作 policy rollout。</p><p class="derivation-note">本步使用 trajectory policy gradient：图像或视频的最终 reward 只在完整样本上评估，但动作分布分布在多步去噪 transition 中。把整条轨迹的 log-prob 求和后乘以最终 reward，就能把终局信号回传到每一步采样决策。</p></li></ol></div>
+<div class="algorithm-panel" data-flow-panel="post"><div class="panel-title"><h3>4. 训练过程与采样过程</h3><div class="segmented" role="tablist" aria-label="post training or sampling"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推断</button></div></div><div class="flow-output" data-flow-output="post"></div></div>
 <div class="visual-example interactive-lab" data-visual="post-training-lab"><div class="visual-copy"><h3>5. 可视化实验：Post-training Lab</h3><p>调节 DPO margin、GRPO reward 组和 PPO KL drift，观察 reward gain 与 KL penalty。</p></div><div class="lab-grid" data-lab="post-training"><div class="lab-controls lab-controls-grid"><label>DPO margin<input id="postDpoMargin" type="range" min="-4" max="4" step="0.1" value="1.2"><output id="postDpoMarginOut">1.2</output></label><label>beta<input id="postBeta" type="range" min="0.1" max="3" step="0.1" value="0.8"><output id="postBetaOut">0.8</output></label><label>PPO KL drift<input id="postKlDrift" type="range" min="0" max="1" step="0.02" value="0.35"><output id="postKlDriftOut">0.35</output></label><label>GRPO rewards<input id="postRewards" type="text" value="0.2,0.8,1.4,0.6"></label></div><div id="postBars" class="lab-bars" aria-label="Post-training DPO PPO GRPO bars"></div><p id="postLabReadout" class="lab-readout">DPO loss = 0</p><p id="postLabExplanation" class="lab-explanation">DPO 不是没有 KL；reference log-ratio 保留了 KL 正则化结构。</p></div></div>
-<details class="advanced-derivation"><summary>展开后训练与后处理边界</summary><p>后训练改变模型参数和 \(p_\theta(x|c)\)；后处理只筛选、修复或重排已生成样本。best-of-N 是后处理；DPO/PPO/GRPO/DDPO 是后训练。</p></details>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>DPO 不是完全没有 KL。</li>
-<li>PPO clipping 不是目标本身；目标是 KL-regularized reward maximization。</li>
-<li>Diffusion/Flow 后训练不能机械套用 token-level log-prob ratio。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>在 reference 附近移动条件分布。</p></div><div><strong>适用场景</strong><p>指令遵循、安全对齐、推理 reward、视觉审美和文本一致性。</p></div><div><strong>典型问题</strong><p>reward hacking、KL drift、偏好噪声、长度偏置、trajectory credit assignment。</p></div><div><strong>诊断信号</strong><p>win-rate、KL、reward-human correlation、拒答率、生成长度、视频/图像泛化。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能解释 SFT/RM/PPO/DPO/GRPO 的关系。</li>
-<li>能推导 DPO log-ratio loss。</li>
-<li>能区分后训练和后处理。</li></ul></div>
+<details class="advanced-derivation"><summary>展开后训练与后处理边界</summary><p>post-processing 发生在样本已经生成之后：筛选、重排、规则修补、best-of-N 或安全过滤都只改变当前输出，不更新模型参数，因此下一次从同一 prompt 采样时，基础 \(p_\theta(x|c)\) 没有被移动。post-training 会把示范、偏好或 reward 写进参数更新，使同一个条件下更高概率生成被偏好的输出；SFT、PPO、DPO、GRPO、DDPO 和 Flow-DPO 都属于这种条件分布移动。</p></details>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>DPO 不是完全没有 KL。</strong>它不显式训练 reward model、不做在线 PPO rollout，但 reference log-ratio 保留了 KL-regularized RL 的结构。</li>
+<li><strong>PPO clipping 不是后训练目标本身。</strong>真正目标是提高 reward 并限制偏离 reference；clipping 只是降低策略梯度更新过猛的一种估计器设计。</li>
+<li><strong>视觉生成后训练不能机械照搬 token DPO。</strong>Diffusion 和 Flow 的 action 分布在多步轨迹中，最终 reward 如何分配到每一步存在 credit assignment 问题。</li>
+<li><strong>后处理不能替代后训练。</strong>best-of-N 能提高当前批次样本质量，但不会让模型下次自然更倾向好样本。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>后训练不重新定义生成任务，而是在 reference model 附近移动 \(\pi_\theta(y|x)\)，让输出更符合示范、偏好、奖励或安全约束。</p></div><div><strong>适用场景</strong><p>LLM 指令遵循、安全对齐、数学/代码 verifier、视觉审美、图文一致性、视频运动质量和多模态偏好对齐。</p></div><div><strong>典型问题</strong><p>reward hacking、KL drift、偏好噪声、长度偏置、拒答率异常、能力回退，以及 diffusion/flow 轨迹 credit assignment。</p></div><div><strong>诊断信号</strong><p>win-rate、KL to reference、reward-human correlation、长度分布、拒答率、helpfulness/safety 分项、多模态一致性和 out-of-distribution 泛化。</p></div><div><strong>工程判断</strong><p>若只有示范数据，SFT 是第一步；若有偏好对，DPO/IPO/SimPO 类方法更直接；若 reward 来自在线 rollout 或最终视觉评分，PPO/GRPO/DDPO 更自然但审计成本更高。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>SFT/RM/PPO/DPO/GRPO 的关系：</strong>SFT 做条件 MLE，RM 把偏好转 reward，PPO 优化 KL 正则化 reward，DPO 把该目标改写成 reference log-ratio 偏好分类，GRPO 用组内相对 advantage 减少 critic 依赖。</li>
+<li><strong>DPO loss 的核心：</strong>chosen 与 rejected 的差异不是原始 log-prob，而是相对 reference 的 log-ratio margin；这就是 KL 正则化结构被吸收后的形式。</li>
+<li><strong>后训练和后处理的边界：</strong>后训练更新参数并改变未来条件分布，后处理只对已生成样本做筛选或修补，不改变模型本身。</li>
+<li><strong>视觉后训练为什么更难：</strong>最终 reward 往往只评价完整图像/视频，但模型决策分布在去噪或 ODE 轨迹中，需要解决多步 credit assignment。</li></ul></div>
 </section>
 
 <section class="chapter" id="unified-summary" data-part="part4">
 <header class="chapter-header"><h2>统一视角：生成模型的可计算接口比较</h2><p class="chapter-summary">把 likelihood、adversarial、score、velocity 和 preference optimization 放回同一张地图。</p></header>
-<div class="prereq-card"><strong>前置知识</strong><p>建议读完整篇推导后回到本章。</p></div>
+<div class="prereq-card"><strong>前置知识</strong><ul class="prereq-list"><li><strong>可计算接口：</strong>读新方法时先判断它能计算 likelihood、ELBO、density ratio、score、velocity、trajectory log-prob 还是 preference loss。</li><li><strong>训练目标：</strong>目标函数来自可计算接口；不要先背方法名，再反推公式。</li><li><strong>采样机制：</strong>AR 逐 token，VAE/VQ decode latent，GAN 一次前向，Diffusion 反向去噪，Flow Matching 解 ODE，后训练沿用基础 sampler。</li><li><strong>失败模式：</strong>每类接口都有对应风险，例如 mode collapse、posterior collapse、score error、ODE error、reward hacking 和 KL drift。</li></ul></div>
 <div class="intuition-section"><h3>0. 一句话直觉</h3><p>生成模型的发展可以理解为不断寻找更适合数据形态的可计算接口。</p></div>
 <div class="notation-box"><h3>1. 数学设定与符号</h3><table><thead><tr><th>符号</th><th>含义</th><th>来源 / 是否可计算</th></tr></thead><tbody><tr><td>显式密度</td><td>能直接或近似计算 \(p_\theta(x)\)。</td><td>AR、Normalizing Flow、VAE ELBO。</td></tr><tr><td>隐式密度</td><td>能采样但不直接算密度。</td><td>GAN、Diffusion、Flow Matching。</td></tr><tr><td>分布移动</td><td>在已有模型附近优化偏好或 reward。</td><td>SFT、PPO、DPO、GRPO、DDPO。</td></tr></tbody></table></div>
 <div class="derivation-section"><h3>2. 训练目标从哪里来</h3><p>所有方法都在处理同一对象：让模型分布、采样过程或 policy 更接近目标数据/偏好分布；差异来自使用 likelihood、ELBO、density ratio、score、velocity 或 preference signal 作为可计算训练接口。</p></div>
 <div class="derivation-section step-derivation"><h3>3. 完整推导</h3><ol class="derivation-steps"><li><p class="step-label">Step 1</p><div class="equation" data-eq="SUM-1">\[
 \text{interface}\Rightarrow\text{objective}\Rightarrow\text{training algorithm}\Rightarrow\text{sampling rule}\Rightarrow\text{failure modes}.
-\]<span class="eq-number">(SUM-1)</span></div><p>读任何新生成模型时，先定位它改变了哪一个接口。</p><p class="derivation-note">使用：统一抽象。</p></li></ol></div>
-<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="algorithm-grid"><article><h4>训练</h4><pre class="algorithm"><code>identify computable interface
-write objective and assumptions
-derive loss and estimator
-define diagnostics</code></pre></article><article><h4>采样 / 推断</h4><pre class="algorithm"><code>choose sampling source
-follow sampler or policy
-measure quality, diversity, speed, alignment</code></pre></article></div></div>
-<div class="summary-matrix"><table><thead><tr><th>接口</th><th>代表方法</th><th>训练复杂度</th><th>采样复杂度</th><th>常见失败</th></tr></thead><tbody><tr><td>likelihood</td><td>AR / Flow</td><td>稳定</td><td>AR 慢 / Flow 快</td><td>perception mismatch</td></tr><tr><td>ELBO</td><td>VAE / DDPM</td><td>需要 surrogate</td><td>VAE 快 / DDPM 慢</td><td>posterior gap / 多步采样</td></tr><tr><td>adversarial</td><td>GAN</td><td>不稳定</td><td>快</td><td>mode collapse</td></tr><tr><td>score / velocity</td><td>Diffusion / Flow Matching</td><td>稳定但重</td><td>多步或 ODE</td><td>step-quality trade-off</td></tr><tr><td>preference</td><td>DPO / PPO / GRPO</td><td>依赖数据和 reward</td><td>沿用基础模型</td><td>reward hacking / KL drift</td></tr></tbody></table></div>
+\]<span class="eq-number">(SUM-1)</span></div><p>读任何新生成模型时，先定位它改变了哪一个接口。</p><p class="derivation-note">本步使用统一抽象：每个方法都可以被拆成可计算接口、目标函数、估计器、采样规则和失败模式。这样读新论文时不用先背名称，而是判断它在这条链上替换了哪一环。</p></li></ol></div>
+<div class="algorithm-panel"><div class="panel-title"><h3>4. 训练过程与采样过程</h3></div><div class="flow-card-grid"><article class="flow-card"><h4>方法分析伪代码</h4><pre class="algorithm"><code>for a new generative method:
+  identify observable data:
+    samples / tokens / latents / noisy pairs / paths / preferences
+  identify computable interface:
+    log_prob / bound / discriminator / score / velocity / reward
+  derive objective from that interface
+  identify estimator:
+    exact sum / Monte Carlo / rollout / pairwise comparison
+  choose diagnostics matched to the objective</code></pre><p class="algorithm-note">不要先套方法名；先判断它到底改变了哪一个可计算接口。</p></article><article class="flow-card"><h4>采样规则定位伪代码</h4><pre class="algorithm"><code>if autoregressive:
+  sample token by token
+elif latent autoencoder:
+  sample latent or code then decode
+elif diffusion:
+  start from x_T and reverse denoise
+elif flow matching:
+  start from p_0 and integrate ODE
+elif post-training:
+  use the base sampler with updated parameters
+
+compare speed, quality, diversity, alignment</code></pre><p class="algorithm-note">训练接口决定模型学什么，采样规则决定生成如何发生；两者必须同时检查。</p></article></div></div>
+<div class="summary-matrix"><table><thead><tr><th>接口</th><th>代表方法</th><th>训练复杂度</th><th>采样复杂度</th><th>常见失败</th></tr></thead><tbody><tr><td>likelihood</td><td>AR / Flow</td><td>稳定</td><td>AR 慢 / Flow 快</td><td>perception mismatch</td></tr><tr><td>ELBO</td><td>VAE / DDPM</td><td>需要 surrogate</td><td>VAE 快 / DDPM 慢</td><td>posterior gap / 多步采样</td></tr><tr><td>adversarial</td><td>GAN</td><td>不稳定</td><td>快</td><td>mode collapse</td></tr><tr><td>score / velocity</td><td>Diffusion / Flow Matching</td><td>稳定但重</td><td>多步或 ODE</td><td>score 尺度 / ODE 轨迹误差</td></tr><tr><td>preference</td><td>DPO / PPO / GRPO</td><td>依赖数据和 reward</td><td>沿用基础模型</td><td>reward hacking / KL drift</td></tr></tbody></table></div>
 <div class="visual-example interactive-lab" ><div class="visual-copy"><h3>5. 可视化实验：方法地图</h3><p>从可计算接口看训练和采样的分工。</p></div><div class="diagram-flow overview-diagram"><div class="flow-node">likelihood</div><div class="flow-arrow">or</div><div class="flow-node">score / velocity</div><div class="flow-arrow">then</div><div class="flow-node">preference alignment</div></div></div>
-<div class="misconception-card"><h3>6. 常见误解</h3><ul><li>没有单一目标同时支配所有生成模型。</li>
-<li>高 likelihood 不必然高感知质量，高 reward 不必然真实对齐。</li></ul></div>
-<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>用可计算接口组织所有生成模型。</p></div><div><strong>实践建议</strong><p>先问 density、trajectory、reward 哪个对象可用。</p></div></div></div>
-<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li>能把任一新方法归入可计算接口。</li>
-<li>能从训练目标推断采样机制。</li>
-<li>能从失败模式选择诊断指标。</li></ul></div>
+<div class="misconception-card"><h3>6. 常见误解</h3><ul><li><strong>没有单一目标能无损支配所有生成模型。</strong>likelihood、ELBO、adversarial distance、score、velocity 和 reward 各自解决可计算性问题，也各自引入偏差。</li>
+<li><strong>单指标不会自动代表真实质量。</strong>高 likelihood 不必然高感知质量，高 FID 不必然可控，高 reward 不必然真实对齐，高速度也可能牺牲多样性。</li>
+<li><strong>新方法名通常不如接口重要。</strong>先看它学的是密度、latent、score、velocity、trajectory 还是 preference，再判断训练和采样。</li></ul></div>
+<div class="judgement-card"><h3>7. 特点、问题与诊断信号</h3><div class="judgement-grid"><div><strong>核心特点</strong><p>统一视角不是把所有方法化成同一个公式，而是把它们放在“可计算接口 → 目标函数 → 估计器 → 采样器 → 失败模式”的链条中比较。</p></div><div><strong>适用场景</strong><p>阅读新论文、设计生成系统、排查质量问题或选择后训练策略时，都可以先定位接口和采样机制。</p></div><div><strong>典型问题</strong><p>若只看方法名，很容易混淆 Normalizing Flow 与 Flow Matching、DDPM 训练与 DDIM 采样、DPO 的离线偏好优化与 PPO 的在线 rollout。</p></div><div><strong>诊断信号</strong><p>density 路线看 NLL，latent 路线看重构/压缩，score/velocity 路线看轨迹误差与步数质量，preference 路线看 reward、KL 和人工相关性。</p></div><div><strong>工程判断</strong><p>模型选型应从约束反推：需要离散序列用 AR，需要 exact density 用 Flow，需要高保真连续生成用 Diffusion/Flow Matching，需要偏好移动用后训练。</p></div></div></div>
+<div class="chapter-checkpoints"><h3>8. 读完本章你应该理解</h3><ul><li><strong>如何归类新方法：</strong>先找它的可计算对象；若是 likelihood 属于显式密度，若是 score/velocity 属于连续生成轨迹，若是 preference/reward 属于后训练分布移动。</li>
+<li><strong>如何从目标推断采样：</strong>AR 的目标给出逐 token sampler，Diffusion 的噪声目标给出反向去噪，Flow Matching 的速度目标给出 ODE integration；从 score 视角看，噪声预测是 score 的尺度重标定，velocity 是概率路径上的漂移加 score 项。</li>
+<li><strong>如何选择诊断指标：</strong>失败模式决定指标；mode collapse 看 coverage，posterior collapse 看 KL/active units，schedule 问题看分时间步误差，reward hacking 看 reward-human correlation 和 KL drift。</li></ul></div>
 </section>
   </main>
   <footer class="page-footer"><a href="/">返回主页</a><a href="/foundations/">返回 Foundations</a></footer>

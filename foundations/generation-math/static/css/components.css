@@ -113,8 +113,7 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
 .chapter-checkpoints,
 .judgement-card,
 .advanced-derivation,
-.summary-matrix,
-.roadmap-grid article {
+.summary-matrix {
   margin-top: 1rem;
   padding: 1rem;
   border: 1px solid var(--line);
@@ -124,10 +123,33 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
 
 .prereq-card strong {
   display: block;
+  margin-bottom: 0.68rem;
   color: var(--accent-deep);
   font-family: var(--mono);
   font-size: 0.8rem;
   text-transform: uppercase;
+}
+
+.prereq-list {
+  display: grid;
+  gap: 0.58rem;
+  margin: 0;
+  padding-left: 1.05rem;
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.prereq-list li {
+  padding-left: 0.12rem;
+}
+
+.prereq-list strong {
+  display: inline;
+  margin: 0;
+  color: var(--accent-deep);
+  font-family: var(--sans);
+  font-size: inherit;
+  text-transform: none;
 }
 
 .prereq-card a {
@@ -233,6 +255,113 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
   min-width: 0;
 }
 
+.flow-output,
+.flow-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.flow-output {
+  margin-top: 0.2rem;
+}
+
+.flow-card {
+  min-width: 0;
+  padding: 0.92rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.flow-output .flow-card:only-child {
+  grid-column: 1 / -1;
+}
+
+html[data-theme="dark"] .flow-card {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.flow-card h4 {
+  margin: 0 0 0.5rem;
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.flow-card p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.flow-card .algorithm {
+  margin: 0.45rem 0 0;
+  padding: 0.75rem;
+  max-height: 24rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  background: var(--code);
+  color: var(--ink);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.flow-card .algorithm code {
+  padding: 0;
+  color: var(--ink);
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre;
+}
+
+.algorithm-note {
+  margin-top: 0.55rem !important;
+  color: var(--muted) !important;
+  font-size: 0.88rem !important;
+  line-height: 1.6 !important;
+}
+
+.mini-derivation {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  line-height: 1.7;
+}
+
+.mini-derivation li::marker {
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.flow-card ol {
+  display: grid;
+  gap: 0.64rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow-card li {
+  display: grid;
+  gap: 0.16rem;
+}
+
+.flow-card li strong {
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+}
+
+.flow-card li span {
+  color: var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.66;
+}
+
 .advanced-derivation summary {
   color: var(--accent-deep);
   font-weight: 850;
@@ -260,11 +389,20 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
   color: var(--accent-deep);
 }
 
-.roadmap-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+.misconception-card li,
+.chapter-checkpoints li {
+  margin-top: 0.55rem;
+  line-height: 1.72;
+}
+
+.misconception-card li:first-child,
+.chapter-checkpoints li:first-child {
+  margin-top: 0;
+}
+
+.misconception-card li strong,
+.chapter-checkpoints li strong {
+  color: var(--accent-deep);
 }
 
 .interface-table {
@@ -357,9 +495,10 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
     width: min(100% - 1rem, 980px);
   }
 
-  .roadmap-grid,
   .judgement-grid,
-  .algorithm-grid {
+  .algorithm-grid,
+  .flow-output,
+  .flow-card-grid {
     grid-template-columns: 1fr;
   }
 
