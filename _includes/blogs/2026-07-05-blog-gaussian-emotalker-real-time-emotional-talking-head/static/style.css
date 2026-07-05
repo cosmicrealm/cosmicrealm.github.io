@@ -1,0 +1,243 @@
+.gaussian-read {
+  --gt-ink: #202124;
+  --gt-muted: #606b76;
+  --gt-line: #d9e1e8;
+  --gt-soft: #f6f8fa;
+  --gt-accent: #1f6f6d;
+  --gt-accent-soft: #edf7f5;
+  --gt-table-head: #eef5f3;
+  color: var(--gt-ink);
+  font-size: 1rem;
+  line-height: 1.78;
+  margin: 0 auto;
+  max-width: 900px;
+  position: relative;
+}
+
+.gaussian-read * {
+  box-sizing: border-box;
+}
+
+.gaussian-read a {
+  color: var(--gt-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.gaussian-read .gt-hero {
+  border-bottom: 1px solid var(--gt-line);
+  margin-bottom: 2.2rem;
+  padding: 1.15rem 0 1.7rem;
+}
+
+.gaussian-read .gt-eyebrow {
+  color: var(--gt-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+.gaussian-read h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.12;
+  margin: 0 0 1rem;
+}
+
+.gaussian-read .gt-hero p,
+.gaussian-read .gt-meta {
+  color: var(--gt-muted);
+  font-size: 1.04rem;
+  margin: 0.45rem 0 0;
+  max-width: 58rem;
+}
+
+.gaussian-read .gt-main {
+  max-width: 900px;
+}
+
+.gaussian-read .gt-side-toc {
+  display: none;
+}
+
+.gaussian-read h2 {
+  border-top: 1px solid var(--gt-line);
+  font-size: 1.55rem;
+  line-height: 1.25;
+  margin: 3rem 0 1rem;
+  padding-top: 1.35rem;
+}
+
+.gaussian-read h3 {
+  font-size: 1.12rem;
+  line-height: 1.35;
+  margin: 1.5rem 0 0.55rem;
+}
+
+.gaussian-read p {
+  margin: 0.9rem 0;
+}
+
+.gaussian-read strong {
+  font-weight: 700;
+}
+
+.gaussian-read code {
+  background: var(--gt-soft);
+  border: 1px solid var(--gt-line);
+  border-radius: 4px;
+  font-size: 0.88em;
+  padding: 0.05rem 0.22rem;
+}
+
+.gaussian-read figure {
+  margin: 1.75rem 0;
+}
+
+.gaussian-read .gt-figure-wide {
+  max-width: 100%;
+  width: 100%;
+}
+
+.gaussian-read figure img {
+  background: #fff;
+  border: 1px solid var(--gt-line);
+  border-radius: 8px;
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+.gaussian-read figcaption {
+  color: var(--gt-muted);
+  font-size: 0.92rem;
+  line-height: 1.62;
+  margin: 0.55rem auto 0;
+  max-width: 900px;
+}
+
+.gaussian-read .gt-formula {
+  background: #fbfcfe;
+  border: 1px solid var(--gt-line);
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+  padding: 0.8rem 1rem;
+}
+
+.gaussian-read .gt-note {
+  background: var(--gt-accent-soft);
+  border: 1px solid #cfe8e4;
+  border-radius: 8px;
+  margin: 1.2rem 0;
+  padding: 0.85rem 1rem;
+}
+
+.gaussian-read .gt-concept {
+  border-top: 1px solid var(--gt-line);
+  margin-top: 1.35rem;
+  padding-top: 0.2rem;
+}
+
+.gaussian-read .gt-concept:first-of-type {
+  border-top: 0;
+}
+
+.gaussian-read .gt-reference {
+  color: var(--gt-muted);
+  font-size: 0.92rem;
+  margin-top: 0.35rem;
+}
+
+.gaussian-read .gt-table-wrap {
+  border: 1px solid var(--gt-line);
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+}
+
+.gaussian-read table {
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  margin: 0;
+  min-width: 780px;
+  width: 100%;
+}
+
+.gaussian-read th,
+.gaussian-read td {
+  border-bottom: 1px solid var(--gt-line);
+  padding: 0.64rem 0.72rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.gaussian-read th {
+  background: var(--gt-table-head);
+  font-weight: 700;
+}
+
+.gaussian-read tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (min-width: 1440px) {
+  .gaussian-read .gt-side-toc {
+    background: rgba(255, 255, 255, 0.94);
+    border-left: 2px solid var(--gt-line);
+    display: block;
+    padding: 0.15rem 0 0.15rem 1rem;
+    position: fixed;
+    right: 1.25rem;
+    top: 6.2rem;
+    width: 176px;
+    z-index: 2;
+  }
+
+  .gaussian-read .gt-side-toc h2 {
+    border: 0;
+    color: var(--gt-ink);
+    font-size: 0.92rem;
+    margin: 0 0 0.55rem;
+    padding: 0;
+  }
+
+  .gaussian-read .gt-side-toc a {
+    color: var(--gt-accent);
+    display: block;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    margin: 0.48rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .gaussian-read {
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .gaussian-read h1 {
+    font-size: 2rem;
+  }
+
+  .gaussian-read h2 {
+    font-size: 1.35rem;
+    margin-top: 2.35rem;
+  }
+
+  .gaussian-read figcaption {
+    font-size: 0.88rem;
+  }
+
+  .gaussian-read .gt-formula {
+    padding: 0.7rem 0.8rem;
+  }
+
+  .gaussian-read table {
+    min-width: 700px;
+  }
+}

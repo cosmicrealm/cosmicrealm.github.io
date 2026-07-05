@@ -1,0 +1,246 @@
+.float-read {
+  --fl-ink: #202124;
+  --fl-muted: #606b76;
+  --fl-line: #d9e1e8;
+  --fl-soft: #f6f8fa;
+  --fl-accent: #1d5f8a;
+  --fl-accent-soft: #eef6fb;
+  --fl-table-head: #edf4f8;
+  color: var(--fl-ink);
+  font-size: 1rem;
+  line-height: 1.78;
+  margin: 0 auto;
+  max-width: 900px;
+  position: relative;
+}
+
+.float-read * {
+  box-sizing: border-box;
+}
+
+.float-read a {
+  color: var(--fl-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.float-read .fl-hero {
+  border-bottom: 1px solid var(--fl-line);
+  margin-bottom: 2.2rem;
+  padding: 1.15rem 0 1.7rem;
+}
+
+.float-read .fl-eyebrow {
+  color: var(--fl-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+.float-read h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.12;
+  margin: 0 0 1rem;
+}
+
+.float-read .fl-hero p,
+.float-read .fl-meta {
+  color: var(--fl-muted);
+  font-size: 1.04rem;
+  margin: 0.45rem 0 0;
+  max-width: 58rem;
+}
+
+.float-read .fl-main {
+  max-width: 900px;
+}
+
+.float-read .fl-side-toc {
+  display: none;
+}
+
+.float-read h2 {
+  border-top: 1px solid var(--fl-line);
+  font-size: 1.55rem;
+  line-height: 1.25;
+  margin: 3rem 0 1rem;
+  padding-top: 1.35rem;
+}
+
+.float-read h3 {
+  font-size: 1.12rem;
+  line-height: 1.35;
+  margin: 1.5rem 0 0.55rem;
+}
+
+.float-read p {
+  margin: 0.9rem 0;
+}
+
+.float-read strong {
+  font-weight: 700;
+}
+
+.float-read code {
+  background: var(--fl-soft);
+  border: 1px solid var(--fl-line);
+  border-radius: 4px;
+  font-size: 0.88em;
+  padding: 0.05rem 0.22rem;
+}
+
+.float-read figure {
+  margin: 1.75rem 0;
+}
+
+.float-read .fl-figure-wide {
+  max-width: 100%;
+  width: 100%;
+}
+
+.float-read .fl-scroll-figure {
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+
+.float-read figure img {
+  background: #fff;
+  border: 1px solid var(--fl-line);
+  border-radius: 8px;
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+.float-read figcaption {
+  color: var(--fl-muted);
+  font-size: 0.92rem;
+  line-height: 1.62;
+  margin: 0.55rem auto 0;
+  max-width: 900px;
+}
+
+.float-read .fl-formula {
+  background: #fbfcfe;
+  border: 1px solid var(--fl-line);
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+  padding: 0.8rem 1rem;
+}
+
+.float-read .fl-table-wrap {
+  border: 1px solid var(--fl-line);
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+}
+
+.float-read table {
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  margin: 0;
+  min-width: 780px;
+  width: 100%;
+}
+
+.float-read th,
+.float-read td {
+  border-bottom: 1px solid var(--fl-line);
+  padding: 0.64rem 0.72rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.float-read th {
+  background: var(--fl-table-head);
+  font-weight: 700;
+}
+
+.float-read tr:last-child td {
+  border-bottom: 0;
+}
+
+.float-read .fl-concept {
+  border-top: 1px solid var(--fl-line);
+  margin-top: 1.35rem;
+  padding-top: 0.2rem;
+}
+
+.float-read .fl-concept:first-of-type {
+  border-top: 0;
+}
+
+.float-read .fl-reference {
+  color: var(--fl-muted);
+  font-size: 0.92rem;
+  margin-top: 0.35rem;
+}
+
+@media (min-width: 1440px) {
+  .float-read .fl-side-toc {
+    background: rgba(255, 255, 255, 0.94);
+    border-left: 2px solid var(--fl-line);
+    display: block;
+    padding: 0.15rem 0 0.15rem 1rem;
+    position: fixed;
+    right: 1.25rem;
+    top: 6.2rem;
+    width: 176px;
+    z-index: 2;
+  }
+
+  .float-read .fl-side-toc h2 {
+    border: 0;
+    color: var(--fl-ink);
+    font-size: 0.92rem;
+    margin: 0 0 0.55rem;
+    padding: 0;
+  }
+
+  .float-read .fl-side-toc a {
+    color: var(--fl-accent);
+    display: block;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    margin: 0.48rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .float-read {
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .float-read h1 {
+    font-size: 2rem;
+  }
+
+  .float-read h2 {
+    font-size: 1.35rem;
+    margin-top: 2.35rem;
+  }
+
+  .float-read figcaption {
+    font-size: 0.88rem;
+  }
+
+  .float-read .fl-scroll-figure img {
+    max-width: none;
+    min-width: 720px;
+    width: 720px;
+  }
+
+  .float-read .fl-formula {
+    padding: 0.7rem 0.8rem;
+  }
+
+  .float-read table {
+    min-width: 700px;
+  }
+}

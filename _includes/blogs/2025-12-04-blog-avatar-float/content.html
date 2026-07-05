@@ -1,0 +1,210 @@
+<article class="float-read">
+  <section class="fl-hero" id="top">
+    <div class="fl-eyebrow">Paper close reading · FLOAT</div>
+    <h1>FLOAT 深读：为什么 talking portrait 应该先生成 motion latent</h1>
+    <p>FLOAT 处理的是 single image + driving audio 到 talking portrait video 的问题。它没有直接在 pixel video 或 Stable Diffusion latent 里生成每一帧，而是先学一个能分离身份和动作的 motion latent space，再用 Flow Matching 生成这段 motion latent trajectory。</p>
+    <p class="fl-meta">阅读依据：arXiv v5 TeX source / PDF、ICCV 2025 CVF Open Access 页面、项目页、GitHub README 和相关一手资料。GitHub 当前公开的是推理代码与 checkpoint 下载方式，README 明确说明 training code will not be released；许可证为 CC BY-NC-ND 4.0。检索日期：2026-07-05。</p>
+  </section>
+
+  <aside class="fl-side-toc" aria-label="FLOAT reading route">
+    <h2>阅读路线</h2>
+    <a href="#opening">开篇导读</a>
+    <a href="#abstract">Abstract</a>
+    <a href="#intro">Introduction</a>
+    <a href="#related">Related Work</a>
+    <a href="#prelim">Preliminaries</a>
+    <a href="#method">Method</a>
+    <a href="#experiments">Experiments</a>
+    <a href="#limits">Limits</a>
+    <a href="#concepts">概念补充</a>
+    <a href="#summary">总结</a>
+  </aside>
+
+  <main class="fl-main">
+    <section id="opening">
+      <h2>开篇导读</h2>
+      <p>FLOAT 最核心的判断是：audio-driven talking portrait 里真正需要生成的不是完整画面，而是一条“人应该怎么动”的轨迹。外观、身份、脸部纹理和背景可以由 source image 提供；生成模型更应该把容量花在嘴型、头动、眼睛、眉毛和表情节奏上。这个判断让论文从一开始就避开了许多 diffusion video 方法的负担。</p>
+      <p>如果把任务放在 pixel video 或图像 VAE latent 里，模型会同时承担外观重建和运动生成。FLOAT 先训练 motion latent auto-encoder，把 identity latent 和 motion latent 拆开；后续 Flow Matching 只在 motion latent sequence 上做采样。这个空间小、语义更贴近动作，而且有 orthonormal basis，可以在测试时用 $\lambda$ 系数编辑头部方向。</p>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-teaser-emotion.png" alt="FLOAT teaser with source image, emotional audio and generated talking portrait videos">
+        <figcaption>teaser 要看输入和输出的关系：单张 source image 提供身份，audio 提供说话内容，Speech2Emotion 给出情绪条件，右侧结果展示嘴型之外的表情和头动。容易误读的是情绪控制，FLOAT 不是理解复杂心理状态，而是使用七类 speech-driven emotion label 增强动作。</figcaption>
+      </figure>
+      <p>这篇论文的价值在于表示空间选择。它不是把更大的 diffusion backbone 堆到 talking head 上，而是把任务拆成“身份重建”和“动作生成”。这让它在速度上接近实时，也让 ablation 能比较清楚地回答：motion latent、Flow Matching、frame-wise conditioning 和 speech emotion 各自解决了什么。</p>
+    </section>
+
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p>摘要把矛盾放在 diffusion portrait animation 的两个短板上：视频时序一致性和快速采样。diffusion-based 方法能生成高质量图像，但从噪声逐步反推视频通常要很多采样步；一旦每帧都要经过复杂生成器，几秒视频就可能变成分钟级推理。FLOAT 的问题意识是，talking portrait 不能只看单帧画质，还要看连续动作和推理延迟。</p>
+      <p>论文提出的方法是 flow matching based talking portrait generation。Flow Matching 不是像传统 diffusion 那样一步步预测噪声，而是学习一个把先验分布推到目标分布的 vector field，再通过 ODE solver 积分得到样本。对于 FLOAT，这个样本不是图像，而是一段 motion latent sequence。</p>
+      <p>摘要强调的 learned orthogonal motion latent space 是整篇文章的支点。它让模型把身份和动作拆开：identity latent 保存“这个人是谁”，motion latent 保存“这一帧怎么动”。orthogonal 结构则进一步带来可编辑性，因为 motion latent 可以投影到一组正交方向上，修改某个方向的系数通常更容易保持其它动作不乱。</p>
+      <p>transformer-based vector field predictor 负责在每个 flow time 上预测 motion latent 应该往哪里移动。论文特别说它有 frame-wise conditioning，因为 audio 条件天然是逐帧对齐的：嘴型和局部表情受附近音素影响，不能只用一个全局音频向量控制整段视频。</p>
+      <p>speech-driven emotion enhancement 是摘要最后的补充能力。它让音频里的情绪预测结果参与 motion sampling，使生成的人不只是嘴动，还能有情绪相关的头动和表情变化。这个 claim 后文主要通过 RAVDESS、emotion redirection、guidance scale ablation 和 user study 支撑，但情绪空间仍限制在七类基本标签。</p>
+    </section>
+
+    <section id="intro">
+      <h2>Introduction</h2>
+      <p>引言从 audio-driven talking portrait 的应用说起：avatar creation、video conferencing、virtual avatar chat、customer service。这里的应用不是泛泛背景，因为这些场景都强调实时交互和稳定身份。一个 talking portrait 只要嘴型准还不够，它还要有节奏性的 head movement、细粒度 facial expression，并且不能在视频中漂移。</p>
+      <p>论文随后指出 audio-to-motion 是 one-to-many。相同一句话可以配不同头动、眼神和表情；只凭音频并不能唯一决定面部动作。早期方法因此先集中在 lip movement 上，因为唇形与音素之间的关系最强，也最容易用 SyncNet 这类 audio-lip alignment loss 监督。</p>
+      <p>为了扩展动作范围，后续方法引入 VAE、normalizing flow 等概率模型，把 motion generation 变成采样问题。这一步承认了 one-to-many，但论文认为这些模型容量有限，生成动作的 expressive range 仍不够。也就是说，概率性有了，表达力还不够。</p>
+      <p>diffusion-based talking portrait 方法缓解了表达力问题。EMO 及其后续路线用 Stable Diffusion 这样的强图像先验，把 image diffusion 扩展到视频生成。论文对这条路线的批评集中在两点：采样效率低，几秒视频可能需要很长时间；辅助 facial prior 过重，比如 bounding boxes、2D landmarks、skeletons 或 3D meshes，会给头动和表情自由度带来空间偏置。</p>
+      <p>FLOAT 的回答是把生成空间换掉。Flow Matching 提供更快的采样路径，motion latent space 提供更贴近动作的目标分布，Transformer vector field predictor 提供时间建模能力。orthogonal basis 让生成后的 motion 可以被 test-time editing，speech-driven emotion 让动作不只追随音素，也能带上情绪。</p>
+      <p>三条贡献也围绕这条路线展开：用 learned orthogonal motion latent space 做 flow matching talking portrait；用 transformer-based vector field predictor 做 temporally consistent motion latent sampling，并支持 speech-driven emotion control；用实验说明它在 visual quality、motion fidelity 和效率上超过公开实现的 baseline。这里要注意，论文主张的是在它的公开 baseline 和协议下达到 SOTA，不等于对所有未公开系统或商业系统都成立。</p>
+    </section>
+
+    <section id="related">
+      <h2>Related Work</h2>
+      <p>Related Work 把背景分成 diffusion / flow matching 和 audio-driven portrait animation。diffusion 部分先说明扩散模型如何通过逐步加噪和反向去噪建模生成任务，也承认它们已经在图像、视频、文本到图像、文本到视频和 3D human generation 中表现很强。这个铺垫的作用，是说明 FLOAT 并不是否定 diffusion 的质量，而是在效率和运动表示上换路线。</p>
+      <p>加速 diffusion 的讨论列出三条常见路径：Stable Diffusion 把生成从 pixel space 移到 spatial latent space；DPM-Solver 一类方法改进 ODE/SDE 求解；distillation 把多步模型压成少步甚至一步 student。论文认为这些方法仍需要先训练好 diffusion model，并可能带来训练不稳定。FLOAT 因此不选择“先训 diffusion 再蒸馏”的路径。</p>
+      <p>Flow Matching 被描述成 diffusion 的替代方案：它估计从 prior distribution 到 target distribution 的 flow，而不是依赖特定 normalizing flow 架构约束。OT-based Flow Matching 使用 straight path 和 constant velocity，使训练目标变得简单。FLOAT 把这个思想放进 motion latent sequence，而不是直接放进像素或视频 latent。</p>
+      <p>audio-driven portrait animation 部分重新强调任务定义：单张 portrait image 加 driving audio，生成真实 talking portrait video。因为音频到动作本来就是 one-to-many，很多方法会加入 2D landmarks、3D priors 或 emotion labels。早期工作用 lip-sync discriminator 推进口型，后续方法开始生成 head pose 和眼动等更大范围动作。</p>
+      <p>emotion-aware talking portrait 被单独提到，是因为 FLOAT 使用 speech-driven emotion label。EAMM 把 emotion 看成 facial motion 的 complementary displacement；其它 emotional talking face 方法用 image-emotion pair 或 emotion memory。FLOAT 的差异是直接从 speech emotion predictor 得到 soft label，把它当作动作生成条件。</p>
+      <p>最接近的对照是 VASA-1。VASA-1 也用 motion latent 来解决采样效率问题，但 FLOAT 强调自己的 latent space 有可计算的 linear orthogonal structure，因此可以做 $\lambda$-control。这个定位很重要：FLOAT 的新意不只是“motion latent + flow”，还包括 motion latent 的结构化可编辑性。</p>
+    </section>
+
+    <section id="prelim">
+      <h2>Preliminaries</h2>
+      <p>Flow Matching 的数学铺垫用一个时间相关变换 $\varphi_t$ 来描述生成过程。可以把它理解成：从一个容易采样的 prior distribution $p_0$ 出发，沿着时间 $t\in[0,1]$ 走到目标分布 $p_1$。推动这个过程的是 vector field $v_t$，它告诉样本在当前时间和位置应该往哪里移动。</p>
+      <div class="fl-formula">$$\frac{d}{dt}\varphi_t(x)=v_t(\varphi_t(x)),\quad \varphi_0(x)=x$$</div>
+      <p>直接学习真实 vector field 很难，因为真实 probability path 和目标 field 通常不可得。Conditional Flow Matching 的做法是给定一个真实样本 $x_1$，构造一条可训练的条件路径。FLOAT 使用的是 OT-based straight path：从噪声 $x_0$ 到数据 $x_1$ 走直线。</p>
+      <div class="fl-formula">$$x_t=(1-t)x_0+t x_1,\quad u_t=x_1-x_0$$</div>
+      <p>这样训练目标就变成让网络预测的 vector field 接近 $x_1-x_0$。在普通图像生成里，$x_1$ 可以是图像 latent；在 FLOAT 里，$x_1$ 是一段 motion latent sequence。这个选择直接决定了模型只学习“动作轨迹怎么从噪声变出来”。</p>
+      <p>论文还引入 classifier-free vector field，用 guidance scale 调整条件强度。它和 diffusion 里的 classifier-free guidance 思路相近，只是操作对象从噪声预测换成 vector field。FLOAT 后面把它扩展成 incremental CFV，分别调 audio guidance 和 emotion guidance。</p>
+    </section>
+
+    <section id="method">
+      <h2>Method</h2>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-overview-source-to-video.png" alt="FLOAT overview from source image and audio to generated video">
+        <figcaption>总览图要顺着左到右读：source image 被编码成 identity-motion decomposition，audio、speech emotion、reference motion 和 flow time 构成 driving condition，Flow Matching Transformer 从 noisy motion latents 预测 vector field，ODE solver 得到 generated motion latents，最后 decoder 合成视频。图中锁头表示对应模块被冻结。</figcaption>
+      </figure>
+      <p>方法总览给出输入输出：source image $S\in\mathbb{R}^{3\times H\times W}$，driving audio feature sequence $a^{1:L}\in\mathbb{R}^{L\times d_a}$，输出是 $L$ 帧 video $\hat{D}^{1:L}\in\mathbb{R}^{L\times3\times H\times W}$。这里的“audio feature”已经不是原始波形，而是由 Wav2Vec2.0 这类音频编码器抽出的逐帧表示。</p>
+      <p>Phase 1 训练 motion latent auto-encoder。论文不使用 Stable Diffusion 的 VAE latent，因为图像 VAE 更擅长压缩外观和语义，不天然对应头动、嘴型和眼动。FLOAT 采用 LIA 风格的 latent image animation 表示，把图像编码成 identity latent 和 motion latent 的和：</p>
+      <div class="fl-formula">$$w_S=w_{S\to r}+w_{r\to S}$$</div>
+      <p>其中 $w_{S\to r}$ 表示把 source 身份映射到 canonical reference 的身份信息，$w_{r\to S}$ 表示从 reference 到 source 当前姿态/表情的动作信息。motion latent 进一步写成正交基组合：</p>
+      <div class="fl-formula">$$w_{r\to S}=\sum_{m=1}^{M}\lambda_m(S)\mathbf{v}_m$$</div>
+      <p>这个公式是后文 $\lambda$-control 的来源。因为 $\mathbf{v}_m$ 是 learned orthonormal basis，某个 motion latent 可以通过内积投影得到系数 $\lambda_m$。测试时改这些系数，就能做一定程度的头部姿态编辑。</p>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-motion-autoencoder-architecture.png" alt="FLOAT motion latent auto-encoder architecture">
+        <figcaption>motion auto-encoder 细节图。重点不是所有 ResBlock 名称，而是 encoder 输出 $w_{S\to r}$ 和 $\lambda$，再由 learned basis $V$ 组合出 motion latent；decoder 通过 StyleGAN2/LIA 风格模块、skip connection 和 motion modulation 重建目标帧。</figcaption>
+      </figure>
+      <p>训练 auto-encoder 时，source image 和 driving image 来自同一个 video clip。模型用 source 的 identity 加 driving 的 motion 去重建 driving frame。这个训练方式迫使 encoder 不要把身份和动作混在一起，否则它无法把同一个人的不同帧重组出来。</p>
+      <p>论文还提出 facial component perceptual loss。高分辨率 talking face 里，嘴、牙齿、眼球和眉眼动作很容易被全图 loss 忽略，因为大面积皮肤和背景占了更多像素。FLOAT 用 VGG-19 multi-scale feature pyramid，并对 mouth / eye mask 区域单独计算 perceptual loss，让小区域的结构变化也被训练信号看见。</p>
+      <div class="fl-formula">$$\mathcal{L}_{comp-lp}=\sum_i\frac{1}{|M_i|}\left\|M_i\otimes\phi_i(\hat{D})-M_i\otimes\phi_i(D)\right\|_1$$</div>
+      <p>这个 loss 的解释很细：在 face restoration 里，眼睛和牙齿通常被看成 texture fidelity 问题；但在 motion auto-encoder 里，source 和 target 存在空间错位，问题更像结构对齐。因此只靠局部 texture discriminator 不够，component perceptual supervision 更直接。</p>
+      <p>Phase 2 在 motion latent space 里做 Flow Matching。网络预测 $v_t(x_t,\mathbf{c}_t;\theta)\in\mathbb{R}^{L\times d}$，也就是每一帧 motion latent 在 flow time $t$ 上的速度。$x_t$ 是 noisy motion latent，$\mathbf{c}_t$ 是 driving condition。ODE solver 沿着 vector field 积分，得到生成的 motion latent sequence。</p>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-driving-condition-builder.png" alt="FLOAT driving condition builder with Wav2Vec2, Speech2Emotion, reference motion and flow time">
+        <figcaption>condition builder 图展示了 $\mathbf{c}_t$ 的来源：Wav2Vec2.0 提供 audio feature，Speech2Emotion 输出 7 维 emotion soft label，source motion latent 提供 reference pose / expression，flow time embedding 告诉网络当前积分位置。它不是单一条件，而是逐帧条件序列。</figcaption>
+      </figure>
+      <p>speech-driven emotion enhancement 解决的是“动作不只是音素”的问题。悲伤的声音可能伴随低头、避开视线或较小的动作幅度；兴奋或惊讶的声音可能带来更大的眉眼和头动。FLOAT 使用预训练 speech emotion predictor 输出 angry、disgust、fear、happy、neutral、sad、surprise 七类 softmax probability，再把它送入 vector field predictor。</p>
+      <p>论文同时承认，音频情绪并不总是清晰单一。人说话可能混合情绪，speech emotion classifier 也可能不准。FLOAT 的处理方式是训练时把 emotion 与其它 driving conditions 一起注入，推理时允许用户改 emotion label 或调整 guidance scale。这让它有 emotion redirection 能力，但也意味着情绪控制依赖分类器和七类标签空间。</p>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-vector-field-block.png" alt="FLOAT frame-wise vector field predictor block">
+        <figcaption>frame-wise vector field predictor block 是方法里的关键结构。它先用每帧条件做 AdaLN 和 gating，再用 masked multi-head self-attention 建模相邻帧关系。它和普通 cross-attention 的差别在于：条件调制和时间注意力被拆开了。</figcaption>
+      </figure>
+      <p>DiT 通常用同一个 timestep embedding 和 class embedding 调制所有 token；FLOAT 改成每个 frame latent 使用对应的 frame condition。原因很直接：第 $l$ 帧的嘴型和表情主要受附近 audio feature 影响。后续 masked self-attention 只看 $2T$ 个邻近帧，论文设置 $T=2$，这给了局部时间一致性，同时避免所有帧无限制互相干扰。</p>
+      <p>训练时，目标 motion latent sequence $w_{r\to D^{1:L}}$ 来自真实 driving frames。模型用 OT path 构造 noisy input，并学习目标速度 field。长视频按 window 生成，为了避免 chunk 之间断裂，输入还包含 preceding $L'$ frames 的 audio feature 和 motion latents。论文默认 $L=50$、$L'=10$，25 FPS 下大约覆盖 2.4 秒上下文。</p>
+      <div class="fl-formula">$$\mathcal{L}_{total}=\lambda_{OT}\mathcal{L}_{OT}+\lambda_{vel}\mathcal{L}_{vel}$$</div>
+      <p>$\mathcal{L}_{vel}$ 约束相邻帧的一阶差分，目的是减少 motion latent 的突变。训练中还对 reference motion、emotion 和 audio 条件做 dropout，用于 classifier-free vector field；对 preceding audio / motion 做更高概率 dropout，让模型能处理初始 window 没有历史上下文的情况。</p>
+      <p>推理时，FLOAT 从 Gaussian noise 出发，用 audio、emotion、reference motion 和历史上下文作为条件积分出 motion latent。论文使用 Euler solver，默认约 10 NFE。最后把 source identity latent 加到 generated motion latent 上，用 decoder 输出视频帧，再把原始音频 mux 回视频。</p>
+    </section>
+
+    <section id="experiments">
+      <h2>Experiments</h2>
+      <p>实验数据分两阶段。motion latent auto-encoder 使用 HDTF、RAVDESS 和 VFHQ；训练 FLOAT 本体时排除 VFHQ，因为 VFHQ 没有同步音频。HDTF 提供 high-definition talking face，RAVDESS 提供情绪强的视频，VFHQ 补充身份多样性。这解释了为什么 Phase 1 更重重建和身份/动作空间，Phase 2 更重 audio-synchronized motion。</p>
+      <p>预处理统一到 25 FPS，音频重采样到 16 kHz，人脸区域裁剪并 resize 到 $512^2$。HDTF 训练使用 11.3 小时、240 个 videos、230 个 identities，测试使用 78 个 disjoint identities，每段 15 秒。RAVDESS 使用 22 个 identities 训练，剩余 2 个 identities 测试。训练和测试 identity disjoint，因此评估不是同身份重建，而是 unseen identity 条件下的生成。</p>
+      <p>实现细节给得比较完整。motion latent dimension 是 $d=512$，orthogonal directions 是 $M=20$；vector predictor 使用 8 attention heads、hidden dimension $h=1024$、attention window length $T=2$；batch size 8，learning rate $10^{-5}$，Adam，$\lambda_{OT}=\lambda_{vel}=1$，Phase 2 在单张 A100 上训练约 2 天、2000k steps。supplement 还给出 auto-encoder 约 460k steps、9 天、单张 A100，learning rate $2\cdot10^{-4}$。</p>
+      <p>指标覆盖画质、视频分布、身份、表情、姿态和音画同步。FID / FVD 看生成图像和视频分布，CSIM 看 identity embedding cosine similarity，E-FID 和 P-FID 分别看 3DMM expression / pose distribution，LSE-D / LSE-C 用 Wav2Lip / SyncNet 风格指标评估 lip synchronization。这个指标组合比只报 PSNR/SSIM 更适合 talking portrait，因为它关注动作和同步。</p>
+      <p>baseline 分成 non-diffusion 和 diffusion 两类。SadTalker、EDTalk 是非 diffusion 方法；AniTalker、Hallo、EchoMimic 是 diffusion-based 方法。论文只比较官方实现公开的方法；EMO 和 VASA-1 因实现不可用，只在 supplement 里用 demo videos 做额外视频比较。这个边界很重要：主表的公平性来自可运行实现，但也无法覆盖未公开强系统。</p>
+      <div class="fl-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Method</th><th>FID↓</th><th>FVD↓</th><th>CSIM↑</th><th>E-FID↓</th><th>P-FID↓</th><th>LSE-D↓</th><th>LSE-C↑</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Hallo</td><td>25.363 / 57.648</td><td>197.196 / 375.557</td><td><strong>0.869 / 0.860</strong></td><td><strong>1.039</strong> / 2.492</td><td>0.037 / 0.050</td><td>7.792 / 7.613</td><td>7.582 / 4.795</td></tr>
+            <tr><td>EchoMimic</td><td>33.552 / 81.839</td><td>296.757 / 320.220</td><td>0.823 / 0.805</td><td>1.234 / 3.201</td><td><strong>0.023</strong> / 0.047</td><td>8.903 / 8.161</td><td>6.242 / 4.144</td></tr>
+            <tr><td><strong>FLOAT</strong></td><td><strong>21.100 / 31.681</strong></td><td><strong>162.052 / 166.359</strong></td><td>0.843 / 0.810</td><td>1.229 / <strong>1.367</strong></td><td>0.032 / <strong>0.031</strong></td><td><strong>7.290 / 6.994</strong></td><td><strong>8.222 / 5.730</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>主表的读法要克制。FLOAT 在 FID、FVD、E-FID、P-FID、LSE-D、LSE-C 上整体很强，说明画面分布、视频分布、表情/姿态和 lip-sync 都受益于 motion latent flow。CSIM 不是第一，Hallo 更高，所以不能把结果解读成 FLOAT 在身份保持上全面压过所有方法。它的优势更集中在运动质量、同步和速度。</p>
+      <figure class="fl-figure-wide fl-scroll-figure">
+        <img src="/files/blogs_image/251204-float-speed-vs-steps.png" alt="FLOAT speed comparison with diffusion ablations">
+        <figcaption>速度图展示 V100 上的 forward pass efficiency。FLOAT 默认 10 NFE 达到 41.37 FPS；两个 diffusion ablation 用 50 steps，约 30 FPS；Hallo 的 pipeline 远低于实时。它支持“少步 motion latent flow 更快”的结论，但不等同于完整端到端产品延迟评估。</figcaption>
+      </figure>
+      <p>NFE ablation 说明速度不是越少步越好。supplement 报告 NFE 2 仍有不错 FID 和 LSE-D，但 FVD 和 E-FID 变差，表现为头动不稳定、表情静态或过强。原因是图像质量主要由 auto-encoder 决定，而 motion consistency 需要足够积分步数。默认 NFE 10 是画质、口型和动作稳定之间的折中。</p>
+      <p>application 部分展示 $\lambda$-control。因为 learned basis 是 orthonormal，生成出的 motion latent 可以通过内积得到某个 basis coefficient：</p>
+      <div class="fl-formula">$$\langle w_{r\to\hat{D}},\mathbf{v}_k\rangle=\lambda_k(\hat{D})$$</div>
+      <p>这使测试时 pose editing 成为可能：改某个 $\lambda_k$，再把 motion latent 组合回去。论文例子是调整 head direction，而且声称不会明显干扰其它动作。这个能力来自 motion representation 的结构，而不是额外训练一个 pose controller。</p>
+      <p>emotion redirection 则更偏控制接口。若 speech emotion predictor 对音频情绪判断模糊，用户可以把 emotion label 改成指定 one-hot，并通过 emotion guidance scale 增强。GitHub README 也保留了 <code>--emo</code> 和 <code>--e_cfg_scale</code>，并建议更强情绪可尝试 5 到 10 的 scale。这里要保留工程边界：大 scale 是调参，不保证所有输入都自然。</p>
+      <p>frame-wise AdaLN 和 Flow Matching 消融对应两条设计主张。frame-wise AdaLN 相比 cross-attention 有更好的 expression generation 和 lip synchronization，说明“每帧条件先调制，再建模时间关系”是有效的。Flow Matching 与两个 diffusion parameterization 相比，在相近图像质量下 lip synchronization 更好，并且 NFE 更少。这个证据支撑了论文的速度和同步 claim。</p>
+      <p>user study 使用 15 名参与者，对 6 个方法生成的视频按 lip sync accuracy、natural head motion、teeth clarity、natural emotion 和 overall visual quality 打分。FLOAT 在五项中均最高，例如 lip sync 3.93、teeth clarity 4.13、overall 3.87。主观实验加强了 qualitative claim，但样本规模不大，仍应看作补充证据。</p>
+    </section>
+
+    <section id="limits">
+      <h2>Limitation, Discussion, Conclusion</h2>
+      <p>论文的结论把贡献压回同一条主线：FLOAT 利用 learned motion latent space 做 flow matching talking portrait，transformer vector field predictor 负责 temporally consistent motion generation，speech-driven emotion labels 提升动作自然度。它要解决的 core limitation 是 diffusion-based talking portrait 的慢采样，同时尽量保持画质和动作质量。</p>
+      <p>supplement 的 ethical consideration 很直接：单图加音频即可生成逼真 talking portrait，存在 deepfake 滥用风险。作者提到 watermark 和 carefully restricted license 作为缓解方式。这个说法和 GitHub 当前 license 一致：代码和 checkpoint 是非商业、不可改作分发的 CC BY-NC-ND 4.0。</p>
+      <p>资源状态对复现影响很大。GitHub 当前公开了 inference code、checkpoint 下载脚本和示例命令，但 README 明确说明 repository 是 one-time code drop，只有 inference code，training code will not be released。因此可以做推理验证、集成试用和局部工程分析，但不能完整复现实验训练曲线、消融训练和数据处理细节。</p>
+      <p>情绪建模的限制来自七类 basic emotion label。论文自己指出，FLOAT 不能表达更细腻的情绪状态，比如 shyness。这不是简单的数据集缺口，也和条件形式有关：speech-to-emotion soft label 是粗粒度分类信号，不是开放文本或连续 affect representation。作者把 textual cues 作为未来方向，是合理的延伸。</p>
+      <p>数据分布也有明确偏置。FLOAT 主要依赖 open-source high-definition face datasets，HDTF / RAVDESS 的 head pose 分布偏 frontal，因此对非正脸，特别是 $|\mathrm{yaw}|\geq20^\circ$，以及眼镜等 accessories，会出现退化。README 也提醒非正脸图像和自动 crop / padding 会影响结果。</p>
+      <figure class="fl-figure-wide">
+        <img src="/files/blogs_image/251204-float-failure-case.png" alt="FLOAT failure case for non-frontal faces and glasses">
+        <figcaption>failure case 图要看红框区域和 source pose。它说明 FLOAT 在非正脸和眼镜等 accessories 上不稳定，这与训练数据 frontal pose 偏置一致。它不是偶然坏例子，而是论文明确承认的边界。</figcaption>
+      </figure>
+      <p>对工程使用来说，音频质量也是关键变量。README 建议背景音乐重时先做 vocal extraction，说明 Wav2Vec2 feature 和 speech emotion recognizer 都会受噪声、混响、多说话人和音乐影响。FLOAT 的论文指标是在清洗后的 benchmark setting 下取得的，真实输入需要额外音频预处理。</p>
+    </section>
+
+    <section id="concepts">
+      <h2>概念补充与参考阅读</h2>
+      <article class="fl-concept">
+        <h3>Flow Matching / Conditional Flow Matching</h3>
+        <p>Flow Matching 学的是把噪声分布推到数据分布的 vector field。FLOAT 把目标数据换成 motion latent sequence，因此 ODE solver 积分出来的是“怎么动”，不是直接生成图像。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2210.02747">Flow Matching for Generative Modeling</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>Rectified Flow / OT Straight Path</h3>
+        <p>OT-based path 用直线连接 $x_0$ 和 $x_1$，目标速度是 $x_1-x_0$。这让 FLOAT 可以用较少 NFE 得到合理 motion latent，但过低 NFE 会先伤害运动稳定性。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2209.03003">Rectified Flow</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>LIA / Motion Latent</h3>
+        <p>LIA 的思想是把图像动画表示成 latent space navigation。FLOAT 借用这种 identity-motion decomposition，并进一步用 orthonormal basis 让 motion latent 可以投影、编辑和重组。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2203.09043">Latent Image Animator</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>Frame-wise AdaLN</h3>
+        <p>AdaLN 用条件向量调制 LayerNorm 的 scale 和 shift。FLOAT 的重点是 frame-wise：每帧 motion token 用对应帧的 audio/emotion/reference condition 调制，再通过 masked self-attention 建模邻近时间关系。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2212.09748">DiT</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>Wav2Vec2 / Speech2Emotion</h3>
+        <p>Wav2Vec2 提供逐帧语音表示，主要服务嘴型、节奏和音素相关动作；Speech2Emotion 输出七类情绪概率，服务非语言表情和头动增强。FLOAT 的 emotion control 依赖这两个音频侧条件的稳定性。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2006.11477">wav2vec 2.0</a> / <a href="https://huggingface.co/r-f/wav2vec-english-speech-emotion-recognition">speech emotion recognizer</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>NFE / Euler ODE Solver</h3>
+        <p>NFE 是 number of function evaluations，也就是采样时调用 vector field predictor 的次数。FLOAT 默认 NFE 10，用 Euler solver 积分；NFE 越低越快，但 motion consistency 和 emotion expressiveness 会更容易受损。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2210.02747">Flow Matching ODE formulation</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>FID / FVD / CSIM / LSE</h3>
+        <p>FID 看图像分布，FVD 看视频分布，CSIM 看身份 embedding 相似度，LSE-D / LSE-C 看音画同步。FLOAT 的主表优势主要在 FID、FVD、E-FID、P-FID 和 LSE，不应被概括成所有指标全面第一。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/1812.01717">FVD</a> / <a href="https://www.robots.ox.ac.uk/~vgg/software/lipsync/">SyncNet</a> / <a href="https://arxiv.org/abs/1801.03924">LPIPS</a></p>
+      </article>
+      <article class="fl-concept">
+        <h3>HDTF / RAVDESS / VFHQ</h3>
+        <p>HDTF 提供高分辨率 talking face，RAVDESS 提供情绪强的视频，VFHQ 提供更多身份和高清人脸视频。FLOAT 用 VFHQ 训练 auto-encoder，但训练 audio-synchronized Flow Matching 时排除 VFHQ，因为它没有同步音频。</p>
+        <p class="fl-reference">参考阅读：<a href="https://arxiv.org/abs/2103.16831">HDTF paper</a> / <a href="https://zenodo.org/records/1188976">RAVDESS</a> / <a href="https://arxiv.org/abs/2205.03409">VFHQ</a></p>
+      </article>
+    </section>
+
+    <section id="summary">
+      <h2>总结</h2>
+      <p><strong>一句话总结：</strong>FLOAT 把 talking portrait 的生成目标从完整视频换成 motion latent trajectory，再用 Flow Matching 快速采样这条轨迹，最后由 identity-motion decoder 合成视频。</p>
+      <p><strong>一句话评价：</strong>这是一篇表示空间选择很清楚的 talking portrait 论文，研究价值在 motion latent + flow 的任务分解，工程使用则受限于训练代码不公开、非商业许可、正脸数据偏置和粗粒度情绪标签。</p>
+      <p>对研究阅读来说，它最值得借鉴的是“先问应该生成什么”。如果任务本质是动作生成，就不一定要在像素或图像语义 latent 里生成全部内容。对工程落地来说，FLOAT 更适合作为推理型 baseline 和 motion-latent 架构参考；要把它做成稳定产品，还需要更鲁棒的数据覆盖、音频预处理、非正脸处理、细粒度情绪控制和明确授权。</p>
+    </section>
+  </main>
+</article>

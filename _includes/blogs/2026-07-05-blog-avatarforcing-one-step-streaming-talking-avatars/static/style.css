@@ -1,0 +1,234 @@
+.avatarforcing-read {
+  --af-ink: #202124;
+  --af-muted: #626b76;
+  --af-line: #d8dee8;
+  --af-soft: #f6f8fb;
+  --af-blue: #245f9d;
+  --af-blue-soft: #eef5fc;
+  --af-table-head: #eef2f7;
+  color: var(--af-ink);
+  font-size: 1rem;
+  line-height: 1.78;
+  margin: 0 auto;
+  max-width: 900px;
+  position: relative;
+}
+
+.avatarforcing-read * {
+  box-sizing: border-box;
+}
+
+.avatarforcing-read a {
+  color: var(--af-blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.avatarforcing-read .af-hero {
+  border-bottom: 1px solid var(--af-line);
+  margin-bottom: 2.2rem;
+  padding: 1.15rem 0 1.7rem;
+}
+
+.avatarforcing-read .af-eyebrow {
+  color: var(--af-blue);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+.avatarforcing-read h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.12;
+  margin: 0 0 1rem;
+}
+
+.avatarforcing-read .af-hero p {
+  color: var(--af-muted);
+  font-size: 1.07rem;
+  margin: 0.45rem 0 0;
+  max-width: 58rem;
+}
+
+.avatarforcing-read .af-main {
+  max-width: 900px;
+}
+
+.avatarforcing-read .af-side-toc {
+  display: none;
+}
+
+.avatarforcing-read h2 {
+  border-top: 1px solid var(--af-line);
+  font-size: 1.55rem;
+  line-height: 1.25;
+  margin: 3rem 0 1rem;
+  padding-top: 1.35rem;
+}
+
+.avatarforcing-read p {
+  margin: 0.9rem 0;
+}
+
+.avatarforcing-read strong {
+  font-weight: 700;
+}
+
+.avatarforcing-read h3 {
+  font-size: 1.12rem;
+  line-height: 1.35;
+  margin: 1.5rem 0 0.55rem;
+}
+
+.avatarforcing-read code {
+  background: var(--af-soft);
+  border: 1px solid var(--af-line);
+  border-radius: 4px;
+  font-size: 0.88em;
+  padding: 0.05rem 0.22rem;
+}
+
+.avatarforcing-read figure {
+  margin: 1.75rem 0;
+}
+
+.avatarforcing-read .af-figure-wide {
+  max-width: 100%;
+  width: 100%;
+}
+
+.avatarforcing-read figure img {
+  background: #fff;
+  border: 1px solid var(--af-line);
+  border-radius: 8px;
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+.avatarforcing-read figcaption {
+  color: var(--af-muted);
+  font-size: 0.92rem;
+  line-height: 1.62;
+  margin: 0.55rem auto 0;
+  max-width: 900px;
+}
+
+.avatarforcing-read .af-formula {
+  background: #fbfcfe;
+  border: 1px solid var(--af-line);
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+  padding: 0.8rem 1rem;
+}
+
+.avatarforcing-read .af-concept {
+  border-top: 1px solid var(--af-line);
+  margin-top: 1.35rem;
+  padding-top: 0.2rem;
+}
+
+.avatarforcing-read .af-concept:first-of-type {
+  border-top: 0;
+}
+
+.avatarforcing-read .af-reference {
+  color: var(--af-muted);
+  font-size: 0.92rem;
+  margin-top: 0.35rem;
+}
+
+.avatarforcing-read .af-table-wrap {
+  border: 1px solid var(--af-line);
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+}
+
+.avatarforcing-read table {
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  margin: 0;
+  min-width: 760px;
+  width: 100%;
+}
+
+.avatarforcing-read th,
+.avatarforcing-read td {
+  border-bottom: 1px solid var(--af-line);
+  padding: 0.64rem 0.72rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.avatarforcing-read th {
+  background: var(--af-table-head);
+  font-weight: 700;
+}
+
+.avatarforcing-read tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (min-width: 1440px) {
+  .avatarforcing-read .af-side-toc {
+    background: rgba(255, 255, 255, 0.94);
+    border-left: 2px solid var(--af-line);
+    display: block;
+    padding: 0.15rem 0 0.15rem 1rem;
+    position: fixed;
+    right: 1.25rem;
+    top: 6.2rem;
+    width: 168px;
+    z-index: 2;
+  }
+
+  .avatarforcing-read .af-side-toc h2 {
+    border: 0;
+    color: var(--af-ink);
+    font-size: 0.92rem;
+    margin: 0 0 0.55rem;
+    padding: 0;
+  }
+
+  .avatarforcing-read .af-side-toc a {
+    color: var(--af-blue);
+    display: block;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    margin: 0.48rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .avatarforcing-read {
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .avatarforcing-read h1 {
+    font-size: 2rem;
+  }
+
+  .avatarforcing-read h2 {
+    font-size: 1.35rem;
+    margin-top: 2.35rem;
+  }
+
+  .avatarforcing-read figcaption {
+    font-size: 0.88rem;
+  }
+
+  .avatarforcing-read .af-formula {
+    padding: 0.7rem 0.8rem;
+  }
+
+  .avatarforcing-read table {
+    min-width: 680px;
+  }
+}

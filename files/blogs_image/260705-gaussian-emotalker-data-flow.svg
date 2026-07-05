@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="720" viewBox="0 0 980 720" role="img" aria-labelledby="title desc">
+  <title id="title">GaussianEmoTalker data flow</title>
+  <desc id="desc">A readable data-flow diagram of GaussianEmoTalker from neutral Gaussian initialization to emotional Gaussian deformation.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L11,4 z" fill="#263244"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .bg { fill: #fbfcfe; }
+      .lane { fill: #eef4f8; stroke: #d5dee8; stroke-width: 2; }
+      .stage1 { fill: #f5fae9; stroke: #9aaf65; }
+      .stage2 { fill: #edf8fb; stroke: #6faabd; }
+      .out { fill: #edf8ef; stroke: #6aa977; }
+      .loss { fill: #fff2e6; stroke: #d88a52; }
+      .box { stroke-width: 2; rx: 12; filter: url(#shadow); }
+      .title { font: 700 25px Arial, Helvetica, sans-serif; fill: #152033; }
+      .lane-title { font: 700 19px Arial, Helvetica, sans-serif; fill: #203047; }
+      .text { font: 700 17px Arial, Helvetica, sans-serif; fill: #203047; }
+      .small { font: 14px Arial, Helvetica, sans-serif; fill: #3d4d63; }
+      .note { font: 13px Arial, Helvetica, sans-serif; fill: #4a5870; }
+      .arrow { stroke: #263244; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="980" height="720"/>
+  <text class="title" x="30" y="42">GaussianEmoTalker: neutral-to-emotional residual flow</text>
+
+  <rect class="lane" x="30" y="70" width="920" height="220" rx="18"/>
+  <text class="lane-title" x="55" y="105">Stage 1: Neutral Gaussian Initialization</text>
+
+  <rect class="box stage1" x="55" y="132" width="170" height="105"/>
+  <text class="text" x="74" y="165">Neutral video</text>
+  <text class="small" x="74" y="194">identity-specific</text>
+  <text class="small" x="74" y="216">MEAD crop</text>
+
+  <rect class="box stage1" x="285" y="132" width="170" height="105"/>
+  <text class="text" x="305" y="165">Tracker + FLAME</text>
+  <text class="small" x="305" y="194">neutral mesh</text>
+  <text class="small" x="305" y="216">50 expression bases</text>
+
+  <rect class="box stage1" x="515" y="132" width="175" height="105"/>
+  <text class="text" x="535" y="165">GaussianBlendshapes</text>
+  <text class="small" x="535" y="194">B0 plus bases</text>
+  <text class="small" x="535" y="216">mouth Gaussians</text>
+
+  <rect class="box out" x="750" y="132" width="175" height="105"/>
+  <text class="text" x="770" y="165">Neutral state</text>
+  <text class="small" x="770" y="194">M_neu and G_neu</text>
+  <text class="small" x="770" y="216">r, s, color, opacity</text>
+
+  <path class="arrow" d="M225 184 H274"/>
+  <path class="arrow" d="M455 184 H504"/>
+  <path class="arrow" d="M690 184 H739"/>
+
+  <rect class="lane" x="30" y="335" width="920" height="315" rx="18"/>
+  <text class="lane-title" x="55" y="370">Stage 2: Emotional Gaussian Deformation</text>
+
+  <rect class="box stage2" x="55" y="405" width="155" height="112"/>
+  <text class="text" x="74" y="435">Controls</text>
+  <text class="small" x="74" y="464">audio + source image</text>
+  <text class="small" x="74" y="486">emotion + intensity</text>
+
+  <rect class="box stage2" x="255" y="405" width="155" height="112"/>
+  <text class="text" x="274" y="435">Adapted A2ET</text>
+  <text class="small" x="274" y="464">psi_neu / psi_emo</text>
+  <text class="small" x="274" y="486">jaw + neck pose</text>
+
+  <rect class="box stage2" x="455" y="405" width="155" height="112"/>
+  <text class="text" x="474" y="435">LBS mesh</text>
+  <text class="small" x="474" y="464">M_emo from psi_emo</text>
+  <text class="small" x="474" y="486">Delta M cue</text>
+
+  <rect class="box stage2" x="655" y="405" width="170" height="112"/>
+  <text class="text" x="674" y="435">Cross-attention</text>
+  <text class="small" x="674" y="464">Delta M + audio</text>
+  <text class="small" x="674" y="486">emotion text + null</text>
+
+  <rect class="box stage2" x="690" y="552" width="175" height="74"/>
+  <text class="text" x="710" y="582">Residual MLP</text>
+  <text class="small" x="710" y="606">Delta r, s, color, opacity</text>
+
+  <rect class="box out" x="390" y="552" width="230" height="74"/>
+  <text class="text" x="410" y="582">Emotional Gaussian avatar</text>
+  <text class="small" x="410" y="606">G_emo = G_neu + offsets</text>
+
+  <rect class="box loss" x="85" y="552" width="240" height="74"/>
+  <text class="text" x="105" y="582">Training losses</text>
+  <text class="small" x="105" y="606">RGB + VGG + FLAME + D-SSIM</text>
+
+  <path class="arrow" d="M210 461 H244"/>
+  <path class="arrow" d="M410 461 H444"/>
+  <path class="arrow" d="M610 461 H644"/>
+  <path class="arrow" d="M740 517 V541"/>
+  <path class="arrow" d="M690 590 H631"/>
+  <path class="arrow dash" d="M835 238 C835 305 545 332 533 394"/>
+  <path class="arrow dash" d="M390 590 H336"/>
+
+  <text class="note" x="560" y="312">Stage 1 supplies neutral mesh and Gaussian attributes to Stage 2.</text>
+  <text class="note" x="55" y="682">Train/test boundary: Stage 2 is trained with rendered frames and MEAD crops; inference uses audio, source image, emotion category, and discrete intensity label.</text>
+</svg>
