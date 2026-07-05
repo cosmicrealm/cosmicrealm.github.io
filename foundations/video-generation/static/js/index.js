@@ -228,18 +228,23 @@
     }
   ];
 
+  const decisionRows = [
+    ["想做高质量 T2V / I2V 开放模型实验", "Wan", "开放生态活跃，模型和社区工作流丰富"],
+    ["想做角色说话、唱歌、口型驱动", "Wan-S2V", "输入音频可以作为人物视频的驱动条件"],
+    ["想做角色动作迁移、人物替换、身份保持", "Wan-Animate / Wan 生态工作流", "更偏角色控制和动画化任务"],
+    ["想做统一视频编辑、inpaint、reference-to-video、V2V", "VACE / Wan-VACE / VACE-LTX", "VACE 的价值在于统一条件协议和多任务编辑"],
+    ["想本地快速迭代、低延迟预览", "LTXV distilled / FP8 / 多尺度 pipeline", "高压缩 latent 与生产组件更偏效率"],
+    ["想做同步音视频生成", "LTX-2 / LTX-2.3", "更偏 joint audio-video foundation model"],
+    ["只有消费级显卡，显存紧张", "LTXV distilled / FP8 或 Wan 小模型", "优先考虑 token 数、量化、步数和分辨率"],
+    ["追求最终成片质量", "不能只看 Wan 或 LTX 名称", "要同时看分辨率、fps、steps、upscaler、control、后处理和 prompt"]
+  ];
+
   const comparisonRows = [
-    ["基础定位", "高质量视频生成、角色动画、视频编辑、控制扩展", "高效率生成、蒸馏、多尺度、音视频联合、生产工作流"],
-    ["基础模型", "Wan2.1 / Wan2.2", "LTX-Video / LTXV / LTX-2 / LTX-2.3"],
-    ["生成任务", "T2V、I2V、FLF2V、TI2V", "T2V、I2V、多关键帧、video extension、V2V"],
-    ["关键结构", "Wan-VAE、Video DiT、Flow Matching、timestep MoE", "高压缩 VAE、DiT、denoising decoder、multiscale pipeline"],
-    ["MoE / 专家", "Wan2.2 使用 high-noise / low-noise experts", "主要不是 Wan 式 timestep MoE，LTX-2 是音频/视频双流"],
-    ["编辑模型", "VACE、Wan-Animate、Wan-Fun 等", "VACE-LTX、IC-LoRA、Creative Lab、detailer"],
-    ["角色能力", "Wan-Animate、Wan-S2V 很强", "主要依赖 I2V、IC-LoRA、trainer 与任务 LoRA"],
-    ["音频能力", "Wan-S2V 是音频驱动视频", "LTX-2 / LTX-2.3 是联合音视频生成"],
-    ["控制路线", "VACE、Wan-Fun、Control-Camera、社区控制模型", "IC-LoRA、Union IC-LoRA、Creative Lab LoRA"],
-    ["部署策略", "大模型质量优先，TI2V-5B/FP8/GGUF/加速社区降低成本", "distilled、FP8、2B/13B 档位、upscaler、多尺度 pipeline"],
-    ["工程生态", "DiffSynth、ComfyUI-WanVideoWrapper、LightX2V、TeaCache", "LTX-Video-Trainer、LTX-2 Trainer、ComfyUI-LTXVideo、Diffusers"]
+    ["核心定位", "开放高质量视频生成、角色、编辑与控制生态", "高效率视频 / 音视频生产栈"],
+    ["架构关键词", "Video DiT、Flow Matching、MoE、Wan-VAE、VACE", "高压缩 Video-VAE、DiT、多尺度 pipeline、dual-stream A/V DiT"],
+    ["强项", "角色动画、S2V、编辑、控制、社区工作流", "快速生成、生产部署、IC-LoRA、音视频联合"],
+    ["主要风险", "显存高、组件多、版本关系复杂", "高压缩可能损失细节，代际差异容易混淆"],
+    ["适用场景", "开放模型实验、ComfyUI 工作流、角色动画与视频编辑", "工程部署、短片生产、广告制作与音画同步"]
   ];
 
   const glossary = [
@@ -326,6 +331,17 @@
   }
 
   function renderComparison() {
+    const decisionBody = $("#decisionBody");
+    if (decisionBody) {
+      decisionBody.innerHTML = decisionRows.map(([need, recommendation, reason]) => `
+        <tr>
+          <td>${escapeHtml(need)}</td>
+          <td>${escapeHtml(recommendation)}</td>
+          <td>${escapeHtml(reason)}</td>
+        </tr>
+      `).join("");
+    }
+
     const body = $("#comparisonBody");
     if (body) {
       body.innerHTML = comparisonRows.map(([dimension, wan, ltx]) => `
@@ -362,13 +378,9 @@
     `).join("");
   }
 
-  function formatLarge(value) {
+  function formatNumber(value) {
     if (!Number.isFinite(value) || value <= 0) return "0";
-    if (value >= 1e12) return `${(value / 1e12).toFixed(2)}T`;
-    if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
-    if (value >= 1e6) return `${(value / 1e6).toFixed(2)}M`;
-    if (value >= 1e3) return `${(value / 1e3).toFixed(1)}K`;
-    return String(Math.round(value));
+    return Math.round(value).toLocaleString("en-US");
   }
 
   function percentLog(value, maxValue) {
@@ -415,13 +427,18 @@
     const readout = $("#tokenCostReadout");
     const explanation = $("#tokenCostExplanation");
 
+    function safeNumber(value, fallback) {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+    }
+
     function update() {
-      const frames = Math.max(1, Number(controls.frames.value));
-      const width = Math.max(1, Number(controls.width.value));
-      const height = Math.max(1, Number(controls.height.value));
-      const strideT = Math.max(1, Number(controls.strideT.value));
-      const strideS = Math.max(1, Number(controls.strideS.value));
-      const steps = Math.max(1, Number(controls.steps.value));
+      const frames = Math.max(1, safeNumber(controls.frames.value, 80));
+      const width = Math.max(1, safeNumber(controls.width.value, 1280));
+      const height = Math.max(1, safeNumber(controls.height.value, 720));
+      const strideT = Math.max(1, safeNumber(controls.strideT.value, 4));
+      const strideS = Math.max(1, safeNumber(controls.strideS.value, 16));
+      const steps = Math.max(1, safeNumber(controls.steps.value, 30));
 
       outputs.frames.textContent = String(frames);
       outputs.width.textContent = String(width);
@@ -441,16 +458,16 @@
       bars.attention.style.setProperty("--value", `${percentLog(attentionCost, maxValue)}%`);
       bars.sampler.style.setProperty("--value", `${percentLog(samplerWork, maxValue)}%`);
 
-      texts.pixel.textContent = formatLarge(pixelTokens);
-      texts.latent.textContent = formatLarge(latentTokens);
-      texts.attention.textContent = formatLarge(attentionCost);
-      texts.sampler.textContent = formatLarge(samplerWork);
+      texts.pixel.textContent = formatNumber(pixelTokens);
+      texts.latent.textContent = formatNumber(latentTokens);
+      texts.attention.textContent = formatNumber(attentionCost);
+      texts.sampler.textContent = formatNumber(samplerWork);
 
       const compression = pixelTokens / Math.max(1, latentTokens);
-      readout.textContent = `N = ${formatLarge(latentTokens)}, N² ≈ ${formatLarge(attentionCost)}, pixel/latent ≈ ${compression.toFixed(1)}×`;
+      readout.textContent = `latent tokens = ${formatNumber(latentTokens)}; attention N² upper bound = ${formatNumber(attentionCost)}; sampler work upper bound at ${formatNumber(steps)} steps = ${formatNumber(samplerWork)}`;
       explanation.textContent = compression > 900
-        ? "压缩率很高时推理更快，但 decoder、upscaler 和 detailer 要承担更多细节补偿。"
-        : "压缩率较低时细节更容易保留，但 attention 和采样成本会迅速抬升。";
+        ? "像素到 latent 的压缩率很高，主干推理更快，但 decoder、upscaler 和 detailer 要承担更多细节补偿。"
+        : "压缩率较低时细节更容易保留，但 attention 和采样成本会迅速抬升。N² 仍只是 full attention 的上界直觉。";
     }
 
     Object.values(controls).forEach((control) => control.addEventListener("input", update));

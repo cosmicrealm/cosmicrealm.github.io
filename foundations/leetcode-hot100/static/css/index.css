@@ -319,6 +319,50 @@ a:hover, a:focus-visible { text-decoration: underline; }
   color: var(--ink);
 }
 
+.sample-list {
+  display: grid;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+.sample-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--blue) 18%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--blue) 5%, var(--paper-strong));
+}
+.sample-card > strong {
+  color: var(--ink);
+}
+.sample-io {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+.sample-io span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 760;
+}
+.sample-io code {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--paper-strong) 82%, var(--blue));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.32rem 0.46rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.sample-note {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 78%, var(--muted));
+}
+
 .code-block {
   position: relative;
   min-width: 0;
@@ -423,12 +467,7 @@ pre code {
 }
 .lecture-toc small { color: inherit; opacity: 0.72; }
 
-@media (min-width: 1180px) {
-  .lecture {
-    width: min(1040px, calc(100vw - 360px));
-    margin-left: 300px;
-    margin-right: 40px;
-  }
+@media (min-width: 1640px) {
   .lecture-toc {
     display: block;
     position: fixed;

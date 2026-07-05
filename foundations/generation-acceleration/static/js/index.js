@@ -371,9 +371,21 @@ compiled_step = build_training_runtime(graph)`,
       const key = panel.dataset.flowPanel;
       const output = panel.querySelector('[data-flow-output]');
       const buttons = Array.from(panel.querySelectorAll('[data-flow-mode]'));
+      if (output) {
+        output.setAttribute('role', 'tabpanel');
+      }
       function render(mode) {
-        output.textContent = algorithmSnippets[key]?.[mode] || '';
-        buttons.forEach((btn) => btn.classList.toggle('active', btn.dataset.flowMode === mode));
+        const snippet = algorithmSnippets[key]?.[mode];
+        if (output && snippet) {
+          output.textContent = snippet;
+        }
+        buttons.forEach((btn) => {
+          const active = btn.dataset.flowMode === mode;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-selected', String(active));
+          btn.setAttribute('tabindex', active ? '0' : '-1');
+        });
       }
       buttons.forEach((btn) => btn.addEventListener('click', () => render(btn.dataset.flowMode)));
       render('train');
@@ -499,7 +511,7 @@ compiled_step = build_training_runtime(graph)`,
       bar(ctx, 120, 210, 600, 44, memoryMs / max, '#0f6f68', `memory ${memoryMs.toFixed(1)} ms`);
       const bottleneck = computeMs > memoryMs ? 'compute-bound' : 'memory-bound';
       text(ctx, bottleneck, 120, 320, computeMs > memoryMs ? '#314f78' : '#0f6f68', 24, '900');
-      setText('rooflineReadout', `latency lower bound = ${lower.toFixed(1)} ms · ${bottleneck} · arithmetic intensity = ${(flops / Math.max(bytes, 1)).toFixed(2)} TF/GB`);
+      setText('rooflineReadout', `教学估计 lower bound = ${lower.toFixed(1)} ms · ${bottleneck} · arithmetic intensity = ${(flops / Math.max(bytes, 1)).toFixed(2)} TF/GB · batch scaling is a toy sqrt(B) model`);
     }
     ids.forEach((id) => $(id)?.addEventListener('input', draw));
     draw();
@@ -698,7 +710,7 @@ compiled_step = build_training_runtime(graph)`,
       });
       text(ctx, 'acceptance prefix probability', 88, 58, '#171817', 16, '900');
       bar(ctx, 520, 92, 260, 22, Math.min(1, speedup / 4), speedup >= 1 ? '#0f6f68' : '#a9432f', `speedup ${speedup.toFixed(2)}x`);
-      setText('specReadout', `expected accepted tokens = ${expectedAccepted.toFixed(2)} / ${K} · target forwards per token lower when speedup > 1 · estimated speedup = ${speedup.toFixed(2)}x`);
+      setText('specReadout', `教学估计 accepted tokens = ${expectedAccepted.toFixed(2)} / ${K} · target forwards per token lower when speedup > 1 · estimated speedup = ${speedup.toFixed(2)}x`);
     }
     ['specQuality', 'specK', 'specCost', 'specTemp'].forEach((id) => $(id)?.addEventListener('input', draw));
     draw();
@@ -731,7 +743,7 @@ compiled_step = build_training_runtime(graph)`,
       text(ctx, `${sampler} trajectory · NFE ${steps}`, 82, 58, '#171817', 17, '900');
       bar(ctx, 520, 86, 260, 20, Math.min(1, error / 24), '#a9432f', `estimated error ${error.toFixed(2)}`);
       bar(ctx, 520, 136, 260, 20, Math.min(1, latency / 5000), '#314f78', `latency ${latency} ms`);
-      setText('nfeReadout', `estimated latency = ${latency} ms · quality-risk score = ${error.toFixed(2)} · strong CFG can destabilize high-order jumps`);
+      setText('nfeReadout', `教学估计 latency = ${latency} ms · quality-risk score = ${error.toFixed(2)} · strong CFG can destabilize high-order jumps`);
     }
     ['nfeSampler', 'nfeSteps', 'nfeGuidance', 'nfeOrder'].forEach((id) => {
       $(id)?.addEventListener('input', draw);
@@ -778,7 +790,7 @@ compiled_step = build_training_runtime(graph)`,
       text(ctx, 'blue=compute · teal=reuse · red=forced refresh', 110, 325, '#171817', 15, '850');
       const speedup = (compute + reuse) / Math.max(compute, 1);
       const risk = Math.max(0, reuse / (compute + reuse) * 100 - refresh * 0.2);
-      setText('cacheReadout', `estimated speedup = ${speedup.toFixed(2)}x · cache hit rate = ${(100 * reuse / (compute + reuse)).toFixed(0)}% · quality risk = ${risk.toFixed(0)}`);
+      setText('cacheReadout', `教学估计 speedup = ${speedup.toFixed(2)}x · cache hit rate = ${(100 * reuse / (compute + reuse)).toFixed(0)}% · quality risk = ${risk.toFixed(0)}`);
     }
     ['cacheInterval', 'cacheThreshold', 'cacheRefresh'].forEach((id) => $(id)?.addEventListener('input', draw));
     draw();
@@ -853,7 +865,7 @@ compiled_step = build_training_runtime(graph)`,
         { label: 'optimizer shard', value: optGb / shard, display: `${(optGb / shard).toFixed(1)} GB` },
         { label: 'activations', value: actGb, display: `${actGb.toFixed(1)} GB` }
       ]);
-      setText('trainingReadout', `per-GPU memory = ${perGpu.toFixed(1)} GB · optimizer = ${optimizer} · checkpoint = ${ckpt}`);
+      setText('trainingReadout', `教学估计 per-GPU memory = ${perGpu.toFixed(1)} GB · optimizer = ${optimizer} · checkpoint = ${ckpt}`);
     }
     ids.forEach((id) => $(id)?.addEventListener('input', draw));
     ['trainOptimizer', 'trainCheckpoint'].forEach((id) => $(id)?.addEventListener('change', draw));

@@ -71,6 +71,10 @@ html[data-theme="dark"] .timeline-roadmap article {
   background: var(--panel-strong);
 }
 
+html[data-theme="dark"] .algorithm-panel {
+  background: var(--panel-strong);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -288,6 +292,11 @@ canvas {
 .visual-example,
 .algorithm-panel,
 .judgement-card,
+.reader-nav,
+.route-card,
+.method-section,
+.method-note,
+.decision-tree,
 .misconception-card,
 .warning-card,
 .chapter-checkpoints,
@@ -299,6 +308,101 @@ canvas {
   border: 1px solid var(--line);
   border-radius: 6px;
   box-shadow: var(--shadow);
+}
+
+blockquote {
+  padding: 1rem 1.15rem;
+  margin: 1rem 0 0;
+  color: var(--ink);
+  line-height: 1.75;
+  background: rgba(15, 111, 104, 0.08);
+  border: 1px solid rgba(15, 111, 104, 0.22);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+}
+
+blockquote strong {
+  color: var(--accent-deep);
+}
+
+.reader-nav,
+.fact-grid,
+.method-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.reader-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.reader-nav article,
+.fact-grid article,
+.method-grid div {
+  padding: 1rem;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+
+.reader-nav strong,
+.fact-grid strong,
+.method-grid strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.fact-grid,
+.method-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.method-section {
+  margin-top: 1.25rem;
+}
+
+.method-section > h3,
+.route-card > h3 {
+  color: var(--accent-deep);
+}
+
+.method-note {
+  border-left: 4px solid var(--blue);
+}
+
+.method-note strong {
+  color: var(--blue);
+}
+
+.step-list,
+.eval-checklist,
+.open-list {
+  display: grid;
+  gap: 0.72rem;
+  padding-left: 1.35rem;
+  margin: 1rem 0 0;
+}
+
+.step-list li,
+.eval-checklist li,
+.open-list li {
+  padding: 0.5rem 0.2rem;
+}
+
+.decision-tree {
+  display: grid;
+  gap: 0.7rem;
+  border-left: 4px solid var(--gold);
+}
+
+.decision-tree p {
+  padding: 0.75rem 0.9rem;
+  margin: 0;
+  color: var(--muted);
+  background: var(--soft);
+  border-radius: 5px;
 }
 
 .equation {
@@ -558,7 +662,7 @@ output {
 
 .timeline-roadmap {
   display: grid;
-  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
   gap: 0.4rem;
   align-items: center;
   padding: 1rem;
@@ -617,6 +721,18 @@ output {
 .comparison-table td:first-child {
   color: var(--ink);
   font-weight: 850;
+}
+
+.comparison-table a {
+  color: var(--accent-deep);
+  font-weight: 850;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.glossary-table td:first-child,
+.misunderstanding-table td:first-child {
+  white-space: nowrap;
 }
 
 .toc-toggle {
@@ -733,6 +849,9 @@ output {
   .judgement-grid,
   .calculator-inline,
   .lab-controls-grid,
+  .reader-nav,
+  .fact-grid,
+  .method-grid,
   .timeline-roadmap {
     grid-template-columns: 1fr;
   }

@@ -65,7 +65,7 @@
     <section class="chapter problem" id="overview">
       <header class="chapter-header">
         <h2>总览：先识别模式，再写代码</h2>
-        <p class="chapter-summary">Hot100 覆盖哈希、指针、窗口、链表、树、图、回溯、二分、栈、堆、贪心和 DP。每题都按“题目、分析、解法、复杂度”组织，代码默认使用 LeetCode Python 3 环境。</p>
+        <p class="chapter-summary">Hot100 覆盖哈希、指针、窗口、链表、树、图、回溯、二分、栈、堆、贪心和 DP。每题都按“题目、样例、分析、解法、复杂度”组织，代码默认使用 LeetCode Python 3 环境。</p>
       </header>
       <div class="visual-example interactive-lab overview-panel" aria-label="Hot100 learning route">
         <div class="visual-copy">
@@ -96,7 +96,7 @@
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="简单" data-title="1 两数之和 Two Sum two-sum 数组、哈希表">
+         <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="简单" data-title="1 两数之和 Two Sum two-sum 数组、哈希表">
           <summary>
             <span class="problem-title"><span class="problem-id">1</span>两数之和</span>
             <span class="problem-meta"><span>Two Sum</span><span>简单</span></span>
@@ -110,6 +110,22 @@
               <p><strong>输入：</strong>判题入口是 <code>Solution.twoSum(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：给定一个整数数组和目标值，找出两个不同位置的数，使它们的和等于目标值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>2 &lt;= nums.length &lt;= 10^4</li><li>-10^9 &lt;= nums[i] &lt;= 10^9</li><li>-10^9 &lt;= target &lt;= 10^9</li><li>只会存在一个有效答案</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,7,11,15], target = 9</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,2,4], target = 6</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -141,7 +157,7 @@
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="中等" data-title="49 字母异位词分组 Group Anagrams group-anagrams 数组、哈希表、字符串、排序">
+         <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="中等" data-title="49 字母异位词分组 Group Anagrams group-anagrams 数组、哈希表、字符串、排序">
           <summary>
             <span class="problem-title"><span class="problem-id">49</span>字母异位词分组</span>
             <span class="problem-meta"><span>Group Anagrams</span><span>中等</span></span>
@@ -155,6 +171,22 @@
               <p><strong>输入：</strong>判题入口是 <code>Solution.groupAnagrams(...)</code>，输入参数为 <code>strs</code>（List[str]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[str]]</code>；返回值含义是：把一组字符串按字母异位词分组：字符种类和次数完全相同的字符串放在一起。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= strs.length &lt;= 10^4</li><li>0 &lt;= strs[i].length &lt;= 100</li><li>strs[i] 仅包含小写字母</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>strs = ["eat", "tea", "tan", "ate", "nat", "bat"]</code></div>
+                <div class="sample-io"><span>输出</span><code>[["bat"],["nat","tan"],["ate","eat","tea"]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>strs = [""]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[""]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -187,7 +219,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="中等" data-title="128 最长连续序列 Longest Consecutive Sequence longest-consecutive-sequence 并查集、数组、哈希表">
+         <details class="problem-card" data-problem-card data-group="哈希" data-difficulty="中等" data-title="128 最长连续序列 Longest Consecutive Sequence longest-consecutive-sequence 并查集、数组、哈希表">
           <summary>
             <span class="problem-title"><span class="problem-id">128</span>最长连续序列</span>
             <span class="problem-meta"><span>Longest Consecutive Sequence</span><span>中等</span></span>
@@ -201,6 +233,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.longestConsecutive(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在未排序数组中，求最长连续整数序列的长度。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= nums.length &lt;= 10^5</li><li>-10^9 &lt;= nums[i] &lt;= 10^9</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [100,4,200,1,3,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0,3,7,2,5,8,4,6,0,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>9</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -244,7 +292,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="简单" data-title="283 移动零 Move Zeroes move-zeroes 数组、双指针">
+         <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="简单" data-title="283 移动零 Move Zeroes move-zeroes 数组、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">283</span>移动零</span>
             <span class="problem-meta"><span>Move Zeroes</span><span>简单</span></span>
@@ -258,6 +306,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.moveZeroes(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：把数组中的 0 移到末尾，同时保持非零元素的相对顺序。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^4</li><li>-2^31 &lt;= nums[i] &lt;= 2^31 - 1</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0,1,0,3,12]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,3,12,0,0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -286,7 +350,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="中等" data-title="11 盛最多水的容器 Container With Most Water container-with-most-water 贪心、数组、双指针">
+         <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="中等" data-title="11 盛最多水的容器 Container With Most Water container-with-most-water 贪心、数组、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">11</span>盛最多水的容器</span>
             <span class="problem-meta"><span>Container With Most Water</span><span>中等</span></span>
@@ -300,6 +364,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxArea(...)</code>，输入参数为 <code>height</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定每个位置的高度，选择两条竖线和 x 轴组成容器，使盛水面积最大。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == height.length</li><li>2 &lt;= n &lt;= 10^5</li><li>0 &lt;= height[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>[1,8,6,2,5,4,8,3,7]</code></div>
+                <div class="sample-io"><span>输出</span><code>49</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>height = [1,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -333,7 +413,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="中等" data-title="15 三数之和 3Sum 3sum 数组、双指针、排序">
+         <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="中等" data-title="15 三数之和 3Sum 3sum 数组、双指针、排序">
           <summary>
             <span class="problem-title"><span class="problem-id">15</span>三数之和</span>
             <span class="problem-meta"><span>3Sum</span><span>中等</span></span>
@@ -347,6 +427,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.threeSum(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：找出数组中所有不重复的三元组，使三数之和为 0。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>3 &lt;= nums.length &lt;= 3000</li><li>-10^5 &lt;= nums[i] &lt;= 10^5</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-1,0,1,2,-1,-4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[-1,-1,2],[-1,0,1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0,1,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -394,7 +490,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="困难" data-title="42 接雨水 Trapping Rain Water trapping-rain-water 栈、数组、双指针、动态规划、单调栈">
+         <details class="problem-card" data-problem-card data-group="双指针" data-difficulty="困难" data-title="42 接雨水 Trapping Rain Water trapping-rain-water 栈、数组、双指针、动态规划、单调栈">
           <summary>
             <span class="problem-title"><span class="problem-id">42</span>接雨水</span>
             <span class="problem-meta"><span>Trapping Rain Water</span><span>困难</span></span>
@@ -408,6 +504,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.trap(...)</code>，输入参数为 <code>height</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定柱状高度，计算下雨后能接住的总水量。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == height.length</li><li>1 &lt;= n &lt;= 2 * 10^4</li><li>0 &lt;= height[i] &lt;= 10^5</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>height = [0,1,0,2,1,0,1,3,2,1,2,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>6</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>height = [4,2,0,3,2,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>9</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -454,7 +566,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="滑动窗口" data-difficulty="中等" data-title="3 无重复字符的最长子串 Longest Substring Without Repeating Characters longest-substring-without-repeating-characters 哈希表、字符串、滑动窗口">
+         <details class="problem-card" data-problem-card data-group="滑动窗口" data-difficulty="中等" data-title="3 无重复字符的最长子串 Longest Substring Without Repeating Characters longest-substring-without-repeating-characters 哈希表、字符串、滑动窗口">
           <summary>
             <span class="problem-title"><span class="problem-id">3</span>无重复字符的最长子串</span>
             <span class="problem-meta"><span>Longest Substring Without Repeating Characters</span><span>中等</span></span>
@@ -468,6 +580,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.lengthOfLongestSubstring(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求字符串中不含重复字符的最长连续子串长度。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= s.length &lt;= 5 * 10^4</li><li>s 由英文字母、数字、符号和空格组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "abcabcbb"</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "bbbbb"</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -500,7 +628,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="滑动窗口" data-difficulty="中等" data-title="438 找到字符串中所有字母异位词 Find All Anagrams in a String find-all-anagrams-in-a-string 哈希表、字符串、滑动窗口">
+         <details class="problem-card" data-problem-card data-group="滑动窗口" data-difficulty="中等" data-title="438 找到字符串中所有字母异位词 Find All Anagrams in a String find-all-anagrams-in-a-string 哈希表、字符串、滑动窗口">
           <summary>
             <span class="problem-title"><span class="problem-id">438</span>找到字符串中所有字母异位词</span>
             <span class="problem-meta"><span>Find All Anagrams in a String</span><span>中等</span></span>
@@ -514,6 +642,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.findAnagrams(...)</code>，输入参数为 <code>s</code>（str）、<code>p</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：在字符串 s 中找出所有与 p 互为字母异位词的子串起始下标。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length, p.length &lt;= 3 * 10^4</li><li>s 和 p 仅包含小写字母</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "cbaebabacd", p = "abc"</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,6]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "abab", p = "ab"</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,1,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -563,7 +707,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="子串" data-difficulty="中等" data-title="560 和为 K 的子数组 Subarray Sum Equals K subarray-sum-equals-k 数组、哈希表、前缀和">
+         <details class="problem-card" data-problem-card data-group="子串" data-difficulty="中等" data-title="560 和为 K 的子数组 Subarray Sum Equals K subarray-sum-equals-k 数组、哈希表、前缀和">
           <summary>
             <span class="problem-title"><span class="problem-id">560</span>和为 K 的子数组</span>
             <span class="problem-meta"><span>Subarray Sum Equals K</span><span>中等</span></span>
@@ -577,6 +721,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.subarraySum(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：统计和等于 k 的连续子数组数量。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 2 * 10^4</li><li>-1000 &lt;= nums[i] &lt;= 1000</li><li>-10^7 &lt;= k &lt;= 10^7</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,1,1], k = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3], k = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -611,7 +771,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="子串" data-difficulty="困难" data-title="239 滑动窗口最大值 Sliding Window Maximum sliding-window-maximum 队列、数组、滑动窗口、单调队列、堆（优先队列）">
+         <details class="problem-card" data-problem-card data-group="子串" data-difficulty="困难" data-title="239 滑动窗口最大值 Sliding Window Maximum sliding-window-maximum 队列、数组、滑动窗口、单调队列、堆（优先队列）">
           <summary>
             <span class="problem-title"><span class="problem-id">239</span>滑动窗口最大值</span>
             <span class="problem-meta"><span>Sliding Window Maximum</span><span>困难</span></span>
@@ -625,6 +785,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxSlidingWindow(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：给定窗口大小 k，输出每个滑动窗口中的最大值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^5</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li><li>1 &lt;= k &lt;= nums.length</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,3,-1,-3,5,3,6,7], k = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,3,5,5,6,7]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1], k = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>[1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -661,7 +837,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="子串" data-difficulty="困难" data-title="76 最小覆盖子串 Minimum Window Substring minimum-window-substring 哈希表、字符串、滑动窗口">
+         <details class="problem-card" data-problem-card data-group="子串" data-difficulty="困难" data-title="76 最小覆盖子串 Minimum Window Substring minimum-window-substring 哈希表、字符串、滑动窗口">
           <summary>
             <span class="problem-title"><span class="problem-id">76</span>最小覆盖子串</span>
             <span class="problem-meta"><span>Minimum Window Substring</span><span>困难</span></span>
@@ -675,6 +851,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.minWindow(...)</code>，输入参数为 <code>s</code>（str）、<code>t</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>str</code>；返回值含义是：在 s 中找出包含 t 所有字符及其次数的最短连续子串。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == s.length</li><li>n == t.length</li><li>1 &lt;= m, n &lt;= 10^5</li><li>s 和 t 由英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "ADOBECODEBANC", t = "ABC"</code></div>
+                <div class="sample-io"><span>输出</span><code>"BANC"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "a", t = "a"</code></div>
+                <div class="sample-io"><span>输出</span><code>"a"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -731,7 +923,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="53 最大子数组和 Maximum Subarray maximum-subarray 数组、分治、动态规划">
+         <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="53 最大子数组和 Maximum Subarray maximum-subarray 数组、分治、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">53</span>最大子数组和</span>
             <span class="problem-meta"><span>Maximum Subarray</span><span>中等</span></span>
@@ -745,6 +937,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxSubArray(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求数组中和最大的连续子数组。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^5</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-2,1,-3,4,-1,2,1,-5,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>6</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -773,7 +981,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="56 合并区间 Merge Intervals merge-intervals 数组、排序">
+         <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="56 合并区间 Merge Intervals merge-intervals 数组、排序">
           <summary>
             <span class="problem-title"><span class="problem-id">56</span>合并区间</span>
             <span class="problem-meta"><span>Merge Intervals</span><span>中等</span></span>
@@ -787,6 +995,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.merge(...)</code>，输入参数为 <code>intervals</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：合并所有重叠区间，返回互不重叠的区间集合。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= intervals.length &lt;= 10^4</li><li>intervals[i].length == 2</li><li>0 &lt;= start i &lt;= end i &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>intervals = [[1,3],[2,6],[8,10],[15,18]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1,6],[8,10],[15,18]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>intervals = [[1,4],[4,5]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1,5]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -818,7 +1042,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="189 轮转数组 Rotate Array rotate-array 数组、数学、双指针">
+         <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="189 轮转数组 Rotate Array rotate-array 数组、数学、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">189</span>轮转数组</span>
             <span class="problem-meta"><span>Rotate Array</span><span>中等</span></span>
@@ -832,6 +1056,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.rotate(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：将数组向右轮转 k 个位置，要求原地修改。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^5</li><li>-2^31 &lt;= nums[i] &lt;= 2^31 - 1</li><li>0 &lt;= k &lt;= 10^5</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3,4,5,6,7], k = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>[5,6,7,1,2,3,4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-1,-100,3,99], k = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,99,-1,-100]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -867,7 +1107,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="238 除了自身以外数组的乘积 Product of Array Except Self product-of-array-except-self 数组、前缀和">
+         <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="中等" data-title="238 除了自身以外数组的乘积 Product of Array Except Self product-of-array-except-self 数组、前缀和">
           <summary>
             <span class="problem-title"><span class="problem-id">238</span>除了自身以外数组的乘积</span>
             <span class="problem-meta"><span>Product of Array Except Self</span><span>中等</span></span>
@@ -881,6 +1121,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.productExceptSelf(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：返回数组中每个位置除自身外所有元素的乘积，不能使用除法。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>2 &lt;= nums.length &lt;= 10^5</li><li>-30 &lt;= nums[i] &lt;= 30</li><li>输入 保证 数组 answer[i] 在 32 位 整数范围内</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[24,12,8,6]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-1,1,0,-3,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,0,9,0,0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -915,7 +1171,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="困难" data-title="41 缺失的第一个正数 First Missing Positive first-missing-positive 数组、哈希表">
+         <details class="problem-card" data-problem-card data-group="普通数组" data-difficulty="困难" data-title="41 缺失的第一个正数 First Missing Positive first-missing-positive 数组、哈希表">
           <summary>
             <span class="problem-title"><span class="problem-id">41</span>缺失的第一个正数</span>
             <span class="problem-meta"><span>First Missing Positive</span><span>困难</span></span>
@@ -929,6 +1185,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.firstMissingPositive(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在未排序整数数组中找出最小缺失正整数，要求线性时间和常数额外空间。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^5</li><li>-2^31 &lt;= nums[i] &lt;= 2^31 - 1</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,0]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,4,-1,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -971,7 +1243,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="73 矩阵置零 Set Matrix Zeroes set-matrix-zeroes 数组、哈希表、矩阵">
+         <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="73 矩阵置零 Set Matrix Zeroes set-matrix-zeroes 数组、哈希表、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">73</span>矩阵置零</span>
             <span class="problem-meta"><span>Set Matrix Zeroes</span><span>中等</span></span>
@@ -985,6 +1257,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.setZeroes(...)</code>，输入参数为 <code>matrix</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：若矩阵某个元素为 0，则把它所在行和列都置为 0，要求原地完成。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == matrix.length</li><li>n == matrix[0].length</li><li>1 &lt;= m, n &lt;= 200</li><li>-2^31 &lt;= matrix[i][j] &lt;= 2^31 - 1</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,1,1],[1,0,1],[1,1,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1,0,1],[0,0,0],[1,0,1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[0,0,0,0],[0,4,5,0],[0,3,1,0]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1028,7 +1316,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="54 螺旋矩阵 Spiral Matrix spiral-matrix 数组、矩阵、模拟">
+         <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="54 螺旋矩阵 Spiral Matrix spiral-matrix 数组、矩阵、模拟">
           <summary>
             <span class="problem-title"><span class="problem-id">54</span>螺旋矩阵</span>
             <span class="problem-meta"><span>Spiral Matrix</span><span>中等</span></span>
@@ -1042,6 +1330,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.spiralOrder(...)</code>，输入参数为 <code>matrix</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：按顺时针螺旋顺序返回矩阵中的所有元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == matrix.length</li><li>n == matrix[i].length</li><li>1 &lt;= m, n &lt;= 10</li><li>-100 &lt;= matrix[i][j] &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,2,3],[4,5,6],[7,8,9]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2,3,6,9,8,7,4,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2,3,4,8,12,11,10,9,5,6,7]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1084,7 +1388,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="48 旋转图像 Rotate Image rotate-image 数组、数学、矩阵">
+         <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="48 旋转图像 Rotate Image rotate-image 数组、数学、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">48</span>旋转图像</span>
             <span class="problem-meta"><span>Rotate Image</span><span>中等</span></span>
@@ -1098,6 +1402,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.rotate(...)</code>，输入参数为 <code>matrix</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：将 n x n 矩阵顺时针旋转 90 度，要求原地修改。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == matrix.length == matrix[i].length</li><li>1 &lt;= n &lt;= 20</li><li>-1000 &lt;= matrix[i][j] &lt;= 1000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,2,3],[4,5,6],[7,8,9]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[7,4,1],[8,5,2],[9,6,3]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1127,7 +1447,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="240 搜索二维矩阵 II Search a 2D Matrix II search-a-2d-matrix-ii 数组、二分查找、分治、矩阵">
+         <details class="problem-card" data-problem-card data-group="矩阵" data-difficulty="中等" data-title="240 搜索二维矩阵 II Search a 2D Matrix II search-a-2d-matrix-ii 数组、二分查找、分治、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">240</span>搜索二维矩阵 II</span>
             <span class="problem-meta"><span>Search a 2D Matrix II</span><span>中等</span></span>
@@ -1141,6 +1461,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.searchMatrix(...)</code>，输入参数为 <code>matrix</code>（List[List[int]]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：在每行每列都递增的矩阵中查找目标值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == matrix.length</li><li>n == matrix[i].length</li><li>1 &lt;= n, m &lt;= 300</li><li>-10^9 &lt;= matrix[i][j] &lt;= 10^9</li><li>每行的所有元素从左到右升序排列</li><li>每列的所有元素从上到下升序排列</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1184,7 +1520,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="160 相交链表 Intersection of Two Linked Lists intersection-of-two-linked-lists 哈希表、链表、双指针">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="160 相交链表 Intersection of Two Linked Lists intersection-of-two-linked-lists 哈希表、链表、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">160</span>相交链表</span>
             <span class="problem-meta"><span>Intersection of Two Linked Lists</span><span>简单</span></span>
@@ -1198,6 +1534,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.getIntersectionNode(...)</code>，输入参数为 <code>headA</code>（ListNode）、<code>headB</code>（ListNode）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：找出两个单链表开始相交的节点；相交指的是节点对象相同，不是值相同。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>listA 中节点数目为 m</li><li>listB 中节点数目为 n</li><li>1 &lt;= m, n &lt;= 3 * 10^4</li><li>1 &lt;= Node.val &lt;= 10^5</li><li>0 &lt;= skipA &lt;= m</li><li>0 &lt;= skipB &lt;= n</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>Intersected at '8'</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>Intersected at '2'</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1226,7 +1578,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="206 反转链表 Reverse Linked List reverse-linked-list 递归、链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="206 反转链表 Reverse Linked List reverse-linked-list 递归、链表">
           <summary>
             <span class="problem-title"><span class="problem-id">206</span>反转链表</span>
             <span class="problem-meta"><span>Reverse Linked List</span><span>简单</span></span>
@@ -1240,6 +1592,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.reverseList(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：反转单链表并返回新的头节点。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点的数目范围是 [0, 5000]</li><li>-5000 &lt;= Node.val &lt;= 5000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,3,4,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>[5,4,3,2,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>[2,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1284,7 +1652,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="234 回文链表 Palindrome Linked List palindrome-linked-list 栈、递归、链表、双指针">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="234 回文链表 Palindrome Linked List palindrome-linked-list 栈、递归、链表、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">234</span>回文链表</span>
             <span class="problem-meta"><span>Palindrome Linked List</span><span>简单</span></span>
@@ -1298,6 +1666,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.isPalindrome(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断单链表的节点值是否构成回文序列。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点数目在范围 [1, 10^5] 内</li><li>0 &lt;= Node.val &lt;= 9</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,2,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1340,7 +1724,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="141 环形链表 Linked List Cycle linked-list-cycle 哈希表、链表、双指针">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="141 环形链表 Linked List Cycle linked-list-cycle 哈希表、链表、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">141</span>环形链表</span>
             <span class="problem-meta"><span>Linked List Cycle</span><span>简单</span></span>
@@ -1354,6 +1738,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.hasCycle(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断链表中是否存在环。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点的数目范围是 [0, 10^4]</li><li>-10^5 &lt;= Node.val &lt;= 10^5</li><li>pos 为 -1 或者链表中的一个 有效索引</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [3,2,0,-4], pos = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2], pos = 0</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1384,7 +1784,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="142 环形链表 II Linked List Cycle II linked-list-cycle-ii 哈希表、链表、双指针">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="142 环形链表 II Linked List Cycle II linked-list-cycle-ii 哈希表、链表、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">142</span>环形链表 II</span>
             <span class="problem-meta"><span>Linked List Cycle II</span><span>中等</span></span>
@@ -1398,6 +1798,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.detectCycle(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：若链表有环，返回环的入口节点；否则返回 None。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点的数目范围在范围 [0, 10^4] 内</li><li>-10^5 &lt;= Node.val &lt;= 10^5</li><li>pos 的值为 -1 或者链表中的一个有效索引</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [3,2,0,-4], pos = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>返回索引为 1 的链表节点</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2], pos = 0</code></div>
+                <div class="sample-io"><span>输出</span><code>返回索引为 0 的链表节点</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1432,7 +1848,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="21 合并两个有序链表 Merge Two Sorted Lists merge-two-sorted-lists 递归、链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="简单" data-title="21 合并两个有序链表 Merge Two Sorted Lists merge-two-sorted-lists 递归、链表">
           <summary>
             <span class="problem-title"><span class="problem-id">21</span>合并两个有序链表</span>
             <span class="problem-meta"><span>Merge Two Sorted Lists</span><span>简单</span></span>
@@ -1446,6 +1862,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.mergeTwoLists(...)</code>，输入参数为 <code>list1</code>（Optional[ListNode]）、<code>list2</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：合并两个升序链表，返回合并后的升序链表。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>两个链表的节点数目范围是 [0, 50]</li><li>-100 &lt;= Node.val &lt;= 100</li><li>l1 和 l2 均按非递减顺序排列</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>l1 = [1,2,4], l2 = [1,3,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,1,2,3,4,4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>l1 = [], l2 = []</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1481,7 +1913,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="2 两数相加 Add Two Numbers add-two-numbers 递归、链表、数学">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="2 两数相加 Add Two Numbers add-two-numbers 递归、链表、数学">
           <summary>
             <span class="problem-title"><span class="problem-id">2</span>两数相加</span>
             <span class="problem-meta"><span>Add Two Numbers</span><span>中等</span></span>
@@ -1495,6 +1927,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.addTwoNumbers(...)</code>，输入参数为 <code>l1</code>（Optional[ListNode]）、<code>l2</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：两个非空链表按逆序存储非负整数，返回它们相加后的逆序链表。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>每个链表中的节点数在范围 [1, 100] 内</li><li>0 &lt;= Node.val &lt;= 9</li><li>题目数据保证列表表示的数字不含前导零</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>l1 = [2,4,3], l2 = [5,6,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[7,0,8]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>l1 = [0], l2 = [0]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1533,7 +1981,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="19 删除链表的倒数第 N 个结点 Remove Nth Node From End of List remove-nth-node-from-end-of-list 链表、双指针">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="19 删除链表的倒数第 N 个结点 Remove Nth Node From End of List remove-nth-node-from-end-of-list 链表、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">19</span>删除链表的倒数第 N 个结点</span>
             <span class="problem-meta"><span>Remove Nth Node From End of List</span><span>中等</span></span>
@@ -1547,6 +1995,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.removeNthFromEnd(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）、<code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：删除链表倒数第 n 个节点，并返回头节点。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中结点的数目为 sz</li><li>1 &lt;= sz &lt;= 30</li><li>0 &lt;= Node.val &lt;= 100</li><li>1 &lt;= n &lt;= sz</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,3,4,5], n = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2,3,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1], n = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1579,7 +2043,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="24 两两交换链表中的节点 Swap Nodes in Pairs swap-nodes-in-pairs 递归、链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="24 两两交换链表中的节点 Swap Nodes in Pairs swap-nodes-in-pairs 递归、链表">
           <summary>
             <span class="problem-title"><span class="problem-id">24</span>两两交换链表中的节点</span>
             <span class="problem-meta"><span>Swap Nodes in Pairs</span><span>中等</span></span>
@@ -1593,6 +2057,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.swapPairs(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：两两交换链表中的相邻节点，不能只交换节点值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点的数目在范围 [0, 100] 内</li><li>0 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,3,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[2,1,4,3]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = []</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1626,7 +2106,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="困难" data-title="25 K 个一组翻转链表 Reverse Nodes in k-Group reverse-nodes-in-k-group 递归、链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="困难" data-title="25 K 个一组翻转链表 Reverse Nodes in k-Group reverse-nodes-in-k-group 递归、链表">
           <summary>
             <span class="problem-title"><span class="problem-id">25</span>K 个一组翻转链表</span>
             <span class="problem-meta"><span>Reverse Nodes in k-Group</span><span>困难</span></span>
@@ -1640,6 +2120,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.reverseKGroup(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：每 k 个节点一组反转链表，不足 k 个节点的尾部保持原样。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中的节点数目为 n</li><li>1 &lt;= k &lt;= n &lt;= 5000</li><li>0 &lt;= Node.val &lt;= 1000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,3,4,5], k = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>[2,1,4,3,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [1,2,3,4,5], k = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,2,1,4,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1684,7 +2180,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="138 随机链表的复制 Copy List with Random Pointer copy-list-with-random-pointer 哈希表、链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="138 随机链表的复制 Copy List with Random Pointer copy-list-with-random-pointer 哈希表、链表">
           <summary>
             <span class="problem-title"><span class="problem-id">138</span>随机链表的复制</span>
             <span class="problem-meta"><span>Copy List with Random Pointer</span><span>中等</span></span>
@@ -1698,6 +2194,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.copyRandomList(...)</code>，输入参数为 <code>head</code>（&#x27;Optional[Node]&#x27;）。</p>
               <p><strong>输出：</strong>返回 <code>&#x27;Optional[Node]&#x27;</code>；返回值含义是：复制一个带 next 和 random 指针的链表，返回深拷贝后的头节点。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= n &lt;= 1000</li><li>-10^4 &lt;= Node.val &lt;= 10^4</li><li>Node.random 为 null 或指向链表中的节点</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [[7,null],[13,0],[11,4],[10,2],[1,0]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[7,null],[13,0],[11,4],[10,2],[1,0]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [[1,1],[2,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1,1],[2,1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1734,7 +2246,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="148 排序链表 Sort List sort-list 链表、双指针、分治、排序、归并排序">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="148 排序链表 Sort List sort-list 链表、双指针、分治、排序、归并排序">
           <summary>
             <span class="problem-title"><span class="problem-id">148</span>排序链表</span>
             <span class="problem-meta"><span>Sort List</span><span>中等</span></span>
@@ -1748,6 +2260,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.sortList(...)</code>，输入参数为 <code>head</code>（Optional[ListNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：在 O(n log n) 时间内对链表进行排序。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>链表中节点的数目在范围 [0, 5 * 10^4] 内</li><li>-10^5 &lt;= Node.val &lt;= 10^5</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>head = [4,2,1,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2,3,4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>head = [-1,5,3,4,0]</code></div>
+                <div class="sample-io"><span>输出</span><code>[-1,0,3,4,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1796,7 +2324,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="困难" data-title="23 合并 K 个升序链表 Merge k Sorted Lists merge-k-sorted-lists 链表、分治、堆（优先队列）、归并排序">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="困难" data-title="23 合并 K 个升序链表 Merge k Sorted Lists merge-k-sorted-lists 链表、分治、堆（优先队列）、归并排序">
           <summary>
             <span class="problem-title"><span class="problem-id">23</span>合并 K 个升序链表</span>
             <span class="problem-meta"><span>Merge k Sorted Lists</span><span>困难</span></span>
@@ -1810,6 +2338,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.mergeKLists(...)</code>，输入参数为 <code>lists</code>（List[Optional[ListNode]]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[ListNode]</code>；返回值含义是：合并 k 个升序链表，返回一个升序链表。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>k == lists.length</li><li>0 &lt;= k &lt;= 10^4</li><li>0 &lt;= lists[i].length &lt;= 500</li><li>-10^4 &lt;= lists[i][j] &lt;= 10^4</li><li>lists[i] 按 升序 排列</li><li>lists[i].length 的总和不超过 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>lists = [[1,4,5],[1,3,4],[2,6]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,1,2,3,4,4,5,6]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>lists = []</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>链表用数组展示节点值，输出表示返回链表的序列化结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1848,7 +2392,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="146 LRU 缓存 LRU Cache lru-cache 设计、哈希表、链表、双向链表">
+         <details class="problem-card" data-problem-card data-group="链表" data-difficulty="中等" data-title="146 LRU 缓存 LRU Cache lru-cache 设计、哈希表、链表、双向链表">
           <summary>
             <span class="problem-title"><span class="problem-id">146</span>LRU 缓存</span>
             <span class="problem-meta"><span>LRU Cache</span><span>中等</span></span>
@@ -1862,6 +2406,16 @@ class Solution:
               <p><strong>输入：</strong>设计类 <code>LRUCache</code>，判题器会按照官方操作序列调用构造器和公开方法。</p>
               <p><strong>输出：</strong>每次查询方法返回题目要求的布尔值、整数或浮点数；更新类方法只改变对象内部状态。核心目标是：设计 LRU 缓存，支持 get 和 put，容量满时淘汰最近最少使用的键。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= capacity &lt;= 3000</li><li>0 &lt;= key &lt;= 10000</li><li>0 &lt;= value &lt;= 10^5</li><li>最多调用 2 * 10^5 次 get 和 put</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"] [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[null, null, null, 1, null, -1, null, -1, 3, 4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>按操作序列依次执行；构造器和无返回值操作在输出中记为 null。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1912,7 +2466,7 @@ class LRUCache:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="94 二叉树的中序遍历 Binary Tree Inorder Traversal binary-tree-inorder-traversal 栈、树、深度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="94 二叉树的中序遍历 Binary Tree Inorder Traversal binary-tree-inorder-traversal 栈、树、深度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">94</span>二叉树的中序遍历</span>
             <span class="problem-meta"><span>Binary Tree Inorder Traversal</span><span>简单</span></span>
@@ -1926,6 +2480,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.inorderTraversal(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：返回二叉树的中序遍历结果。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目在范围 [0, 100] 内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,null,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,3,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = []</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1959,7 +2529,7 @@ class LRUCache:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="104 二叉树的最大深度 Maximum Depth of Binary Tree maximum-depth-of-binary-tree 树、深度优先搜索、广度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="104 二叉树的最大深度 Maximum Depth of Binary Tree maximum-depth-of-binary-tree 树、深度优先搜索、广度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">104</span>二叉树的最大深度</span>
             <span class="problem-meta"><span>Maximum Depth of Binary Tree</span><span>简单</span></span>
@@ -1973,6 +2543,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxDepth(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求二叉树的最大深度。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点的数量在 [0, 10^4] 区间内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [3,9,20,null,null,15,7]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,null,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -1999,7 +2585,7 @@ class LRUCache:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="226 翻转二叉树 Invert Binary Tree invert-binary-tree 树、深度优先搜索、广度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="226 翻转二叉树 Invert Binary Tree invert-binary-tree 树、深度优先搜索、广度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">226</span>翻转二叉树</span>
             <span class="problem-meta"><span>Invert Binary Tree</span><span>简单</span></span>
@@ -2013,6 +2599,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.invertTree(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[TreeNode]</code>；返回值含义是：翻转二叉树，使每个节点的左右子树交换。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目范围在 [0, 100] 内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [4,2,7,1,3,6,9]</code></div>
+                <div class="sample-io"><span>输出</span><code>[4,7,2,9,6,3,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [2,1,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[2,3,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2042,7 +2644,7 @@ class LRUCache:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="101 对称二叉树 Symmetric Tree symmetric-tree 树、深度优先搜索、广度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="101 对称二叉树 Symmetric Tree symmetric-tree 树、深度优先搜索、广度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">101</span>对称二叉树</span>
             <span class="problem-meta"><span>Symmetric Tree</span><span>简单</span></span>
@@ -2056,6 +2658,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.isSymmetric(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断二叉树是否关于中心轴镜像对称。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目在范围 [1, 1000] 内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,2,3,4,4,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,2,null,3,null,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2084,7 +2702,7 @@ class LRUCache:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="543 二叉树的直径 Diameter of Binary Tree diameter-of-binary-tree 树、深度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="543 二叉树的直径 Diameter of Binary Tree diameter-of-binary-tree 树、深度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">543</span>二叉树的直径</span>
             <span class="problem-meta"><span>Diameter of Binary Tree</span><span>简单</span></span>
@@ -2098,6 +2716,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.diameterOfBinaryTree(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求二叉树任意两个节点之间最长路径的边数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目在范围 [1, 10^4] 内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,3,4,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2132,7 +2766,7 @@ class LRUCache:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="102 二叉树的层序遍历 Binary Tree Level Order Traversal binary-tree-level-order-traversal 树、广度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="102 二叉树的层序遍历 Binary Tree Level Order Traversal binary-tree-level-order-traversal 树、广度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">102</span>二叉树的层序遍历</span>
             <span class="problem-meta"><span>Binary Tree Level Order Traversal</span><span>中等</span></span>
@@ -2146,6 +2780,22 @@ class LRUCache:
               <p><strong>输入：</strong>判题入口是 <code>Solution.levelOrder(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：按层从上到下返回二叉树节点值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目在范围 [0, 2000] 内</li><li>-1000 &lt;= Node.val &lt;= 1000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [3,9,20,null,null,15,7]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[3],[9,20],[15,7]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2186,7 +2836,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="108 将有序数组转换为二叉搜索树 Convert Sorted Array to Binary Search Tree convert-sorted-array-to-binary-search-tree 树、二叉搜索树、数组、分治、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="简单" data-title="108 将有序数组转换为二叉搜索树 Convert Sorted Array to Binary Search Tree convert-sorted-array-to-binary-search-tree 树、二叉搜索树、数组、分治、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">108</span>将有序数组转换为二叉搜索树</span>
             <span class="problem-meta"><span>Convert Sorted Array to Binary Search Tree</span><span>简单</span></span>
@@ -2200,6 +2850,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.sortedArrayToBST(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[TreeNode]</code>；返回值含义是：把升序数组转换为高度平衡二叉搜索树。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^4</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li><li>nums 按 严格递增 顺序排列</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-10,-3,0,5,9]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,-3,9,-10,null,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2232,7 +2898,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="98 验证二叉搜索树 Validate Binary Search Tree validate-binary-search-tree 树、深度优先搜索、二叉搜索树、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="98 验证二叉搜索树 Validate Binary Search Tree validate-binary-search-tree 树、深度优先搜索、二叉搜索树、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">98</span>验证二叉搜索树</span>
             <span class="problem-meta"><span>Validate Binary Search Tree</span><span>中等</span></span>
@@ -2246,6 +2912,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.isValidBST(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断一棵二叉树是否是合法二叉搜索树。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目范围在 [1, 10^4] 内</li><li>-2^31 &lt;= Node.val &lt;= 2^31 - 1</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [2,1,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [5,1,4,null,null,3,6]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2276,7 +2958,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="230 二叉搜索树中第 K 小的元素 Kth Smallest Element in a BST kth-smallest-element-in-a-bst 树、深度优先搜索、二叉搜索树、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="230 二叉搜索树中第 K 小的元素 Kth Smallest Element in a BST kth-smallest-element-in-a-bst 树、深度优先搜索、二叉搜索树、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">230</span>二叉搜索树中第 K 小的元素</span>
             <span class="problem-meta"><span>Kth Smallest Element in a BST</span><span>中等</span></span>
@@ -2290,6 +2972,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.kthSmallest(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：返回二叉搜索树中第 k 小的节点值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中的节点数为 n</li><li>1 &lt;= k &lt;= n &lt;= 10^4</li><li>0 &lt;= Node.val &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [3,1,4,null,2], k = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [5,3,6,2,4,null,null,1], k = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2324,7 +3022,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="199 二叉树的右视图 Binary Tree Right Side View binary-tree-right-side-view 树、深度优先搜索、广度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="199 二叉树的右视图 Binary Tree Right Side View binary-tree-right-side-view 树、深度优先搜索、广度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">199</span>二叉树的右视图</span>
             <span class="problem-meta"><span>Binary Tree Right Side View</span><span>中等</span></span>
@@ -2338,6 +3036,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.rightSideView(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：返回从右侧观察二叉树时每一层能看到的节点值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>二叉树的节点个数的范围是 [0,100]</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,3,null,5,null,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,3,4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,3,4,null,null,null,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,3,4,5]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2378,7 +3092,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="114 二叉树展开为链表 Flatten Binary Tree to Linked List flatten-binary-tree-to-linked-list 栈、树、深度优先搜索、链表、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="114 二叉树展开为链表 Flatten Binary Tree to Linked List flatten-binary-tree-to-linked-list 栈、树、深度优先搜索、链表、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">114</span>二叉树展开为链表</span>
             <span class="problem-meta"><span>Flatten Binary Tree to Linked List</span><span>中等</span></span>
@@ -2392,6 +3106,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.flatten(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：把二叉树原地展开为先序遍历顺序的单链表，使用 right 指针连接。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中结点数在范围 [0, 2000] 内</li><li>-100 &lt;= Node.val &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,5,3,4,null,6]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,null,2,null,3,null,4,null,5,null,6]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = []</code></div>
+                <div class="sample-io"><span>输出</span><code>[]</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2426,7 +3156,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="105 从前序与中序遍历序列构造二叉树 Construct Binary Tree from Preorder and Inorder Traversal construct-binary-tree-from-preorder-and-inorder-traversal 树、数组、哈希表、分治、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="105 从前序与中序遍历序列构造二叉树 Construct Binary Tree from Preorder and Inorder Traversal construct-binary-tree-from-preorder-and-inorder-traversal 树、数组、哈希表、分治、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">105</span>从前序与中序遍历序列构造二叉树</span>
             <span class="problem-meta"><span>Construct Binary Tree from Preorder and Inorder Traversal</span><span>中等</span></span>
@@ -2440,6 +3170,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.buildTree(...)</code>，输入参数为 <code>preorder</code>（List[int]）、<code>inorder</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>Optional[TreeNode]</code>；返回值含义是：根据前序遍历和中序遍历构造二叉树。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= preorder.length &lt;= 3000</li><li>inorder.length == preorder.length</li><li>-3000 &lt;= preorder[i], inorder[i] &lt;= 3000</li><li>preorder 和 inorder 均 无重复 元素</li><li>inorder 均出现在 preorder</li><li>preorder 保证 为二叉树的前序遍历序列</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,9,20,null,null,15,7]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>preorder = [-1], inorder = [-1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[-1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2479,7 +3225,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="437 路径总和 III Path Sum III path-sum-iii 树、深度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="437 路径总和 III Path Sum III path-sum-iii 树、深度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">437</span>路径总和 III</span>
             <span class="problem-meta"><span>Path Sum III</span><span>中等</span></span>
@@ -2493,6 +3239,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.pathSum(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）、<code>targetSum</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：统计二叉树中路径和等于 targetSum 的路径数量；路径必须向下，但不一定从根开始。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>二叉树的节点个数的范围是 [0,1000]</li><li>-10^9</li><li>-1000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2535,7 +3297,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="236 二叉树的最近公共祖先 Lowest Common Ancestor of a Binary Tree lowest-common-ancestor-of-a-binary-tree 树、深度优先搜索、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="中等" data-title="236 二叉树的最近公共祖先 Lowest Common Ancestor of a Binary Tree lowest-common-ancestor-of-a-binary-tree 树、深度优先搜索、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">236</span>二叉树的最近公共祖先</span>
             <span class="problem-meta"><span>Lowest Common Ancestor of a Binary Tree</span><span>中等</span></span>
@@ -2549,6 +3311,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.lowestCommonAncestor(...)</code>，输入参数为 <code>root</code>（&#x27;TreeNode&#x27;）、<code>p</code>（&#x27;TreeNode&#x27;）、<code>q</code>（&#x27;TreeNode&#x27;）。</p>
               <p><strong>输出：</strong>返回 <code>&#x27;TreeNode&#x27;</code>；返回值含义是：在普通二叉树中寻找两个给定节点的最近公共祖先。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目在范围 [2, 10^5] 内</li><li>-10^9</li><li>所有 Node.val 互不相同</li><li>p != q</li><li>p 和 q 均存在于给定的二叉树中</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4</code></div>
+                <div class="sample-io"><span>输出</span><code>5</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2579,7 +3357,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="困难" data-title="124 二叉树中的最大路径和 Binary Tree Maximum Path Sum binary-tree-maximum-path-sum 树、深度优先搜索、动态规划、二叉树">
+         <details class="problem-card" data-problem-card data-group="二叉树" data-difficulty="困难" data-title="124 二叉树中的最大路径和 Binary Tree Maximum Path Sum binary-tree-maximum-path-sum 树、深度优先搜索、动态规划、二叉树">
           <summary>
             <span class="problem-title"><span class="problem-id">124</span>二叉树中的最大路径和</span>
             <span class="problem-meta"><span>Binary Tree Maximum Path Sum</span><span>困难</span></span>
@@ -2593,6 +3371,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxPathSum(...)</code>，输入参数为 <code>root</code>（Optional[TreeNode]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求二叉树中任意非空路径的最大节点值之和，路径不必经过根。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>树中节点数目范围是 [1, 3 * 10^4]</li><li>-1000 &lt;= Node.val &lt;= 1000</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>root = [1,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>6</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>root = [-10,9,20,null,null,15,7]</code></div>
+                <div class="sample-io"><span>输出</span><code>42</code></div>
+                <p class="sample-note"><strong>说明：</strong>二叉树按层序数组表示，null 表示空子节点。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2637,7 +3431,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="200 岛屿数量 Number of Islands number-of-islands 深度优先搜索、广度优先搜索、并查集、数组、矩阵">
+         <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="200 岛屿数量 Number of Islands number-of-islands 深度优先搜索、广度优先搜索、并查集、数组、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">200</span>岛屿数量</span>
             <span class="problem-meta"><span>Number of Islands</span><span>中等</span></span>
@@ -2651,6 +3445,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.numIslands(...)</code>，输入参数为 <code>grid</code>（List[List[str]]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定由 0/1 组成的网格，统计岛屿数量；上下左右相邻的陆地属于同一岛。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == grid.length</li><li>n == grid[i].length</li><li>1 &lt;= m, n &lt;= 300</li><li>grid[i][j] 的值为 &#x27;0&#x27; 或 &#x27;1&#x27;</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [ ['1','1','1','1','0'], ['1','1','0','1','0'], ['1','1','0','0','0'], ['0','0','0','0','0'] ]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [ ['1','1','0','0','0'], ['1','1','0','0','0'], ['0','0','1','0','0'], ['0','0','0','1','1'] ]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2689,7 +3499,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="994 腐烂的橘子 Rotting Oranges rotting-oranges 广度优先搜索、数组、矩阵">
+         <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="994 腐烂的橘子 Rotting Oranges rotting-oranges 广度优先搜索、数组、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">994</span>腐烂的橘子</span>
             <span class="problem-meta"><span>Rotting Oranges</span><span>中等</span></span>
@@ -2703,6 +3513,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.orangesRotting(...)</code>，输入参数为 <code>grid</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：网格中腐烂橘子每分钟感染相邻新鲜橘子，求腐烂全部新鲜橘子的最短时间。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == grid.length</li><li>n == grid[i].length</li><li>1 &lt;= m, n &lt;= 10</li><li>grid[i][j] 仅为 0 、 1 或 2</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [[2,1,1],[1,1,0],[0,1,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [[2,1,1],[0,1,1],[1,0,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>-1</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2750,7 +3576,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="207 课程表 Course Schedule course-schedule 深度优先搜索、广度优先搜索、图、拓扑排序">
+         <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="207 课程表 Course Schedule course-schedule 深度优先搜索、广度优先搜索、图、拓扑排序">
           <summary>
             <span class="problem-title"><span class="problem-id">207</span>课程表</span>
             <span class="problem-meta"><span>Course Schedule</span><span>中等</span></span>
@@ -2764,6 +3590,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.canFinish(...)</code>，输入参数为 <code>numCourses</code>（int）、<code>prerequisites</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：给定课程先修关系，判断是否能完成所有课程。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= numCourses &lt;= 2000</li><li>0 &lt;= prerequisites.length &lt;= 5000</li><li>prerequisites[i].length == 2</li><li>0 &lt;= a i , b i &lt; numCourses</li><li>prerequisites[i] 中的所有课程对 互不相同</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>numCourses = 2, prerequisites = [[1,0]]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>numCourses = 2, prerequisites = [[1,0],[0,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2804,7 +3646,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="208 实现 Trie (前缀树) Implement Trie (Prefix Tree) implement-trie-prefix-tree 设计、字典树、哈希表、字符串">
+         <details class="problem-card" data-problem-card data-group="图论" data-difficulty="中等" data-title="208 实现 Trie (前缀树) Implement Trie (Prefix Tree) implement-trie-prefix-tree 设计、字典树、哈希表、字符串">
           <summary>
             <span class="problem-title"><span class="problem-id">208</span>实现 Trie (前缀树)</span>
             <span class="problem-meta"><span>Implement Trie (Prefix Tree)</span><span>中等</span></span>
@@ -2818,6 +3660,16 @@ class Solution:
               <p><strong>输入：</strong>设计类 <code>TrieNode</code>，判题器会按照官方操作序列调用构造器和公开方法。</p>
               <p><strong>输出：</strong>每次查询方法返回题目要求的布尔值、整数或浮点数；更新类方法只改变对象内部状态。核心目标是：实现前缀树，支持插入单词、查询完整单词和查询前缀。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= word.length, prefix.length &lt;= 2000</li><li>word 和 prefix 仅由小写英文字母组成</li><li>insert 、 search 和 startsWith 调用次数 总计 不超过 3 * 10^4 次</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>["Trie", "insert", "search", "search", "startsWith", "insert", "search"] [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[null, null, true, false, true, null, true]</code></div>
+                <p class="sample-note"><strong>说明：</strong>按操作序列依次执行；构造器和无返回值操作在输出中记为 null。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2878,7 +3730,7 @@ class Trie:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="46 全排列 Permutations permutations 数组、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="46 全排列 Permutations permutations 数组、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">46</span>全排列</span>
             <span class="problem-meta"><span>Permutations</span><span>中等</span></span>
@@ -2892,6 +3744,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.permute(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：返回数组中所有元素的全排列。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 6</li><li>-10 &lt;= nums[i] &lt;= 10</li><li>nums 中的所有整数 互不相同</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[0,1],[1,0]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2931,7 +3799,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="78 子集 Subsets subsets 位运算、数组、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="78 子集 Subsets subsets 位运算、数组、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">78</span>子集</span>
             <span class="problem-meta"><span>Subsets</span><span>中等</span></span>
@@ -2945,6 +3813,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.subsets(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：返回数组所有可能子集。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10</li><li>-10 &lt;= nums[i] &lt;= 10</li><li>nums 中的所有元素 互不相同</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0]</code></div>
+                <div class="sample-io"><span>输出</span><code>[[],[0]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -2977,7 +3861,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="17 电话号码的字母组合 Letter Combinations of a Phone Number letter-combinations-of-a-phone-number 哈希表、字符串、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="17 电话号码的字母组合 Letter Combinations of a Phone Number letter-combinations-of-a-phone-number 哈希表、字符串、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">17</span>电话号码的字母组合</span>
             <span class="problem-meta"><span>Letter Combinations of a Phone Number</span><span>中等</span></span>
@@ -2991,6 +3875,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.letterCombinations(...)</code>，输入参数为 <code>digits</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>List[str]</code>；返回值含义是：给定数字字符串，返回它能映射出的所有字母组合。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= digits.length &lt;= 4</li><li>digits[i] 是范围 [&#x27;2&#x27;, &#x27;9&#x27;] 的一个数字</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>digits = "23"</code></div>
+                <div class="sample-io"><span>输出</span><code>["ad","ae","af","bd","be","bf","cd","ce","cf"]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>digits = "2"</code></div>
+                <div class="sample-io"><span>输出</span><code>["a","b","c"]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3028,7 +3928,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="39 组合总和 Combination Sum combination-sum 数组、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="39 组合总和 Combination Sum combination-sum 数组、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">39</span>组合总和</span>
             <span class="problem-meta"><span>Combination Sum</span><span>中等</span></span>
@@ -3042,6 +3942,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.combinationSum(...)</code>，输入参数为 <code>candidates</code>（List[int]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：从候选数中选择若干数使和等于 target，同一个数可以重复使用。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= candidates.length &lt;= 30</li><li>2 &lt;= candidates[i] &lt;= 40</li><li>candidates 的所有元素 互不相同</li><li>1 &lt;= target &lt;= 40</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>candidates = [2,3,6,7], target = 7</code></div>
+                <div class="sample-io"><span>输出</span><code>[[2,2,3],[7]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>candidates = [2,3,5], target = 8</code></div>
+                <div class="sample-io"><span>输出</span><code>[[2,2,2,2],[2,3,3],[3,5]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3080,7 +3996,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="22 括号生成 Generate Parentheses generate-parentheses 字符串、动态规划、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="22 括号生成 Generate Parentheses generate-parentheses 字符串、动态规划、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">22</span>括号生成</span>
             <span class="problem-meta"><span>Generate Parentheses</span><span>中等</span></span>
@@ -3094,6 +4010,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.generateParenthesis(...)</code>，输入参数为 <code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[str]</code>；返回值含义是：生成所有由 n 对括号组成的合法括号序列。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= n &lt;= 8</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>n = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>["((()))","(()())","(())()","()(())","()()()"]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>n = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>["()"]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3132,7 +4064,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="79 单词搜索 Word Search word-search 深度优先搜索、数组、字符串、回溯、矩阵">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="79 单词搜索 Word Search word-search 深度优先搜索、数组、字符串、回溯、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">79</span>单词搜索</span>
             <span class="problem-meta"><span>Word Search</span><span>中等</span></span>
@@ -3146,6 +4078,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.exist(...)</code>，输入参数为 <code>board</code>（List[List[str]]）、<code>word</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断单词是否可以由网格中上下左右相邻的字符组成，同一格不能重复使用。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == board.length</li><li>n = board[i].length</li><li>1 &lt;= m, n &lt;= 6</li><li>1 &lt;= word.length &lt;= 15</li><li>board 和 word 仅由大小写英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = "ABCCED"</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = "SEE"</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3182,7 +4130,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="131 分割回文串 Palindrome Partitioning palindrome-partitioning 字符串、动态规划、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="中等" data-title="131 分割回文串 Palindrome Partitioning palindrome-partitioning 字符串、动态规划、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">131</span>分割回文串</span>
             <span class="problem-meta"><span>Palindrome Partitioning</span><span>中等</span></span>
@@ -3196,6 +4144,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.partition(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[str]]</code>；返回值含义是：把字符串切分成若干子串，要求每个子串都是回文，返回所有切分方案。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 16</li><li>s 仅由小写英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "aab"</code></div>
+                <div class="sample-io"><span>输出</span><code>[["a","a","b"],["aa","b"]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "a"</code></div>
+                <div class="sample-io"><span>输出</span><code>[["a"]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3236,7 +4200,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="困难" data-title="51 N 皇后 N-Queens n-queens 数组、回溯">
+         <details class="problem-card" data-problem-card data-group="回溯" data-difficulty="困难" data-title="51 N 皇后 N-Queens n-queens 数组、回溯">
           <summary>
             <span class="problem-title"><span class="problem-id">51</span>N 皇后</span>
             <span class="problem-meta"><span>N-Queens</span><span>困难</span></span>
@@ -3250,6 +4214,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.solveNQueens(...)</code>，输入参数为 <code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[str]]</code>；返回值含义是：在 n x n 棋盘放置 n 个皇后，使任意两个皇后都不能互相攻击。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= n &lt;= 9</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>n = 4</code></div>
+                <div class="sample-io"><span>输出</span><code>[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>n = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>[["Q"]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3300,7 +4280,7 @@ class Trie:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="简单" data-title="35 搜索插入位置 Search Insert Position search-insert-position 数组、二分查找">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="简单" data-title="35 搜索插入位置 Search Insert Position search-insert-position 数组、二分查找">
           <summary>
             <span class="problem-title"><span class="problem-id">35</span>搜索插入位置</span>
             <span class="problem-meta"><span>Search Insert Position</span><span>简单</span></span>
@@ -3314,6 +4294,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.searchInsert(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在升序数组中查找目标值，若不存在则返回它应插入的位置。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^4</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li><li>nums 为 无重复元素 的 升序 排列数组</li><li>-10^4 &lt;= target &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,3,5,6], target = 5</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,3,5,6], target = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3345,7 +4341,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="74 搜索二维矩阵 Search a 2D Matrix search-a-2d-matrix 数组、二分查找、矩阵">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="74 搜索二维矩阵 Search a 2D Matrix search-a-2d-matrix 数组、二分查找、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">74</span>搜索二维矩阵</span>
             <span class="problem-meta"><span>Search a 2D Matrix</span><span>中等</span></span>
@@ -3359,6 +4355,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.searchMatrix(...)</code>，输入参数为 <code>matrix</code>（List[List[int]]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：在行内递增且每行首元素大于上一行尾元素的矩阵中查找目标值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == matrix.length</li><li>n == matrix[i].length</li><li>1 &lt;= m, n &lt;= 100</li><li>-10^4 &lt;= matrix[i][j], target &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3394,7 +4406,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="34 在排序数组中查找元素的第一个和最后一个位置 Find First and Last Position of Element in Sorted Array find-first-and-last-position-of-element-in-sorted-array 数组、二分查找">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="34 在排序数组中查找元素的第一个和最后一个位置 Find First and Last Position of Element in Sorted Array find-first-and-last-position-of-element-in-sorted-array 数组、二分查找">
           <summary>
             <span class="problem-title"><span class="problem-id">34</span>在排序数组中查找元素的第一个和最后一个位置</span>
             <span class="problem-meta"><span>Find First and Last Position of Element in Sorted Array</span><span>中等</span></span>
@@ -3408,6 +4420,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.searchRange(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：在升序数组中找到目标值出现的第一个和最后一个位置。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= nums.length &lt;= 10^5</li><li>-10^9 &lt;= nums[i] &lt;= 10^9</li><li>nums 是一个非递减数组</li><li>-10^9 &lt;= target &lt;= 10^9</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [5,7,7,8,8,10], target = 8</code></div>
+                <div class="sample-io"><span>输出</span><code>[3,4]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [5,7,7,8,8,10], target = 6</code></div>
+                <div class="sample-io"><span>输出</span><code>[-1,-1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3445,7 +4473,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="33 搜索旋转排序数组 Search in Rotated Sorted Array search-in-rotated-sorted-array 数组、二分查找">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="33 搜索旋转排序数组 Search in Rotated Sorted Array search-in-rotated-sorted-array 数组、二分查找">
           <summary>
             <span class="problem-title"><span class="problem-id">33</span>搜索旋转排序数组</span>
             <span class="problem-meta"><span>Search in Rotated Sorted Array</span><span>中等</span></span>
@@ -3459,6 +4487,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.search(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>target</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在没有重复元素的旋转升序数组中查找目标值。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 5000</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li><li>nums 中的每个值都 独一无二</li><li>题目数据保证 nums 在预先未知的某个下标上进行了旋转</li><li>-10^4 &lt;= target &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [4,5,6,7,0,1,2], target = 0</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [4,5,6,7,0,1,2], target = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>-1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3498,7 +4542,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="153 寻找旋转排序数组中的最小值 Find Minimum in Rotated Sorted Array find-minimum-in-rotated-sorted-array 数组、二分查找">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="中等" data-title="153 寻找旋转排序数组中的最小值 Find Minimum in Rotated Sorted Array find-minimum-in-rotated-sorted-array 数组、二分查找">
           <summary>
             <span class="problem-title"><span class="problem-id">153</span>寻找旋转排序数组中的最小值</span>
             <span class="problem-meta"><span>Find Minimum in Rotated Sorted Array</span><span>中等</span></span>
@@ -3512,6 +4556,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.findMin(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在无重复的旋转升序数组中找到最小元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == nums.length</li><li>1 &lt;= n &lt;= 5000</li><li>-5000 &lt;= nums[i] &lt;= 5000</li><li>nums 中的所有整数 互不相同</li><li>nums 原来是一个升序排序的数组，并进行了 1 至 n 次旋转</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,4,5,1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [4,5,6,7,0,1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>0</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3543,7 +4603,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="困难" data-title="4 寻找两个正序数组的中位数 Median of Two Sorted Arrays median-of-two-sorted-arrays 数组、二分查找、分治">
+         <details class="problem-card" data-problem-card data-group="二分查找" data-difficulty="困难" data-title="4 寻找两个正序数组的中位数 Median of Two Sorted Arrays median-of-two-sorted-arrays 数组、二分查找、分治">
           <summary>
             <span class="problem-title"><span class="problem-id">4</span>寻找两个正序数组的中位数</span>
             <span class="problem-meta"><span>Median of Two Sorted Arrays</span><span>困难</span></span>
@@ -3557,6 +4617,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.findMedianSortedArrays(...)</code>，输入参数为 <code>nums1</code>（List[int]）、<code>nums2</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>float</code>；返回值含义是：给定两个升序数组，求合并后的中位数，要求对数时间。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>nums1.length == m</li><li>nums2.length == n</li><li>0 &lt;= m &lt;= 1000</li><li>0 &lt;= n &lt;= 1000</li><li>1 &lt;= m + n &lt;= 2000</li><li>-10^6 &lt;= nums1[i], nums2[i] &lt;= 10^6</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums1 = [1,3], nums2 = [2]</code></div>
+                <div class="sample-io"><span>输出</span><code>2.00000</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums1 = [1,2], nums2 = [3,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>2.50000</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3610,7 +4686,7 @@ class Trie:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="栈" data-difficulty="简单" data-title="20 有效的括号 Valid Parentheses valid-parentheses 栈、字符串">
+         <details class="problem-card" data-problem-card data-group="栈" data-difficulty="简单" data-title="20 有效的括号 Valid Parentheses valid-parentheses 栈、字符串">
           <summary>
             <span class="problem-title"><span class="problem-id">20</span>有效的括号</span>
             <span class="problem-meta"><span>Valid Parentheses</span><span>简单</span></span>
@@ -3624,6 +4700,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.isValid(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断括号字符串是否有效：括号必须按正确顺序闭合。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 10^4</li><li>s 仅由括号 &#x27;()[]{}&#x27; 组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "()"</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "()[]{}"</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3656,7 +4748,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="155 最小栈 Min Stack min-stack 栈、设计">
+         <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="155 最小栈 Min Stack min-stack 栈、设计">
           <summary>
             <span class="problem-title"><span class="problem-id">155</span>最小栈</span>
             <span class="problem-meta"><span>Min Stack</span><span>中等</span></span>
@@ -3670,6 +4762,16 @@ class Trie:
               <p><strong>输入：</strong>设计类 <code>MinStack</code>，判题器会按照官方操作序列调用构造器和公开方法。</p>
               <p><strong>输出：</strong>每次查询方法返回题目要求的布尔值、整数或浮点数；更新类方法只改变对象内部状态。核心目标是：设计一个支持 push、pop、top 和 getMin 的栈，所有操作都要 O(1)。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>-2^31 &lt;= val &lt;= 2^31 - 1</li><li>pop 、 top 和 getMin 操作总是在 非空栈 上调用</li><li>push , pop , top , and getMin 最多被调用 3 * 10^4 次</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>["MinStack","push","push","push","getMin","pop","top","getMin"] [[],[-2],[0],[-3],[],[],[],[]]</code></div>
+                <div class="sample-io"><span>输出</span><code>[null,null,null,null,-3,null,0,-2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>按操作序列依次执行；构造器和无返回值操作在输出中记为 null。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3709,7 +4811,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="394 字符串解码 Decode String decode-string 栈、递归、字符串">
+         <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="394 字符串解码 Decode String decode-string 栈、递归、字符串">
           <summary>
             <span class="problem-title"><span class="problem-id">394</span>字符串解码</span>
             <span class="problem-meta"><span>Decode String</span><span>中等</span></span>
@@ -3723,6 +4825,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.decodeString(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>str</code>；返回值含义是：解码形如 k[encoded_string] 的字符串，嵌套结构需要展开。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 30</li><li>s 由小写英文字母、数字和方括号 &#x27;[]&#x27; 组成</li><li>s 保证是一个 有效 的输入</li><li>s 中所有整数的取值范围为 [1, 300]</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "3[a]2[bc]"</code></div>
+                <div class="sample-io"><span>输出</span><code>"aaabcbc"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "3[a2[c]]"</code></div>
+                <div class="sample-io"><span>输出</span><code>"accaccacc"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3762,7 +4880,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="739 每日温度 Daily Temperatures daily-temperatures 栈、数组、单调栈">
+         <details class="problem-card" data-problem-card data-group="栈" data-difficulty="中等" data-title="739 每日温度 Daily Temperatures daily-temperatures 栈、数组、单调栈">
           <summary>
             <span class="problem-title"><span class="problem-id">739</span>每日温度</span>
             <span class="problem-meta"><span>Daily Temperatures</span><span>中等</span></span>
@@ -3776,6 +4894,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.dailyTemperatures(...)</code>，输入参数为 <code>temperatures</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：对每天温度，返回还要等多少天才会遇到更高温度；没有则为 0。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= temperatures.length &lt;= 10^5</li><li>30 &lt;= temperatures[i] &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>temperatures = [73,74,75,71,69,72,76,73]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,1,4,2,1,1,0,0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>temperatures = [30,40,50,60]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,1,1,0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3807,7 +4941,7 @@ class Trie:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="栈" data-difficulty="困难" data-title="84 柱状图中最大的矩形 Largest Rectangle in Histogram largest-rectangle-in-histogram 栈、数组、单调栈">
+         <details class="problem-card" data-problem-card data-group="栈" data-difficulty="困难" data-title="84 柱状图中最大的矩形 Largest Rectangle in Histogram largest-rectangle-in-histogram 栈、数组、单调栈">
           <summary>
             <span class="problem-title"><span class="problem-id">84</span>柱状图中最大的矩形</span>
             <span class="problem-meta"><span>Largest Rectangle in Histogram</span><span>困难</span></span>
@@ -3821,6 +4955,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.largestRectangleArea(...)</code>，输入参数为 <code>heights</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定柱状图高度，求能组成的最大矩形面积。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= heights.length &lt;= 10^5</li><li>0 &lt;= heights[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>heights = [2,1,5,6,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>10</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>heights = [2,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3863,7 +5013,7 @@ class Trie:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="堆" data-difficulty="中等" data-title="215 数组中的第K个最大元素 Kth Largest Element in an Array kth-largest-element-in-an-array 数组、分治、快速选择、排序、堆（优先队列）">
+         <details class="problem-card" data-problem-card data-group="堆" data-difficulty="中等" data-title="215 数组中的第K个最大元素 Kth Largest Element in an Array kth-largest-element-in-an-array 数组、分治、快速选择、排序、堆（优先队列）">
           <summary>
             <span class="problem-title"><span class="problem-id">215</span>数组中的第K个最大元素</span>
             <span class="problem-meta"><span>Kth Largest Element in an Array</span><span>中等</span></span>
@@ -3877,6 +5027,22 @@ class Trie:
               <p><strong>输入：</strong>判题入口是 <code>Solution.findKthLargest(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：找到数组中第 k 大的元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= k &lt;= nums.length &lt;= 10^5</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>[3,2,1,5,6,4], k = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>5</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>[3,2,3,1,2,4,5,5,6], k = 4</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3908,7 +5074,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="堆" data-difficulty="中等" data-title="347 前 K 个高频元素 Top K Frequent Elements top-k-frequent-elements 数组、哈希表、分治、桶排序、计数、快速选择、排序、堆（优先队列）">
+         <details class="problem-card" data-problem-card data-group="堆" data-difficulty="中等" data-title="347 前 K 个高频元素 Top K Frequent Elements top-k-frequent-elements 数组、哈希表、分治、桶排序、计数、快速选择、排序、堆（优先队列）">
           <summary>
             <span class="problem-title"><span class="problem-id">347</span>前 K 个高频元素</span>
             <span class="problem-meta"><span>Top K Frequent Elements</span><span>中等</span></span>
@@ -3922,6 +5088,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.topKFrequent(...)</code>，输入参数为 <code>nums</code>（List[int]）、<code>k</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：返回数组中出现频率最高的 k 个元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^5</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li><li>k 的取值范围是 [1, 数组中不相同的元素的个数]</li><li>题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,1,1,2,2,3], k = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1], k = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>[1]</code></div>
+                <p class="sample-note"><strong>说明：</strong>输出顺序可能不唯一，样例展示一种符合题意的合法结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -3954,7 +5136,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="堆" data-difficulty="困难" data-title="295 数据流的中位数 Find Median from Data Stream find-median-from-data-stream 设计、双指针、数据流、排序、堆（优先队列）">
+         <details class="problem-card" data-problem-card data-group="堆" data-difficulty="困难" data-title="295 数据流的中位数 Find Median from Data Stream find-median-from-data-stream 设计、双指针、数据流、排序、堆（优先队列）">
           <summary>
             <span class="problem-title"><span class="problem-id">295</span>数据流的中位数</span>
             <span class="problem-meta"><span>Find Median from Data Stream</span><span>困难</span></span>
@@ -3968,6 +5150,16 @@ class Solution:
               <p><strong>输入：</strong>设计类 <code>MedianFinder</code>，判题器会按照官方操作序列调用构造器和公开方法。</p>
               <p><strong>输出：</strong>每次查询方法返回题目要求的布尔值、整数或浮点数；更新类方法只改变对象内部状态。核心目标是：设计数据结构，持续加入数字并能返回当前中位数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>-10^5 &lt;= num &lt;= 10^5</li><li>在调用 findMedian 之前，数据结构中至少有一个元素</li><li>最多 5 * 10^4 次调用 addNum 和 findMedian</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"] [[], [1], [2], [], [3], []]</code></div>
+                <div class="sample-io"><span>输出</span><code>[null, null, null, 1.5, null, 2.0]</code></div>
+                <p class="sample-note"><strong>说明：</strong>按操作序列依次执行；构造器和无返回值操作在输出中记为 null。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4016,7 +5208,7 @@ class MedianFinder:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="简单" data-title="121 买卖股票的最佳时机 Best Time to Buy and Sell Stock best-time-to-buy-and-sell-stock 数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="简单" data-title="121 买卖股票的最佳时机 Best Time to Buy and Sell Stock best-time-to-buy-and-sell-stock 数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">121</span>买卖股票的最佳时机</span>
             <span class="problem-meta"><span>Best Time to Buy and Sell Stock</span><span>简单</span></span>
@@ -4030,6 +5222,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxProfit(...)</code>，输入参数为 <code>prices</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定每天股价，只允许买卖一次，求最大利润。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= prices.length &lt;= 10^5</li><li>0 &lt;= prices[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>[7,1,5,3,6,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>5</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>prices = [7,6,4,3,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>0</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4059,7 +5267,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="55 跳跃游戏 Jump Game jump-game 贪心、数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="55 跳跃游戏 Jump Game jump-game 贪心、数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">55</span>跳跃游戏</span>
             <span class="problem-meta"><span>Jump Game</span><span>中等</span></span>
@@ -4073,6 +5281,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.canJump(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断从数组第一个位置出发，是否能跳到最后一个位置。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^4</li><li>0 &lt;= nums[i] &lt;= 10^5</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,3,1,1,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,2,1,0,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4104,7 +5328,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="45 跳跃游戏 II Jump Game II jump-game-ii 贪心、数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="45 跳跃游戏 II Jump Game II jump-game-ii 贪心、数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">45</span>跳跃游戏 II</span>
             <span class="problem-meta"><span>Jump Game II</span><span>中等</span></span>
@@ -4118,6 +5342,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.jump(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求从第一个位置跳到最后一个位置的最少跳跃次数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 10^4</li><li>0 &lt;= nums[i] &lt;= 1000</li><li>题目保证可以到达 n - 1</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,3,1,1,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,3,0,1,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4149,7 +5389,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="763 划分字母区间 Partition Labels partition-labels 贪心、哈希表、双指针、字符串">
+         <details class="problem-card" data-problem-card data-group="贪心算法" data-difficulty="中等" data-title="763 划分字母区间 Partition Labels partition-labels 贪心、哈希表、双指针、字符串">
           <summary>
             <span class="problem-title"><span class="problem-id">763</span>划分字母区间</span>
             <span class="problem-meta"><span>Partition Labels</span><span>中等</span></span>
@@ -4163,6 +5403,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.partitionLabels(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>List[int]</code>；返回值含义是：把字符串划分为尽可能多的片段，使每个字母最多只出现在一个片段中。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 500</li><li>s 仅由小写英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "ababcbacadefegdehijhklij"</code></div>
+                <div class="sample-io"><span>输出</span><code>[9,7,8]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "eccbbbbdec"</code></div>
+                <div class="sample-io"><span>输出</span><code>[10]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4205,7 +5461,7 @@ class MedianFinder:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="简单" data-title="70 爬楼梯 Climbing Stairs climbing-stairs 记忆化、数学、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="简单" data-title="70 爬楼梯 Climbing Stairs climbing-stairs 记忆化、数学、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">70</span>爬楼梯</span>
             <span class="problem-meta"><span>Climbing Stairs</span><span>简单</span></span>
@@ -4219,6 +5475,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.climbStairs(...)</code>，输入参数为 <code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：每次可以爬 1 或 2 阶，求到达第 n 阶的方法数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= n &lt;= 45</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>n = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>n = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4246,7 +5518,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="简单" data-title="118 杨辉三角 Pascal&#x27;s Triangle pascals-triangle 数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="简单" data-title="118 杨辉三角 Pascal&#x27;s Triangle pascals-triangle 数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">118</span>杨辉三角</span>
             <span class="problem-meta"><span>Pascal&#x27;s Triangle</span><span>简单</span></span>
@@ -4260,6 +5532,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.generate(...)</code>，输入参数为 <code>numRows</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>List[List[int]]</code>；返回值含义是：生成杨辉三角前 numRows 行。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= numRows &lt;= 30</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>numRows = 5</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>numRows = 1</code></div>
+                <div class="sample-io"><span>输出</span><code>[[1]]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4290,7 +5578,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="198 打家劫舍 House Robber house-robber 数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="198 打家劫舍 House Robber house-robber 数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">198</span>打家劫舍</span>
             <span class="problem-meta"><span>House Robber</span><span>中等</span></span>
@@ -4304,6 +5592,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.rob(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：不能偷相邻房屋，求能偷到的最大金额。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 100</li><li>0 &lt;= nums[i] &lt;= 400</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>[1,2,3,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>[2,7,9,3,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>12</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4331,7 +5635,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="279 完全平方数 Perfect Squares perfect-squares 广度优先搜索、数学、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="279 完全平方数 Perfect Squares perfect-squares 广度优先搜索、数学、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">279</span>完全平方数</span>
             <span class="problem-meta"><span>Perfect Squares</span><span>中等</span></span>
@@ -4345,6 +5649,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.numSquares(...)</code>，输入参数为 <code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求组成 n 的完全平方数的最少数量。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= n &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>n = 12</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>n = 13</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4376,7 +5696,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="322 零钱兑换 Coin Change coin-change 广度优先搜索、数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="322 零钱兑换 Coin Change coin-change 广度优先搜索、数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">322</span>零钱兑换</span>
             <span class="problem-meta"><span>Coin Change</span><span>中等</span></span>
@@ -4390,6 +5710,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.coinChange(...)</code>，输入参数为 <code>coins</code>（List[int]）、<code>amount</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：给定硬币面额和总金额，求凑出金额所需的最少硬币数，不能凑出返回 -1。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= coins.length &lt;= 12</li><li>1 &lt;= coins[i] &lt;= 2^31 - 1</li><li>0 &lt;= amount &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>coins = [1, 2, 5], amount = 11</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>coins = [2], amount = 3</code></div>
+                <div class="sample-io"><span>输出</span><code>-1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4419,7 +5755,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="139 单词拆分 Word Break word-break 字典树、记忆化、数组、哈希表、字符串、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="139 单词拆分 Word Break word-break 字典树、记忆化、数组、哈希表、字符串、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">139</span>单词拆分</span>
             <span class="problem-meta"><span>Word Break</span><span>中等</span></span>
@@ -4433,6 +5769,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.wordBreak(...)</code>，输入参数为 <code>s</code>（str）、<code>wordDict</code>（List[str]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断字符串是否可以被字典中的一个或多个单词拼接而成。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 300</li><li>1 &lt;= wordDict.length &lt;= 1000</li><li>1 &lt;= wordDict[i].length &lt;= 20</li><li>s 和 wordDict[i] 仅由小写英文字母组成</li><li>wordDict 中的所有字符串 互不相同</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "leetcode", wordDict = ["leet", "code"]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "applepenapple", wordDict = ["apple", "pen"]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4465,7 +5817,7 @@ class MedianFinder:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="300 最长递增子序列 Longest Increasing Subsequence longest-increasing-subsequence 数组、二分查找、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="300 最长递增子序列 Longest Increasing Subsequence longest-increasing-subsequence 数组、二分查找、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">300</span>最长递增子序列</span>
             <span class="problem-meta"><span>Longest Increasing Subsequence</span><span>中等</span></span>
@@ -4479,6 +5831,22 @@ class MedianFinder:
               <p><strong>输入：</strong>判题入口是 <code>Solution.lengthOfLIS(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求数组中最长严格递增子序列的长度。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 2500</li><li>-10^4 &lt;= nums[i] &lt;= 10^4</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [10,9,2,5,3,7,101,18]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [0,1,0,3,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4512,7 +5880,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="152 乘积最大子数组 Maximum Product Subarray maximum-product-subarray 数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="152 乘积最大子数组 Maximum Product Subarray maximum-product-subarray 数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">152</span>乘积最大子数组</span>
             <span class="problem-meta"><span>Maximum Product Subarray</span><span>中等</span></span>
@@ -4526,6 +5894,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.maxProduct(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求数组中乘积最大的连续子数组。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 2 * 10^4</li><li>-10 &lt;= nums[i] &lt;= 10</li><li>nums 的任何子数组的乘积都 保证 是一个 32-位 整数</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,3,-2,4]</code></div>
+                <div class="sample-io"><span>输出</span><code>6</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [-2,0,-1]</code></div>
+                <div class="sample-io"><span>输出</span><code>0</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4556,7 +5940,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="416 分割等和子集 Partition Equal Subset Sum partition-equal-subset-sum 数组、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="中等" data-title="416 分割等和子集 Partition Equal Subset Sum partition-equal-subset-sum 数组、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">416</span>分割等和子集</span>
             <span class="problem-meta"><span>Partition Equal Subset Sum</span><span>中等</span></span>
@@ -4570,6 +5954,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.canPartition(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>bool</code>；返回值含义是：判断数组是否能分成两个和相等的子集。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 200</li><li>1 &lt;= nums[i] &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,5,11,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>true</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3,5]</code></div>
+                <div class="sample-io"><span>输出</span><code>false</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4603,7 +6003,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="困难" data-title="32 最长有效括号 Longest Valid Parentheses longest-valid-parentheses 栈、字符串、动态规划">
+         <details class="problem-card" data-problem-card data-group="动态规划" data-difficulty="困难" data-title="32 最长有效括号 Longest Valid Parentheses longest-valid-parentheses 栈、字符串、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">32</span>最长有效括号</span>
             <span class="problem-meta"><span>Longest Valid Parentheses</span><span>困难</span></span>
@@ -4617,6 +6017,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.longestValidParentheses(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求最长有效括号子串长度。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= s.length &lt;= 3 * 10^4</li><li>s[i] 为 &#x27;(&#x27; 或 &#x27;)&#x27;</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "(()"</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = ")()())"</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4662,7 +6078,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="62 不同路径 Unique Paths unique-paths 数学、动态规划、组合数学">
+         <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="62 不同路径 Unique Paths unique-paths 数学、动态规划、组合数学">
           <summary>
             <span class="problem-title"><span class="problem-id">62</span>不同路径</span>
             <span class="problem-meta"><span>Unique Paths</span><span>中等</span></span>
@@ -4676,6 +6092,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.uniquePaths(...)</code>，输入参数为 <code>m</code>（int）、<code>n</code>（int）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：机器人只能向右或向下移动，求从左上到右下的不同路径数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= m, n &lt;= 100</li><li>题目数据保证答案小于等于 2 * 10^9</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>m = 3, n = 7</code></div>
+                <div class="sample-io"><span>输出</span><code>28</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>m = 3, n = 2</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4704,7 +6136,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="64 最小路径和 Minimum Path Sum minimum-path-sum 数组、动态规划、矩阵">
+         <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="64 最小路径和 Minimum Path Sum minimum-path-sum 数组、动态规划、矩阵">
           <summary>
             <span class="problem-title"><span class="problem-id">64</span>最小路径和</span>
             <span class="problem-meta"><span>Minimum Path Sum</span><span>中等</span></span>
@@ -4718,6 +6150,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.minPathSum(...)</code>，输入参数为 <code>grid</code>（List[List[int]]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：在非负网格中，只能向右或向下，求从左上到右下的最小路径和。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>m == grid.length</li><li>n == grid[i].length</li><li>1 &lt;= m, n &lt;= 200</li><li>0 &lt;= grid[i][j] &lt;= 200</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [[1,3,1],[1,5,1],[4,2,1]]</code></div>
+                <div class="sample-io"><span>输出</span><code>7</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>grid = [[1,2,3],[4,5,6]]</code></div>
+                <div class="sample-io"><span>输出</span><code>12</code></div>
+                <p class="sample-note"><strong>说明：</strong>矩阵或网格按二维数组展示，输出为该输入下的结果。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4751,7 +6199,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="5 最长回文子串 Longest Palindromic Substring longest-palindromic-substring 双指针、字符串、动态规划">
+         <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="5 最长回文子串 Longest Palindromic Substring longest-palindromic-substring 双指针、字符串、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">5</span>最长回文子串</span>
             <span class="problem-meta"><span>Longest Palindromic Substring</span><span>中等</span></span>
@@ -4765,6 +6213,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.longestPalindrome(...)</code>，输入参数为 <code>s</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>str</code>；返回值含义是：求字符串中最长回文子串。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= s.length &lt;= 1000</li><li>s 仅由数字和英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>s = "babad"</code></div>
+                <div class="sample-io"><span>输出</span><code>"bab"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>s = "cbbd"</code></div>
+                <div class="sample-io"><span>输出</span><code>"bb"</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4799,7 +6263,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="1143 最长公共子序列 Longest Common Subsequence longest-common-subsequence 字符串、动态规划">
+         <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="1143 最长公共子序列 Longest Common Subsequence longest-common-subsequence 字符串、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">1143</span>最长公共子序列</span>
             <span class="problem-meta"><span>Longest Common Subsequence</span><span>中等</span></span>
@@ -4813,6 +6277,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.longestCommonSubsequence(...)</code>，输入参数为 <code>text1</code>（str）、<code>text2</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求两个字符串的最长公共子序列长度，子序列不要求连续。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= text1.length, text2.length &lt;= 1000</li><li>text1 和 text2 仅由小写英文字符组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>text1 = "abcde", text2 = "ace"</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>text1 = "abc", text2 = "abc"</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4848,7 +6328,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="72 编辑距离 Edit Distance edit-distance 字符串、动态规划">
+         <details class="problem-card" data-problem-card data-group="多维动态规划" data-difficulty="中等" data-title="72 编辑距离 Edit Distance edit-distance 字符串、动态规划">
           <summary>
             <span class="problem-title"><span class="problem-id">72</span>编辑距离</span>
             <span class="problem-meta"><span>Edit Distance</span><span>中等</span></span>
@@ -4862,6 +6342,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.minDistance(...)</code>，输入参数为 <code>word1</code>（str）、<code>word2</code>（str）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：求把 word1 转换成 word2 所需的最少插入、删除、替换操作数。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>0 &lt;= word1.length, word2.length &lt;= 500</li><li>word1 和 word2 由小写英文字母组成</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>word1 = "horse", word2 = "ros"</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>word1 = "intention", word2 = "execution"</code></div>
+                <div class="sample-io"><span>输出</span><code>5</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4908,7 +6404,7 @@ class Solution:
       </header>
       <div class="problem-list">
 
-        <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="简单" data-title="136 只出现一次的数字 Single Number single-number 位运算、数组">
+         <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="简单" data-title="136 只出现一次的数字 Single Number single-number 位运算、数组">
           <summary>
             <span class="problem-title"><span class="problem-id">136</span>只出现一次的数字</span>
             <span class="problem-meta"><span>Single Number</span><span>简单</span></span>
@@ -4922,6 +6418,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.singleNumber(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：数组中除一个元素只出现一次外，其余每个元素都出现两次，找出只出现一次的元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 3 * 10^4</li><li>-3 * 10^4 &lt;= nums[i] &lt;= 3 * 10^4</li><li>除了某个元素只出现一次以外，其余每个元素均出现两次</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,2,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>1</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [4,1,2,1,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>4</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4949,7 +6461,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="简单" data-title="169 多数元素 Majority Element majority-element 数组、哈希表、分治、计数、排序">
+         <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="简单" data-title="169 多数元素 Majority Element majority-element 数组、哈希表、分治、计数、排序">
           <summary>
             <span class="problem-title"><span class="problem-id">169</span>多数元素</span>
             <span class="problem-meta"><span>Majority Element</span><span>简单</span></span>
@@ -4963,6 +6475,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.majorityElement(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：找出数组中出现次数超过一半的多数元素。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == nums.length</li><li>1 &lt;= n &lt;= 5 * 10^4</li><li>-10^9 &lt;= nums[i] &lt;= 10^9</li><li>输入保证数组中一定有一个多数元素</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,2,1,1,1,2,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -4993,7 +6521,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="75 颜色分类 Sort Colors sort-colors 数组、双指针、排序">
+         <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="75 颜色分类 Sort Colors sort-colors 数组、双指针、排序">
           <summary>
             <span class="problem-title"><span class="problem-id">75</span>颜色分类</span>
             <span class="problem-meta"><span>Sort Colors</span><span>中等</span></span>
@@ -5007,6 +6535,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.sortColors(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：原地排序只包含 0、1、2 的数组，使相同颜色相邻。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>n == nums.length</li><li>1 &lt;= n &lt;= 300</li><li>nums[i] 为 0 、 1 或 2</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,0,2,1,1,0]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,0,1,1,2,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [2,0,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[0,1,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -5041,7 +6585,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="31 下一个排列 Next Permutation next-permutation 数组、双指针">
+         <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="31 下一个排列 Next Permutation next-permutation 数组、双指针">
           <summary>
             <span class="problem-title"><span class="problem-id">31</span>下一个排列</span>
             <span class="problem-meta"><span>Next Permutation</span><span>中等</span></span>
@@ -5055,6 +6599,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.nextPermutation(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>函数原地修改输入对象，不需要返回新对象；修改后的数据应满足：将数组原地变成字典序中的下一个排列；若已经最大，则变成最小排列。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= nums.length &lt;= 100</li><li>0 &lt;= nums[i] &lt;= 100</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,2,3]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,3,2]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,2,1]</code></div>
+                <div class="sample-io"><span>输出</span><code>[1,2,3]</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>
@@ -5091,7 +6651,7 @@ class Solution:
           </div>
         </details>
 
-        <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="287 寻找重复数 Find the Duplicate Number find-the-duplicate-number 位运算、数组、双指针、二分查找">
+         <details class="problem-card" data-problem-card data-group="技巧" data-difficulty="中等" data-title="287 寻找重复数 Find the Duplicate Number find-the-duplicate-number 位运算、数组、双指针、二分查找">
           <summary>
             <span class="problem-title"><span class="problem-id">287</span>寻找重复数</span>
             <span class="problem-meta"><span>Find the Duplicate Number</span><span>中等</span></span>
@@ -5105,6 +6665,22 @@ class Solution:
               <p><strong>输入：</strong>判题入口是 <code>Solution.findDuplicate(...)</code>，输入参数为 <code>nums</code>（List[int]）。</p>
               <p><strong>输出：</strong>返回 <code>int</code>；返回值含义是：长度为 n+1 的数组中每个数在 1..n 范围内，找出唯一重复的数，不能修改数组。</p>
               <div class="constraint-box"><strong>约束要点</strong><ul><li>1 &lt;= n &lt;= 10^5</li><li>nums.length == n + 1</li><li>1 &lt;= nums[i] &lt;= n</li><li>nums 中 只有一个整数 出现 两次或多次 ，其余整数均只出现 一次</li></ul></div>
+            </div>
+
+            <h4>样例</h4>
+            <div class="sample-list">
+              <div class="sample-card">
+                <strong>样例 1</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [1,3,4,2,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>2</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
+              <div class="sample-card">
+                <strong>样例 2</strong>
+                <div class="sample-io"><span>输入</span><code>nums = [3,1,3,4,2]</code></div>
+                <div class="sample-io"><span>输出</span><code>3</code></div>
+                <p class="sample-note"><strong>说明：</strong>该输入按题意计算后得到上述输出。</p>
+              </div>
             </div>
 
             <h4>题目分析</h4>

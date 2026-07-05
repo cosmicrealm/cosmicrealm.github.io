@@ -1,3 +1,45 @@
+- name: 大模型算法岗常见面试题深度解析
+  category: LLM 面试与系统基础
+  status: 20 题深度答案解析
+  featured: true
+  date: 2026-07-03
+  display_date: 07/2026
+  url: /foundations/llm-interview-qa/
+  teaser: /images/projects/llm-interview-qa.svg
+  teaser_alt: 大模型算法岗常见面试题深度解析缩略图
+  highlight: Transformer、训练、微调、推理、RAG、Agent 与评估的结构化问答
+  summary: >-
+    把 20 个大模型算法岗高频问题重构成讲义式答案解析：每题包含一句话速答、
+    1-2 分钟口述版本、原理推导、工程视角、常见追问、修订说明和记忆句。
+    内容按 Transformer、训练优化、模型架构、微调、推理部署、多模态与生成、
+    RAG / Agent / 评估线性组织，重点纠正 RoPE 外推、SwiGLU 门控、梯度检查点、QLoRA、偏好优化、
+    量化 zero-point、VLM 版本边界和 Benchmark 动态事实中的常见误区。
+  tags:
+    - LLM
+    - 面试
+    - Transformer
+    - RAG
+- name: AIGC 与 LLM 数学基础
+  category: 生成式 AI 数学
+  status: 可检索概念手册
+  featured: true
+  date: 2026-07-03
+  display_date: 07/2026
+  url: /foundations/aigc-llm-math/
+  teaser: /images/projects/aigc-llm-math.svg
+  teaser_alt: AIGC 与 LLM 数学基础课程路线图
+  highlight: 系统整理 AIGC、LLM、Diffusion、RLHF 与 DPO 相关数学概念
+  summary: >-
+    面向希望查阅和系统学习 AIGC 与 LLM 数学基础的研究者和工程师：把张量线性代数、
+    矩阵微积分、概率信息论、优化和数值计算、Transformer、next-token prediction、
+    LoRA、VAE、GAN、Diffusion、Flow Matching、RLHF、DPO 和评测统计中的关键概念整理成
+    可检索概念手册。每个概念按直觉解释、数学形式、模型中的位置和常见误区组织，并配套
+    attention、softmax、生成路径和 DPO loss 的交互实验。
+  tags:
+    - AIGC
+    - LLM
+    - 数学基础
+    - DPO
 - name: LeetCode 热题 100
   category: 算法与数据结构
   status: Python 题解与复杂度分析
@@ -46,12 +88,9 @@
   url: /foundations/image-generation-data-training/
   teaser: /images/projects/image-generation-data-training.svg
   teaser_alt: 图像生成模型的数据工程、caption、VAE、奖励学习与蒸馏技术图
-  highlight: FLUX、Qwen-Image、Z-Image 的数据治理、训练、RL 与蒸馏
+  highlight: FLUX.2、Qwen-Image、Z-Image 的数据、VAE、caption、RL 与蒸馏
   summary: >-
-    训练现代图像生成模型，关键不只是 DiT 主干。FLUX / FLUX.2、
-    Qwen-Image / Qwen-Image-2.0 和 Z-Image 的差异，更多体现在数据治理、
-    caption/OCR 系统、编辑对构造、VAE latent 保真度、多阶段训练、奖励后训练、
-    GRPO、OPD、Prompt Enhancer 和 few-step distillation。
+    现代图像生成模型的能力，不是单一 architecture 单独决定的，而是由数据分布、OCR caption、VAE latent 接口、编辑样本、奖励信号和 few-step distillation 共同塑造。这里比较 FLUX.2、Qwen-Image 与 Z-Image 三条路线，并给出数据 schema、评估指标、失败模式诊断和按预算分层的训练 recipe。
   tags:
     - 图像生成
     - 数据治理
@@ -100,19 +139,20 @@
     - RL 对齐
 - name: 生成模型蒸馏技术介绍
   category: 生成式蒸馏
-  status: teacher trajectory 到 fast student sampler
+  status: 路径压缩到自回归自校正
   featured: true
   date: 2026-06-27
   display_date: 06/2026
   url: /foundations/generation-distillation/
   teaser: /images/projects/diffusion-distillation-math-lab.svg
   teaser_alt: 从 teacher trajectory 到 fast student sampler 的生成模型蒸馏技术图
-  highlight: 从经典 KD 到 trajectory、consistency、DMD2、LADD 与 Self-Forcing
+  highlight: 从 teacher path 压缩到 distribution matching 与 self-rollout correction
   summary: >-
-    生成式蒸馏不是经典 KD 的 logits 模仿。核心问题是怎样把 teacher 的生成轨迹、
-    score/velocity 信息和少步采样行为压进 fast student sampler。这里用训练和推理伪代码、
-    交互机制实验串联 trajectory distillation、guided distillation、consistency、
-    DMD/DMD2、ADD/LADD、rectified-flow shortcuts、Self Forcing 和 Self-Forcing++。
+    生成式蒸馏不是经典 KD 的 logits 模仿。核心问题是低 NFE student 到底应该匹配
+    teacher path、endpoint、noisy marginal distribution、adversarial feature，
+    还是自己推理时会访问的 self-rollout state distribution。这里用公式、伪代码和
+    交互机制实验串联 Progressive/Guided Distillation、Consistency/LCM、DMD/DMD2、
+    ADD/LADD、Flow shortcuts、Self-Forcing 和 Self-Forcing++。
   tags:
     - Diffusion
     - 蒸馏

@@ -340,6 +340,9 @@ svg {
 }
 
 .thesis-grid,
+.roadmap-grid,
+.mental-steps,
+.definition-layers,
 .principle-grid,
 .detail-grid,
 .bottleneck-grid,
@@ -352,6 +355,9 @@ svg {
 }
 
 .thesis-grid article,
+.roadmap-grid article,
+.mental-steps article,
+.definition-layers article,
 .principle-grid article,
 .detail-grid article,
 .bottleneck-grid article,
@@ -359,6 +365,10 @@ svg {
 .glossary-grid article,
 .model-card,
 .source-note,
+.scope-note,
+.callout,
+.deep-note,
+.final-summary,
 .visual-example,
 .algorithm-panel,
 .warning-card,
@@ -376,6 +386,9 @@ svg {
 }
 
 .thesis-grid strong,
+.roadmap-grid strong,
+.mental-steps strong,
+.definition-layers strong,
 .bottleneck-grid strong,
 .reference-list strong,
 .model-card strong,
@@ -488,6 +501,63 @@ marker path {
 
 .principle-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.roadmap-grid,
+.definition-layers {
+  margin-top: 1rem;
+}
+
+.scope-note,
+.callout,
+.deep-note,
+.final-summary {
+  margin-top: 1rem;
+}
+
+.scope-note {
+  border-left: 4px solid var(--wan);
+}
+
+.callout {
+  border-left: 4px solid var(--ltx);
+}
+
+.figure-caption {
+  color: var(--faint);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.mental-steps {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.mental-steps span {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent-text);
+  font-family: var(--mono);
+  font-weight: 900;
+  background: var(--wan);
+  border-radius: 999px;
+}
+
+.deep-note {
+  color: var(--muted);
+}
+
+.deep-note summary {
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.final-summary {
+  border-left: 4px solid var(--green);
 }
 
 .lab-card,
@@ -746,6 +816,20 @@ output {
   border-collapse: collapse;
 }
 
+.table-scroll {
+  max-width: 100%;
+  margin-top: 1rem;
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.table-scroll .comparison-table {
+  min-width: 760px;
+}
+
 .compact-table {
   margin-top: 0.9rem;
 }
@@ -765,6 +849,13 @@ output {
 .comparison-table th {
   color: var(--ink);
   background: var(--table-head-bg);
+}
+
+.reference-table a {
+  color: var(--wan);
+  font-weight: 850;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 
 .source-note,
@@ -1075,8 +1166,10 @@ output {
 
 @media (max-width: 1100px) {
   .thesis-grid,
+  .roadmap-grid,
   .model-grid,
-  .bottleneck-grid {
+  .bottleneck-grid,
+  .mental-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1116,6 +1209,7 @@ output {
   }
 
   .principle-grid,
+  .definition-layers,
   .detail-grid,
   .algorithm-grid,
   .audio-compare,
@@ -1230,6 +1324,8 @@ output {
   }
 
   .thesis-grid,
+  .roadmap-grid,
+  .mental-steps,
   .model-grid,
   .lab-controls-grid,
   .ecosystem-map,

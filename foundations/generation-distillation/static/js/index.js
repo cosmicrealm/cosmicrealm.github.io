@@ -38,7 +38,8 @@ for round in distillation_rounds:
             x_mid = teacher.step(xt, t, t - delta, c)
             x_target = teacher.step(x_mid, t - delta, t - 2 * delta, c)
         x_pred = student.step(xt, t, t - 2 * delta, c)
-        loss = mse_or_lpips(x_pred, x_target)
+        # Low-NFE distillation is sensitive to parameterization and loss weights.
+        loss = weighted_distance(parametrize(x_pred), parametrize(x_target))
         update(student, loss)
 
     previous_sampler = student`,
@@ -102,8 +103,9 @@ for t_cur, t_next in consistency_schedule:
 return decode(x)`
     },
     dmd: {
-      train: `# Algorithm 5: basic DMD training
+      train: `# Algorithm 5: DMD-style distribution matching
 for iteration in training:
+    # 1. Track the current generator distribution with a fake score model
     for _ in range(fake_score_updates):
         z, c = sample_noise_and_condition()
         with no_grad():
@@ -113,6 +115,7 @@ for iteration in training:
         fake_score_loss = denoising_score_matching_loss(F_phi, xt, t, x_fake, c)
         update(F_phi, fake_score_loss)
 
+    # 2. Update the generator using the real/fake score gap
     z, c = sample_noise_and_condition()
     x_fake = G_theta(z, c)
     t = sample_timestep()
@@ -122,7 +125,8 @@ for iteration in training:
         s_fake = F_phi.score(xt, t, c)
         grad_target = weight(t) * (s_fake - s_real)
     dmd_loss = surrogate_dot(x_fake, grad_target)
-    update(G_theta, dmd_loss)`,
+    regression = optional_paired_teacher_regression(x_fake, c)
+    update(G_theta, dmd_loss + lambda_reg * regression)`,
       sample: `# Inference: one-step DMD student
 z = normal_noise(shape)
 x = G_theta(z, condition)
@@ -145,7 +149,7 @@ for iteration in training:
     loss_D = bce(D_psi(noise(x_real), c_real), 1) + bce(D_psi(noise(x_fake), c), 0)
     update(D_psi, loss_D)
 
-    # C. generator with DMD gradient surrogate + GAN loss
+    # C. generator update: no paired regression, only distribution signals
     x_fake = G_theta(sample_noise(), c)
     xt_fake = noise(x_fake, sample_timestep())
     s_real = stopgrad(T.score(xt_fake, t, c))
@@ -181,6 +185,7 @@ for iteration in training:
     t = sample_timestep()
     xt_fake = alpha(t) * x_fake + sigma(t) * normal_noise_like(x_fake)
     with no_grad():
+        # frozen diffusion teacher supervises the re-noised student output
         teacher_score = T.score(xt_fake, t, c)
     loss_score = score_distillation_surrogate(x_fake, teacher_score, t)
 
@@ -193,6 +198,7 @@ for iteration in training:
       sample: `# ADD inference
 z = normal_noise(shape)
 x = G_theta(z, prompt, num_steps=1_or_4)
+# teacher, CFG branch, and discriminator are not used at inference
 return x`
     },
     ladd: {
@@ -226,7 +232,7 @@ image = vae_decode(latent)
 return image`
     },
     flowdistill: {
-      train: `# Algorithm 9A: rectified flow / reflow-style training
+      train: `# Algorithm 9A: flow matching / reflow-style training
 for iteration in training:
     x0 = sample_base_noise()
     x1 = sample_data_or_teacher_sample()
@@ -235,7 +241,7 @@ for iteration in training:
     target_velocity = x1 - x0
     update(v_theta, mse(v_theta(xt, t, condition), target_velocity))
 
-# Algorithm 9B: average-velocity / shortcut-style training
+# Algorithm 9B: shortcut / MeanFlow-style average velocity
 for iteration in training:
     r, t = sample_interval()
     xr, xt = sample_two_points_on_teacher_or_data_path(r, t)
@@ -315,6 +321,7 @@ for iteration in training:
     W_t = alpha(t) * W + sigma(t) * normal_noise_like(W)
 
     with no_grad():
+        # short-horizon teacher only evaluates this local window
         s_teacher = T.score_or_velocity(W_t, t, condition=c)
     s_student = F_phi.score(W_t, t, c) if use_fake_score else G_theta.score_proxy(W_t, t, c)
     # extended DMD: align long-rollout windows with the short-horizon teacher

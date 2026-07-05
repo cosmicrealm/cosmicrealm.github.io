@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="AIGC 与 LLM 数学概念手册：从张量、概率到生成与对齐">
+  <meta name="description" content="面向 AIGC 与 LLM 研究和工程的中文数学概念手册：系统解释线性代数、自动微分、概率信息论、优化、Transformer、Diffusion、Flow Matching、RLHF、DPO 与评测统计中的关键概念。">
+  <meta name="keywords" content="AIGC, LLM, mathematics, Transformer, diffusion, flow matching, RLHF, DPO, cross entropy, KL divergence, attention, LoRA">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AIGC 与 LLM 数学概念手册">
+  <meta property="og:description" content="系统整理 AIGC 与 LLM 中的关键数学概念，形成可检索、可查阅、深入浅出的概念手册。">
+  <meta property="og:url" content="https://cosmicrealm.github.io/foundations/aigc-llm-math/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/aigc-llm-math.svg">
+  <meta property="og:image:alt" content="AIGC 与 LLM 数学基础课程路线图">
+  <meta property="article:modified_time" content="2026-07-03">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AIGC 与 LLM 数学概念手册">
+  <meta name="twitter:description" content="A searchable concept handbook for AIGC, LLMs, generative models, and preference optimization.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/aigc-llm-math.svg">
+  <title>AIGC 与 LLM 数学概念手册 | Tensor, Probability, Generation, Alignment</title>
+  <link rel="canonical" href="https://cosmicrealm.github.io/foundations/aigc-llm-math/">
+  <link rel="icon" href="../../images/favicon.svg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AIGC 与 LLM 数学概念手册",
+  "description": "系统整理 AIGC 与 LLM 中的关键数学概念，形成可检索、可查阅、深入浅出的概念手册。",
+  "author": {
+    "@type": "Person",
+    "name": "Jinyang Zhang"
+  },
+  "dateModified": "2026-07-03",
+  "mainEntityOfPage": "https://cosmicrealm.github.io/foundations/aigc-llm-math/",
+  "keywords": [
+    "AIGC",
+    "LLM",
+    "Transformer",
+    "Diffusion",
+    "Flow Matching",
+    "RLHF",
+    "DPO",
+    "Evaluation Statistics"
+  ]
+}
+  </script>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+  <script defer src="../generation-math/static/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+  <header class="site-header">
+    <a class="brand" href="/">Jinyang Zhang</a>
+    <nav class="module-nav" aria-label="Foundation module navigation">
+      <a href="/">返回主页</a>
+      <a href="/foundations/">返回 Foundations</a>
+    </nav>
+  </header>
+
+  <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
+  <aside class="lecture-toc" id="lectureToc" aria-label="AIGC 与 LLM 数学基础目录">
+    <p>概念模块导航</p>
+    <nav>
+      <div class="toc-module"><a href="#why">为什么要学</a></div>
+      <div class="toc-module"><a href="#concept-index">概念索引</a></div>
+      <div class="toc-module" data-toc-module="线性代数与张量">
+        <a class="toc-module-link" href="#concept-linear">线性代数与张量</a>
+        <div class="toc-concepts" data-toc-group="线性代数与张量"></div>
+      </div>
+      <div class="toc-module" data-toc-module="微积分与自动微分">
+        <a class="toc-module-link" href="#concept-calculus">微积分与自动微分</a>
+        <div class="toc-concepts" data-toc-group="微积分与自动微分"></div>
+      </div>
+      <div class="toc-module" data-toc-module="概率统计与信息论">
+        <a class="toc-module-link" href="#concept-probability">概率统计与信息论</a>
+        <div class="toc-concepts" data-toc-group="概率统计与信息论"></div>
+      </div>
+      <div class="toc-module" data-toc-module="优化与数值计算">
+        <a class="toc-module-link" href="#concept-optimization">优化与数值计算</a>
+        <div class="toc-concepts" data-toc-group="优化与数值计算"></div>
+      </div>
+      <div class="toc-module" data-toc-module="深度学习机制">
+        <a class="toc-module-link" href="#concept-deeplearning">深度学习机制</a>
+        <div class="toc-concepts" data-toc-group="深度学习机制"></div>
+      </div>
+      <div class="toc-module" data-toc-module="Transformer 与 LLM">
+        <a class="toc-module-link" href="#concept-transformer">Transformer 与 LLM</a>
+        <div class="toc-concepts" data-toc-group="Transformer 与 LLM"></div>
+      </div>
+      <div class="toc-module" data-toc-module="生成模型">
+        <a class="toc-module-link" href="#concept-generation">生成模型</a>
+        <div class="toc-concepts" data-toc-group="生成模型"></div>
+      </div>
+      <div class="toc-module" data-toc-module="对齐与偏好优化">
+        <a class="toc-module-link" href="#concept-alignment">对齐与偏好优化</a>
+        <div class="toc-concepts" data-toc-group="对齐与偏好优化"></div>
+      </div>
+      <div class="toc-module" data-toc-module="评测统计与泛化">
+        <a class="toc-module-link" href="#concept-evaluation">评测统计与泛化</a>
+        <div class="toc-concepts" data-toc-group="评测统计与泛化"></div>
+      </div>
+    </nav>
+  </aside>
+
+  <main id="main" class="lecture">
+    <header class="paper-header">
+      <p class="kicker">Searchable concept handbook</p>
+      <h1>AIGC 与 LLM 数学概念手册</h1>
+      <p class="subtitle">系统整理 AIGC 与 LLM 相关的数学与模型概念：每个概念先讲直觉，再给数学形式，接到模型中的具体位置，最后指出常见误区和诊断线索。</p>
+    </header>
+    <noscript>
+      <p class="noscript-note">本页的概念检索和可视化实验需要 JavaScript 才能动态更新；核心公式、伪代码和诊断表格已在正文中静态展示。</p>
+    </noscript>
+
+    <section class="intro-bridge" id="why" aria-labelledby="why-title">
+      <h2 id="why-title">先读这个：AIGC 的数学不是按课本顺序出现的</h2>
+      <p>
+        真实模型不会先问你“是否学完线性代数”，它会直接把 token 变成 \(X\in\mathbb{R}^{B\times T\times d}\)，把 attention 写成
+        \(\operatorname{softmax}(QK^\top/\sqrt{d_k})V\)，再用 cross entropy、KL、score matching、policy gradient 或 DPO loss 更新参数。
+        因此，这里不把内容写成“学习计划”，而是把概念整理成可查阅手册：看到一个术语，可以马上知道它的直觉、数学形式、模型位置和常见误解。
+      </p>
+      <div class="thesis-grid" aria-label="课程设计原则">
+        <article><strong>先直觉</strong><span>每个概念先解释它在模型里解决什么问题，而不是先背抽象定义。</span></article>
+        <article><strong>再形式</strong><span>给出变量、shape、概率来源、期望采样源和公式推导。</span></article>
+        <article><strong>接模型</strong><span>说明它在 Transformer、Diffusion、LoRA、RLHF 或 DPO 中出现在哪里。</span></article>
+        <article><strong>最小例子</strong><span>用伪代码、toy distribution 或小型可视化检查机制是否真的理解。</span></article>
+      </div>
+    </section>
+
+    <section class="chapter concept-index" id="concept-index">
+      <header class="chapter-header">
+        <h2>概念索引：面向查阅与学习的系统手册</h2>
+        <p class="chapter-summary">每张卡片都按同一结构组织：直觉解释、数学形式、模型中的位置、常见误区。可以用关键词检索，也可以按数学与模型模块筛选。</p>
+      </header>
+      <div class="concept-toolbar" aria-label="概念检索工具">
+        <label class="concept-search">
+          <span>检索概念</span>
+          <input id="conceptSearch" type="search" placeholder="例如 KL、LoRA、Score、置信区间、矩阵乘法" autocomplete="off">
+        </label>
+        <p id="conceptCount" class="concept-count">正在载入概念索引...</p>
+      </div>
+      <div id="conceptTaxonomy" class="concept-taxonomy" aria-label="概念分类筛选"></div>
+      <div id="conceptModules" class="concept-modules" aria-live="polite"></div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="math-map" hidden>
+      <header class="chapter-header">
+        <h2>数学模块地图：每个工具对应一个模型位置</h2>
+        <p class="chapter-summary">不要孤立记数学名词。先问：它在训练目标、采样过程、模型结构、数值稳定性还是评测中起作用？</p>
+      </header>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>数学模块</th>
+              <th>需要掌握到什么程度</th>
+              <th>在 AIGC/LLM 中的位置</th>
+              <th>诊断信号</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>线性代数</td>
+              <td>shape、矩阵乘法、范数、投影、SVD、低秩近似。</td>
+              <td>embedding、attention、LoRA、表示空间、KV cache。</td>
+              <td>shape mismatch、rank bottleneck、embedding norm drift。</td>
+            </tr>
+            <tr>
+              <td>自动微分</td>
+              <td>Jacobian、Hessian 直觉、VJP/JVP、链式法则。</td>
+              <td>backprop、softmax gradient、optimizer、adapter 更新。</td>
+              <td>gradient explosion、vanishing gradient、bad conditioning。</td>
+            </tr>
+            <tr>
+              <td>概率统计</td>
+              <td>条件概率、MLE、MAP、采样、Monte Carlo、置信区间。</td>
+              <td>next-token modeling、diffusion noising、benchmark 估计。</td>
+              <td>perplexity 与任务指标不一致、样本方差过大。</td>
+            </tr>
+            <tr>
+              <td>信息论</td>
+              <td>entropy、cross entropy、KL、mutual information、bits/nats。</td>
+              <td>语言模型 loss、distillation、RLHF/DPO 的 KL 约束。</td>
+              <td>KL drift、mode collapse、overconfident logits。</td>
+            </tr>
+            <tr>
+              <td>优化与数值</td>
+              <td>SGD/AdamW、调度、正则、浮点误差、mixed precision、量化。</td>
+              <td>预训练、SFT、LoRA、serving、FlashAttention。</td>
+              <td>loss spike、NaN、吞吐下降、低精度质量回归。</td>
+            </tr>
+            <tr>
+              <td>随机过程 / ODE / SDE</td>
+              <td>Markov chain、Gaussian transition、reverse SDE、ODE solver。</td>
+              <td>DDPM、score-based diffusion、Flow Matching。</td>
+              <td>NFE 太高、solver 不稳定、guidance 破坏多样性。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="tensor-autodiff" hidden>
+      <header class="chapter-header">
+        <h2>张量与自动微分：LLM 的计算语言</h2>
+        <p class="chapter-summary">Transformer 中的核心计算并不神秘：大部分是张量投影、矩阵乘法、归一化、非线性和链式法则。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>从 shape 开始读模型</h3>
+        <p>给定 batch size \(B\)、序列长度 \(T\)、hidden size \(d\)、head 数 \(H\)，单层 self-attention 的典型 shape 是：</p>
+        <div class="equation">
+\[
+X\in\mathbb{R}^{B\times T\times d},\quad
+Q,K,V=XW_Q,XW_K,XW_V,\quad
+Q,K,V\in\mathbb{R}^{B\times H\times T\times d_h}.
+\]
+        </div>
+        <p>自动微分关心的问题是：最终 loss 对每个权重矩阵的变化率是多少。反向传播就是在计算图上反复使用链式法则：</p>
+        <div class="equation">
+\[
+\frac{\partial \mathcal{L}}{\partial W_Q}
+=
+\frac{\partial \mathcal{L}}{\partial Q}
+\frac{\partial Q}{\partial W_Q}.
+\]
+        </div>
+      </div>
+      <div class="algorithm-panel">
+        <div class="panel-title">
+          <h3>伪代码：从前向计算到反向传播</h3>
+        </div>
+        <pre class="algorithm"><code>tokens = tokenizer(batch_text)
+X = embedding(tokens) + position_encoding(tokens)
+Q, K, V = project_qkv(X)
+A = softmax((Q @ K.transpose(-1, -2)) / sqrt(d_head) + causal_mask)
+Y = A @ V
+logits = lm_head(transformer_block(Y))
+loss = cross_entropy(logits[:, :-1], tokens[:, 1:])
+loss.backward()
+optimizer.step()</code></pre>
+        <p class="algorithm-note">读代码时先标 shape，再标随机变量来源，最后看 loss 的期望是从哪个样本分布估计的。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="attentionLabBlock" data-visual="attention-cost">
+        <div class="visual-copy">
+          <h3>可视化实验：Attention shape 与 KV 成本</h3>
+          <p>改变 token 数、head 数和每头维度，观察 attention score 矩阵与 KV cache 的增长方式。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>tokens \(T\)<input id="attnTokens" type="range" min="3" max="12" step="1" value="7"><output id="attnTokensOut">7</output></label>
+            <label>heads \(H\)<input id="attnHeads" type="range" min="1" max="16" step="1" value="8"><output id="attnHeadsOut">8</output></label>
+            <label>head dim \(d_h\)<input id="attnHeadDim" type="range" min="32" max="160" step="16" value="64"><output id="attnHeadDimOut">64</output></label>
+          </div>
+          <canvas id="attentionCanvas" class="lab-canvas" width="900" height="380" aria-label="Attention score matrix and KV cache cost visualization"></canvas>
+          <p id="attentionReadout" class="lab-readout">调节参数后显示 attention score 与 KV cache 估计。</p>
+          <p id="attentionExplanation" class="lab-explanation">attention score 对每个 head 都有 \(T\times T\) 项；decode 阶段 KV cache 的字节数随 \(T\cdot H\cdot d_h\) 线性增长。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="probability-info" hidden>
+      <header class="chapter-header">
+        <h2>概率与信息论：语言模型首先是条件分布</h2>
+        <p class="chapter-summary">next-token prediction 是条件概率建模；cross entropy、KL 和 perplexity 是同一套训练目标的不同读法。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>从最大似然到 cross entropy</h3>
+        <p>给定真实 token 序列 \(x_1,\ldots,x_T\)，自回归模型用链式法则定义联合概率：</p>
+        <div class="equation">
+\[
+p_\theta(x_1,\ldots,x_T|c)=\prod_{t=1}^{T}p_\theta(x_t|x_{<t},c).
+\]
+        </div>
+        <p>训练时最大化真实下一个 token 的概率，等价于最小化平均 NLL：</p>
+        <div class="equation">
+\[
+\mathcal{L}_{\mathrm{LM}}
+=-\mathbb{E}_{(x,c)\sim p_{\mathrm{data}}}\sum_{t=1}^{T}\log p_\theta(x_t|x_{<t},c).
+\]
+        </div>
+        <p>若 \(p\) 是数据分布、\(q=p_\theta\) 是模型分布，则：</p>
+        <div class="equation">
+\[
+H(p,q)=H(p)+D_{KL}(p\Vert q).
+\]
+        </div>
+        <p>由于 \(H(p)\) 不含模型参数，最小化 cross entropy 等价于最小化 forward KL。</p>
+      </div>
+      <div class="visual-example interactive-lab" id="softmaxLabBlock" data-visual="softmax-temperature">
+        <div class="visual-copy">
+          <h3>可视化实验：Temperature、熵与 Perplexity</h3>
+          <p>temperature 改变 logits 的 sharpness；top-p 截断候选集后再归一化，会改变采样分布但不更新模型。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>temperature<input id="softmaxTemp" type="range" min="0.25" max="2.2" step="0.05" value="0.85"><output id="softmaxTempOut">0.85</output></label>
+            <label>top-p<input id="softmaxTopP" type="range" min="0.35" max="1" step="0.05" value="0.9"><output id="softmaxTopPOut">0.90</output></label>
+          </div>
+          <div id="softmaxBars" class="prob-bars" aria-label="Softmax token probability bars"></div>
+          <p id="softmaxReadout" class="lab-readout">entropy 与 perplexity 会随采样分布变化。</p>
+          <p id="softmaxExplanation" class="lab-explanation">低 temperature 让分布更尖，高 temperature 增加多样性；top-p 会保留累计概率达到阈值的最小候选集合。</p>
+        </div>
+      </div>
+      <div class="misconception-card">
+        <h3>常见误解</h3>
+        <ul>
+          <li><strong>perplexity 低不等于回答一定好。</strong>它衡量平均 next-token 概率，不直接衡量事实性、指令遵循或安全性。</li>
+          <li><strong>temperature 不是训练方法。</strong>它只改变推断时的采样分布，不改变模型参数。</li>
+          <li><strong>KL 方向不能随便换。</strong>forward KL 更惩罚漏掉真实模式；reverse KL 更惩罚模型采到真实低密度区域。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="optimization-numerics" hidden>
+      <header class="chapter-header">
+        <h2>优化与数值计算：模型能不能训好、跑稳、跑快</h2>
+        <p class="chapter-summary">大模型训练不是只要会求梯度。优化器、精度、归一化、矩阵乘法 IO 和硬件带宽都会改变可训练性。</p>
+      </header>
+      <div class="concept-grid">
+        <article>
+          <h3>AdamW 的视角</h3>
+          <p>AdamW 用一阶矩估计方向、二阶矩估计尺度，并把 weight decay 从 gradient update 中解耦。</p>
+          <div class="equation">
+\[
+m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,\quad
+v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^2.
+\]
+          </div>
+        </article>
+        <article>
+          <h3>数值稳定性的视角</h3>
+          <p>mixed precision、loss scaling、RMSNorm、gradient clipping、softmax max-shift 都是在避免 overflow、underflow 和 bad conditioning。</p>
+          <div class="equation">
+\[
+\operatorname{softmax}(l_i)=
+\frac{\exp(l_i-\max_j l_j)}{\sum_k\exp(l_k-\max_j l_j)}.
+\]
+          </div>
+        </article>
+      </div>
+      <div class="judgement-card">
+        <h3>诊断信号</h3>
+        <div class="judgement-grid">
+          <div><strong>loss spike</strong><p>检查 learning rate、batch construction、precision、gradient norm 和数据异常。</p></div>
+          <div><strong>NaN / Inf</strong><p>检查 softmax、log(0)、除零、loss scaling、BF16/FP16 混用和未裁剪梯度。</p></div>
+          <div><strong>吞吐低</strong><p>分开看 compute-bound、memory-bound、data loader wait 和通信等待。</p></div>
+          <div><strong>量化回归</strong><p>检查 calibration 数据、outlier channel、activation scale 和真实硬件 kernel。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="transformer-llm" hidden>
+      <header class="chapter-header">
+        <h2>Transformer 与 LLM：把条件概率做成可扩展系统</h2>
+        <p class="chapter-summary">Transformer 是实现 \(p_\theta(x_t|x_{<t})\) 的网络架构；LLM 预训练是大规模条件最大似然。</p>
+      </header>
+      <div class="formula-stack">
+        <article>
+          <h3>Scaled dot-product attention</h3>
+          <div class="equation">
+\[
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}+M_{\mathrm{causal}}\right)V.
+\]
+          </div>
+          <p>缩放项 \(\sqrt{d_k}\) 控制 logits 方差；causal mask 保证位置 \(t\) 不能看未来 token。</p>
+        </article>
+        <article>
+          <h3>LoRA 的低秩更新</h3>
+          <div class="equation">
+\[
+W'=W+\Delta W,\quad \Delta W=BA,\quad \operatorname{rank}(\Delta W)\le r.
+\]
+          </div>
+          <p>LoRA 假设微调需要的参数变化主要落在低维子空间，因此用少量可训练参数近似完整更新。</p>
+        </article>
+        <article>
+          <h3>KV cache 的推断边界</h3>
+          <div class="equation">
+\[
+\text{KV bytes}\approx 2\cdot L\cdot T\cdot H\cdot d_h\cdot \text{bytes}.
+\]
+          </div>
+          <p>cache 避免重复算历史 token，但长上下文下会成为显存和带宽瓶颈。</p>
+        </article>
+      </div>
+      <div class="summary-matrix">
+        <h3>读 Transformer 论文时先问什么</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>问题</th>
+              <th>对应数学</th>
+              <th>工程含义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>表示如何进入模型？</td>
+              <td>embedding、projection、normalization。</td>
+              <td>tokenizer、vocab、position encoding、hidden size。</td>
+            </tr>
+            <tr>
+              <td>上下文如何交互？</td>
+              <td>dot product、softmax、mask、matrix multiplication。</td>
+              <td>attention kernel、context length、KV cache、GQA/MQA。</td>
+            </tr>
+            <tr>
+              <td>参数如何更新？</td>
+              <td>cross entropy、backprop、AdamW、regularization。</td>
+              <td>batch size、LR schedule、gradient clipping、LoRA/SFT。</td>
+            </tr>
+            <tr>
+              <td>推断如何取样？</td>
+              <td>categorical sampling、temperature、top-k/top-p。</td>
+              <td>latency、重复、事实性、diversity、safety filter。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="generative-models" hidden>
+      <header class="chapter-header">
+        <h2>AIGC 生成模型：同一个分布匹配问题，多种可计算接口</h2>
+        <p class="chapter-summary">VAE、GAN、Diffusion 和 Flow Matching 都在逼近数据分布；差异来自它们能计算什么、监督什么、如何采样。</p>
+      </header>
+      <div class="model-family-grid">
+        <article>
+          <h3>VAE</h3>
+          <p>用 encoder 近似后验 \(q_\phi(z|x)\)，用 decoder 建模 \(p_\theta(x|z)\)，通过 ELBO 训练。</p>
+          <div class="equation">\[\log p_\theta(x)\ge \mathbb{E}_{q_\phi(z|x)}\log p_\theta(x|z)-D_{KL}(q_\phi(z|x)\Vert p(z)).\]</div>
+        </article>
+        <article>
+          <h3>GAN</h3>
+          <p>判别器学习真假密度比，生成器利用判别器梯度移动样本分布。</p>
+          <div class="equation">\[\min_G\max_D \mathbb{E}_{p_{\mathrm{data}}}\log D(x)+\mathbb{E}_{z}\log(1-D(G(z))).\]</div>
+        </article>
+        <article>
+          <h3>Diffusion</h3>
+          <p>固定 forward noising，训练模型预测噪声或 score，采样时从噪声逐步反推数据。</p>
+          <div class="equation">\[x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon,\quad \mathcal{L}=\mathbb{E}\|\epsilon-\epsilon_\theta(x_t,t)\|^2.\]</div>
+        </article>
+        <article>
+          <h3>Flow Matching</h3>
+          <p>指定从 base distribution 到 data distribution 的 probability path，训练速度场。</p>
+          <div class="equation">\[\mathcal{L}_{FM}=\mathbb{E}_{t,x_t}\|v_\theta(x_t,t)-u_t(x_t)\|_2^2.\]</div>
+        </article>
+      </div>
+      <div class="visual-example interactive-lab" id="generationLabBlock" data-visual="generation-path">
+        <div class="visual-copy">
+          <h3>可视化实验：Diffusion steps 与 Flow path</h3>
+          <p>用一维双峰 toy distribution 观察从噪声到数据的路径。这里展示的是机制示意，不是具体论文的训练结果。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>steps / NFE<input id="genSteps" type="range" min="4" max="36" step="1" value="14"><output id="genStepsOut">14</output></label>
+            <label>guidance scale<input id="genGuidance" type="range" min="0" max="3" step="0.1" value="1.2"><output id="genGuidanceOut">1.2</output></label>
+          </div>
+          <canvas id="generationCanvas" class="lab-canvas" width="900" height="400" aria-label="Diffusion and flow matching toy path visualization"></canvas>
+          <p id="generationReadout" class="lab-readout">更多 NFE 通常降低离散化误差，但增加延迟；guidance 太强会牺牲多样性。</p>
+          <p id="generationExplanation" class="lab-explanation">Diffusion 像反复去噪，Flow Matching 像沿速度场积分；两者都需要区分训练目标和采样过程。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="alignment" hidden>
+      <header class="chapter-header">
+        <h2>RLHF、DPO 与偏好优化：把“更好”变成可训练信号</h2>
+        <p class="chapter-summary">对齐不是在已有文本上继续做普通 MLE，而是用示范、偏好或 reward 移动条件分布，同时控制与 reference model 的 KL 距离。</p>
+      </header>
+      <div class="derivation-section">
+        <h3>从 Bradley-Terry 到 DPO</h3>
+        <p>偏好数据通常给出同一 prompt 下的 winner \(y_w\) 和 loser \(y_l\)。Bradley-Terry 模型把 reward 差映射成偏好概率：</p>
+        <div class="equation">
+\[
+P(y_w\succ y_l|x)=\sigma(r(x,y_w)-r(x,y_l)).
+\]
+        </div>
+        <p>DPO 把 KL 正则奖励最大化的最优策略形式代入偏好似然，得到不显式训练 reward model 的目标：</p>
+        <div class="equation">
+\[
+\mathcal{L}_{DPO}
+=-\log\sigma\left(\beta\left[
+\log\frac{\pi_\theta(y_w|x)}{\pi_{ref}(y_w|x)}
+-
+\log\frac{\pi_\theta(y_l|x)}{\pi_{ref}(y_l|x)}
+\right]\right).
+\]
+        </div>
+      </div>
+      <div class="visual-example interactive-lab" id="dpoLabBlock" data-visual="dpo-loss">
+        <div class="visual-copy">
+          <h3>可视化实验：DPO margin 与 loss</h3>
+          <p>调节 preference margin 和 \(\beta\)，观察 DPO loss 如何鼓励 winner 的 log-ratio 超过 loser。</p>
+        </div>
+        <div class="lab-card">
+          <div class="lab-controls lab-controls-grid">
+            <label>\(\beta\)<input id="dpoBeta" type="range" min="0.2" max="4" step="0.1" value="1.2"><output id="dpoBetaOut">1.2</output></label>
+            <label>log-ratio margin<input id="dpoMargin" type="range" min="-3" max="3" step="0.1" value="0.7"><output id="dpoMarginOut">0.7</output></label>
+          </div>
+          <canvas id="dpoCanvas" class="lab-canvas" width="900" height="360" aria-label="DPO loss curve visualization"></canvas>
+          <p id="dpoReadout" class="lab-readout">margin 越大，winner 相对 reference 的优势越明显，loss 越低。</p>
+          <p id="dpoExplanation" class="lab-explanation">更大的 \(\beta\) 会放大 preference margin，也会让策略更快偏离 reference；实际训练要同时监控 reward 与 KL drift。</p>
+        </div>
+      </div>
+      <div class="judgement-card">
+        <h3>对齐方法的判断边界</h3>
+        <div class="judgement-grid">
+          <div><strong>SFT</strong><p>模仿高质量示范，稳定但无法直接比较两个候选输出。</p></div>
+          <div><strong>RLHF/PPO</strong><p>显式训练 reward model，再用 KL 约束 policy optimization，复杂但表达力强。</p></div>
+          <div><strong>DPO</strong><p>把偏好概率直接转成 policy loss，训练链路短，但仍依赖偏好数据质量和 reference 选择。</p></div>
+          <div><strong>GRPO / variants</strong><p>利用组内相对优势或任务 reward，适合推理型任务时仍要防 reward hacking。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter legacy-module-bank" id="evaluation" hidden>
+      <header class="chapter-header">
+        <h2>评测统计：不要只报告一个 benchmark 分数</h2>
+        <p class="chapter-summary">模型结果是随机变量。没有置信区间、样本量、数据切分和失败模式分析，单一分数很难支撑研究判断。</p>
+      </header>
+      <div class="concept-grid">
+        <article>
+          <h3>均值与置信区间</h3>
+          <p>对 \(n\) 个独立样本的平均指标 \(\bar{x}\)，常见近似置信区间是：</p>
+          <div class="equation">\[\bar{x}\pm 1.96\frac{s}{\sqrt{n}}.\]</div>
+          <p>当样本相关、分布偏斜或评测器有偏时，这个近似需要更谨慎。</p>
+        </article>
+        <article>
+          <h3>评测要看分布</h3>
+          <p>LLM 与 AIGC 评测常同时受 prompt 分布、sampling seed、judge bias、长度偏置和数据污染影响。</p>
+          <ul class="compact-list">
+            <li>报告 sample size、temperature、seed、judge model 与 prompt source。</li>
+            <li>对比 win rate 时给 bootstrap interval 或 paired test。</li>
+            <li>把平均分拆成任务类型、难度、长度和失败模式。</li>
+          </ul>
+        </article>
+      </div>
+      <div class="summary-matrix">
+        <h3>从训练指标到产品指标</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>它说明什么</th>
+              <th>它不说明什么</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>perplexity / NLL</td>
+              <td>真实 token 在模型分布下的平均概率。</td>
+              <td>事实性、偏好质量、工具调用可靠性。</td>
+            </tr>
+            <tr>
+              <td>FID / CLIPScore</td>
+              <td>图像分布或图文对齐的粗粒度代理。</td>
+              <td>细节正确性、文字渲染、编辑可控性。</td>
+            </tr>
+            <tr>
+              <td>win rate</td>
+              <td>相对偏好表现。</td>
+              <td>绝对质量、成本、延迟、失败模式覆盖。</td>
+            </tr>
+            <tr>
+              <td>latency / throughput</td>
+              <td>服务效率和成本。</td>
+              <td>输出质量、鲁棒性、长尾 prompt 风险。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter appendix" id="writing-template">
+      <header class="chapter-header">
+        <h2>每篇教程的写作模板</h2>
+        <p class="chapter-summary">每个主题都以同一套结构展开，保证读者能从直觉走到公式和实践。</p>
+      </header>
+      <div class="template-grid">
+        <article><strong>1. 这个主题解决什么问题？</strong><span>先给模型中的具体场景，例如 attention 需要衡量 token 相关性。</span></article>
+        <article><strong>2. 为什么 AIGC/LLM 需要它？</strong><span>说明它连接到训练、推断、压缩、对齐或评测。</span></article>
+        <article><strong>3. 通俗解释</strong><span>用最小直觉解释，不先堆符号。</span></article>
+        <article><strong>4. 数学定义</strong><span>定义变量、shape、概率来源和期望采样源。</span></article>
+        <article><strong>5. 关键公式推导</strong><span>写出每步使用的数学工具，例如链式法则或变量替换。</span></article>
+        <article><strong>6. 在模型中的位置</strong><span>定位到 Transformer block、diffusion sampler、reward model 等。</span></article>
+        <article><strong>7. 最小代码或伪代码</strong><span>让读者能把公式映射成实际计算。</span></article>
+        <article><strong>8. 常见误区</strong><span>区分训练目标与采样过程、post-training 与 post-processing。</span></article>
+        <article><strong>9. 练习题</strong><span>让读者检查推导、shape、边界条件和失败模式。</span></article>
+        <article><strong>10. 延伸阅读</strong><span>指向教材、论文、官方代码或可复现实验。</span></article>
+      </div>
+    </section>
+
+    <section class="chapter appendix" id="lookup-guide">
+      <header class="chapter-header">
+        <h2>查阅方式：按问题反查概念</h2>
+        <p class="chapter-summary">这页的使用方式不是从第一章一路读到最后，而是在遇到论文公式、代码变量、训练故障或评测指标时，快速定位相关概念。</p>
+      </header>
+      <div class="lookup-grid" aria-label="概念查阅路径">
+        <article><strong>看到公式看不懂</strong><p>先搜公式里的对象：例如 \(D_{KL}\)、ELBO、score、policy gradient。读“数学形式”确认变量和期望来源，再看“模型中的位置”。</p></article>
+        <article><strong>代码 shape 对不上</strong><p>先搜 Tensor、Shape、Matrix Multiplication、Attention、KV Cache。重点看每个概念对应的轴含义和常见误区。</p></article>
+        <article><strong>训练不稳定</strong><p>先搜 Gradient、AdamW、Learning Rate Schedule、Gradient Clipping、Mixed Precision、Conditioning、Normalization。</p></article>
+        <article><strong>生成质量不对</strong><p>先搜 Sampling、Temperature、Top-p、Diffusion、Guidance、Mode Collapse、Latent Space、Denoising Objective。</p></article>
+        <article><strong>对齐指标漂移</strong><p>先搜 Preference Data、Reward Model、KL-constrained RL、DPO、Reward Hacking、Win-rate。</p></article>
+        <article><strong>评测是否可信</strong><p>先搜 Benchmark、Confidence Interval、Bootstrap、P-value、Multiple Comparison、Calibration、OOD。</p></article>
+      </div>
+      <div class="checklist-panel">
+        <h3>每个概念的阅读顺序</h3>
+        <ul>
+          <li><strong>先看直觉解释：</strong>确认这个概念解决什么具体问题。</li>
+          <li><strong>再看数学形式：</strong>找出变量、shape、采样源、目标函数或约束。</li>
+          <li><strong>接到模型位置：</strong>判断它出现在训练、推断、采样、压缩、对齐还是评测中。</li>
+          <li><strong>最后看误区：</strong>避免把训练 loss 当采样过程、把指标当真实质量、把 decoding 当 post-training。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter appendix further-reading" id="references">
+      <header class="chapter-header">
+        <h2>延伸阅读</h2>
+        <p class="chapter-summary">先用教材补基础，再用论文和官方实现校正直觉；不要只看二手总结。</p>
+      </header>
+      <div class="reading-groups">
+        <article>
+          <h3>数学与深度学习基础</h3>
+          <ul>
+            <li>Deep Learning, Goodfellow/Bengio/Courville：概率、优化、表示学习的基础框架。</li>
+            <li>Mathematics for Machine Learning：线性代数、微积分、概率与优化的机器学习入口。</li>
+            <li>CS231n / CS224n：从计算图、反向传播、attention 到 NLP 建模。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>LLM 与 Transformer</h3>
+          <ul>
+            <li>Attention Is All You Need：Transformer 的基本结构。</li>
+            <li>GPT-style language modeling papers：next-token prediction、scaling 与预训练实践。</li>
+            <li>LoRA、Adapter、MoE 与 KV cache 相关论文：理解高效微调与推断系统。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>生成模型</h3>
+          <ul>
+            <li>Auto-Encoding Variational Bayes：VAE 与 reparameterization。</li>
+            <li>Generative Adversarial Nets：GAN 的分布匹配博弈。</li>
+            <li>DDPM、Score-based SDE、Latent Diffusion、Flow Matching：现代视觉生成主线。</li>
+          </ul>
+        </article>
+        <article>
+          <h3>对齐与评测</h3>
+          <ul>
+            <li>RLHF / PPO、InstructGPT：reward model 与 KL-constrained optimization。</li>
+            <li>Direct Preference Optimization：从 preference pair 直接训练 policy。</li>
+            <li>现代 benchmark 与 human evaluation 论文：关注 paired comparison、置信区间和 judge bias。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <a href="/">返回主页</a>
+    <a href="/foundations/">返回 Foundations</a>
+  </footer>
+  <script src="./static/js/concepts.js"></script>
+  <script src="./static/js/index.js"></script>
+</body>
+</html>

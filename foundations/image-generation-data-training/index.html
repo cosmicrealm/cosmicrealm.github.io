@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="title" content="图像生成基础模型的数据工程与训练策略">
-  <meta name="description" content="系统梳理 FLUX、FLUX.2、Qwen-Image、Qwen-Image-2.0 和 Z-Image 的数据工程、训练策略、后训练与蒸馏路线。">
+  <meta name="title" content="图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏">
+  <meta name="description" content="系统拆解现代图像生成模型如何通过数据分布、OCR caption、VAE、编辑数据、RLHF/GRPO 和 few-step distillation 获得文字渲染、多参考编辑和高效推理能力，并比较 FLUX.2、Qwen-Image 与 Z-Image 三条路线。">
   <meta name="keywords" content="FLUX, FLUX.2, Qwen-Image, Z-Image, image generation, data curation, caption, OCR, VAE, flow matching, RLHF, GRPO, distillation">
   <meta name="author" content="Jinyang Zhang">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="图像生成基础模型的数据工程与训练策略">
-  <meta property="og:description" content="从 FLUX 到 Qwen-Image，再到 Z-Image：现代图像生成模型的数据工程、训练 pipeline、后训练和蒸馏技术地图。">
+  <meta property="og:title" content="图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏">
+  <meta property="og:description" content="系统拆解数据分布、OCR caption、VAE、编辑数据、RLHF/GRPO 和 few-step distillation 如何共同塑造现代图像生成模型。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/image-generation-data-training/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/image-generation-data-training.svg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="图像生成基础模型的数据工程与训练策略">
-  <meta name="twitter:description" content="FLUX, Qwen-Image, Z-Image data engineering and training strategy notes.">
+  <meta name="twitter:title" content="图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏">
+  <meta name="twitter:description" content="FLUX.2, Qwen-Image and Z-Image data, VAE, caption, RLHF and distillation training map.">
   <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/image-generation-data-training.svg">
-  <title>图像生成基础模型的数据工程与训练策略 | FLUX, Qwen-Image, Z-Image</title>
+  <title>图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏 | FLUX, Qwen-Image, Z-Image</title>
   <link rel="canonical" href="/foundations/image-generation-data-training/">
   <link rel="icon" href="../../images/favicon.svg">
   <script>
@@ -56,14 +56,18 @@
     <p>目录</p>
     <nav>
       <a href="#overview">总览</a>
+      <a href="#concepts">概念地图</a>
       <a href="#flux1">FLUX.1</a>
       <a href="#kontext">Kontext</a>
       <a href="#flux2">FLUX.2</a>
       <a href="#qwen-image">Qwen-Image</a>
       <a href="#qwen-image-2">Qwen-Image-2.0</a>
       <a href="#z-image">Z-Image</a>
+      <a href="#model-details">模型细节</a>
       <a href="#comparison">横向比较</a>
       <a href="#recipe">训练 recipe</a>
+      <a href="#evaluation">如何评估</a>
+      <a href="#failure-map">失败诊断</a>
       <a href="#takeaways">关键启示</a>
       <a href="#references">参考资料</a>
     </nav>
@@ -72,8 +76,8 @@
   <main id="main" class="lecture">
     <header class="paper-header">
       <p class="kicker">Image generation systems</p>
-      <h1>图像生成模型的数据工程与训练策略</h1>
-      <p class="subtitle">从 FLUX 到 Qwen-Image，再到 Z-Image：现代图像生成的核心竞争，已经从“网络结构”转向“数据分布设计、caption 体系、编辑对构造、后训练奖励和蒸馏策略”。</p>
+      <h1>图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏</h1>
+      <p class="subtitle">从 FLUX.2、Qwen-Image 到 Z-Image：为什么现代图像模型的竞争已经从单一架构，转向数据、VAE、caption、编辑样本、奖励模型和蒸馏工作流的系统竞争。</p>
       <div class="hero-tags" aria-label="核心关键词">
         <span>Latent Flow Matching</span>
         <span>Rectified Flow Transformer</span>
@@ -88,13 +92,33 @@
 
     <section class="chapter problem" id="overview">
       <header class="chapter-header">
-        <h2>现代图像生成训练 pipeline：从原始数据到生产模型</h2>
-        <p class="chapter-summary">现代图像模型不再只是 `image + caption -> diffusion loss`。更准确的对象是一条数据、任务、奖励和部署共同定义的视觉执行系统。</p>
+        <h2>为什么图像生成已经不是 <code>image + caption -> loss</code></h2>
+        <p class="chapter-summary">现代图像模型不再只是“会画图”。更准确的对象是一条由数据、caption、VAE、训练目标、后训练、蒸馏和产品工作流共同定义的视觉执行系统。</p>
       </header>
 
+      <div class="intro-copy">
+        <p>早期我们常把图像生成理解成：给模型看很多 <code>image + caption</code>，让它学会从文字生成图片。</p>
+        <p>但今天的生产级图像模型已经不是“会画图”这么简单。它要能写字、排版、保持人物和商品一致、根据参考图做局部编辑、理解长 prompt、避开安全风险，还要在 4 到 8 步内快速出图。</p>
+        <p>所以真正决定模型能力的，不只是 DiT 有多大，而是训练系统如何组织数据、caption、VAE、编辑样本、奖励模型和蒸馏过程。</p>
+      </div>
+
       <div class="thesis-card">
-        <h3>核心命题</h3>
-        <p>如果只看主干，FLUX、Qwen-Image 和 Z-Image 都落在 latent DiT / flow / MMDiT 的大路线里；如果看数据工程，它们代表了工业闭源生产流、文字与图文设计专项路线、高效开源训练路线三种不同战略。</p>
+        <h3>一句话结论</h3>
+        <p>现代图像生成模型的能力，不是某个 architecture 单独决定的，而是由数据分布、caption 表达、latent tokenizer、训练阶段、奖励信号、蒸馏目标和推理工作流共同塑造的。FLUX 展示了生产级工作流，Qwen 展示了文字与图文设计专项路线，Z-Image 展示了高效可复现训练范式。</p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>生产级图像模型必须同时解决的五类能力</caption>
+          <thead><tr><th>能力</th><th>直观理解</th><th>训练系统里对应什么</th></tr></thead>
+          <tbody>
+            <tr><td>画得像</td><td>图像真实、漂亮、细节稳定。</td><td>高质量图文数据、VAE fidelity、SFT、审美奖励。</td></tr>
+            <tr><td>听得懂</td><td>能遵守复杂 prompt。</td><td>多粒度 caption、instruction 数据、VLM 条件编码、prompt following reward。</td></tr>
+            <tr><td>写得对</td><td>中文、英文、小字、logo、排版不乱码。</td><td>OCR-aware caption、text-rich 数据、synthetic rendering、OCR reward、VAE 小字保真。</td></tr>
+            <tr><td>改得稳</td><td>只改该改的地方，不全图漂移。</td><td>editing pair、I2I reconstruction、多参考训练、identity / preservation reward。</td></tr>
+            <tr><td>生成快</td><td>几步内出高质量图。</td><td>guidance distillation、few-step distillation、Turbo / Klein 模型族。</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="route-grid" aria-label="Model route map">
@@ -131,15 +155,59 @@
         <div>few-step / size distillation</div>
       </div>
 
-      <div class="layer-grid">
-        <article><strong>1. 原始数据池</strong><p>web 图文对、授权图库、内部数据、合成数据、用户交互数据、编辑前后对、多参考图样本。</p></article>
-        <article><strong>2. 基础清洗</strong><p>去重、低清过滤、压缩伪影过滤、尺寸和比例过滤、安全过滤、隐私处理、版权与来源管理。</p></article>
-        <article><strong>3. 语义与质量打标</strong><p>aesthetic score、technical quality、OCR、safety labels、主体类别、风格、构图复杂度和语言。</p></article>
-        <article><strong>4. Caption 工程</strong><p>long / medium / short caption、tags、OCR-inclusive caption、simulated user prompt、editing difference caption。</p></article>
-        <article><strong>5. 数据再平衡</strong><p>长尾概念、中文 / 英文、多语言、文字密集图、人物、产品、海报、UI、PPT、真实摄影和艺术风格。</p></article>
-        <article><strong>6. 课程学习</strong><p>低分辨率到高分辨率；简单 prompt 到复杂 prompt；无文字到段落级文字；T2I 到 I2I / 多参考图。</p></article>
-        <article><strong>7. 后训练数据</strong><p>人工偏好对、VLM 自动偏好对、OCR 可验证样本、编辑一致性样本、身份保持样本和奖励样本。</p></article>
-        <article><strong>8. 蒸馏与部署数据</strong><p>teacher trajectory、guided samples、few-step distillation 数据、reward-guided samples、prompt enhancer 对齐数据。</p></article>
+      <div class="table-scroll wide">
+        <table>
+          <caption>从原始样本到生产模型：每一步解决什么问题</caption>
+          <thead><tr><th>阶段</th><th>做什么</th><th>解决的问题</th><th>如果做不好</th></tr></thead>
+          <tbody>
+            <tr><td>原始数据池</td><td>收集 web 图文对、授权图库、合成图、编辑对、多参考样本。</td><td>提供世界知识、审美和任务覆盖。</td><td>模型概念窄、风格偏、长尾差。</td></tr>
+            <tr><td>清洗 / 去重 / 安全过滤</td><td>去重、低清过滤、压缩伪影过滤、安全和隐私处理。</td><td>降低噪声、重复、违法和高风险内容。</td><td>训练效率低，模型学到伪影和风险内容。</td></tr>
+            <tr><td>语义与质量打标</td><td>aesthetic、technical quality、OCR、safety、subject、style、layout。</td><td>支持动态采样和课程学习。</td><td>只能随机喂数据，专项能力难形成。</td></tr>
+            <tr><td>Caption 工程</td><td>long / medium / short caption、tags、OCR、simulated prompt、difference caption。</td><td>把视觉内容变成可学习的条件信号。</td><td>prompt following 弱，文字和属性绑定差。</td></tr>
+            <tr><td>数据再平衡</td><td>调整长尾、语言、文字密集图、人物、产品、UI、PPT 等比例。</td><td>防止模型只会高频概念。</td><td>中文、小众风格、复杂排版、特殊对象弱。</td></tr>
+            <tr><td>课程学习</td><td>从低分辨率到高分辨率，从简单文字到复杂图文混排。</td><td>让模型逐步学习难任务。</td><td>直接上复杂任务会不稳定、浪费 compute。</td></tr>
+            <tr><td>后训练数据</td><td>偏好对、OCR 可验证样本、编辑一致性、身份保持。</td><td>对齐人类偏好和生产约束。</td><td>图好看但不听话，或编辑不稳定。</td></tr>
+            <tr><td>蒸馏与部署数据</td><td>teacher trajectory、few-step samples、reward-guided samples。</td><td>让模型变快、可部署。</td><td>速度快但质量、多样性或指令跟随下降。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="algorithm-panel case-panel">
+        <div class="panel-title"><h3>一个贯穿全篇的样本：中文咖啡店海报</h3></div>
+        <p>为了避免后面变成术语清单，我们先看一张训练样本如何被加工。假设原始图片是一张中文咖啡店促销海报，包含标题“夏日拿铁”、价格“29 元”、品牌 logo、杯子、桌面、暖色灯光和小字号说明。</p>
+        <pre class="algorithm"><code>{
+  "raw_image": "coffee_poster.jpg",
+  "ocr_text": "夏日拿铁 29元 今日限定",
+  "long_caption": "一张暖色调咖啡店促销海报，画面中央是一杯冰拿铁，左上角有品牌 logo，主标题为中文‘夏日拿铁’，价格为‘29元’，底部有小字号活动说明。",
+  "short_caption": "中文咖啡促销海报，暖色调，含价格文字和品牌 logo",
+  "text_density": "medium",
+  "layout_type": "poster",
+  "edit_pair": {
+    "instruction": "把价格从 29 元改成 19 元，保持字体、logo、杯子、背景和布局不变",
+    "preserve": ["logo", "cup", "background", "lighting", "layout"]
+  },
+  "reward_check": {
+    "ocr_exact_match": true,
+    "layout_preserved": true,
+    "brand_color_preserved": true,
+    "product_shape_preserved": true
+  }
+}</code></pre>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>同一个样本在训练链路中的角色</caption>
+          <thead><tr><th>阶段</th><th>它提供什么信号</th><th>如果缺失会怎样</th></tr></thead>
+          <tbody>
+            <tr><td>OCR caption</td><td>告诉模型图里到底写了什么字。</td><td>文字可能看起来像字，但内容错。</td></tr>
+            <tr><td>long caption</td><td>绑定物体、文字、布局和风格。</td><td>prompt following 和属性绑定变弱。</td></tr>
+            <tr><td>edit pair</td><td>学会“只改价格，不改其他部分”。</td><td>编辑时容易全图漂移。</td></tr>
+            <tr><td>I2I reconstruction</td><td>学会保留 logo、字体、材质和背景。</td><td>人物、商品、字体一致性下降。</td></tr>
+            <tr><td>reward check</td><td>用 OCR / layout / identity 指标验证结果。</td><td>后训练容易只优化审美，不优化正确性。</td></tr>
+            <tr><td>VAE reconstruction</td><td>检查压缩后小字和 logo 是否还清楚。</td><td>latent 已损坏，DiT 很难恢复。</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="visual-example interactive-lab" id="pipeline-lab">
@@ -158,6 +226,43 @@
           <p id="pipelineExplanation" class="lab-explanation">专项能力不是靠一个 loss 自然出现，而是靠数据分布、任务组合和奖励信号持续施压。</p>
         </div>
       </div>
+      <div class="table-scroll">
+        <table>
+          <caption>Data Mix Lab：slider 调的是能力压力，不是真实训练比例</caption>
+          <thead><tr><th>Slider</th><th>调高后可能提升</th><th>可能副作用</th><th>应该看什么指标</th></tr></thead>
+          <tbody>
+            <tr><td>text-rich focus</td><td>OCR 正确率、小字可读性、海报 / PPT / UI 能力。</td><td>自然摄影分布变窄，审美多样性下降。</td><td>OCR exact match、CER / WER、layout correctness、small-font readability。</td></tr>
+            <tr><td>editing focus</td><td>局部编辑、身份保持、多轮编辑、多参考一致性。</td><td>T2I 审美或多样性下降，模型更保守。</td><td>edit success、identity similarity、background preservation、LPIPS。</td></tr>
+            <tr><td>post-training focus</td><td>prompt adherence、审美、人像保真、品牌一致性。</td><td>reward hacking、过饱和、模式收缩。</td><td>human preference、artifact rate、diversity、reward range stability。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="concepts">
+      <header class="chapter-header">
+        <h2>基础概念地图</h2>
+        <p class="chapter-summary">下面这些术语不是缩写表，而是现代图像生成训练系统里的接口、信号和约束。</p>
+      </header>
+      <div class="table-scroll wide">
+        <table>
+          <caption>术语在训练系统里的角色</caption>
+          <thead><tr><th>术语</th><th>直观解释</th><th>技术作用</th></tr></thead>
+          <tbody>
+            <tr><td>VAE / Autoencoder</td><td>把图片压缩成模型容易处理的“草稿”，最后再还原成图片。</td><td>latent tokenizer，决定 reconstruction fidelity、token cost、diffusability。</td></tr>
+            <tr><td>Caption</td><td>图片的训练说明书。</td><td>conditional supervision，影响 semantic binding、prompt following、long-tail coverage。</td></tr>
+            <tr><td>OCR-aware Caption</td><td>把图里的文字也写进 caption。</td><td>对 text rendering、text editing、layout learning 至关重要。</td></tr>
+            <tr><td>DiT</td><td>用 Transformer 在图像 latent 上生成图片。</td><td>diffusion / flow backbone，建模 noisy latent、text tokens、image condition tokens。</td></tr>
+            <tr><td>MMDiT</td><td>同时处理文本、图像、条件图等多模态 token 的 DiT。</td><td>用于 joint condition-target modeling 和编辑任务。</td></tr>
+            <tr><td>Flow Matching</td><td>学一条从噪声走向图片的路径。</td><td>velocity field learning on interpolated latent states。</td></tr>
+            <tr><td>SFT</td><td>用精选数据把模型审美和指令跟随拉正。</td><td>distribution narrowing toward high-fidelity sub-manifold。</td></tr>
+            <tr><td>DPO / RLHF / GRPO</td><td>用偏好或奖励信号让模型更符合人类和任务目标。</td><td>reward-guided post-training，风险是 reward hacking 和模式收缩。</td></tr>
+            <tr><td>OPD</td><td>用 on-policy 样本继续蒸馏或对齐。</td><td>让 student 适配自己生成分布，减少 train-test mismatch。</td></tr>
+            <tr><td>Distillation</td><td>让慢但强的老师教快模型。</td><td>teacher trajectory / distribution matching / few-step student。</td></tr>
+            <tr><td>Prompt Upsampling</td><td>把短 prompt 改写成结构化视觉说明。</td><td>推理时 condition compiler，不应直接写成训练数据配方。</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="chapter" id="flux1">
@@ -168,8 +273,16 @@
 
       <div class="evidence-card">
         <h3>证据边界</h3>
-        <p><span class="evidence public">公开披露</span>BFL 披露 FLUX family 使用专有文本和图像混合数据，包括第三方私有采购数据、标注服务和付费承包商数据、使用数据、合成数据和 BFL 内部生成数据。</p>
-        <p><span class="evidence unknown">未公开</span>完整数据比例、captioner、OCR pipeline、动态采样策略和训练数据配方没有公开，因此不能把具体 recipe 写成确定事实。</p>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>FLUX family 使用专有文本和图像混合数据；FLUX.1-dev 是 12B rectified flow transformer；使用从头训练的 autoencoder 和 guidance distillation。</td><td>完整数据比例、captioner、OCR pipeline、动态采样策略。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>数据工程大概率包含去重、质量过滤、安全过滤、合成数据、偏好数据和数据再平衡。</td><td>具体采样权重、训练阶段配比、reward loss 权重。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>FLUX 路线代表工业闭源生产流：数据治理、模型族分层和部署成本控制同等重要。</td><td>不要把这一判断当作 BFL 官方 recipe。</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="two-col">
@@ -198,7 +311,8 @@
 
       <div class="derivation-section">
         <h3>latent flow matching 训练对象</h3>
-        <p>图像先进入从头训练的 autoencoder latent space。给定数据 latent \(z_1\)、噪声 latent \(z_0\)、条件 \(c\) 和时间 \(t\)，rectified flow matching 学习从噪声到数据的 velocity field：</p>
+        <p><strong>直观理解：</strong>可以把生成过程想成从一团噪声慢慢走向图片。Flow Matching 不是让模型只学“这一点噪声怎么擦掉”，而是让模型在任意中间位置都知道“下一步应该往真实图片方向怎么走”。</p>
+        <p><strong>形式化：</strong>图像先进入从头训练的 autoencoder latent space。给定数据 latent \(z_1\)、噪声 latent \(z_0\)、条件 \(c\) 和时间 \(t\)，rectified flow matching 学习从噪声到数据的 velocity field：</p>
         <div class="equation">
 \[
 z_t=(1-t)z_0+t z_1,\qquad
@@ -206,7 +320,17 @@ z_t=(1-t)z_0+t z_1,\qquad
 \]
         </div>
         <p>公开资料还指向 logit-normal shift schedule、随训练分辨率调整的 schedule、包含 adversarial objective 的 autoencoder、以及扩大到 16 latent channels 来提高重建能力。</p>
+        <blockquote class="expert-note"><strong>技术边界：</strong>本文把 diffusion transformer 作为架构家族称呼，把 flow matching 作为训练目标称呼。严格说，FLUX 学的是 latent space 中从噪声到数据的 velocity field，不是传统 DDPM 里的 noise prediction。不同论文可能采用不同时间方向或符号约定；本文默认 \(t=0\) 是噪声，\(t=1\) 是数据。</blockquote>
       </div>
+
+      <blockquote class="ablation-box"><strong>Ablation 思考：如果只保留 DiT 主干、不优化 VAE 和数据会怎样？</strong>
+        <ul>
+          <li>去掉高质量 autoencoder：小字、logo、边缘和产品形状在 latent 中先损坏。</li>
+          <li>去掉高质量 caption：prompt following 和属性绑定下降。</li>
+          <li>去掉 guidance distillation：模型质量可能高，但部署成本和采样步数难以进入产品。</li>
+          <li>去掉安全和偏好数据：生成质量不等于可上线，风险样本会成为生产瓶颈。</li>
+        </ul>
+      </blockquote>
 
       <div class="architecture-strip" aria-label="FLUX training flow">
         <span>image -> VAE latent</span>
@@ -224,6 +348,25 @@ z_t=(1-t)z_0+t z_1,\qquad
         <p class="chapter-summary">Kontext 把任务从 pure text-to-image 扩展到 image editing / in-context generation：给定文本指令和上下文图像，生成目标图像。</p>
       </header>
 
+      <div class="source-note">
+        <p>Kontext 的核心不是“多喂一张图”，而是把图像生成从一次性 T2I 扩展成真实设计工作流：用户给一张上下文图，再用文本指令要求模型局部修改、全局重构、替换文字、引用风格或保持角色一致。</p>
+        <p>回到咖啡海报例子，Kontext 类任务关心的不是“重新生成一张海报”，而是“把 29 元改成 19 元，同时 logo、杯子、字体、背景和构图都不能乱”。</p>
+      </div>
+
+      <div class="evidence-card">
+        <h3>证据边界</h3>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>Kontext 技术报告和官方材料披露其面向 image editing / in-context generation，任务覆盖局部编辑、全局编辑、文字编辑、风格参考和角色参考。</td><td>完整编辑数据来源、source-target pair 构造比例、内部 benchmark 权重。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>稳定编辑需要 source image、instruction、target image、difference caption 和 preservation 信号。</td><td>具体数据采样比例、LADD / guidance distillation 的内部超参。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>Kontext 的价值应按真实工作流理解，而不是按“多一个参考图输入”理解。</td><td>不要把这个工作流定位写成官方术语。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="derivation-section">
         <h3>公式化任务</h3>
         <div class="equation">
@@ -240,6 +383,20 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         <article><strong>style reference 数据</strong><p>reference style image + new scene prompt + target image。</p></article>
         <article><strong>character / object reference 数据</strong><p>reference character or product + new prompt + target image。</p></article>
         <article><strong>text editing 数据</strong><p>input image with text + instruction + corrected target。</p></article>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Kontext 任务矩阵</caption>
+          <thead><tr><th>任务</th><th>输入</th><th>输出</th><th>核心难点</th></tr></thead>
+          <tbody>
+            <tr><td>local editing</td><td>source image + 局部修改指令</td><td>target image</td><td>只改局部，不破坏背景和身份。</td></tr>
+            <tr><td>global editing</td><td>source image + 全局风格 / 场景指令</td><td>target image</td><td>改整体，但保持语义和对象一致。</td></tr>
+            <tr><td>text editing</td><td>带文字图片 + 替换文字指令</td><td>corrected target</td><td>OCR 正确、字体和布局保持。</td></tr>
+            <tr><td>style reference</td><td>reference style + new prompt</td><td>新图</td><td>风格迁移但不复制内容。</td></tr>
+            <tr><td>character / object reference</td><td>reference character / product + new prompt</td><td>一致角色 / 商品新图</td><td>身份、形状、材质稳定。</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="judgement-card">
@@ -288,10 +445,24 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         </div>
       </div>
 
+      <div class="evidence-card">
+        <h3>证据边界</h3>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>FLUX.2 基于 latent flow matching architecture；统一 image generation 和 editing；FLUX.2-dev 是 32B flow matching transformer；支持 T2I、single-reference editing、multi-reference editing；官方披露多参考编辑最多 10 张参考图、最高 4MP 输出和 32K text input tokens。</td><td>完整训练数据比例、teacher/student 结构、reward 模型细节、step distillation loss。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>产品线很可能包含 size distillation、step distillation、多产品分层部署。</td><td>具体蒸馏阶段、训练样本占比、RL loss 权重。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>FLUX.2 代表生产级视觉工作流路线：多参考、一致性、品牌约束、高分辨率编辑和复杂 prompt 是核心。</td><td>不要把“生产工作流路线”写成官方术语。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="visual-example prompt-upsampling">
         <div class="visual-copy">
-          <h3>Prompt Upsampling：推理时的数据策略</h3>
-          <p>prompt upsampling 在生成前使用大型 VLM 扩展用户 prompt，把简短、含糊、缺少视觉细节的指令改写成结构化视觉说明。它相当于在图像模型前接了一个 visual prompt compiler，尤其服务 reasoning-heavy、复杂结构、图中文字、代码 / 数学 / 流程图等长约束场景。</p>
+          <h3>Prompt Upsampling：推理时的条件编译器</h3>
+          <p>prompt upsampling 在生成前使用大型 VLM 扩展用户 prompt，把简短、含糊、缺少视觉细节的指令改写成结构化视觉说明。它更准确地说是推理时的 conditioning strategy，相当于在图像模型前接了一个 visual prompt compiler，尤其服务 reasoning-heavy、复杂结构、图中文字、代码 / 数学 / 流程图等长约束场景。不要把它写成已公开的训练数据配方。</p>
         </div>
         <div class="prompt-boxes" aria-label="Prompt upsampling example">
           <div><strong>用户 prompt</strong><p>做一张高级感生日海报，有算法研究员氛围。</p></div>
@@ -314,13 +485,41 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         <h3>合理归纳</h3>
         <p><span class="evidence inferred">合理归纳</span>从产品分层看，FLUX.2 的训练链路很可能是 large base -> 高质量对齐 -> size distillation -> step distillation -> 多产品线部署。但官方没有公开完整 recipe，因此这不是可当作论文事实引用的训练配方。</p>
       </div>
+      <div class="source-note">
+        <h3>什么时候重点学习 FLUX.2 路线？</h3>
+        <ul class="compact-list">
+          <li>做品牌视觉、广告海报、电商商品图、多参考一致性。</li>
+          <li>做需要 reference image 的生产工作流。</li>
+          <li>做高分辨率编辑和复杂 prompt 控制。</li>
+          <li>做模型族分层：高质量模型、快速模型、fine-tuning base、consumer GPU 版本。</li>
+        </ul>
+        <p>放到咖啡海报样本里，FLUX.2 路线更关心“把这张海报、品牌 logo、杯子参考图、字体风格和长 prompt 一起作为生产约束”，而不是只从一句话重新画一张相似海报。</p>
+      </div>
     </section>
 
     <section class="chapter" id="qwen-image">
       <header class="chapter-header">
         <h2>Qwen-Image：把文字渲染、中文和编辑一致性做成核心能力</h2>
-        <p class="chapter-summary">Qwen-Image 的关键不是“顺便会写字”，而是围绕 text rendering、中文、多语言排版、编辑一致性和 VLM 语义条件编码构建数据工程与训练策略。</p>
+        <p class="chapter-summary">Qwen-Image 的关键不是“顺便会写字”，而是把文字渲染、中文、多语言排版、图文设计和编辑一致性作为核心训练目标。</p>
       </header>
+
+      <div class="evidence-card">
+        <h3>证据边界</h3>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>Qwen-Image 技术报告和官方材料强调 text rendering、复杂文字、编辑一致性、VLM semantic branch 与 VAE appearance branch。</td><td>完整数据比例、课程阶段比例、OCR 标注 pipeline 内部实现。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>稳定中文文字和图文设计能力需要大量 OCR-aware caption、合成文字、PPT / 海报 / 信息图 / UI 数据和编辑对。</td><td>每类数据的实际采样权重、内部 captioner 配方、奖励模型权重。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>Qwen-Image 路线应按“图文设计执行系统”理解，而不是普通 T2I 模型附带文字能力。</td><td>不要把这个定位写成官方命名。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="source-note">
+        <p>对这类模型来说，文字不是普通纹理，而是同时要求语义正确、字形正确、布局正确、局部清晰和跨语言稳定的结构化对象。咖啡海报样本里的“夏日拿铁 29 元”如果只被当作纹理，模型可以画出像中文字的笔画，却无法保证价格、品牌和版式正确。</p>
+      </div>
 
       <div class="pipeline-flow qwen-flow" aria-label="Qwen text rendering pipeline">
         <div>large-scale data collection</div>
@@ -352,6 +551,7 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
             <li>海报 / PPT / 信息图 / 漫画</li>
           </ol>
           <p>文字不是普通纹理。它同时要求语义正确、字形正确、布局正确、局部清晰和跨语言稳定。课程学习让模型先学基础字形和短文本，再学多行排版与段落级语义。</p>
+          <p>这条 curriculum 的直觉是：先让模型学会“字形像字”，再学会“短词正确”，最后才学“多行排版、段落语义和设计层级”。如果一开始就把复杂 PPT、海报、漫画、信息图全部混在一起，模型很容易学到表面纹理，却无法稳定生成可读文字。</p>
         </div>
         <div class="task-grid tight">
           <article><strong>Task A: T2I</strong><p>prompt -> target image</p></article>
@@ -377,11 +577,35 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
 
       <div class="judgement-card">
         <h3>I2I reconstruction 的作用</h3>
-        <p>I2I reconstruction 不是单纯复制图片，而是让模型学习哪些信息应该保留，哪些信息应该修改。它缓解编辑任务中的全图漂移、身份漂移、字体漂移、产品形状漂移和局部修图引发的全局重绘。</p>
+        <p><strong>问题：</strong>普通编辑对只告诉模型“改后长什么样”，没有明确告诉它“哪里不能动”。因此模型可能把局部文字编辑变成全图重绘，出现身份漂移、字体漂移、产品形状漂移和背景变化。</p>
+        <p><strong>做法：</strong>加入 <code>input image -> reconstructed image</code> 任务，让模型先学会原样保留，再学会按指令局部修改。</p>
+        <p><strong>直觉：</strong>一个不会“保持不变”的编辑模型，很难稳定做到“只改指定区域”。</p>
+        <p><strong>技术解释：</strong>reconstruction task 对齐 VLM semantic representation 与 VAE appearance representation，让模型同时学习语义保留和外观保留，减少编辑时的 latent drift。</p>
+        <p><strong>可能副作用：</strong>reconstruction 比例过高会让模型变保守，编辑幅度不足；比例过低则无法形成稳定 preservation prior。</p>
+        <p><strong>评估指标：</strong>identity similarity、background preservation、LPIPS、CLIP-I、OCR consistency、text edit success、product shape consistency。</p>
         <div class="tag-cloud" aria-label="Information preserved by I2I reconstruction">
           <span>identity</span><span>pose</span><span>background</span><span>font</span><span>style</span><span>texture</span><span>product shape</span><span>lighting</span><span>composition</span>
         </div>
       </div>
+
+      <blockquote class="ablation-box"><strong>Ablation 思考：文字渲染能力到底来自哪里？</strong>
+        <ul>
+          <li>去掉 OCR-inclusive caption：模型知道“这里有字”，但不知道“具体是什么字”。</li>
+          <li>去掉 synthetic rendered text：罕见汉字、小字号、长段落和复杂排版覆盖不足。</li>
+          <li>换低保真 VAE：文字在 latent 中已经损坏，DiT 再强也很难恢复。</li>
+          <li>去掉 OCR reward：后训练阶段文字正确性缺少可验证反馈。</li>
+        </ul>
+        <p>推荐指标：OCR exact match、CER / WER、layout correctness、small-font readability、reconstruction OCR retention。</p>
+      </blockquote>
+
+      <blockquote class="ablation-box"><strong>Ablation 思考：编辑稳定性来自哪里？</strong>
+        <ul>
+          <li>去掉 edit pair：模型缺少“指令 -> 改后图”的监督。</li>
+          <li>去掉 difference caption：模型不知道“改什么”和“保留什么”的边界。</li>
+          <li>去掉 I2I reconstruction：模型缺少 preservation prior，局部编辑容易全图漂移。</li>
+          <li>去掉 identity reward：人物、商品和品牌一致性没有后训练压力。</li>
+        </ul>
+      </blockquote>
 
       <div class="judgement-card">
         <h3>Qwen-Image 能力卡片</h3>
@@ -397,6 +621,20 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         <h2>Qwen-Image-2.0：从图像生成到图文设计执行系统</h2>
         <p class="chapter-summary">Qwen-Image-2.0 使用 Qwen3-VL 作为 condition encoder，并用 Multimodal Diffusion Transformer 做 joint condition-target modeling，目标是 slides、posters、infographics、comics 等 text-rich 视觉内容。</p>
       </header>
+
+      <div class="evidence-card">
+        <h3>证据边界</h3>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>Qwen-Image-2.0 使用 Qwen3-VL 作为 condition encoder；使用 Multimodal Diffusion Transformer 做 joint condition-target modeling；目标覆盖 slides、posters、infographics、comics 等 text-rich 视觉内容；支持约 1K token instruction。</td><td>具体数据比例、课程学习阶段比例、OCR pipeline 内部实现。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>训练数据需要大量 PPT、海报、信息图、漫画、UI、多语言图文混排和长 instruction 样本。</td><td>每类数据的占比、采样权重、自动标注模型细节。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>Qwen-Image-2.0 更像图文设计执行系统，而不是普通文生图模型。</td><td>不要把这个定位写成官方命名。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div class="two-col">
         <div class="derivation-section">
@@ -426,8 +664,23 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         </div>
       </div>
 
+      <div class="table-scroll">
+        <table>
+          <caption>VAE Fidelity Lab：压缩率、文字数据和语义对齐的取舍</caption>
+          <thead><tr><th>Slider</th><th>含义</th><th>调高后的收益</th><th>可能风险</th><th>验证指标</th></tr></thead>
+          <tbody>
+            <tr><td>compression</td><td>latent 压缩率 / token 成本。</td><td>token 少、训练和推理更便宜。</td><td>小字、logo、边缘损坏。</td><td>OCR retention、LPIPS、line preservation。</td></tr>
+            <tr><td>text-rich data</td><td>VAE 训练中图文密集样本占比。</td><td>小字、文档、UI、海报重建更好。</td><td>general natural image 分布受影响。</td><td>small-font readability、document reconstruction score。</td></tr>
+            <tr><td>semantic alignment</td><td>latent 与语义空间对齐强度。</td><td>DiT 更容易学习条件到图像的映射。</td><td>过强可能损失低层纹理。</td><td>diffusability、caption-image alignment、downstream T2I quality。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="judgement-card">
         <h3>Qwen-Image-VAE-2.0 的重点</h3>
+        <p><strong>直观理解：</strong>VAE 像是图像模型的“压缩相机”。DiT 并不是直接在高清像素上画图，而是在 VAE 压缩后的 latent space 里工作。如果这台压缩相机把小字、logo、细线和产品边缘压坏了，后面的生成模型再强，也是在一张坏草稿上作画。</p>
+        <p><strong>工程作用：</strong>VAE 不是可替换的小模块，而是整个图像生成系统的接口层。训练 text-rich 模型时，VAE 数据必须覆盖文档、海报、PPT、UI、小字号、logo、包装、图表和 synthetic rendered text。</p>
+        <blockquote class="expert-note"><strong>技术边界：</strong>reconstruction fidelity 与 diffusability 不完全等价。一个 VAE 可以重建得很好，但 latent distribution 不一定适合 DiT 学习。Qwen-Image-VAE-2.0 强调 semantic alignment，目的就是让 latent space 更适合 diffusion / flow 模型建模。</blockquote>
         <div class="judgement-grid">
           <div><strong>训练规模</strong><p>扩展到 billions of images，并加入 synthetic rendering engine 来增强 text-rich 场景重建。</p></div>
           <div><strong>语义对齐</strong><p>使用 semantic alignment strategy，让 latent space 更适合 diffusion modeling。</p></div>
@@ -448,7 +701,17 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
         </div>
         <p>奖励模型来自 fine-tuned VLM，采用 pointwise scoring 与 chain-of-thought reasoning。T2I 奖励覆盖 alignment、aesthetics、portrait fidelity；编辑任务覆盖 instruction-following accuracy 和 face identity preservation。</p>
         <p>训练技巧包括 GRPO、hybrid CFG、prompt curation / prompt filtering、intra-group reward range filtering、per-category reward weight calibration 和 on-policy distillation。它说明图像模型训练正在 LLM 化：base model 之后需要 SFT、reward model、RL 和 distillation 才能可靠满足偏好、指令跟随和生产约束。</p>
+        <blockquote class="expert-note"><strong>风险边界：</strong>图像 RL 的难点不只是找到一个 reward model，而是防止 reward hacking。OCR reward 可能鼓励模型生成过粗、过硬、过度居中的文字；审美 reward 可能导致过饱和、过度平滑或风格收缩；identity reward 可能让编辑模型过度保守。因此需要 reward ensemble、range filtering、per-category calibration 和人工抽检。</blockquote>
       </div>
+
+      <blockquote class="ablation-box"><strong>Ablation 思考：VAE 能力来自哪里？</strong>
+        <ul>
+          <li>提高 compression：token 成本下降，但小字、logo 和边缘更容易丢。</li>
+          <li>去掉 text-rich VAE data：自然图可能还行，文档、海报、UI 重建明显下降。</li>
+          <li>去掉 semantic alignment：reconstruction 可能好看，但 latent 不一定适合 DiT 学习。</li>
+          <li>不评估 diffusability：会把“重建好”误当成“生成好”。</li>
+        </ul>
+      </blockquote>
     </section>
 
     <section class="chapter" id="z-image">
@@ -459,14 +722,28 @@ p(\text{target image}\mid \text{text instruction}, \text{context image})
 
       <div class="thesis-card z">
         <h3>数据哲学</h3>
-        <p>Z-Image 的核心原则是 maximizes information gain per computing unit。同样的 GPU-hour，不要喂重复低质量图，而要喂高信息增益、覆盖长尾、caption 可靠、符合当前训练阶段的样本。</p>
+        <p>Z-Image 的核心不是“模型越小越好”，而是“每一单位 compute 学到的信息更多”。如果两个样本长得几乎一样、caption 又差，继续喂给模型只是在浪费 GPU-hour；如果一个样本覆盖长尾概念、文字清楚、caption 准确、和当前训练阶段匹配，它就有更高的信息增益。</p>
+      </div>
+
+      <div class="evidence-card">
+        <h3>证据边界</h3>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>类型</th><th>可确认内容</th><th>不应写成确定事实的内容</th></tr></thead>
+            <tbody>
+              <tr><td><span class="evidence public">公开事实</span></td><td>Z-Image 披露 6B 单流 S3-DiT、数据 profiling / vector / knowledge graph / active curation、双语多粒度 caption、多阶段训练、Turbo 8-step no-CFG、DPO / GRPO / distillation 等训练路线。</td><td>未公开数据集完整清单、全部采样权重、内部 reward model 细节。</td></tr>
+              <tr><td><span class="evidence inferred">合理推断</span></td><td>它的训练效率来自 profiling、rarity score、curriculum、caption 分层和 post-training 组合。</td><td>各 engine 对最终性能的独立贡献比例。</td></tr>
+              <tr><td><span class="evidence unknown">作者观点</span></td><td>Z-Image 更适合当作开源训练 recipe 和 ablation 思维样板。</td><td>不要把“最优开源路线”写成确定结论。</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="infra-grid">
-        <article><h3>Data Profiling Engine</h3><p>提取低层物理属性和高层语义属性，包括分辨率、宽高比、文件大小、pHash、technical quality、compression artifacts、语义类别、语言、OCR / text richness 和复杂度。</p></article>
-        <article><h3>Cross-modal Vector Engine</h3><p>基于 billions of embeddings 做大规模语义去重、跨模态检索和相似样本发现。</p></article>
-        <article><h3>World Knowledge Topological Graph</h3><p>组织知识层级，发现概念空洞，重平衡概念分布，维护长尾概念覆盖。</p></article>
-        <article><h3>Active Curation Engine</h3><p>通过自动采样发现 hard cases，驱动闭环标注、补数据和下一阶段重采样。</p></article>
+        <article><h3>Data Profiling Engine</h3><p>提取低层物理属性和高层语义属性，包括分辨率、宽高比、文件大小、pHash、technical quality、compression artifacts、语义类别、语言、OCR / text richness 和复杂度。</p><p><strong>为什么重要：</strong>没有 profiling，就不知道哪些样本是低质、重复、文字密集、长尾或 hard case；没有这些标签，就无法做动态采样和课程学习。</p></article>
+        <article><h3>Cross-modal Vector Engine</h3><p>基于 billions of embeddings 做大规模语义去重、跨模态检索和相似样本发现。</p><p><strong>为什么重要：</strong>跨模态向量检索不只是为了去重，也可以发现“图片相似但 caption 不一致”“caption 相似但视觉不同”的训练噪声和长尾空洞。</p></article>
+        <article><h3>World Knowledge Topological Graph</h3><p>组织知识层级，发现概念空洞，重平衡概念分布，维护长尾概念覆盖。</p><p><strong>为什么重要：</strong>知识图谱让采样不只按图片相似度走，而是按概念覆盖和长尾稀缺性走，避免模型只会高频物体和常见风格。</p></article>
+        <article><h3>Active Curation Engine</h3><p>通过自动采样发现 hard cases，驱动闭环标注、补数据和下一阶段重采样。</p><p><strong>为什么重要：</strong>active curation 让训练变成闭环：模型哪里失败，就把对应 hard case 找出来、补标注、重采样，再进入下一轮训练。</p></article>
       </div>
 
       <div class="algorithm-panel">
@@ -538,6 +815,371 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
       <div class="judgement-card">
         <h3>训练效率工程与 compute</h3>
         <p>Z-Image 使用 FSDP2 shard optimizer states and gradients、gradient checkpointing、torch.compile、sequence length-aware batch construction、similar resolution / sequence length batching，并按 long sequence small batch、short sequence large batch 减少 padding 和 OOM。公开训练 compute 约 314K H800 GPU-hours：low-res pretraining 147.5K，omni-pretraining 142.5K，post-training 24K。</p>
+        <p>咖啡海报样本在 Z-Image 式数据系统里不会只是“poster”标签：它还会被标成中文、text-rich、中等文字密度、含 logo、可做价格编辑、需要 OCR reward 的 hard case。这些字段决定它在 curriculum、rarity resampling 和 editing continued training 中被如何使用。</p>
+      </div>
+      <blockquote class="ablation-box"><strong>Ablation 思考：Z-Image 的效率来自哪里？</strong>
+        <ul>
+          <li>去掉 data profiling：无法按质量、OCR、复杂度、长尾程度动态采样。</li>
+          <li>去掉多粒度 caption：模型只适配单一 caption 风格，真实用户短 prompt 效果下降。</li>
+          <li>去掉 rarity score / tagged resampling：SFT 后更容易长尾遗忘。</li>
+          <li>去掉 few-step distillation：质量可能保留，但实时部署能力下降。</li>
+          <li>去掉 RLHF：Turbo 模型可能快，但 instruction following、text rendering 和 layout correctness 难以继续提升。</li>
+        </ul>
+      </blockquote>
+    </section>
+
+    <section class="chapter" id="model-details">
+      <header class="chapter-header">
+        <h2>模型训练与采样的代码级细节：token、条件、time shift 与蒸馏</h2>
+        <p class="chapter-summary">当我们说模型看 prompt、看参考图、生成 1024×1024 图片时，模型内部真正处理的是 text tokens、latent image tokens、reference tokens、位置 ids、scheduler timesteps 和 guidance 信号。</p>
+      </header>
+
+      <div class="source-note">
+        <h3>推理时，模型内部到底在处理什么？</h3>
+        <p>用户看到的是 prompt、参考图和输出图；模型看到的是 token sequence。prompt 先经过 text encoder 或 VLM condition encoder，变成 text tokens；目标图从随机噪声 latent 开始，按 VAE 的 latent 空间组织成 image tokens；参考图如果存在，也会被编码成 latent tokens 或视觉语义 tokens。DiT / MMDiT / S3-DiT 真正做的是在这些 tokens 之间建模关系，并在每个采样步预测 velocity 或 denoising direction。</p>
+        <p>因此，“支持 2K 分辨率”“支持 10 张参考图”“支持复杂中文海报”这些能力，背后都对应具体的 token 组织成本：更高分辨率意味着更多 image tokens；更多参考图意味着更长 condition sequence；更长 prompt 意味着更多 text tokens；传统 CFG 还可能让每一步推理跑两条条件路径。现代图像模型的采样优化，本质上是在质量、token 数、步数、CFG、cache、attention kernel 和 VAE 压缩之间做系统权衡。</p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>同一张图在模型里会变成哪些对象</caption>
+          <thead><tr><th>对象</th><th>进入模型前的形态</th><th>模型里对应什么</th><th>为什么影响能力</th></tr></thead>
+          <tbody>
+            <tr><td>用户 prompt</td><td>自然语言、短指令、结构化描述。</td><td>text tokens 或 VLM condition tokens。</td><td>决定语义、布局、文字、风格和编辑目标。</td></tr>
+            <tr><td>目标图</td><td>随机噪声 latent 或待编辑图的 noisy latent。</td><td>target image latent tokens。</td><td>token 数决定 attention 成本和 scheduler 设计。</td></tr>
+            <tr><td>参考图</td><td>商品、人物、风格、版式或原图。</td><td>reference latent tokens、VLM semantic tokens 或 KV cache。</td><td>决定一致性、局部编辑和多参考控制。</td></tr>
+            <tr><td>采样时间</td><td>step index / sigma / timestep。</td><td>timestep embedding、flow schedule、time shift。</td><td>决定每一步在噪声路径上的位置，和分辨率/token 数耦合。</td></tr>
+            <tr><td>guidance</td><td>CFG scale、guidance embed、negative prompt。</td><td>双路预测、模型输入调制或蒸馏后的内化行为。</td><td>影响 prompt following、成本、过饱和和文字稳定性。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="evidence-card">
+        <h3>FLUX.2：多参考、4D token 坐标、KV cache 与新 VAE</h3>
+        <p>FLUX.2 可以看成 FLUX 系列从高质量文生图 / 编辑模型走向生产级视觉工作流模型的一代：它强调多参考图、一致性、复杂文字、品牌约束、图像编辑和最高约 4MP 输出。和 FLUX.1 相比，这里不能只讲 backbone，还要讲参考图和目标图如何作为 token sequence 进入模型、不同分辨率如何改变 time schedule，以及 Klein 系列如何通过 size / step / guidance distillation 与 KV cache 服务不同部署场景。</p>
+        <div class="table-scroll compact-table">
+          <table>
+            <caption>FLUX.2 可以写成确定事实的公开信息</caption>
+            <thead><tr><th>内容</th><th>可确认表述</th><th>证据边界</th></tr></thead>
+            <tbody>
+              <tr><td>FLUX.2 dev</td><td>32B flow matching transformer，支持 text-to-image 与 single/multi-reference editing。</td><td>官方 repo / 官方博客。</td></tr>
+              <tr><td>多参考</td><td>官方披露最多支持 10 张参考图，并强调统一文生图、单参考编辑和多参考编辑。</td><td>可以写能力边界，不能推出训练数据比例。</td></tr>
+              <tr><td>条件编码</td><td>官方博客描述为 Mistral-3 24B VLM 与 rectified flow transformer 结合；公开 repo 提到 prompt upsampling 可用 Mistral-Small-3.2-24B-Instruct-2506。</td><td>prompt upsampling 是推理时 condition rewriting，不等于已确认的训练数据 recipe。</td></tr>
+              <tr><td>VAE</td><td>FLUX.2 VAE 重新训练，优化 learnability、quality、compression；repo 也说明 autoencoder 相比 FLUX.1 有改进。</td><td>可以讨论 latent space 变化，不能补写未公开的数据配方。</td></tr>
+              <tr><td>Klein</td><td>Klein 是 size-distilled 系列；distilled 版本面向 4-step 生产，Base 版本面向 fine-tuning、LoRA 和 research。</td><td>teacher/student 细节未完整公开。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>FLUX.2 公开推理配置中的模型参数</caption>
+          <thead><tr><th>模型</th><th><code>in_channels</code></th><th><code>context_in_dim</code></th><th><code>hidden_size</code></th><th>heads</th><th>double depth</th><th>single depth</th><th><code>axes_dim</code></th><th>guidance embed</th></tr></thead>
+          <tbody>
+            <tr><td>FLUX.2 dev</td><td>128</td><td>15360</td><td>6144</td><td>48</td><td>8</td><td>48</td><td><code>[32,32,32,32]</code></td><td>true</td></tr>
+            <tr><td>FLUX.2 Klein 9B</td><td>128</td><td>12288</td><td>4096</td><td>32</td><td>8</td><td>24</td><td><code>[32,32,32,32]</code></td><td>false</td></tr>
+            <tr><td>FLUX.2 Klein 4B</td><td>128</td><td>7680</td><td>3072</td><td>24</td><td>5</td><td>20</td><td><code>[32,32,32,32]</code></td><td>false</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="schema-note">这些是公开 repo 中可见的 open-weight / local inference 配置层信息，不等于闭源服务的全部内部 recipe。关键变化是 FLUX.2 使用 <code>t,h,w,l</code> 四轴 token 坐标：<code>h,w</code> 表示空间位置，<code>l</code> 表示文本 token 或局部顺序，<code>t</code> 用于区分不同时间、参考帧或条件图。<code>axes_dim=[32,32,32,32]</code> 把 RoPE 维度分配到四个坐标轴上。</p>
+
+      <div class="algorithm-panel">
+        <div class="panel-title"><h3>FLUX.2 推理时的数据组织</h3></div>
+        <div class="table-scroll compact-table">
+          <table>
+            <thead><tr><th>数据</th><th>形状直觉</th><th>作用</th></tr></thead>
+            <tbody>
+              <tr><td>text tokens</td><td><code>[B, T_text, context_in_dim]</code></td><td>prompt、prompt upsampling 或 VLM condition encoder 输出。</td></tr>
+              <tr><td>text ids</td><td><code>[B, T_text, 4]</code></td><td>text token 的 <code>t,h,w,l</code> 坐标，通常 h/w/t 是 dummy，l 是 token index。</td></tr>
+              <tr><td>target noisy latent tokens</td><td><code>[B, T_img, 128]</code></td><td>当前采样步需要去噪的目标图 latent tokens。</td></tr>
+              <tr><td>target image ids</td><td><code>[B, T_img, 4]</code></td><td>目标图 token 的 <code>t,h,w,l</code> 坐标。</td></tr>
+              <tr><td>reference latent tokens</td><td><code>[B, T_ref, 128]</code></td><td>参考图经过 FLUX.2 VAE 编码后的 tokens。</td></tr>
+              <tr><td>reference ids</td><td><code>[B, T_ref, 4]</code></td><td>参考图 token 的 <code>t,h,w,l</code> 坐标，用 t offset 区分不同参考图。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="mini-code"><code># 解释数据组织的伪代码
+text, text_ids = encode_prompt(prompt)          # [B, T_text, D_ctx], [B, T_text, 4]
+img, img_ids = prepare_noisy_target(H, W)       # [B, T_img, 128], [B, T_img, 4]
+ref, ref_ids = encode_reference_images(refs)    # [B, T_ref, 128], [B, T_ref, 4]
+
+pred_all = model(
+    img=cat([img, ref], dim=1),
+    img_ids=cat([img_ids, ref_ids], dim=1),
+    txt=text,
+    txt_ids=text_ids,
+    timesteps=t,
+)
+pred_target = pred_all[:, :T_img]
+img = img + (t_next - t) * pred_target</code></pre>
+        <p class="schema-note">多参考不是把参考图简单贴进 prompt，而是把参考图编码成 latent tokens，并和目标图 token 一起参与 transformer 计算。这解释了多参考一致性的来源，也解释了参考图数量、参考图分辨率和输出分辨率都会提高 sequence length 与 attention 成本。</p>
+      </div>
+
+      <div class="two-col">
+        <div class="source-note">
+          <h3>FLUX.2 KV cache 与 time shift</h3>
+          <p>参考图在每个 denoising step 中基本不变，目标图 latent 会随时间更新。KV cache 路径会在第一步抽取 reference token 相关 cache，后续 step 复用它，只更新目标图 token 的去噪路径。它主要改善多参考编辑的 latency、throughput 和 VRAM-latency trade-off，不应写成质量提升机制。</p>
+          <p>flow matching / rectified flow 的采样 schedule 也和分辨率相关。FLUX.2 公开采样代码会根据 <code>image_seq_len</code> 计算经验 <code>mu</code>，再对 timestep schedule 做 SNR shift：</p>
+          <p class="equation">\( \text{shift}(t;\mu,\sigma)=\frac{e^\mu}{e^\mu + (1/t - 1)^\sigma} \)</p>
+          <p><code>mu</code> 来自 image token sequence length，而不是直接来自原始像素面积。这里应解释为 resolution-aware schedule，不要写成固定论文公式或唯一训练 schedule。</p>
+        </div>
+        <div class="source-note">
+          <h3>为什么不能只调采样参数？</h3>
+          <p>4-step / 8-step 模型通常不是把 50-step 模型少跑几步，而是通过 step distillation 让 student 学会在更少时间点上逼近 teacher trajectory。no-CFG 模型也不是简单把 CFG scale 设成 0，而是通过 guidance distillation 或 reward post-training 把 prompt-following 行为内化进模型。</p>
+          <p>所以采样参数要和训练 recipe 一起理解：Base 模型适合高步数、CFG、fine-tuning 和多样性；distilled 模型适合低延迟生产；KV cache 适合多参考条件复用；prompt rewriting 适合把用户输入变成更接近训练 caption 分布的条件。</p>
+        </div>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>FLUX.2-Klein 家族如何选</caption>
+          <thead><tr><th>模型</th><th>推理定位</th><th>典型步数</th><th>CFG / guidance</th><th>适合场景</th><th>不适合场景</th></tr></thead>
+          <tbody>
+            <tr><td>Klein 4B</td><td>最轻量、边缘 / 消费级 GPU。</td><td>distilled 生产路径通常少步。</td><td>guidance-distilled，不强调传统 CFG。</td><td>本地实时、快速原型、低 VRAM。</td><td>极限质量、多参考复杂工作流。</td></tr>
+            <tr><td>Klein 9B</td><td>质量更高的轻量模型。</td><td>distilled 生产路径通常少步。</td><td>guidance-distilled。</td><td>文生图、轻量编辑、质量/速度平衡。</td><td>重度定制训练。</td></tr>
+            <tr><td>Klein 9B KV</td><td>多参考编辑低延迟。</td><td>distilled + KV cache。</td><td>guidance-distilled。</td><td>多参考图编辑、产品工作流。</td><td>不需要参考图时收益有限。</td></tr>
+            <tr><td>Klein 4B Base</td><td>undistilled foundation。</td><td>50-step 研究 / fine-tune 路径。</td><td>可保留更传统控制。</td><td>LoRA、小团队定制、研究。</td><td>最低延迟生产。</td></tr>
+            <tr><td>Klein 9B Base</td><td>undistilled foundation。</td><td>50-step 研究 / fine-tune 路径。</td><td>控制和多样性更完整。</td><td>高质量定制、research。</td><td>实时线上推理。</td></tr>
+            <tr><td>FLUX.2 dev</td><td>32B 高质量 open-weight。</td><td>非 step-distilled。</td><td>guidance embed。</td><td>高质量、多参考、研究、LoRA。</td><td>低 VRAM、本地实时。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote class="expert-note"><strong>技术边界：</strong>Distilled 模型已经被训练成在少数采样步内逼近 teacher 输出分布，trajectory、分布多样性和 step behavior 都被压缩过。Base 模型虽然慢，但保留更完整的训练信号和更宽的分布，更适合定制微调、风格 LoRA、control adapter 或研究 ablation。传统 CFG 是 conditional / unconditional 双路预测；guidance embed 是模型输入调制；guidance distillation 是把 guidance 行为训练进 student。</blockquote>
+
+      <div class="evidence-card">
+        <h3>Qwen-Image：文字渲染、VLM 条件、2×2 latent packing 与 true CFG</h3>
+        <p>Qwen-Image 的强项不是“又一个 DiT”，而是把图像生成问题重写成强视觉语言模型参与的多模态条件建模问题。复杂文字、中文、多语言排版、海报、PPT、UI 和编辑一致性，都依赖 text-rich 数据、OCR-aware caption、Qwen2.5-VL / Qwen3-VL condition encoder、VAE latent packing、true CFG 与 prompt rewriting 的组合。</p>
+        <div class="table-scroll compact-table">
+          <table>
+            <caption>Qwen-Image 公开实现中的典型配置</caption>
+            <thead><tr><th>项目</th><th>典型公开配置</th><th>解读</th></tr></thead>
+            <tbody>
+              <tr><td>Backbone</td><td>MMDiT / QwenImageTransformer2DModel</td><td>多模态条件和图像 latent 联合建模。</td></tr>
+              <tr><td>Transformer</td><td>60 layers，24 heads，head dim 128</td><td>较深 transformer 主干。</td></tr>
+              <tr><td><code>joint_attention_dim</code></td><td>3584</td><td>来自 Qwen2.5-VL 等条件编码器的 joint condition dim。</td></tr>
+              <tr><td><code>in_channels</code> / <code>out_channels</code></td><td>64 / 16</td><td>输入通常来自 VAE latent channel × 2×2 packing，输出再 unpack 回 VAE latent channel。</td></tr>
+              <tr><td>RoPE axes</td><td><code>(16,56,56)</code></td><td>text/time 或 multimodal 轴 + 空间 h/w 轴的 RoPE 分配。</td></tr>
+              <tr><td>max sequence length</td><td>1024</td><td>长 prompt / 图文设计 instruction 上限。</td></tr>
+              <tr><td>scheduler</td><td>FlowMatchEulerDiscreteScheduler</td><td>flow matching / Euler 类采样路径。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="algorithm-panel">
+        <div class="panel-title"><h3>Qwen-Image 的 latent packing</h3></div>
+        <p>Qwen-Image 不是直接在 1024×1024 像素上运行 transformer。图像先经过 VAE 压缩到 latent，再把相邻的 2×2 latent patch 打包成一个 transformer token。假设 VAE 空间压缩倍率是 8，那么 1024×1024 图像会变成约 <code>(1024/16) × (1024/16) = 4096</code> 个 image tokens。这里的 16 来自 VAE 的 8 倍空间压缩再乘以 2×2 packing。</p>
+        <pre class="mini-code"><code>vae_latent = vae.encode(image)                 # [B, 16, H/8, W/8]
+packed = pack_2x2(vae_latent)                  # [B, (H/16)*(W/16), 64]
+pred = transformer(packed, prompt_embeds, ids)
+latent = unpack_2x2(pred)                      # [B, 16, H/8, W/8]
+image = vae.decode(latent)</code></pre>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Qwen-Image 中 <code>true_cfg_scale</code> 与 <code>guidance_scale</code> 的区别</caption>
+          <thead><tr><th>参数</th><th>直观含义</th><th>技术含义</th><th>常见误区</th></tr></thead>
+          <tbody>
+            <tr><td><code>true_cfg_scale</code></td><td>显式增强 prompt 约束。</td><td>conditional / negative conditional 差分，更接近传统 classifier-free guidance。</td><td>越大不一定越好，可能过饱和或损坏文字。</td></tr>
+            <tr><td><code>guidance_scale</code></td><td>模型内部 guidance 信号。</td><td>在部分 guidance-distilled 变体中作为模型输入调制，不一定触发双 batch CFG。</td><td>不能把它和传统 CFG 完全等同。</td></tr>
+            <tr><td><code>num_inference_steps</code></td><td>采样步数。</td><td>Euler / flow scheduler steps。</td><td>少步需要模型在训练或蒸馏阶段支持。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="source-note">
+          <h3>Qwen time shift 与编辑双编码</h3>
+          <p>Qwen-Image 的公开 pipeline 中也有根据 image sequence length 计算 shift 的逻辑。典型实现会在 base sequence length 和 max sequence length 之间线性插值 <code>mu</code>，再交给 flow scheduler 设置 timesteps。它和 FLUX.2 的经验 time shift 思路相似：核心都是让 schedule 感知分辨率/token 数，而不是把所有画布大小都使用完全相同的时间网格。</p>
+          <p>编辑时，原图一方面进入 Qwen2.5-VL / Qwen3-VL 这样的视觉语言模型，提供语义理解；另一方面进入 VAE encoder，提供可重建的外观与细节。前者帮助模型理解“要改什么”，后者帮助模型保留“不能改什么”。</p>
+        </div>
+        <div class="source-note">
+          <h3>Prompt rewriting 示例</h3>
+          <p>用户 prompt：把海报价格改成 19 元。</p>
+          <p>改写后 prompt：保持海报背景、咖啡杯、品牌 logo、暖色灯光和整体版式不变，仅将主标题下方价格文字从“29 元”改为“19 元”，字体风格、字号和位置保持一致。</p>
+          <p>这个改写不是为了把 prompt 写长，而是把局部编辑的 preserve / edit 边界显式化，降低模型把整张图一起漂移的概率。</p>
+        </div>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>Qwen-Image 到 Qwen-Image-2.0 的变化</caption>
+          <thead><tr><th>维度</th><th>Qwen-Image</th><th>Qwen-Image-2.0</th><th>应该强调的变化</th></tr></thead>
+          <tbody>
+            <tr><td>条件编码</td><td>Qwen2.5-VL 参与语义条件。</td><td>Qwen3-VL condition encoder。</td><td>更强 multimodal understanding。</td></tr>
+            <tr><td>主干</td><td>MMDiT。</td><td>Multimodal Diffusion Transformer。</td><td>condition-target joint modeling 更明确。</td></tr>
+            <tr><td>指令长度</td><td>长 prompt / text-rich 场景。</td><td>up to 1K tokens。</td><td>更适合 PPT、海报、信息图、漫画。</td></tr>
+            <tr><td>分辨率</td><td>常见 1K-ish 多 aspect ratio。</td><td>native 2K support。</td><td>更高分辨率图文设计。</td></tr>
+            <tr><td>VAE</td><td>强调文字与编辑。</td><td>VAE-2.0 强调高压缩、重建、diffusability。</td><td>VAE 成为文字与高分辨率能力的关键瓶颈。</td></tr>
+            <tr><td>训练</td><td>大规模数据、渐进训练、I2I reconstruction。</td><td>large-scale curation + customized multi-stage training。</td><td>继续强化数据系统路线。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Qwen-Image-VAE-2.0 为什么是系统瓶颈层</caption>
+          <thead><tr><th>VAE 指标</th><th>为什么重要</th></tr></thead>
+          <tbody>
+            <tr><td>reconstruction fidelity</td><td>小字、logo、线条、UI 边缘不能在压缩阶段丢失。</td></tr>
+            <tr><td>OCR retention</td><td>decode 后文字还得能被 OCR 正确识别。</td></tr>
+            <tr><td>diffusability</td><td>latent distribution 要利于 DiT / flow 学习，而不只是人眼看起来能重建。</td></tr>
+            <tr><td>semantic alignment</td><td>latent 与 VLM semantic representation 更一致，利于编辑和图文条件绑定。</td></tr>
+            <tr><td>compression ratio</td><td>决定 token 数、显存、速度和高分辨率上限。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="evidence-card">
+        <h3>Z-Image：6B S3-DiT、Qwen3-4B、Flux VAE、8-step Turbo 与数据效率路线</h3>
+        <p>Z-Image 代表的是另一条路线：在参数量和训练成本相对受控的前提下，通过数据工程、单流架构、prompt enhancement-aware SFT、few-step distillation 和 reward post-training 做出高效率图像生成模型。它的价值不只是 6B，而是展示了如何把 caption、分辨率、多任务训练、SFT、RL 和 distillation 组织成一个可复现程度更高的训练 pipeline。</p>
+        <div class="table-scroll compact-table">
+          <table>
+            <caption>Z-Image 公开事实与边界</caption>
+            <thead><tr><th>内容</th><th>可确认表述</th><th>证据边界</th></tr></thead>
+            <tbody>
+              <tr><td>参数规模</td><td>6B 级模型家族。</td><td>官方 repo / 论文。</td></tr>
+              <tr><td>架构</td><td>S3-DiT：single-stream diffusion transformer；文本、视觉语义和图像 VAE tokens 序列级 concat。</td><td>论文 / 官方 repo。</td></tr>
+              <tr><td>text encoder / VAE</td><td>使用 Qwen3-4B 作为 text encoder，使用 Flux VAE 做图像 tokenization。</td><td>论文。</td></tr>
+              <tr><td>位置编码</td><td>3D Unified RoPE；编辑中 reference / target 使用空间对齐和 temporal offset。</td><td>论文。</td></tr>
+              <tr><td>Turbo / Base</td><td>Turbo 走 8 NFE / no CFG 快速推理；Base 走 50-step CFG，适合质量、多样性和 fine-tuning。</td><td>官方 repo / 论文。</td></tr>
+              <tr><td>训练成本</td><td>报告披露约 314K H800 GPU-hours。</td><td>只能作为该报告的预算尺度，不应泛化到所有类似模型。</td></tr>
+              <tr><td>未公开</td><td>全量数据源、过滤器细节、reward model 完整定义、真实线上部署优化。</td><td>必须保留未知。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Z-Image S3-DiT 典型公开配置</caption>
+          <thead><tr><th>项目</th><th>配置</th><th>解读</th></tr></thead>
+          <tbody>
+            <tr><td>transformer dim</td><td>3840</td><td>6B 模型主干宽度。</td></tr>
+            <tr><td>layers / refiner layers</td><td>30 / 2</td><td>主干层数与输入 token refinement。</td></tr>
+            <tr><td>heads / qk norm</td><td>30 / true</td><td>attention heads 与训练稳定性设计。</td></tr>
+            <tr><td>image latent channels</td><td>16</td><td>Flux VAE latent channel。</td></tr>
+            <tr><td>patch size</td><td>2</td><td>latent patchify 后进入 transformer。</td></tr>
+            <tr><td>text feature dim</td><td>2560</td><td>Qwen3-4B text encoder 输出维度。</td></tr>
+            <tr><td>RoPE axes</td><td><code>[32,48,48]</code></td><td>3D Unified RoPE 维度分配。</td></tr>
+            <tr><td>max text length</td><td>512</td><td>典型 pipeline 参数。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="source-note">
+          <h3>Z-Image 编辑 token 组织</h3>
+          <p>reference image tokens 和 target noisy image tokens 不是简单拼图，而是在 token sequence 中一起建模。reference 与 target 使用对齐的空间 RoPE 坐标，以便模型知道它们对应同一个画面区域；同时用 temporal offset 和不同 time-conditioning 区分“干净参考图”和“正在去噪的目标图”。这解释了编辑一致性为什么和 token 组织强相关。</p>
+        </div>
+        <div class="source-note">
+          <h3>Z-Image-Turbo 的 8-step 来源</h3>
+          <p>Turbo 的 8-step / no-CFG 能力不是把 50-step base 强行少跑几步，而是通过 few-step distillation 和 reward post-training 重新训练得到的。D-DMD、DMDR 等机制用于让少步 student 更接近 teacher 分布，同时抑制 reward hacking 和蒸馏带来的质量 / 多样性损失。</p>
+        </div>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>Z-Image 训练阶段与部署版本</caption>
+          <thead><tr><th>对象</th><th>公开成本 / 设置</th><th>目标</th><th>解释</th></tr></thead>
+          <tbody>
+            <tr><td>Low-res pretraining</td><td>147.5K H800 GPU-hours</td><td>跨模态对齐、基础视觉知识、中文文字等基础能力。</td><td>先学世界和语言-图像绑定。</td></tr>
+            <tr><td>Omni-pretraining</td><td>142.5K H800 GPU-hours</td><td>任意分辨率、多任务、T2I/I2I 联合训练。</td><td>学习多分辨率、多条件、多任务。</td></tr>
+            <tr><td>Post-training</td><td>24K H800 GPU-hours</td><td>SFT、distillation、reward post-training。</td><td>把 base 模型拉向可用产品行为。</td></tr>
+            <tr><td>Z-Image-Omni-Base</td><td>50 steps + CFG</td><td>pretraining only。</td><td>原始多任务 base，不是最终产品最优。</td></tr>
+            <tr><td>Z-Image</td><td>50 steps + CFG</td><td>pretraining + SFT。</td><td>高质量、可控、多样性。</td></tr>
+            <tr><td>Z-Image-Turbo</td><td>8 steps / no CFG</td><td>pretraining + SFT + RL / distillation。</td><td>快速生成、低延迟、本地部署；不适合继续 fine-tune。</td></tr>
+            <tr><td>Z-Image-Edit</td><td>50 steps + CFG</td><td>edit fine-tuning。</td><td>指令编辑，速度慢于 Turbo。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>条件与 token 组织横向比较</caption>
+          <thead><tr><th>模型</th><th>图像 latent token</th><th>文本/条件 token</th><th>参考图注入方式</th><th>位置编码 / ids</th><th>关键启发</th></tr></thead>
+          <tbody>
+            <tr><td>FLUX.1</td><td>VAE latent 2×2 packing，常见 token dim 64。</td><td>T5 / CLIP 文本条件。</td><td>Kontext 为 sequence-wise image tokens；Control/Fill 有 channel-wise 变体。</td><td>3 轴 RoPE / image ids。</td><td>图片进入 DiT 是 latent token sequence，不是像素。</td></tr>
+            <tr><td>FLUX.2</td><td>FLUX.2 VAE latent tokens，公开代码 <code>in_channels=128</code>。</td><td>Mistral/VLM-style condition，context dim 取决于模型。</td><td>多参考图 latent tokens sequence-wise concat；KV 版本缓存 reference K/V。</td><td><code>t,h,w,l</code> 四轴 ids，<code>axes_dim=[32,32,32,32]</code>。</td><td>多参考生产工作流依赖条件组织和缓存。</td></tr>
+            <tr><td>Qwen-Image</td><td>VAE latent + 2×2 packing，常见 <code>16 -> 64</code>。</td><td>Qwen2.5-VL condition / prompt embeds。</td><td>编辑中原图走 VLM semantic + VAE appearance 双路径。</td><td>RoPE axes 典型 <code>(16,56,56)</code>。</td><td>文字与编辑能力来自 VLM condition + text-rich data + VAE。</td></tr>
+            <tr><td>Qwen-Image-2.0</td><td>VAE-2.0，高压缩与 diffusability 优化。</td><td>Qwen3-VL condition encoder。</td><td>generation/editing unified joint modeling。</td><td>多模态 DiT。</td><td>长指令、2K、图文设计能力更强。</td></tr>
+            <tr><td>Z-Image</td><td>Flux VAE latent tokens，patch size 2。</td><td>Qwen3-4B text tokens，可选视觉语义 tokens。</td><td>reference/target sequence 统一建模，空间对齐 + temporal offset。</td><td>3D Unified RoPE。</td><td>小模型高效路线依赖 single-stream + 数据/蒸馏 pipeline。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>分辨率、token 数和采样 schedule</caption>
+          <thead><tr><th>模型</th><th>分辨率影响</th><th>schedule / shift</th><th>速度关键</th></tr></thead>
+          <tbody>
+            <tr><td>FLUX.1</td><td><code>ceil(H/16)*ceil(W/16)</code> image tokens。</td><td>resolution-dependent time shift。</td><td>packing、RoPE、few-step Schnell / distillation。</td></tr>
+            <tr><td>FLUX.2</td><td><code>image_seq_len</code> 影响 empirical <code>mu</code>。</td><td>generalized time SNR shift。</td><td>KV cache、Klein distilled、prompt upsampling。</td></tr>
+            <tr><td>Qwen-Image</td><td>VAE scale × 2×2 packing 决定 token 数。</td><td><code>calculate_shift</code> 根据 image_seq_len 插值。</td><td>true CFG 成本、FlowMatchEuler、prompt rewrite。</td></tr>
+            <tr><td>Qwen-Image-2.0</td><td>native 2K 带来更大 token 数和 VAE 压力。</td><td>未公开完整细节，应按公开 pipeline 谨慎写。</td><td>VAE-2.0、轻量架构、condition encoder。</td></tr>
+            <tr><td>Z-Image</td><td>Flux VAE + patchify 决定 image tokens。</td><td>Turbo 通过蒸馏支持少步。</td><td>8 NFE、no CFG、single stream、推理优化。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption>Resolution → Tokens → Schedule → Latency 的静态直觉</caption>
+          <thead><tr><th>输出分辨率</th><th>有效 token 网格</th><th>image tokens</th><th>attention cost proxy <code>T^2</code></th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>1024×1024</td><td>64×64</td><td>4096</td><td>16.8M</td><td>常见 1K 方图。</td></tr>
+            <tr><td>1536×1024</td><td>96×64</td><td>6144</td><td>37.7M</td><td>横图 token 增加 50%。</td></tr>
+            <tr><td>2048×2048</td><td>128×128</td><td>16384</td><td>268M</td><td>2K 方图 attention 压力显著增加。</td></tr>
+            <tr><td>4096×1024</td><td>256×64</td><td>16384</td><td>268M</td><td>宽幅图 token 数也可能等同 2K 方图。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="schema-note">这张表只用于建立直觉。不同模型的 VAE scale、patch size、token pruning、KV cache、attention kernel、batching 策略都会改变真实延迟，但它能说明高分辨率不仅是多几个像素，而是直接改变 transformer 处理的 sequence length。</p>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>Condition Injection Lab：条件图像如何进入模型</caption>
+          <thead><tr><th>注入方式</th><th>代表场景</th><th>直观含义</th><th>技术机制</th><th>优点</th><th>风险</th></tr></thead>
+          <tbody>
+            <tr><td>Text-only</td><td>纯文生图。</td><td>只靠文字描述。</td><td>text encoder condition。</td><td>简单、快。</td><td>细节不可控。</td></tr>
+            <tr><td>Channel-wise concat</td><td>Control / Fill / Inpaint。</td><td>把额外图像信息叠到 latent channel 上。</td><td>noisy latent 与 condition latent 在 channel 维拼接。</td><td>局部控制直接。</td><td>输入格式固定，任务专用。</td></tr>
+            <tr><td>Sequence-wise concat</td><td>Kontext / FLUX.2 多参考 / Z-Image Edit。</td><td>参考图变成另一串 tokens。</td><td>reference tokens 与 target tokens 同进 transformer。</td><td>多参考、一致性强。</td><td>token 数增加，attention 成本高。</td></tr>
+            <tr><td>VLM semantic + VAE appearance</td><td>Qwen-Image Edit。</td><td>一路理解图，一路保留图。</td><td>原图进 VLM 和 VAE 双路径。</td><td>编辑语义清楚、保留细节。</td><td>prompt rewrite 依赖强。</td></tr>
+            <tr><td>KV cached references</td><td>FLUX.2 Klein 9B KV。</td><td>参考图看一次，后面复用。</td><td>reference K/V cache across denoising steps。</td><td>多参考低延迟。</td><td>实现复杂，存在缓存精度/内存权衡。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll wide">
+        <table>
+          <caption>后训练与蒸馏：不同路线解决的不是同一个问题</caption>
+          <thead><tr><th>模型</th><th>后训练关键词</th><th>直观含义</th><th>技术关注点</th></tr></thead>
+          <tbody>
+            <tr><td>FLUX.2 dev</td><td>guidance embed、prompt upsampling。</td><td>更听 prompt，更适合复杂描述。</td><td>guidance embed 与 true CFG 的边界。</td></tr>
+            <tr><td>FLUX.2-Klein distilled</td><td>size / step / guidance distillation。</td><td>小而快，适合生产。</td><td>多样性、fine-tuning 可塑性、teacher trajectory。</td></tr>
+            <tr><td>Qwen-Image</td><td>SFT、editing data、I2I reconstruction。</td><td>更会写字、更会稳改图。</td><td>text-rich 数据比例、OCR reward、VAE OCR retention。</td></tr>
+            <tr><td>Qwen-Image-2.0</td><td>multi-stage training、VAE-2.0、condition-target joint modeling。</td><td>更长指令、更高分辨率、更强图文设计。</td><td>2K 下 token cost、VAE diffusability、OCR benchmark。</td></tr>
+            <tr><td>Z-Image-Turbo</td><td>PE-aware SFT、D-DMD、DMDR、reward post-training。</td><td>少步也能生成好图。</td><td>reward hacking、diversity collapse、teacher-student mismatch。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warning-card">
+        <h3>容易写错的模型细节</h3>
+        <ul class="compact-list">
+          <li>不要把 FLUX.1 的 <code>in_channels=64</code>、3 轴 ids、packing 规则直接外推成 FLUX.2。</li>
+          <li>FLUX.2 多参考图支持和 KV cache 应写成推理 / 部署结构优势，不要写成训练数据比例事实。</li>
+          <li>FLUX.2-Klein distilled 与 Klein Base 要分开：distilled 面向少步生产；Base 面向 fine-tuning、LoRA 和 research。</li>
+          <li>prompt upsampling 是推理时条件改写，不要写成已确认训练数据 recipe。</li>
+          <li>Qwen-Image 的 <code>true_cfg_scale</code> 和 <code>guidance_scale</code> 要区分；2×2 latent packing 要和 VAE scale 一起解释。</li>
+          <li>Qwen-Image 编辑要写 dual encoding：VLM semantic path + VAE reconstructive path。</li>
+          <li>Qwen-Image-2.0 要强调 Qwen3-VL condition encoder、1K instruction、native 2K、VAE-2.0，而不是只写“更大更强”。</li>
+          <li>Z-Image-Turbo 的 8-step / no-CFG 必须写成蒸馏后训练结果，不要写成 base 模型少跑几步。</li>
+          <li>数据比例、captioner 内部版本、filter threshold、reward model 权重、teacher-student 训练细节，除非公开披露，否则必须标注未公开。</li>
+        </ul>
       </div>
     </section>
 
@@ -581,11 +1223,25 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
           <span>data efficiency</span><span>prompt enhancer</span><span>8-step Turbo</span>
         </article>
       </div>
+      <div class="table-scroll">
+        <table>
+          <caption>你应该重点学习哪条路线？</caption>
+          <thead><tr><th>你的目标</th><th>应该重点学习</th><th>原因</th></tr></thead>
+          <tbody>
+            <tr><td>做中文海报 / PPT / UI / 信息图生成</td><td>Qwen-Image 路线</td><td>text-rich、OCR、中文、多语言排版是核心。</td></tr>
+            <tr><td>做电商商品图、多参考一致性、品牌视觉</td><td>FLUX.2 路线</td><td>多参考、品牌约束、产品一致性和生产工作流更关键。</td></tr>
+            <tr><td>做可复现开源训练 / 小模型部署</td><td>Z-Image 路线</td><td>数据效率、6B 单流架构、8-step Turbo、公开 recipe 更适合学习。</td></tr>
+            <tr><td>做本地图像编辑模型</td><td>Qwen + Z-Image 结合</td><td>I2I reconstruction、difference caption、continued editing training 都重要。</td></tr>
+            <tr><td>做极速生成产品</td><td>FLUX Klein / Z-Image-Turbo 思路</td><td>few-step distillation、no/low CFG、推理延迟优化是核心。</td></tr>
+            <tr><td>做研究型 ablation</td><td>Z-Image + Qwen-VAE 思路</td><td>一个提供训练 recipe，一个提供 text-rich VAE / OCR 评估方向。</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="chapter" id="recipe">
       <header class="chapter-header">
-        <h2>如果自己训练：最值得复用的 recipe</h2>
+        <h2>如果自己训练：按预算分层的 recipe</h2>
         <p class="chapter-summary">自训练路线的第一步不是选最大 DiT，而是把数据 schema、VAE 数据、caption 数据、编辑数据、SFT、RL 和蒸馏边界定义清楚。</p>
       </header>
 
@@ -616,6 +1272,7 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
   "rarity_score": 0.73,
   "curriculum_complexity_score": 0.61
 }</code></pre>
+        <p class="schema-note">schema 的目的不是“字段越多越好”，而是让后续采样、课程学习、ablation、评估和错误诊断都能落到可查询字段上。</p>
       </div>
 
       <div class="algorithm-panel">
@@ -632,15 +1289,102 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
   "identity_similarity_score": 0.94,
   "text_edit_correctness": 0.98
 }</code></pre>
+        <p class="schema-note">编辑 schema 要显式记录改动目标和保留目标。没有 <code>preserve_regions</code>、identity score 和 OCR consistency，后面就很难判断编辑模型为什么漂移。</p>
+      </div>
+
+      <div class="budget-grid">
+        <article>
+          <h3>A. 个人 / 小实验：1-8 GPU</h3>
+          <p>目标不是从零训练通用 foundation model，而是验证机制。</p>
+          <ul class="compact-list">
+            <li>评估现有 VAE 的 OCR retention、logo fidelity、small-font readability。</li>
+            <li>构造 1 万到 10 万 text-rich 样本，做 caption ablation。</li>
+            <li>基于现有模型做 LoRA / small DiT fine-tuning。</li>
+            <li>构造小规模 edit pair / I2I reconstruction pair。</li>
+            <li>对比 long caption、short caption、OCR-inclusive caption、simulated prompt 的效果。</li>
+          </ul>
+          <p><strong>不应承诺：</strong>从零训练通用 T2I foundation model，或在低预算下同时追求通用能力、文字能力、编辑能力和极速推理。</p>
+        </article>
+        <article>
+          <h3>B. 小团队专项模型：几十到几百 GPU</h3>
+          <ul class="compact-list">
+            <li>中文文字渲染专项模型。</li>
+            <li>海报 / PPT / UI / 电商图专项模型。</li>
+            <li>编辑模型 continued training。</li>
+            <li>小规模 reward model / preference data 后训练。</li>
+            <li>few-step distillation 实验。</li>
+            <li>数据 profiling + dynamic sampling pipeline。</li>
+          </ul>
+          <p><strong>关键取舍：</strong>不追求全世界知识覆盖，优先做垂直场景高可靠性；不追求一个 checkpoint 解决所有问题，区分 base、edit、turbo。</p>
+        </article>
+        <article>
+          <h3>C. 大规模 foundation model：千卡级以上</h3>
+          <ul class="compact-list">
+            <li>通用 base pretraining、多阶段 curriculum、VAE + DiT 联合系统优化。</li>
+            <li>大规模 RLHF / GRPO / OPD、多产品线 distillation。</li>
+            <li>多参考图、长上下文、高分辨率编辑。</li>
+          </ul>
+          <p><strong>关键风险：</strong>数据治理、版权、安全和隐私成为核心瓶颈；reward hacking 和分布收缩会在后训练中放大；few-step distillation 会带来质量、速度和多样性的 Pareto trade-off。</p>
+        </article>
       </div>
 
       <div class="recipe-grid">
-        <article><h3>先训 VAE，再训 DiT</h3><p>不要低估 VAE。文字、logo、UI、小字、细线、产品边缘，很多失败不是 DiT 单独造成的，而是 latent tokenizer 不保真。VAE 数据应覆盖 general images、text-rich documents、posters / PPT / UI、synthetic rendered text、small-font OCR samples、logos / packaging / diagrams。评估应包含 reconstruction FID / LPIPS、OCR correctness after reconstruction、small text readability、logo reconstruction、line / edge preservation、latent diffusability 和 semantic alignment。</p></article>
-        <article><h3>Pretraining 用广，SFT 用精</h3><p>pretraining 要大规模、多样、弱噪声可接受、多分辨率、多比例、多语言，目标是 world knowledge 和 mode coverage。SFT 用高质量 curated 数据、super detailed grounded captions、强审美、强真实感、强指令跟随，把分布收窄到 high-fidelity sub-manifold；如果不做 balancing，会变漂亮但变窄，导致长尾概念遗忘、风格单一、特殊对象和非英语能力下降。</p></article>
-        <article><h3>文本渲染必须课程学习</h3><p>无文字图 -> 单词 / logo -> 短句 -> 多行文字 -> 中英混排 -> 小字 -> 长段落 -> PPT / 海报 / 信息图。评估用 OCR exact match、character error rate、word error rate、layout correctness、font/style preservation、small text readability 和 multi-language consistency。</p></article>
-        <article><h3>编辑模型必须加入 reconstruction</h3><p>只用 before-after edit pair 容易全图漂移。任务组合应包含 T2I、TI2I、I2I reconstruction、multi-reference 和 text-editing，显式告诉模型没有要求改的地方要保持不变。</p></article>
-        <article><h3>后训练从可验证任务冷启动</h3><p>图像 RL 最怕 reward hacking。先从文字正确性、物体计数、颜色、空间关系、身份保持、产品形状保持和局部编辑正确性做 DPO / preference，再用 GRPO / online RL 优化审美、真实感、人像保真、构图和品牌一致性。</p></article>
-        <article><h3>Base 与 Turbo 分开定位</h3><p>不要指望一个 checkpoint 同时最高质量、最快速度、最高多样性、最好微调和最低显存。Base 保留 50 steps + CFG + 多样性；Dev / Pro 做高质量和高控制；Turbo / Klein 做 4-8 steps 和 no/low CFG。</p></article>
+        <article><h3>先训 VAE，再训 DiT</h3><p>不要低估 VAE。文字、logo、UI、小字、细线、产品边缘，很多失败不是 DiT 单独造成的，而是 latent tokenizer 不保真。</p></article>
+        <article><h3>Pretraining 用广，SFT 用精</h3><p>pretraining 学 world knowledge 和 mode coverage；SFT 把分布收窄到 high-fidelity sub-manifold，但需要 balancing 防止长尾遗忘。</p></article>
+        <article><h3>文本渲染必须课程学习</h3><p>无文字图 -> 单词 / logo -> 短句 -> 多行文字 -> 中英混排 -> 小字 -> 长段落 -> PPT / 海报 / 信息图。</p></article>
+        <article><h3>Base 与 Turbo 分开定位</h3><p>Base 保留质量和多样性；Turbo / Klein 做 4-8 steps 和 no/low CFG。不要用一个 checkpoint 同时追求所有 Pareto 端点。</p></article>
+      </div>
+      <div class="source-note">
+        <h3>用咖啡海报样本做最小闭环</h3>
+        <p>低预算自训时，可以先把这类中文咖啡海报扩成一个可控小数据集：原图、OCR caption、long caption、价格替换 edit pair、I2I reconstruction pair、OCR exact match 和 layout preservation 指标。它不代表通用能力，但能快速验证 caption、VAE、编辑保持和 reward check 是否形成闭环。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="evaluation">
+      <header class="chapter-header">
+        <h2>如何评估一个图像生成模型是否真的变好了</h2>
+        <p class="chapter-summary">只看“图片好不好看”是不够的。现代图像模型要按能力拆开评估，并且评估维度要能回连到训练数据 schema。</p>
+      </header>
+      <div class="table-scroll wide">
+        <table>
+          <caption>能力评估矩阵</caption>
+          <thead><tr><th>能力</th><th>推荐指标</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>Prompt following</td><td>DPG-Bench、GenEval、object counting、attribute binding、human preference。</td><td>看模型是否遵守对象、数量、属性、空间关系和复杂 prompt。</td></tr>
+            <tr><td>文字渲染</td><td>OCR exact match、CER、WER、LongText-Bench、small-font readability、layout correctness。</td><td>看文字内容、字形、排版和小字是否正确。</td></tr>
+            <tr><td>编辑一致性</td><td>edit success、identity similarity、background preservation、LPIPS、CLIP-I、OCR consistency。</td><td>看模型是否只改该改的地方。</td></tr>
+            <tr><td>多参考一致性</td><td>character consistency、product shape consistency、style consistency、reference adherence。</td><td>看人物、商品、风格能否跨图稳定。</td></tr>
+            <tr><td>VAE</td><td>reconstruction FID、LPIPS、PSNR / SSIM、OCR retention、logo fidelity、line preservation、diffusability。</td><td>看 latent tokenizer 是否保留生成所需信息。</td></tr>
+            <tr><td>安全</td><td>unsafe generation rate、policy violation rate、NCII / CSAM classifier trigger rate、red-team pass rate。</td><td>看模型是否能上线，而不是只看能力强不强。</td></tr>
+            <tr><td>推理效率</td><td>NFE、latency、VRAM、throughput、quality-latency Pareto。</td><td>看部署成本和交互体验。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote class="expert-note"><strong>评估边界：</strong>评估应该和训练数据 schema 对齐。训练时记录了 <code>ocr_text</code>、<code>text_density</code>、<code>edit_type</code>、<code>preserve_regions</code>、<code>rarity_score</code>，评估时才能按这些维度切片，定位到底是中文失败、小字失败、长尾概念失败，还是编辑保持失败。</blockquote>
+    </section>
+
+    <section class="chapter" id="failure-map">
+      <header class="chapter-header">
+        <h2>常见失败模式与诊断</h2>
+        <p class="chapter-summary">训练系统的价值在于能把失败现象映射回数据、VAE、caption、reward 或蒸馏，而不是只说“模型不够大”。</p>
+      </header>
+      <div class="table-scroll wide">
+        <table>
+          <caption>失败现象、可能原因和对应修复</caption>
+          <thead><tr><th>失败现象</th><th>可能原因</th><th>对应修复</th></tr></thead>
+          <tbody>
+            <tr><td>中文乱码</td><td>OCR caption 不足、text-rich 数据少、VAE 小字不保真。</td><td>OCR-aware caption、synthetic text rendering、OCR reward、VAE OCR retention 评估。</td></tr>
+            <tr><td>图好看但不听话</td><td>SFT 审美过强、instruction 数据弱、reward 权重偏审美。</td><td>增加 prompt-following 数据、属性绑定评估、per-category reward calibration。</td></tr>
+            <tr><td>一编辑全图漂移</td><td>缺 I2I reconstruction、preserve signal 弱、edit pair 差异太大。</td><td>加 reconstruction、preserve region、identity / background preservation reward。</td></tr>
+            <tr><td>人物不像本人</td><td>reference 数据不足、identity reward 弱、VAE 人脸细节损失。</td><td>identity similarity reward、多参考训练、人脸 / 身份切片评估。</td></tr>
+            <tr><td>商品形状变了</td><td>product reference 数据少、VAE 边缘和材质保真差。</td><td>product shape consistency 数据、logo / edge preservation 指标。</td></tr>
+            <tr><td>小字和 logo 糊</td><td>VAE compression 过强、text-rich VAE 数据不足。</td><td>text-rich VAE training、synthetic rendering、OCR reconstruction metric。</td></tr>
+            <tr><td>8 步模型变单调</td><td>distillation pressure 过强、多样性保留不足。</td><td>diversity reserve、teacher trajectory mix、质量-速度 Pareto 评估。</td></tr>
+            <tr><td>reward hacking</td><td>奖励模型漏洞、单一 reward 过强。</td><td>reward ensemble、range filtering、人工抽检、adversarial prompts。</td></tr>
+            <tr><td>长尾遗忘</td><td>SFT 数据过窄、rarity resampling 不足。</td><td>tagged resampling、rarity score、target prior、长尾 benchmark。</td></tr>
+            <tr><td>复杂排版乱</td><td>layout 数据不足、caption 没有结构化描述。</td><td>layout-aware caption、PPT / poster / infographic 数据、layout correctness reward。</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -666,6 +1410,29 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
         </div>
       </div>
 
+      <div class="table-scroll">
+        <table>
+          <caption>Post-training Trade-off Lab：不要把所有 slider 拉满</caption>
+          <thead><tr><th>Slider</th><th>调高后可能提升</th><th>可能副作用</th><th>应该看什么指标</th></tr></thead>
+          <tbody>
+            <tr><td>reward strength</td><td>prompt adherence、审美、人像保真、文字正确性。</td><td>reward hacking、过饱和、模式收缩。</td><td>human preference、artifact rate、reward disagreement、diversity。</td></tr>
+            <tr><td>distillation pressure</td><td>推理速度、低 NFE 质量。</td><td>多样性下降、复杂 prompt 遵守下降、细节损失。</td><td>quality-latency Pareto、NFE、diversity、hard prompt success。</td></tr>
+            <tr><td>diversity reserve</td><td>风格多样性、长尾覆盖。</td><td>平均审美或一致性可能下降。</td><td>CLIP diversity、style coverage、long-tail success、human preference。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lab-explanation">后训练的关键不是把所有 slider 拉满，而是在 alignment、speed、diversity 和 artifact risk 之间找到产品所需的 Pareto 点。</p>
+
+      <blockquote class="ablation-box"><strong>Ablation 思考：few-step distillation 为什么会伤多样性？</strong>
+        <ul>
+          <li>teacher steps 太少：老师轨迹本身不够稳定，student 学到的是捷径和伪影。</li>
+          <li>student steps 太少：复杂 prompt、局部文字和细节修正缺少迭代空间。</li>
+          <li>强依赖 CFG teacher 但 student no-CFG：条件引导分布可能不匹配。</li>
+          <li>不保留多样性样本：student 更容易学到高平均分但单调的模式。</li>
+        </ul>
+        <p>验证方式：quality-latency Pareto、NFE、hard prompt success、CLIP diversity、style coverage 和人工偏好切片。</p>
+      </blockquote>
+
       <div class="final-card">
         <h3>最值得结合的方向</h3>
         <p>Z-Image 式动态数据基础设施 + Qwen-Image 式文字/OCR/编辑专项数据 + FLUX.2 式多参考图和生产工作流 + Qwen/Z-Image 式 RLHF、GRPO、OPD、few-step distillation。</p>
@@ -685,7 +1452,16 @@ Change the cup color from white to black and replace the text "COFFEE" with "QWE
       </div>
       <div class="source-note">
         <h3>最终判断</h3>
-        <p>现代图像生成的主线不是“prompt 变 image”，而是“用户意图 -> 结构化视觉规格 -> 多模态生成模型 -> VLM / reward 评估 -> 自动修正 -> 可交付视觉资产”。</p>
+        <p>现代图像生成的主线，已经不是简单的“prompt 变 image”，而是：</p>
+        <pre class="mini-code"><code>用户意图
+  -> 结构化视觉规格
+  -> 多模态生成模型
+  -> VLM / reward 评估
+  -> 自动修正
+  -> 可交付视觉资产</code></pre>
+        <p>如果只看架构，FLUX、Qwen-Image 和 Z-Image 都属于 latent DiT / flow / MMDiT 这条大路线；真正拉开差距的是数据工程、caption 表达、VAE 接口、后训练奖励、蒸馏目标和生产工作流。</p>
+        <p>FLUX 告诉我们，生产级模型要服务多参考、一致性、品牌和部署分层；Qwen-Image 告诉我们，文字、中文和图文设计必须被当成核心任务，而不是附加能力；Z-Image 告诉我们，公开、高效、可复现的训练 recipe 可以用数据效率逼近更大模型的体验。</p>
+        <p>未来最值得研究的，不只是更大的 backbone，而是更可控的数据系统、更可靠的 VAE、更抗 reward hacking 的图像 RL、更少步但不塌缩的蒸馏，以及能把人类意图稳定编译成视觉资产的工作流。</p>
       </div>
     </section>
 

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="大模型算法岗常见面试题深度解析">
+  <meta name="description" content="20 个 LLM 算法岗核心问题的中文深度解析：覆盖 Transformer、训练优化、模型架构、微调、推理部署、多模态、RAG、Agent 与评估。">
+  <meta name="keywords" content="LLM, Transformer, Attention, RoPE, LoRA, RLHF, DPO, KV Cache, RAG, Agent, Benchmark">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="大模型算法岗常见面试题深度解析">
+  <meta property="og:description" content="把 20 个大模型算法岗问题重构为深入、线性的讲义式答案解析。">
+  <meta property="og:url" content="https://cosmicrealm.github.io/foundations/llm-interview-qa/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/llm-interview-qa.svg">
+  <meta property="og:image:alt" content="大模型算法岗常见面试题深度解析缩略图">
+  <meta property="article:modified_time" content="2026-07-03">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="大模型算法岗常见面试题深度解析">
+  <meta name="twitter:description" content="A structured Chinese handbook for LLM algorithm interviews and system reasoning.">
+  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/llm-interview-qa.svg">
+  <title>大模型算法岗常见面试题深度解析 | LLM Interview QA</title>
+  <link rel="canonical" href="https://cosmicrealm.github.io/foundations/llm-interview-qa/">
+  <link rel="icon" href="../../images/favicon.svg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "大模型算法岗常见面试题深度解析",
+  "description": "20 个 LLM 算法岗核心问题的中文深度解析，覆盖架构、训练、微调、推理、多模态、RAG、Agent 与评估。",
+  "author": {
+    "@type": "Person",
+    "name": "Jinyang Zhang"
+  },
+  "dateModified": "2026-07-03",
+  "mainEntityOfPage": "https://cosmicrealm.github.io/foundations/llm-interview-qa/",
+  "keywords": [
+    "LLM",
+    "Transformer",
+    "LoRA",
+    "RLHF",
+    "KV Cache",
+    "RAG",
+    "Agent",
+    "Benchmark"
+  ]
+}
+  </script>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>
+  <script defer src="../generation-math/static/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+  <script defer src="./static/js/data.js"></script>
+  <script defer src="./static/js/index.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+  <header class="site-header">
+    <a class="brand" href="/">Jinyang Zhang</a>
+    <nav class="module-nav" aria-label="Foundation module navigation">
+      <a href="/">返回主页</a>
+      <a href="/foundations/">返回 Foundations</a>
+    </nav>
+  </header>
+
+  <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
+  <aside class="lecture-toc" id="lectureToc" aria-label="大模型算法岗常见面试题目录">
+    <p>章节导航</p>
+    <nav>
+      <a href="#overview">总览</a>
+      <a href="#qa-bank">答案解析</a>
+      <a href="#section-transformer">Transformer 核心架构<small>Q1-Q4</small></a>
+      <a href="#section-training">训练优化技术<small>Q5-Q7</small></a>
+      <a href="#section-architecture">模型架构设计<small>Q8-Q10</small></a>
+      <a href="#section-finetuning">微调技术<small>Q11-Q13</small></a>
+      <a href="#section-inference">推理部署<small>Q14-Q15</small></a>
+      <a href="#section-multimodal">多模态与生成<small>Q16-Q17</small></a>
+      <a href="#section-rag-agent-eval">RAG / Agent / 评估<small>Q18-Q20</small></a>
+      <a href="#review-paths">复习建议</a>
+    </nav>
+  </aside>
+
+  <main id="main" class="lecture">
+    <header class="paper-header">
+      <p class="kicker">LLM systems interview handbook</p>
+      <h1>大模型算法岗常见面试题深度解析</h1>
+      <p class="subtitle">20 个核心问题，覆盖架构、训练、微调、推理、多模态、RAG、Agent 与评估。每题直接给出可口述答案、机制推导、工程判断、追问路径和修订说明。</p>
+    </header>
+
+    <noscript>
+      <p class="noscript-note">本页正文由本地结构化数据渲染，需要 JavaScript 才能显示完整题解。</p>
+    </noscript>
+
+    <section class="chapter intro-bridge" id="overview">
+      <header class="chapter-header">
+        <h2>先建立回答结构</h2>
+        <p class="chapter-summary">算法岗问题很少只考术语定义。更可靠的回答顺序是：机制是什么、公式或数据流从哪里来、工程上卡在哪里、哪些说法要加条件。</p>
+      </header>
+      <div class="visual-example thesis-grid" aria-label="页面内容结构">
+        <article><strong>先给结论</strong><span>每题开头给出可直接口述的核心回答。</span></article>
+        <article><strong>再讲机制</strong><span>用公式、数据流和反例解释为什么这样回答。</span></article>
+        <article><strong>接到工程</strong><span>说明训练、推理、部署或评估系统中会遇到的真实约束。</span></article>
+        <article><strong>保留边界</strong><span>把过时、绝对化或容易混淆的说法单独修订。</span></article>
+      </div>
+    </section>
+
+    <section class="chapter qa-bank" id="qa-bank">
+      <header class="chapter-header">
+        <h2>20 题深度答案解析</h2>
+        <p class="chapter-summary">按章节线性阅读即可。每题都包含速答、公式与机制、答案解析、工程视角、常见追问、易错点与修订。</p>
+      </header>
+      <div id="sectionMount" class="section-mount"></div>
+    </section>
+
+    <section class="chapter review-paths" id="review-paths">
+      <header class="chapter-header">
+        <h2>复习建议：把题目按瓶颈重排</h2>
+        <p class="chapter-summary">复习不必线性刷完。先把高频机制讲顺，再按训练、推理和系统设计补齐细节。</p>
+      </header>
+      <div class="review-grid">
+        <article>
+          <h3>30 分钟速刷</h3>
+          <p>先看 Q1、Q3、Q10、Q11、Q13、Q18。目标是把 Attention、RoPE、KV Cache、LoRA、偏好优化和 RAG 的一句话回答讲清楚。</p>
+        </article>
+        <article>
+          <h3>2 小时系统复盘</h3>
+          <p>按 7 个章节顺序读每题“展开”和“工程”。遇到公式题时手写变量含义，遇到系统题时画离线与在线数据流。</p>
+        </article>
+        <article>
+          <h3>前一天查漏补缺</h3>
+          <p>只看“追问”和“修订”。重点检查绝对化表述、版本混淆、显存公式、loss mask、量化 zero-point 和评估污染风险。</p>
+        </article>
+        <article>
+          <h3>优先级</h3>
+          <p>Attention / RoPE / MoE / LoRA / RLHF / KV Cache / RAG 是最容易被追问到第二层的数据流问题，应能同时说出公式、直觉和工程代价。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <button class="back-to-top" id="backToTop" type="button" aria-label="返回顶部">↑</button>
+
+  <footer class="page-footer">
+    <a href="/">返回主页</a>
+    <a href="/foundations/">返回 Foundations</a>
+  </footer>
+</body>
+</html>

@@ -308,11 +308,31 @@ th {
   margin: 1rem 0 0;
 }
 
+.chapter code {
+  padding: 0.08rem 0.26rem;
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+
 .chapter-summary {
   max-width: 820px;
   color: var(--ink);
   font-family: var(--serif);
   font-size: 1.12rem;
+}
+
+.intro-copy {
+  max-width: 860px;
+  padding: 1.1rem 1.25rem;
+  margin-top: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
 }
 
 .thesis-card,
@@ -325,9 +345,12 @@ th {
 .warning-card,
 .source-note,
 .evidence-card,
+.expert-note,
+.ablation-box,
 .stack-card,
 .diagram-card,
 .final-card,
+.budget-grid article,
 .recipe-grid article,
 .infra-grid article,
 .task-grid article {
@@ -345,6 +368,8 @@ th {
 .warning-card,
 .source-note,
 .evidence-card,
+.expert-note,
+.ablation-box,
 .diagram-card,
 .final-card {
   min-width: 0;
@@ -730,6 +755,34 @@ output {
   color: var(--red);
 }
 
+.expert-note,
+.ablation-box {
+  color: var(--muted);
+  margin: 1rem 0 0;
+}
+
+.expert-note {
+  border-left: 4px solid var(--accent);
+}
+
+.ablation-box {
+  border-left: 4px solid var(--z);
+}
+
+.expert-note strong,
+.ablation-box strong {
+  color: var(--ink);
+}
+
+.ablation-box ul {
+  padding-left: 1.2rem;
+  margin: 0.75rem 0 0;
+}
+
+.ablation-box p {
+  margin-top: 0.75rem;
+}
+
 .prompt-boxes {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -756,6 +809,10 @@ output {
   border: 1px solid var(--line);
   border-radius: 6px;
   box-shadow: var(--shadow);
+}
+
+.compact-table {
+  box-shadow: none;
 }
 
 table {
@@ -859,6 +916,10 @@ tr:last-child td {
   background: #fffdf8;
 }
 
+html[data-theme="dark"] .algorithm-panel {
+  background: var(--panel);
+}
+
 .panel-title {
   display: flex;
   gap: 1rem;
@@ -886,6 +947,42 @@ tr:last-child td {
 
 .mini-code {
   margin-top: 1rem;
+}
+
+.schema-note {
+  padding: 0.75rem 0.85rem;
+  margin-top: 1rem;
+  color: var(--ink);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.budget-grid article {
+  padding: 1rem;
+}
+
+.budget-grid article:first-child {
+  border-top: 4px solid var(--qwen);
+}
+
+.budget-grid article:nth-child(2) {
+  border-top: 4px solid var(--accent);
+}
+
+.budget-grid article:nth-child(3) {
+  border-top: 4px solid var(--flux);
+}
+
+.budget-grid h3 {
+  min-height: 3rem;
 }
 
 .timeline-roadmap {
@@ -1113,6 +1210,7 @@ tr:last-child td {
   .judgement-grid,
   .lab-controls-grid,
   .two-col,
+  .budget-grid,
   .infra-grid,
   .recipe-grid,
   .prompt-boxes,

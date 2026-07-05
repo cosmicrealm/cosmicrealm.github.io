@@ -39,7 +39,7 @@
     };
 
     function pData(x) {
-      return 0.55 * gaussian(x, -1.35, 0.55) + 0.45 * gaussian(x, 1.25, 0.72);
+      return 0.5 * gaussian(x, -2, 0.5) + 0.5 * gaussian(x, 2, 0.5);
     }
 
     function qModel(x, mu, sig, weight) {

@@ -159,6 +159,45 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
   font-weight: 800;
 }
 
+.callout {
+  margin-top: 0.9rem;
+  padding: 0.86rem 0.95rem;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--ink);
+  line-height: 1.7;
+  box-shadow: var(--shadow);
+}
+
+.callout strong {
+  color: var(--accent-deep);
+}
+
+.callout.beginner {
+  border-left-color: var(--accent);
+}
+
+.callout.expert {
+  border-left-color: var(--gold);
+}
+
+.callout.pitfall {
+  border-left-color: var(--rust);
+  background: rgba(169, 67, 47, 0.06);
+}
+
+.callout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+.callout-grid .callout {
+  margin-top: 0;
+}
+
 .notation-box {
   overflow-x: auto;
 }
@@ -166,6 +205,7 @@ html[data-theme="dark"] .lecture-toc a:focus-visible {
 .notation-box table,
 .summary-matrix table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
   font-size: 0.92rem;
 }
@@ -498,7 +538,8 @@ html[data-theme="dark"] .flow-card {
   .judgement-grid,
   .algorithm-grid,
   .flow-output,
-  .flow-card-grid {
+  .flow-card-grid,
+  .callout-grid {
     grid-template-columns: 1fr;
   }
 

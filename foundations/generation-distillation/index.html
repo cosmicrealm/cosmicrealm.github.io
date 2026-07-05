@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="title" content="生成模型蒸馏：从多步采样到实时生成">
-  <meta name="description" content="中文生成模型蒸馏讲义：从经典 KD 到 trajectory distillation、consistency、DMD、DMD2、ADD、LADD、Self Forcing 和 Self-Forcing++。">
-  <meta name="keywords" content="generative model distillation, diffusion distillation, DMD, DMD2, ADD, LADD, Self Forcing, Self-Forcing++, consistency models">
+  <meta name="title" content="生成模型蒸馏：从路径压缩到分布匹配，再到自回归视频自校正">
+  <meta name="description" content="中文生成模型蒸馏技术导论：从监督对象、NFE、CFG、路径压缩、一致性、DMD/DMD2、ADD/LADD、Flow 少步化到 Self-Forcing。">
+  <meta name="keywords" content="generative model distillation, diffusion distillation, DMD, DMD2, ADD, LADD, consistency models, Self-Forcing, MeanFlow">
   <meta name="author" content="Jinyang Zhang">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="生成模型蒸馏：从多步采样到实时生成">
-  <meta property="og:description" content="Trajectory, Consistency, Distribution Matching, Adversarial Distillation, and Self-Forcing。">
+  <meta property="og:title" content="生成模型蒸馏：从路径压缩到分布匹配，再到自回归视频自校正">
+  <meta property="og:description" content="A foundation note on supervision targets for fast generative model distillation.">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/generation-distillation/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/diffusion-distillation-math-lab.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="生成模型蒸馏">
-  <meta name="twitter:description" content="Formal Chinese lecture on generative model distillation.">
+  <meta name="twitter:description" content="从 teacher path 到 student rollout distribution 的生成蒸馏导论。">
   <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/diffusion-distillation-math-lab.svg">
-  <title>生成模型蒸馏 | Trajectory, Consistency, DMD, LADD, Self-Forcing</title>
+  <title>生成模型蒸馏 | Path Compression, Distribution Matching, Self-Forcing</title>
   <link rel="canonical" href="/foundations/generation-distillation/">
   <link rel="icon" href="../../images/favicon.svg">
   <script>
@@ -48,6 +48,7 @@
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <a href="/foundations/generation-math/">Generation Math</a>
     </nav>
   </header>
 
@@ -55,21 +56,21 @@
   <aside class="lecture-toc" id="lectureToc" aria-label="生成模型蒸馏目录">
     <p>目录</p>
     <nav>
-      <a href="#problem">总体问题</a>
-      <a href="#symbols">符号约定</a>
-      <a href="#classic-kd">分类 KD 与生成 KD</a>
-      <a href="#trajectory">轨迹蒸馏</a>
-      <a href="#guided">Guided Distillation</a>
-      <a href="#consistency">一致性蒸馏</a>
-      <a href="#dmd">DMD</a>
-      <a href="#dmd2">DMD2</a>
-      <a href="#add">ADD</a>
-      <a href="#ladd">LADD</a>
+      <a href="#problem">总纲</a>
+      <a href="#guide">阅读路线</a>
+      <a href="#primer">数学坐标系</a>
+      <a href="#map">方法地图</a>
+      <a href="#trajectory">路径压缩</a>
+      <a href="#consistency">一致性模型</a>
+      <a href="#distribution">分布匹配</a>
+      <a href="#adversarial">对抗反馈</a>
       <a href="#flow">Flow 少步化</a>
-      <a href="#self-forcing">Self Forcing</a>
-      <a href="#self-forcing-plus">Self-Forcing++</a>
-      <a href="#roadmap">统一路线</a>
-      <a href="#misconceptions">误解与检查</a>
+      <a href="#video">视频 Self-Forcing</a>
+      <a href="#decision">工程选择</a>
+      <a href="#evaluation">评估复现</a>
+      <a href="#misconceptions">误解与失败</a>
+      <a href="#open">开放问题</a>
+      <a href="#glossary">术语表</a>
       <a href="#sources">来源核验</a>
     </nav>
   </aside>
@@ -77,36 +78,31 @@
   <main id="main" class="lecture">
     <header class="paper-header">
       <p class="kicker">Generative Model Distillation</p>
-      <h1>生成模型蒸馏：从多步采样到实时生成</h1>
-      <p class="subtitle">Trajectory, Consistency, Distribution Matching, Adversarial Feedback, and Self-Forcing</p>
+      <h1>生成模型蒸馏：从路径压缩到分布匹配，再到自回归视频自校正</h1>
+      <p class="subtitle">监督对象如何从 teacher path 迁移到 student 推理时真正会访问的状态分布</p>
     </header>
 
     <section class="chapter problem" id="problem" data-part="part0">
       <header class="chapter-header">
-        <h2>总体问题：把慢 teacher 压缩成快 student</h2>
-        <p class="chapter-summary">一个强大的 teacher 生成模型质量高但采样慢；蒸馏要把 teacher 的分布、轨迹、方向场或偏好行为压缩进更低 NFE 的 student。</p>
+        <h2>1. 一句话总纲：生成蒸馏到底在蒸什么？</h2>
+        <p class="chapter-summary">生成模型蒸馏的目标不是简单把大模型变小，而是把一个昂贵的采样过程变成便宜的采样过程。</p>
       </header>
 
-      <div class="intuition-section">
-        <h3>0. 一句话直觉</h3>
-        <p>分类蒸馏通常匹配 logits；生成模型蒸馏则要决定匹配什么：采样 transition、ODE endpoint、最终样本云、adversarial feature，还是 student 自己 rollout 时会遇到的状态分布。</p>
-      </div>
-
-      <div class="derivation-section">
-        <h3>1. 统一目标</h3>
-        <p>若把 teacher sampler 写成 \(\Phi_T:z,c\mapsto x\)，student sampler 写成 \(\Phi_\theta:z,c\mapsto x\)，生成模型蒸馏的抽象目标可以写成：</p>
+      <div class="derivation-section lead-section">
+        <p>对分类模型来说，teacher 通常给出一个 logits 分布，student 学这个分布即可。对扩散模型、flow 模型和视频生成模型来说，teacher 给出的不是一个静态答案，而是一整条从噪声到样本的计算路径：每一步的 denoising direction、ODE trajectory、最终样本分布、CFG 后的偏好方向，甚至是视频模型在自回归生成时不断遇到的 self-generated context。</p>
+        <p>因此，生成蒸馏的第一个问题不是 loss 怎么写，而是 student 到底要匹配什么：匹配 teacher 的每一步，匹配同一条轨迹的终点，匹配最终样本云，匹配真实图像流形，还是匹配 student 推理时自己会访问的状态分布。</p>
         <div class="equation">
 \[
   \min_\theta \; \mathcal{D}\!\left(p_\theta(x|c),p_T(x|c)\right)
 \]
         </div>
-        <p>不同方法的差别，在于 \(\mathcal{D}\) 不能直接计算时，它选择哪个可监督对象作为代理。</p>
+        <p>这里 \(p_T\) 是昂贵 teacher sampler 定义的生成分布，\(p_\theta\) 是低 NFE student 分布。不同方法的差别，在于 \(\mathcal{D}\) 无法直接计算时，选择哪个代理监督对象。</p>
       </div>
 
       <div class="visual-example interactive-lab" id="distill-object-lab" data-lab="distill-object">
         <div class="visual-copy">
-          <h3>2. 可视化：蒸馏对象选择器</h3>
-          <p>选择不同对象，会看到监督箭头从 logits、transition、endpoint、distribution、reward 或 self-rollout 分布出发。</p>
+          <h3>监督对象选择器</h3>
+          <p>同一个 teacher-student 框架可以监督 logits、transition、endpoint、distribution、reward 或 self-rollout。越靠右，监督越接近 student 推理时的真实状态分布，优化也越难。</p>
         </div>
         <div class="derivation-widget method-map">
           <div class="lab-controls segmented" role="group" aria-label="Distillation object">
@@ -123,340 +119,473 @@
       </div>
     </section>
 
-    <section class="chapter" id="symbols" data-part="part0">
+    <section class="chapter" id="guide" data-part="part0">
       <header class="chapter-header">
-        <h2>符号约定</h2>
-        <p class="chapter-summary">先把分布、采样器、score、critic、NFE 和 video context 统一到一套记号里。</p>
+        <h2>0. 阅读路线</h2>
+        <p class="chapter-summary">全文按“监督对象”组织，而不是按论文年份罗列。</p>
       </header>
-      <div class="notation-box interface-table" aria-label="Notation table">
-        <div class="interface-row interface-head"><span>符号</span><span>含义</span><span>可计算接口</span></div>
-        <div class="interface-row"><span>\(p_{\mathrm{data}}(x|c)\)</span><span>真实条件数据分布。</span><span>只能通过样本观测。</span></div>
-        <div class="interface-row"><span>\(p_T(x|c),p_\theta(x|c)\)</span><span>teacher 与 student 生成分布。</span><span>通常隐式采样。</span></div>
-        <div class="interface-row"><span>\(\Phi_T,\Phi_\theta\)</span><span>teacher / student sampler 或 transition map。</span><span>采样轨迹上的可调用函数。</span></div>
-        <div class="interface-row"><span>\(s_T,s_\phi\)</span><span>teacher score 与 fake score / fake critic。</span><span>估计加噪边缘分布方向。</span></div>
-        <div class="interface-row"><span>\(G_\theta,D_\psi\)</span><span>one-step/few-step student generator 与 adversarial critic。</span><span>训练时更新，推理时通常只保留 \(G_\theta\)。</span></div>
-        <div class="interface-row"><span>\(c,\tau,\mathrm{NFE}\)</span><span>条件、采样轨迹、函数调用次数。</span><span>工程延迟与质量权衡的核心变量。</span></div>
-      </div>
-      <div class="derivation-section">
-        <h3>理解检查</h3>
-        <ul class="check-list">
-          <li>能解释为什么 \(p_\theta(x|c)\) 通常无法直接写出密度。</li>
-          <li>能区分 matching transition、endpoint 和 final distribution。</li>
-          <li>能说明 NFE 下降时为什么训练目标也需要改变。</li>
-        </ul>
+      <div class="reader-nav">
+        <article><strong>基础坐标系</strong><p>先建立 NFE、teacher path、endpoint consistency、distribution matching 与 student rollout distribution 的共同语言。</p></article>
+        <article><strong>训练与推理接口</strong><p>逐条检查训练输入、推理时保留的组件、额外网络、采样步数和失败模式，再对照工程决策树与评估 checklist。</p></article>
+        <article><strong>前沿机制线索</strong><p>DMD/DMD2、ADD/LADD、Self-Forcing、Self-Forcing++ 集中体现了现代方法如何把监督推向更接近推理分布的区域。</p></article>
       </div>
     </section>
 
-    <section class="chapter" id="classic-kd" data-part="part1">
+    <section class="chapter" id="primer" data-part="part0">
       <header class="chapter-header">
-        <h2>为什么生成模型蒸馏和分类蒸馏不同</h2>
-        <p class="chapter-summary">经典 KD 学 teacher 的输出概率；生成蒸馏要学习一个能采样的计算图。</p>
+        <h2>2. 数学坐标系：diffusion、flow、CFG、NFE 与 teacher-student</h2>
+        <p class="chapter-summary">后文所有方法都会反复用到这些词；先把坐标系对齐。</p>
       </header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>分类 KD 的 teacher 给出 \(q_T(y|x)\)，而生成 teacher 给出的是分布、轨迹、score field、条件控制行为和偏好信号。</p></div>
-      <div class="derivation-section">
-        <h3>2. 数学对象与训练目标</h3>
+
+      <div class="route-card">
+        <h3>NFE：为什么 diffusion 慢</h3>
+        <p>NFE 是 Number of Function Evaluations，也就是采样时模型前向调用次数。50-step diffusion 通常意味着约 50 次 denoiser 调用；如果使用 CFG，每一步可能还要 conditional 与 unconditional 两次前向，真实代价接近翻倍。</p>
         <div class="equation">
 \[
-q_T(y|x)=\operatorname{softmax}(z_T/T),\qquad
-\mathcal{L}_{KD}=T^2D_{KL}(q_T\Vert q_\theta)
+x_T \sim \mathcal{N}(0,I),\qquad x_0=\operatorname{Sampler}_\theta(x_T,c)
 \]
         </div>
-        <p>生成蒸馏更接近 \(\Phi_T:z\mapsto x\Rightarrow\Phi_\theta:z\mapsto x\)。若绑定同一个 \(z\) 的 endpoint，是 trajectory distillation；若只要求样本云一致，是 distribution matching。</p>
+        <p>这里 \(c\) 是文本 prompt 或其他条件，\(x_T\) 是高噪声状态，\(x_0\) 是最终图像、视频帧或 latent。少步蒸馏通常把 50/100/1000 步压到 1/2/4/8 步。</p>
       </div>
-      <div class="algorithm-panel" data-flow-panel="kd">
-        <div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="KD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div>
-        <pre class="algorithm"><code data-flow-output="kd"></code></pre>
+
+      <div class="fact-grid">
+        <article><h3>score、denoiser、velocity</h3><p>score 可粗略理解为往数据分布高密度区域走的方向。denoiser 可以预测噪声 \(\epsilon\)、干净样本 \(x_0\)、\(v\)-prediction 或 flow velocity。低 NFE 下，参数化和 loss weighting 往往决定稳定性。</p></article>
+        <article><h3>CFG 为什么重要</h3><p>Classifier-Free Guidance 把条件预测和无条件预测线性组合成更强的文本对齐方向。Guided Distillation 的目标之一，是把这个 guided vector 压进 student，让推理不再需要双前向 CFG。</p></article>
+        <article><h3>train-test mismatch</h3><p>训练时 student 看到的状态常来自 teacher trajectory、真实数据加噪或离线 teacher samples；推理时 student 看到的是自己上一步生成的状态。NFE 降到 1 到 4 步后，这个差异会被放大。</p></article>
       </div>
-      <div class="judgement-card"><h3>4. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>KD 给出“匹配 teacher 可计算行为”的基本范式。</p></div><div><strong>问题</strong><p>生成模型的可计算行为不是一个 logits 向量，而是一条采样计算图。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能写出 classic KD 的 KL loss。</li><li>能说明生成蒸馏为什么必须选择匹配对象。</li></ul></div>
+
+      <div class="method-note">
+        <strong>方法注记</strong>
+        <p>DMD2 的 multi-step backward simulation、Self-Forcing 的 self-rollout、Self-Forcing++ 的 long rollout window correction，本质上都在把训练分布往 student inference distribution 推近。</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="map" data-part="part0">
+      <header class="chapter-header">
+        <h2>3. 方法地图：六种监督对象</h2>
+        <p class="chapter-summary">从左到右，监督信号越来越不依赖 teacher 的逐步轨迹，越来越接近 student 推理时真正会遇到的分布。</p>
+      </header>
+      <div class="comparison-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>路线</th><th>匹配对象</th><th>绑定 teacher path</th><th>常需 real data</th><th>额外网络</th><th>典型 NFE</th><th>代表方法</th><th>主要风险</th></tr></thead>
+          <tbody>
+            <tr><td>路径压缩</td><td>teacher 的一步或多步 transition</td><td>强</td><td>可选</td><td>无</td><td>4-16</td><td>Progressive, Guided</td><td>继承 path 偏差，多轮误差累积</td></tr>
+            <tr><td>一致性模型</td><td>同一 PF-ODE 轨迹 endpoint</td><td>中</td><td>可选</td><td>EMA target</td><td>1-4</td><td>CM, LCM, TCD, CTM, iCT</td><td>1-step 模糊，schedule 敏感</td></tr>
+            <tr><td>分布匹配</td><td>noisy marginal distribution</td><td>弱</td><td>方法相关</td><td>fake score model</td><td>1-4</td><td>Diff-Instruct, DMD, DMD2, SiD, SIM</td><td>fake score 不稳，多样性下降</td></tr>
+            <tr><td>对抗反馈</td><td>real/fake 或 latent feature realism</td><td>弱</td><td>通常需要</td><td>discriminator</td><td>1-4</td><td>ADD, LADD, SiDA</td><td>GAN artifact，prompt alignment 受损</td></tr>
+            <tr><td>Flow 少步化</td><td>更直 path 或 average velocity</td><td>不一定</td><td>视方法而定</td><td>视方法而定</td><td>1-8</td><td>Reflow, Shortcut, MeanFlow</td><td>与蒸馏边界易混淆</td></tr>
+            <tr><td>视频 self-rollout</td><td>student 长程状态分布</td><td>弱</td><td>视方法而定</td><td>critic/reward 可选</td><td>chunk/streaming</td><td>Self-Forcing, Self-Forcing++</td><td>长程漂移，记忆不足</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="timeline-roadmap distill-route" aria-label="Distillation route">
+        <span>Logits KD</span><i></i><span>Transition Matching</span><i></i><span>Endpoint Consistency</span><i></i><span>Distribution / Score Matching</span><i></i><span>Adversarial Feature Feedback</span><i></i><span>Self-rollout Distribution</span>
+      </div>
     </section>
 
     <section class="chapter" id="trajectory" data-part="part1">
-      <header class="chapter-header"><h2>轨迹蒸馏：老师多步，学生少步</h2><p class="chapter-summary">Progressive Distillation 让 student 的一步学习 teacher 的两步，逐轮把 NFE 减半。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>老师走很多小步，学生学习把几步合成一步。</p></div>
-      <div class="derivation-section">
-        <h3>2. 数学对象与推导</h3>
+      <header class="chapter-header">
+        <h2>4. 路线一：路径压缩 -- Progressive / Guided Distillation</h2>
+        <p class="chapter-summary">路径压缩最直观：teacher 走多步，student 学成少步；代价是强绑定 teacher trajectory。</p>
+      </header>
+
+      <article class="method-section">
+        <h3>Progressive Distillation</h3>
+        <blockquote><strong>一句话直觉</strong>：老师原来每次只能迈两小步，学生学会把这两小步合成一大步；重复这个过程，采样步数逐轮减半。</blockquote>
         <div class="equation">
 \[
-x_{t-2\Delta}^{S}=\Phi_\theta(x_t,t,t-2\Delta,c)
+x^{S}_{t-2\Delta}=\Phi_\theta(x_t,t,t-2\Delta,c)
 \approx
 \Phi_T(\Phi_T(x_t,t,t-\Delta,c),t-\Delta,t-2\Delta,c)
 \]
         </div>
-        <p>student 不是学习 clean image 本身，而是学习 teacher sampler 的局部复合 transition。多轮训练后，\(K\rightarrow K/2\rightarrow K/4\rightarrow\cdots\)。</p>
-      </div>
-      <div class="algorithm-panel" data-flow-panel="progressive">
-        <div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Progressive distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div>
-        <pre class="algorithm"><code data-flow-output="progressive"></code></pre>
-      </div>
-      <div class="visual-example interactive-lab" id="trajectory-compression-lab" data-lab="trajectory-compression">
-        <div class="visual-copy"><h3>4. 可视化：trajectory compression lab</h3><p>滑块控制 teacher curvature、student step size 和 distillation round，观察 NFE reduction 与 toy error。</p></div>
-        <div class="lab-controls calculator-inline"><label>teacher curvature<input id="trajCurve" type="range" min="20" max="170" value="105"><output id="trajCurveOut">105</output></label><label>student step size<input id="trajStep" type="range" min="2" max="8" value="4"><output id="trajStepOut">4</output></label><label>round<input id="trajRound" type="range" min="0" max="5" value="2"><output id="trajRoundOut">2</output></label></div>
-        <canvas id="trajectoryCanvas" class="lab-canvas" width="900" height="380" aria-label="Trajectory compression lab"></canvas>
-        <p id="trajectoryReadout" class="lab-readout">NFE reduction = 4x · toy error = 0.00</p>
-      </div>
-      <div class="judgement-card"><h3>5. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>监督清晰、实现直接、teacher transition 可复用。</p></div><div><strong>失败模式</strong><p>多轮蒸馏累积误差，并继承 teacher path 的偏差。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>6. 理解检查</h3><ul><li>能解释为什么 teacher 两步可以成为 student 一步目标。</li><li>能写出 distilled schedule 推理循环。</li></ul></div>
-    </section>
+        <div class="method-grid">
+          <div><strong>它解决什么问题</strong><p>把 DDIM-like teacher 的 \(K\) 步采样压到 \(K/2,K/4,\ldots\)，让少步采样仍然沿着 teacher 局部 transition 前进。</p></div>
+          <div><strong>训练时发生什么</strong><p>从同一个 \(x_t\) 出发，teacher 走两步得到目标 \(x^{T}_{t-2\Delta}\)，student 走一步得到 \(x^{S}_{t-2\Delta}\)，最小化二者距离，再把 student 作为下一轮 teacher。</p></div>
+          <div><strong>推理时还剩什么</strong><p>只保留 student 和 distilled schedule；通常不需要原始 teacher。低 NFE 下 \(v\)-prediction、\(x_0\)-prediction 和 loss weighting 很关键。</p></div>
+          <div><strong>失败模式</strong><p>强 teacher-path 绑定会继承 teacher trajectory 的偏差；多轮蒸馏会放大局部误差。</p></div>
+        </div>
+        <div class="algorithm-panel" data-flow-panel="progressive">
+          <div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Progressive distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div>
+          <pre class="algorithm"><code data-flow-output="progressive"></code></pre>
+        </div>
+        <div class="visual-example interactive-lab" id="trajectory-compression-lab" data-lab="trajectory-compression">
+          <div class="visual-copy"><h3>Trajectory Compression Lab</h3><p>曲率越高、student step 越大，toy error 越高；distillation round 越多，NFE reduction 越高。</p></div>
+          <div>
+            <div class="lab-controls calculator-inline"><label>teacher curvature<input id="trajCurve" type="range" min="20" max="170" value="105"><output id="trajCurveOut">105</output></label><label>student step size<input id="trajStep" type="range" min="2" max="8" value="4"><output id="trajStepOut">4</output></label><label>round<input id="trajRound" type="range" min="0" max="5" value="2"><output id="trajRoundOut">2</output></label></div>
+            <canvas id="trajectoryCanvas" class="lab-canvas" width="900" height="380" aria-label="Trajectory compression lab"></canvas>
+            <p id="trajectoryReadout" class="lab-readout">NFE reduction = 4x · toy error = 0.00</p>
+          </div>
+        </div>
+      </article>
 
-    <section class="chapter" id="guided" data-part="part1">
-      <header class="chapter-header"><h2>Guided Distillation：把 CFG 压进单个学生</h2><p class="chapter-summary">CFG 采样需要 conditional 与 unconditional 两次前向；guided distillation 让 student 直接输出 CFG 组合后的方向。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>先把 \(\epsilon_{cfg}\) 变成 student 的单次输出，再把 guided student 做少步蒸馏。</p></div>
-      <div class="derivation-section">
-        <h3>2. 数学对象与训练目标</h3>
+      <article class="method-section">
+        <h3>Guided Distillation</h3>
+        <blockquote><strong>一句话直觉</strong>：先把 CFG 合成后的 guided vector 变成 student 的单次输出，再把 guided student 做少步采样。</blockquote>
         <div class="equation">
 \[
-\epsilon_\theta(x_t,t,c)\approx
-\epsilon_{uncond}^{T}(x_t,t)+w(\epsilon_{cond}^{T}(x_t,t,c)-\epsilon_{uncond}^{T}(x_t,t))
+\epsilon_{cfg}=\epsilon_{uncond}+w(\epsilon_{cond}-\epsilon_{uncond}),\qquad
+\epsilon_\theta(x_t,t,c)\approx\epsilon_{cfg}
 \]
         </div>
-      </div>
-      <div class="algorithm-panel" data-flow-panel="guided"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Guided distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="guided"></code></pre></div>
-      <div class="warning-card"><h3>4. 需要解释的陷阱</h3><ul><li>student 往往只适配训练时的 guidance scale。</li><li>高 guidance scale 下的一步模型容易过饱和。</li><li>CFG 蒸馏降低双前向成本，不自动解决 trajectory 压缩误差。</li></ul></div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能说明 CFG 和 guided distillation 的边界。</li><li>能解释为什么 scale 泛化有限。</li></ul></div>
+        <div class="method-grid">
+          <div><strong>它解决什么问题</strong><p>CFG 每步常需 conditional 与 unconditional 两次前向。Guided Distillation 压缩的是 CFG-composed denoiser，可同时减少 guided vector 计算和后续采样步数。</p></div>
+          <div><strong>与 LCM 的区别</strong><p>Guided Distillation 主要学 guided vector；LCM 学 augmented PF-ODE 上的 endpoint consistency。二者都能服务 few-step inference，但监督对象不同。</p></div>
+          <div><strong>推理时还剩什么</strong><p>student 可直接输出接近 CFG 后的方向，通常不再需要双前向 CFG；但往往只适配训练过的 guidance scale 范围。</p></div>
+          <div><strong>失败模式</strong><p>scale 泛化有限，高 guidance 可能过饱和；它省 CFG 成本，不自动解决所有 trajectory compression error。</p></div>
+        </div>
+        <div class="algorithm-panel" data-flow-panel="guided"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Guided distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="guided"></code></pre></div>
+      </article>
     </section>
 
     <section class="chapter" id="consistency" data-part="part2">
-      <header class="chapter-header"><h2>一致性蒸馏：学习轨迹终点不变量</h2><p class="chapter-summary">Consistency / LCM 学一个函数，使同一 ODE 轨迹上的不同噪声点映射到同一个 endpoint。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>同一条 probability flow ODE 轨迹上的不同噪声点，应该回到同一个干净样本。</p></div>
-      <div class="derivation-section">
-        <h3>2. 数学对象与损失</h3>
-        <div class="equation">
+      <header class="chapter-header">
+        <h2>5. 路线二：一致性模型 -- 从 CM 到 LCM / TCD / CTM / iCT</h2>
+        <p class="chapter-summary">一致性不是逐步复制 teacher，而是让同一条 PF-ODE 轨迹上的不同点都知道同一个终点。</p>
+      </header>
+      <blockquote><strong>直觉类比</strong>：山路上不同高度的位置，都应该能指向同一个山脚终点。一致性模型学的不是每一步怎么走，而是无论从轨迹上的哪个点出发，都要知道终点在哪。</blockquote>
+      <div class="equation">
 \[
-\mathcal{L}_{CM}
-=
-\mathbb{E}_{x_t,t,s,c}
-d\!\left(f_\theta(x_t,t,c),\operatorname{sg}[f_{\theta^-}(x_s,s,c)]\right)
+f_\theta(x_t,t,c)\approx f_\theta(x_s,s,c)\approx x_0,\qquad s<t
 \]
-        </div>
-        <p>其中 \(x_s\) 由 teacher ODE 从 \(x_t\) 积分到 \(s\)，\(\theta^-\) 是 EMA target network。</p>
       </div>
-      <div class="algorithm-panel" data-flow-panel="consistency"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Consistency train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="consistency"></code></pre></div>
+      <div class="method-grid">
+        <div><strong>Consistency Models</strong><p>可从 diffusion teacher distill，也可直接 consistency training。使用 EMA target 稳定 endpoint matching。</p></div>
+        <div><strong>LCM</strong><p>把 guided reverse diffusion 看成 augmented PF-ODE，在 latent space 预测 few-step endpoint，常用于 LCM-LoRA 工程接入。</p></div>
+        <div><strong>TCD / CTM / iCT</strong><p>从 endpoint consistency 扩展到 trajectory consistency、anytime-to-anytime mapping 或更稳定的独立一致性训练。</p></div>
+        <div><strong>1-step vs 2-4-step</strong><p>1-step 延迟最低，但更容易模糊或语义弱；2-4-step 通常在细节和文本一致性上更稳。</p></div>
+      </div>
+      <div class="algorithm-panel" data-flow-panel="consistency"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Consistency train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="consistency"></code></pre></div>
       <div class="visual-example interactive-lab" id="consistency-endpoint-lab" data-lab="consistency-endpoint">
-        <div class="visual-copy"><h3>4. 可视化：consistency endpoint lab</h3><p>同一轨迹上多个 noisy points 都指向同一 endpoint。噪声等级越高，一致性误差越难控制。</p></div>
-        <div class="lab-controls calculator-inline"><label>trajectory noise<input id="consNoise" type="range" min="0" max="100" value="38"><output id="consNoiseOut">38</output></label></div>
-        <canvas id="consistencyCanvas" class="lab-canvas" width="900" height="360" aria-label="Consistency endpoint lab"></canvas>
-        <p id="consistencyReadout" class="lab-readout">consistency error = 0.00</p>
+        <div class="visual-copy"><h3>Consistency Endpoint Lab</h3><p>同一轨迹上多个 noisy states 都指向同一 endpoint。噪声等级越高，一致性误差越难控制。</p></div>
+        <div>
+          <div class="lab-controls calculator-inline"><label>trajectory noise<input id="consNoise" type="range" min="0" max="100" value="38"><output id="consNoiseOut">38</output></label></div>
+          <canvas id="consistencyCanvas" class="lab-canvas" width="900" height="360" aria-label="Consistency endpoint lab"></canvas>
+          <p id="consistencyReadout" class="lab-readout">consistency error = 0.00</p>
+        </div>
       </div>
-      <div class="judgement-card"><h3>5. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>一步采样自然，多步可以逐渐提质。</p></div><div><strong>失败模式</strong><p>endpoint consistency 不等于完整分布匹配，低步数细节仍可能弱。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>6. 理解检查</h3><ul><li>能写出 EMA target consistency loss。</li><li>能区分 one-step consistency 与 few-step consistency 推理。</li></ul></div>
+      <div class="method-note"><strong>方法注记</strong><p>Consistency distillation 仍可依赖 teacher ODE 轨迹；consistency training 更接近从数据直接训练。两者都不等于完整分布匹配，低步数细节仍取决于 schedule、parameterization 和 boundary condition。</p></div>
     </section>
 
-    <section class="chapter" id="dmd" data-part="part2">
-      <header class="chapter-header"><h2>DMD：从轨迹匹配到分布匹配</h2><p class="chapter-summary">DMD 不要求 student 复现 teacher 的每条路径，只要求 student 的样本分布像 teacher。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>trajectory matching 绑定同一个 \(z\) 的 endpoint；DMD 匹配加噪边缘分布，允许不同路径得到同一分布。</p></div>
-      <div class="derivation-section">
-        <h3>2. 数学对象与 score gap</h3>
+    <section class="chapter" id="distribution" data-part="part3">
+      <header class="chapter-header">
+        <h2>6. 路线三：分布匹配 -- Diff-Instruct、DMD、DMD2、SiD、SIM、SiDA</h2>
+        <p class="chapter-summary">分布匹配不要求单个样本路径一致，只要求最终样本分布或 noisy marginal distribution 接近。</p>
+      </header>
+      <section class="route-card">
+        <h3>从路径匹配到分布匹配</h3>
+        <p>路径匹配要求 student 跟 teacher 走类似路线；分布匹配只要求 \(p_\theta(x_0|c)\approx p_T(x_0|c)\)。这更接近生成建模目标，但高维分布不能直接比较，DMD 类方法转而比较不同噪声时间 \(t\) 的 score。</p>
+        <div class="equation">
+\[
+s_{\mathrm{real}}(x_t,t,c)-s_{\mathrm{fake}}(x_t,t,c)
+\]
+        </div>
+        <p>\(s_{\mathrm{real}}\) 告诉我们往 teacher 或真实数据高密度区域走，\(s_{\mathrm{fake}}\) 告诉我们当前 student 分布已经在哪里。二者差值就像把 fake samples 推向 target distribution 的修正方向；不同论文的符号方向可能不同，关键是 real/fake score gap 的语义。</p>
+      </section>
+
+      <article class="method-section">
+        <h3>Diff-Instruct 与 DMD</h3>
+        <div class="method-grid">
+          <div><strong>Diff-Instruct</strong><p>从 KL / integral KL 角度，把 diffusion teacher 的分布知识蒸馏到 generator，是 DMD 前的重要铺垫。</p></div>
+          <div><strong>DMD 目标</strong><p>让 one-step/few-step generator 的 noisy marginal distribution 接近 teacher 或 real distribution，而不是逐路径复现 teacher。</p></div>
+          <div><strong>fake score model</strong><p>teacher score 只描述目标分布，还需要额外 \(F_\phi\) 估计当前 generator 分布在哪里，才能构造 score gap。</p></div>
+          <div><strong>regression loss</strong><p>原始 DMD 中 paired regression 可稳定训练、保留 teacher path 信息，但也可能把模型拉回 trajectory matching，削弱纯分布匹配优势。</p></div>
+        </div>
         <div class="equation">
 \[
 \nabla_\theta \mathcal{L}_{DMD}
 \approx
 \mathbb{E}_{z,t,\epsilon,c}
 \left[
-w(t)(s_\phi(x_t,t,c)-s_T(x_t,t,c))
+w(t)\left(s_{\mathrm{fake}}(x_t,t,c)-s_{\mathrm{real}}(x_t,t,c)\right)
 \frac{\partial x_t}{\partial \theta}
 \right]
 \]
         </div>
-        <p>\(s_T\) 是 frozen teacher score，\(s_\phi\) 是追踪 student 加噪分布的 fake score。</p>
-      </div>
-      <div class="algorithm-panel" data-flow-panel="dmd"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="DMD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="dmd"></code></pre></div>
-      <div class="visual-example interactive-lab" id="dmd-vs-trajectory-lab" data-lab="dmd-vs-trajectory">
-        <div class="visual-copy"><h3>4. 可视化：DMD vs trajectory matching</h3><p>trajectory 模式绑定路径；distribution 模式只看样本云覆盖。fake critic accuracy 和 GAN weight 会改变锐度与覆盖风险。</p></div>
-        <div class="lab-controls calculator-inline">
-          <label>mode<select id="dmdMode"><option value="trajectory">trajectory matching</option><option value="distribution">distribution matching</option></select></label>
-          <label>critic accuracy<input id="dmdCritic" type="range" min="0" max="100" value="70"><output id="dmdCriticOut">70</output></label>
-          <label>GAN weight<input id="dmdGan" type="range" min="0" max="100" value="35"><output id="dmdGanOut">35</output></label>
+        <p>这里 \(x_0=G_\theta(z,c)\)，\(x_t\) 是对 \(x_0\) 加噪后的状态，\(s_{\mathrm{real}}\) 来自 teacher 或 real-data score，\(s_{\mathrm{fake}}\) 来自 fake score model，\(w(t)\) 是时间权重。</p>
+        <div class="algorithm-panel" data-flow-panel="dmd"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="DMD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="dmd"></code></pre></div>
+        <div class="visual-example interactive-lab" id="dmd-vs-trajectory-lab" data-lab="dmd-vs-trajectory">
+          <div class="visual-copy"><h3>DMD vs Trajectory Matching</h3><p>trajectory 模式绑定路径；distribution 模式只看样本云覆盖。fake critic accuracy 和 GAN weight 会改变锐度与覆盖风险。</p></div>
+          <div>
+            <div class="lab-controls calculator-inline">
+              <label>mode<select id="dmdMode"><option value="trajectory">trajectory matching</option><option value="distribution">distribution matching</option></select></label>
+              <label>critic accuracy<input id="dmdCritic" type="range" min="0" max="100" value="70"><output id="dmdCriticOut">70</output></label>
+              <label>GAN weight<input id="dmdGan" type="range" min="0" max="100" value="35"><output id="dmdGanOut">35</output></label>
+            </div>
+            <canvas id="dmdCanvas" class="lab-canvas" width="900" height="380" aria-label="DMD versus trajectory lab"></canvas>
+            <p id="dmdReadout" class="lab-readout">coverage risk = medium · sharpness = medium</p>
+          </div>
         </div>
-        <canvas id="dmdCanvas" class="lab-canvas" width="900" height="380" aria-label="DMD versus trajectory lab"></canvas>
-        <p id="dmdReadout" class="lab-readout">coverage risk = medium · sharpness = medium</p>
-      </div>
-      <div class="warning-card"><h3>5. 需要解释的问题</h3><ul><li>DMD 的 reverse-KL-like 行为可能更 mode-seeking。</li><li>fake score 不准会给 generator 偏置梯度。</li><li>如果再加入 paired regression，student 会重新绑定 teacher path。</li></ul></div>
-      <div class="chapter-checkpoints"><h3>6. 理解检查</h3><ul><li>能说明 \(s_\phi-s_T\) 的含义。</li><li>能解释为什么 DMD 不等于 trajectory matching。</li></ul></div>
+      </article>
+
+      <article class="method-section">
+        <h3>DMD2：对 DMD 的四层修正</h3>
+        <div class="method-badge-grid">
+          <span class="method-badge">remove paired regression</span>
+          <span class="method-badge">two-time-scale fake critic</span>
+          <span class="method-badge">GAN loss with real data</span>
+          <span class="method-badge">multi-step backward simulation</span>
+        </div>
+        <div class="method-grid">
+          <div><strong>目标层面</strong><p>移除 paired regression，使目标更接近纯分布匹配。</p></div>
+          <div><strong>优化稳定性</strong><p>使用 two-time-scale fake critic / fake score 更新，让 fake score 跟上 generator 的非平稳分布。</p></div>
+          <div><strong>真实数据校正</strong><p>加入 GAN loss，用 real data signal 修正 teacher score 或 fake score 偏差。</p></div>
+          <div><strong>multi-step 层面</strong><p>通过 backward simulation 模拟推理时多步输入分布，缓解 train-test mismatch。</p></div>
+        </div>
+        <p>推理时只保留 one-step 或 few-step generator；fake score、GAN head 和 teacher 不参与推理。DMD2 的优势不是多加了 GAN，而是系统处理分布匹配稳定性与 multi-step mismatch。</p>
+        <div class="algorithm-panel" data-flow-panel="dmd2"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="DMD2 train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="dmd2"></code></pre></div>
+      </article>
+
+      <article class="method-section">
+        <h3>SiD / SIM / SiDA / Uni-Instruct</h3>
+        <div class="fact-grid">
+          <article><strong>SiD</strong><p>Score Identity Distillation 从 score identity 角度做 data-free one-step distillation，目标是减少对 paired teacher samples 的依赖。</p></article>
+          <article><strong>SIM</strong><p>Score-based Implicit Matching 属于 score divergence family，关注如何用 score matching 稳定驱动隐式 generator。</p></article>
+          <article><strong>SiDA</strong><p>在 score identity distillation 上结合 adversarial feedback，试图同时提升真实感和分布对齐。</p></article>
+          <article><strong>Uni-Instruct</strong><p>把多个 one-step diffusion distillation objective 放入统一理论框架，强调 divergence、score 估计和优化稳定性的选择。</p></article>
+        </div>
+        <div class="method-note"><strong>方法注记</strong><p>这条路线的核心问题不是把 loss 名字换掉，而是选择什么 divergence、如何稳定估计 score、如何避免 mode collapse 或 diversity loss。</p></div>
+      </article>
     </section>
 
-    <section class="chapter" id="dmd2" data-part="part2">
-      <header class="chapter-header"><h2>DMD2：更稳定、更可扩展的分布匹配蒸馏</h2><p class="chapter-summary">DMD2 保留分布匹配优点，同时用 remove regression、two-time-scale fake critic、GAN loss 和 multi-step backward simulation 稳定训练。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>DMD2 不再依赖大规模 paired teacher samples，而是在 generator 当前会产生的输入分布上更新 fake critic 和 student。</p></div>
-      <div class="method-badge-grid">
-        <span class="method-badge">remove regression loss</span>
-        <span class="method-badge">two-time-scale fake critic</span>
-        <span class="method-badge">GAN loss with real data</span>
-        <span class="method-badge">multi-step backward simulation</span>
-      </div>
-      <div class="derivation-section">
-        <h3>2. 总损失</h3>
+    <section class="chapter" id="adversarial" data-part="part4">
+      <header class="chapter-header">
+        <h2>7. 路线四：对抗反馈 -- ADD 与 LADD</h2>
+        <p class="chapter-summary">低 NFE 下单纯回归容易模糊，单纯 GAN 又可能牺牲 prompt alignment；ADD/LADD 试图把两类信号配平。</p>
+      </header>
+      <article class="method-section">
+        <h3>ADD：score distillation 与 adversarial loss 的互补</h3>
+        <p>ADD 的关键不是简单把 GAN loss 加到 diffusion 上，而是把两个互补信号结合起来：adversarial loss 负责看起来真实，frozen diffusion teacher 的 distillation/SDS-like loss 负责保留 teacher 的组合能力和文本对齐。teacher 往往作用在重新加噪后的 student output 上，而不是 raw generated image。</p>
         <div class="equation">
 \[
-\mathcal{L}_{DMD2}=\mathcal{L}_{DMD}+\lambda_{adv}\mathcal{L}_{GAN}
+\mathcal{L}_{ADD}=\lambda_{score}\mathcal{L}_{score}+\lambda_{adv}\mathcal{L}_{adv}
 \]
         </div>
-        <p>multi-step student 训练时还要模拟 inference-time generator inputs，避免训练看 noisy real、推理看 previous generated sample 的 mismatch。</p>
-      </div>
-      <div class="algorithm-panel" data-flow-panel="dmd2"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="DMD2 train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="dmd2"></code></pre></div>
-      <div class="judgement-card"><h3>4. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>不强绑定 teacher path，支持 one-step 和 multi-step student。</p></div><div><strong>问题</strong><p>fake critic、GAN head、backward simulation 的更新节奏使系统复杂。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能列出 DMD2 的四个改进点。</li><li>能解释 backward simulation 为什么服务 multi-step student。</li></ul></div>
-    </section>
-
-    <section class="chapter" id="add" data-part="part3">
-      <header class="chapter-header"><h2>ADD：Score Distillation + Adversarial Loss</h2><p class="chapter-summary">Score teacher 保证方向大体正确，GAN discriminator 补低步数生成最容易丢失的高频细节和真实感。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>ADD 不是普通 GAN；diffusion teacher 仍然提供强分布先验，adversarial loss 主要补 perceptual manifold signal。</p></div>
-      <div class="derivation-section"><h3>2. 训练目标</h3><div class="equation">\[
-\mathcal{L}_{ADD}=\lambda_{score}\mathcal{L}_{score}+\lambda_{adv}\mathcal{L}_{adv}
-\]</div></div>
-      <div class="algorithm-panel" data-flow-panel="add"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="ADD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="add"></code></pre></div>
-      <div class="visual-example interactive-lab" id="loss-balance-lab" data-lab="loss-balance">
-        <div class="visual-copy"><h3>4. 可视化：loss balance lab</h3><p>调节 score、DMD、adversarial、reward 权重，观察 toy sharpness、coverage 和 temporal consistency。</p></div>
-        <div class="lab-controls lab-controls-grid loss-mixer">
-          <label>score<input id="lossScore" type="range" min="0" max="100" value="65"><output id="lossScoreOut">65</output></label>
-          <label>DMD<input id="lossDmd" type="range" min="0" max="100" value="55"><output id="lossDmdOut">55</output></label>
-          <label>adversarial<input id="lossAdv" type="range" min="0" max="100" value="35"><output id="lossAdvOut">35</output></label>
-          <label>reward<input id="lossReward" type="range" min="0" max="100" value="25"><output id="lossRewardOut">25</output></label>
+        <div class="method-grid">
+          <div><strong>训练时发生什么</strong><p>student 从 noisy input 直接产生低步样本；输出重新加噪后由 frozen diffusion teacher 给 score/SDS-like 信号，同时 discriminator 约束真实图像流形。</p></div>
+          <div><strong>推理时还剩什么</strong><p>只保留低步 student，通常不需要 teacher、discriminator 或 CFG，因此节省步数和 CFG 双前向成本。</p></div>
+          <div><strong>失败模式</strong><p>adversarial signal 过强时可能过锐、产生 artifact 或牺牲 prompt alignment；score signal 过强又可能回到模糊路径回归。</p></div>
+          <div><strong>评估重点</strong><p>不能只看 sharpness，需要同时看文本对齐、diversity、分辨率、CFG 设置和真实 latency。</p></div>
         </div>
-        <div class="metric-bars" aria-label="Loss balance metrics"><div><span>sharpness</span><i id="metricSharp"></i></div><div><span>coverage</span><i id="metricCoverage"></i></div><div><span>temporal consistency</span><i id="metricTemporal"></i></div></div>
-      </div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能解释 ADD 中 score loss 与 GAN loss 各解决什么。</li><li>能说出 adversarial loss 的稳定性风险。</li></ul></div>
-    </section>
+        <div class="algorithm-panel" data-flow-panel="add"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="ADD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="add"></code></pre></div>
+        <div class="visual-example interactive-lab" id="loss-balance-lab" data-lab="loss-balance">
+          <div class="visual-copy"><h3>Loss Balance Lab</h3><p>调节 score、DMD、adversarial、reward 权重，观察 toy sharpness、coverage 和 temporal consistency。</p></div>
+          <div>
+            <div class="lab-controls lab-controls-grid loss-mixer">
+              <label>score<input id="lossScore" type="range" min="0" max="100" value="65"><output id="lossScoreOut">65</output></label>
+              <label>DMD<input id="lossDmd" type="range" min="0" max="100" value="55"><output id="lossDmdOut">55</output></label>
+              <label>adversarial<input id="lossAdv" type="range" min="0" max="100" value="35"><output id="lossAdvOut">35</output></label>
+              <label>reward<input id="lossReward" type="range" min="0" max="100" value="25"><output id="lossRewardOut">25</output></label>
+            </div>
+            <div class="metric-bars" aria-label="Loss balance metrics"><div><span>sharpness</span><i id="metricSharp"></i></div><div><span>coverage</span><i id="metricCoverage"></i></div><div><span>temporal consistency</span><i id="metricTemporal"></i></div></div>
+          </div>
+        </div>
+      </article>
 
-    <section class="chapter" id="ladd" data-part="part3">
-      <header class="chapter-header"><h2>LADD：Latent Adversarial Diffusion Distillation</h2><p class="chapter-summary">LADD 将 adversarial feedback 放到 latent diffusion teacher 的 generative features 上，减少 pixel-space decode 开销。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>ADD 走 latent → RGB → external discriminator；LADD 走 latent → teacher feature blocks → discriminator heads。</p></div>
-      <div class="derivation-section">
-        <h3>2. 关键变化</h3>
-        <ul>
-          <li>从 pixel-space adversarial feedback 转向 latent-space adversarial feedback。</li>
-          <li>利用 pretrained latent diffusion teacher 的 generative features，而不只是外部固定判别特征。</li>
-          <li>对 generated latent 和 target latent 重新加噪，在指定 noise level 上抽取 teacher block features。</li>
-          <li>noise level 控制反馈类型：高噪声偏全局结构，低噪声偏局部纹理。</li>
-          <li>主训练循环避免频繁 decode 到 RGB，适合高分辨率和多宽高比训练。</li>
-        </ul>
-      </div>
-      <div class="equation">\[
+      <article class="method-section">
+        <h3>LADD：把真实感老师搬到 latent generative features</h3>
+        <p>LADD 可以看作把 ADD 的真实感老师从 RGB 判别器迁移到 latent diffusion teacher 的内部生成特征中。直接好处是避免昂贵 RGB decode，也让判别信号更贴近 latent generator 实际工作的空间。</p>
+        <div class="method-grid">
+          <div><strong>teacher 的双重角色</strong><p>teacher 既生成 synthetic target latents，也作为 latent feature discriminator backbone。</p></div>
+          <div><strong>latent feedback</strong><p>不再 decode 到 RGB 后判别，而是在 latent/token/generative feature 上做 adversarial feedback。</p></div>
+          <div><strong>noise level</strong><p>高噪声特征更偏全局结构，低噪声特征更偏局部纹理；synthetic data 可改善 image-text alignment。</p></div>
+          <div><strong>适用模型</strong><p>更适合 SD3/DiT/MAR 或高分辨率 latent 模型；在某些 synthetic data 设置下，额外 distillation loss 可能不再必要。</p></div>
+        </div>
+        <div class="equation">
+\[
 h_S^{(\ell)}=\operatorname{Feat}_T^{(\ell)}(z_{S,t},t,c),\qquad
 \mathcal{L}_{G,LADD}=-\sum_\ell \mathbb{E}\log D_\psi^{(\ell)}(h_S^{(\ell)},t,c)
-\]</div>
-      <div class="algorithm-panel" data-flow-panel="ladd"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="LADD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="ladd"></code></pre></div>
-      <div class="visual-example interactive-lab" id="ladd-feature-lab" data-lab="ladd-feature">
-        <div class="visual-copy"><h3>4. 可视化：LADD feature feedback</h3><p>拖动 noise level，看反馈从 global structure 逐渐偏向 local texture。</p></div>
-        <div class="lab-controls calculator-inline"><label>noise level<input id="laddNoise" type="range" min="0" max="100" value="58"><output id="laddNoiseOut">58</output></label></div>
-        <canvas id="laddCanvas" class="lab-canvas" width="900" height="330" aria-label="LADD feature feedback lab"></canvas>
-      </div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能说明 LADD 为什么不只是 latent space GAN。</li><li>能解释 noise level 如何影响反馈类型。</li></ul></div>
+\]
+        </div>
+        <div class="algorithm-panel" data-flow-panel="ladd"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="LADD train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="ladd"></code></pre></div>
+        <div class="visual-example interactive-lab" id="ladd-feature-lab" data-lab="ladd-feature">
+          <div class="visual-copy"><h3>LADD Feature Feedback</h3><p>拖动 noise level，看反馈从 global structure 逐渐偏向 local texture。</p></div>
+          <div>
+            <div class="lab-controls calculator-inline"><label>noise level<input id="laddNoise" type="range" min="0" max="100" value="58"><output id="laddNoiseOut">58</output></label></div>
+            <canvas id="laddCanvas" class="lab-canvas" width="900" height="330" aria-label="LADD feature feedback lab"></canvas>
+          </div>
+        </div>
+      </article>
     </section>
 
-    <section class="chapter" id="flow" data-part="part4">
-      <header class="chapter-header"><h2>Flow / Rectified Path 的少步化</h2><p class="chapter-summary">Reflow、Shortcut、MeanFlow 不是单纯压缩 diffusion chain，而是让路径更直或直接学习大步平均速度。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>若采样瓶颈来自 ODE 积分，可以让路径更直，或让模型直接预测一个区间的 average velocity。</p></div>
-      <div class="derivation-section"><h3>2. 数学对象</h3><div class="equation">\[
+    <section class="chapter" id="flow" data-part="part5">
+      <header class="chapter-header">
+        <h2>8. 路线五：Flow 少步化与相邻路线 -- 不只是蒸馏 teacher</h2>
+        <p class="chapter-summary">低 NFE 生成不只有 teacher-student 压缩，也可以通过重新设计 path、velocity 或训练目标来实现。</p>
+      </header>
+      <div class="warning-card"><h3>边界说明</h3><p>这一节讨论的是少步生成的相邻路线，不一定都是传统意义上的 distillation。把它们放在这里，是为了说明低 NFE 生成也可以从训练目标和路径设计入手。</p></div>
+      <div class="method-grid">
+        <div><strong>Flow Matching / OT path</strong><p>从训练目标层面学习 vector field，路径设计更直、更容易积分。</p></div>
+        <div><strong>Rectified Flow / Reflow</strong><p>通过 reflow 把弯曲路径拉直，使少步积分误差降低。</p></div>
+        <div><strong>Shortcut Models</strong><p>让模型学习不同步长的跳步更新，而不是只能做固定小步。</p></div>
+        <div><strong>MeanFlow</strong><p>强调 self-contained one-step generative modeling，直接学习区间 average velocity，而不是把 instantaneous velocity 用一步 Euler 硬近似。</p></div>
+      </div>
+      <div class="equation">
+\[
 \frac{dx_t}{dt}=v_\theta(x_t,t,c),\qquad
-x_t=(1-t)x_0+t x_1,\qquad
 \bar v_\theta(x_t,r,t,c)\approx\frac{x_t-x_r}{t-r}
-\]</div></div>
-      <div class="algorithm-panel" data-flow-panel="flowdistill"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Flow distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="flowdistill"></code></pre></div>
-      <div class="judgement-card"><h3>4. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>把少步目标前移到路径或速度定义上。</p></div><div><strong>问题</strong><p>并非所有任务的路径都足够直；one-step 质量需要按 paper reports 与复现验证。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能区分 instantaneous velocity 和 average velocity。</li><li>能解释 Reflow 为什么可能降低 NFE。</li></ul></div>
-    </section>
-
-    <section class="chapter" id="self-forcing" data-part="part5">
-      <header class="chapter-header"><h2>Self Forcing：训练时就让模型吃自己的输出</h2><p class="chapter-summary">Self Forcing 把 AR video diffusion 的训练分布改成 student 自己推理时会遇到的 self-generated context。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>Teacher forcing 训练时吃 ground-truth context，推理时吃自己生成的 context；Self Forcing 直接在训练时进行 self-rollout。</p></div>
-      <div class="derivation-section"><h3>2. Holistic distribution matching</h3><div class="equation">\[
-\mathcal{L}_{SF}=\mathcal{D}(p_\theta(x^{1:N}|c),p_{\mathrm{data}}(x^{1:N}|c))
-\]</div><p>\(\mathcal{D}\) 可以由 DMD、SiD、GAN 或 video-level reward/critic 近似。</p></div>
-      <div class="algorithm-panel" data-flow-panel="selfforcing"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Self Forcing train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="selfforcing"></code></pre></div>
-      <div class="visual-example interactive-lab cache-strip" id="self-forcing-cache-lab" data-lab="self-forcing-cache">
-        <div class="visual-copy"><h3>4. 可视化：rolling KV cache lab</h3><p>比较 Teacher Forcing 与 Self Forcing。后者训练与推理都使用 self-generated context 和 rolling KV cache。</p></div>
-        <div class="lab-controls calculator-inline"><label>mode<select id="sfMode"><option value="teacher">Teacher Forcing</option><option value="self">Self Forcing</option></select></label><label>rollout length<input id="sfLength" type="range" min="4" max="14" value="9"><output id="sfLengthOut">9</output></label><label>cache size<input id="sfCache" type="range" min="2" max="8" value="4"><output id="sfCacheOut">4</output></label></div>
-        <canvas id="selfForcingCanvas" class="lab-canvas" width="900" height="360" aria-label="Self Forcing cache lab"></canvas>
-        <p id="sfReadout" class="lab-readout">train-test gap warning = high</p>
+\]
       </div>
-      <div class="warning-card"><h3>5. 重点解释</h3><ul><li>Self Forcing 是 post-training，不一定从零训练。</li><li>核心是 train-time rollout mirrors inference-time rollout。</li><li>rolling KV cache 既是速度优化，也是分布对齐机制。</li><li>stochastic gradient truncation 让长 AR rollout 可训练。</li></ul></div>
-      <div class="chapter-checkpoints"><h3>6. 理解检查</h3><ul><li>能解释 self-rollout 与 teacher forcing 的差异。</li><li>能说出 KV cache 在训练和推理中的作用。</li></ul></div>
+      <div class="algorithm-panel" data-flow-panel="flowdistill"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Flow distillation train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="flowdistill"></code></pre></div>
     </section>
 
-    <section class="chapter" id="self-forcing-plus" data-part="part5">
-      <header class="chapter-header"><h2>Self-Forcing++：从短视频 teacher 到长视频自纠错</h2><p class="chapter-summary">Self-Forcing++ 让 student 先生成超过 teacher horizon 的长视频，再抽取短窗口交给 teacher 修正。</p></header>
-      <div class="intuition-section"><h3>1. 一句话直觉</h3><p>不需要 long-video teacher；短视频 teacher 只负责修正 student 自生成长视频中的局部退化窗口。</p></div>
-      <div class="derivation-section"><h3>2. Extended DMD 目标</h3><div class="equation">\[
-\nabla_\theta \mathcal{L}_{extended\text{-}DMD}
-\approx
-\mathbb{E}_{i,t,\epsilon}
-\left[w(t)(s_S(W_{\theta,t},t,c)-s_T(W_{\theta,t},t,c))
-\frac{\partial W_{\theta,t}}{\partial\theta}\right]
-\]</div><p>其中 \(W_\theta\) 是 student long rollout 中采样出的短窗口，teacher 只评估这个窗口。</p></div>
-      <div class="algorithm-panel" data-flow-panel="selfforcingpp"><div class="panel-title"><h3>3. 训练过程与推理过程</h3><div class="segmented" role="tablist" aria-label="Self-Forcing++ train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="selfforcingpp"></code></pre></div>
-      <div class="judgement-card"><h3>4. 特点与问题</h3><div class="judgement-grid"><div><strong>优点</strong><p>利用 short-horizon teacher correction 处理 long rollout 中真实出现的退化状态。</p></div><div><strong>失败模式</strong><p>motion freeze、over-exposure、subject drift、color drift、scene collapse、cache contamination。</p></div></div></div>
-      <div class="chapter-checkpoints"><h3>5. 理解检查</h3><ul><li>能解释 backward noise initialization 的作用。</li><li>能说明 Self-Forcing++ 为什么无需 long-video teacher。</li></ul></div>
+    <section class="chapter" id="video" data-part="part6">
+      <header class="chapter-header">
+        <h2>9. 路线六：视频 self-rollout 蒸馏 -- Self-Forcing 与 Self-Forcing++</h2>
+        <p class="chapter-summary">视频和自回归生成的核心矛盾，是训练时喂 ground-truth context，推理时只能吃自己生成的历史。</p>
+      </header>
+      <blockquote><strong>直觉类比</strong>：teacher forcing 像做饭训练时每一步都有人帮你把锅洗干净、食材摆好；真正考试时，你必须接着自己上一轮留下的锅和食材继续做。Self-Forcing 的核心就是训练时就让模型吃自己做的饭。</blockquote>
+      <article class="method-section">
+        <h3>Self-Forcing</h3>
+        <div class="method-grid">
+          <div><strong>它解决什么问题</strong><p>AR video diffusion 的 exposure bias：训练 context 与推理 context 不一致，长程误差逐段累积。</p></div>
+          <div><strong>训练时发生什么</strong><p>student 在训练时进行 self-rollout，使用自己生成的 context 和 rolling KV cache，再用 holistic video distribution loss 更新。</p></div>
+          <div><strong>推理时还剩什么</strong><p>保留 autoregressive few-step generator 与 rolling KV cache；teacher、critic 或 reward model 只在训练时需要。</p></div>
+          <div><strong>失败模式</strong><p>训练 horizon 不足会导致身份漂移、运动冻结、cache contamination 或连续 latent drift。</p></div>
+        </div>
+        <div class="algorithm-panel" data-flow-panel="selfforcing"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Self Forcing train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="selfforcing"></code></pre></div>
+        <div class="visual-example interactive-lab cache-strip" id="self-forcing-cache-lab" data-lab="self-forcing-cache">
+          <div class="visual-copy"><h3>Rolling KV Cache Lab</h3><p>比较 Teacher Forcing 与 Self Forcing。后者训练与推理都使用 self-generated context 和 rolling KV cache。</p></div>
+          <div>
+            <div class="lab-controls calculator-inline"><label>mode<select id="sfMode"><option value="teacher">Teacher Forcing</option><option value="self">Self Forcing</option></select></label><label>rollout length<input id="sfLength" type="range" min="4" max="14" value="9"><output id="sfLengthOut">9</output></label><label>cache size<input id="sfCache" type="range" min="2" max="8" value="4"><output id="sfCacheOut">4</output></label></div>
+            <canvas id="selfForcingCanvas" class="lab-canvas" width="900" height="360" aria-label="Self Forcing cache lab"></canvas>
+            <p id="sfReadout" class="lab-readout">train-test gap warning = high</p>
+          </div>
+        </div>
+      </article>
+      <article class="method-section">
+        <h3>Self-Forcing++</h3>
+        <ol class="step-list">
+          <li>student 使用 rolling KV cache 自回归生成超过 teacher horizon 的长视频 latent \(\hat{x}_{1:T}\)。</li>
+          <li>从 long rollout 中采样连续短窗口 \(\hat{x}_{i:i+k}\)。</li>
+          <li>对窗口做 backward noise initialization，把它映射到 teacher 熟悉的 noisy state。</li>
+          <li>用短 teacher / critic 对该窗口提供 correction 或 extended DMD 分布匹配信号。</li>
+          <li>更新 student，使下一次 self-rollout 的长程状态更接近目标分布。</li>
+        </ol>
+        <div class="algorithm-panel" data-flow-panel="selfforcingpp"><div class="panel-title"><h3>算法流程</h3><div class="segmented" role="tablist" aria-label="Self-Forcing++ train or sample"><button class="active" type="button" data-flow-mode="train">训练</button><button type="button" data-flow-mode="sample">推理</button></div></div><pre class="algorithm"><code data-flow-output="selfforcingpp"></code></pre></div>
+        <div class="warning-card"><h3>常见失败模式</h3><p>长程身份漂移、物体遮挡后形状变化、多事件组合不稳定、rolling KV cache 污染、运动冻结或节奏崩坏、极长视频 continuous latent drift。</p></div>
+      </article>
     </section>
 
-    <section class="chapter" id="roadmap" data-part="part6">
-      <header class="chapter-header"><h2>统一技术路线演化与方法对比</h2><p class="chapter-summary">从 logits KD 到 self-rollout correction，核心变化是匹配对象越来越接近 student 推理时的真实分布。</p></header>
-      <div class="timeline-roadmap distill-route" aria-label="Distillation route">
-        <span>Classic KD</span><i></i><span>Trajectory</span><i></i><span>Consistency</span><i></i><span>DMD / DMD2</span><i></i><span>ADD / LADD</span><i></i><span>Self-rollout</span><i></i><span>Long-horizon correction</span>
+    <section class="chapter" id="decision" data-part="part7">
+      <header class="chapter-header"><h2>10. 怎么选方法：面向工程落地的决策树</h2><p class="chapter-summary">先定目标，再选监督对象；不要从 paper 名字开始选。</p></header>
+      <div class="decision-tree">
+        <p><strong>只想省 CFG 双前向：</strong>优先 Guided Distillation。</p>
+        <p><strong>已有 SD/SDXL 想到 2-4 step：</strong>优先 LCM / LCM-LoRA / TCD。</p>
+        <p><strong>追求 1-step 或 2-step 高保真：</strong>看 DMD2 / ADD / LADD / SiDA。</p>
+        <p><strong>使用 DiT、SD3、MAR 或高分辨率 latent：</strong>优先 LADD 这类 latent-space adversarial feedback。</p>
+        <p><strong>目标是长视频或 streaming video：</strong>看 Self-Forcing / Self-Forcing++。</p>
+        <p><strong>不想依赖 teacher：</strong>看 Flow Matching、Shortcut、MeanFlow、iCT 等相邻路线。</p>
       </div>
       <div class="comparison-scroll">
         <table class="comparison-table">
-          <thead><tr><th>方法</th><th>匹配对象</th><th>绑定 teacher path</th><th>典型 NFE</th><th>训练信号</th><th>优点</th><th>失败模式</th><th>适合场景</th></tr></thead>
+          <thead><tr><th>目标</th><th>推荐路线</th><th>原因</th><th>注意事项</th></tr></thead>
           <tbody>
-            <tr><td>Progressive Distillation</td><td>local transition</td><td>强</td><td>4-16</td><td>teacher two-step target</td><td>简单稳定</td><td>继承 teacher path</td><td>diffusion 少步化</td></tr>
-            <tr><td>Guided Distillation</td><td>CFG-composed denoiser</td><td>中</td><td>1-8</td><td>guided teacher vector</td><td>减少 CFG 双调用</td><td>scale 泛化有限</td><td>固定 CFG 快速采样</td></tr>
-            <tr><td>Consistency / LCM</td><td>endpoint invariant</td><td>中</td><td>1-4</td><td>EMA target consistency</td><td>一步自然</td><td>细节依赖 schedule</td><td>latent diffusion acceleration</td></tr>
-            <tr><td>DMD</td><td>noisy marginal distribution</td><td>弱</td><td>1</td><td>real / fake score gap</td><td>不要求路径对应</td><td>fake score 难跟踪</td><td>one-step generator</td></tr>
-            <tr><td>DMD2</td><td>DMD + GAN + backward simulation</td><td>弱</td><td>1-4</td><td>fake critic, real data GAN</td><td>去 paired data</td><td>系统复杂</td><td>高质量 fast T2I</td></tr>
-            <tr><td>ADD</td><td>score + adversarial</td><td>中</td><td>1-4</td><td>score distillation + discriminator</td><td>锐度强</td><td>训练稳定性</td><td>turbo image generation</td></tr>
-            <tr><td>LADD</td><td>latent generative features</td><td>中</td><td>1-4</td><td>teacher feature discriminator</td><td>高分辨率友好</td><td>依赖强 latent teacher</td><td>SD3/latent turbo</td></tr>
-            <tr><td>Self Forcing</td><td>self-rollout video distribution</td><td>中</td><td>few-step/chunk</td><td>holistic video loss</td><td>训练-推理状态对齐</td><td>训练 horizon 限制</td><td>AR video diffusion</td></tr>
-            <tr><td>Self-Forcing++</td><td>long rollout windows</td><td>弱/中</td><td>few-step/chunk</td><td>extended DMD</td><td>长视频自纠错</td><td>训练成本高</td><td>minute-scale video</td></tr>
+            <tr><td>低成本 4-step 文生图</td><td>LCM / TCD</td><td>工程成熟，接入简单</td><td>1-step 质量可能不稳</td></tr>
+            <tr><td>1-step 高保真</td><td>DMD2 / ADD / LADD</td><td>分布或对抗反馈更强</td><td>训练复杂，可能掉多样性</td></tr>
+            <tr><td>高分辨率 latent / DiT</td><td>LADD</td><td>避免 RGB decode，利用 teacher feature</td><td>判别信号设计敏感</td></tr>
+            <tr><td>保留文本对齐</td><td>Guided Distill / ADD / LADD</td><td>显式处理 CFG 或 teacher alignment</td><td>需要评估 prompt following</td></tr>
+            <tr><td>长视频</td><td>Self-Forcing++</td><td>直接处理 self-rollout mismatch</td><td>长程记忆仍是难点</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="chapter" id="misconceptions" data-part="part6">
-      <header class="chapter-header"><h2>常见误解与最终检查</h2><p class="chapter-summary">生成模型蒸馏不是只把模型变小，而是压缩采样计算图和推理时状态分布。</p></header>
+    <section class="chapter" id="evaluation" data-part="part7">
+      <header class="chapter-header"><h2>11. 怎么评估：不要只被 1-step 样例图说服</h2><p class="chapter-summary">少步生成的评估必须同时看质量、速度、训练成本和覆盖度。</p></header>
+      <ol class="eval-checklist">
+        <li><strong>同等 NFE 比较：</strong>1-step 对 1-step，4-step 对 4-step。</li>
+        <li><strong>同等 backbone / teacher：</strong>SD1.5、SDXL、SD3、DiT、EDM2、FLUX 不能随意横向比较。</li>
+        <li><strong>是否使用 CFG：</strong>有无 CFG 的速度、显存和文本对齐都不同。</li>
+        <li><strong>真实 latency：</strong>NFE 少不一定等于快，decoder、分辨率、模型尺寸、KV cache 都影响。</li>
+        <li><strong>训练成本：</strong>teacher pairs、fake score model、GAN discriminator、synthetic data generation 都可能很贵。</li>
+        <li><strong>质量与多样性：</strong>FID 好不代表 diversity 没掉；样例漂亮不代表覆盖充分。</li>
+        <li><strong>文本对齐：</strong>看 CLIPScore、GenEval、DPG-Bench 或人评，不只看视觉真实感。</li>
+        <li><strong>视频评估：</strong>看 temporal consistency、motion quality、FVD、VBench、人评和长程身份保持。</li>
+        <li><strong>失败样例：</strong>可靠报告应展示失败模式，而不是只展示 cherry-picked samples。</li>
+        <li><strong>复现细节：</strong>训练数据、teacher、schedule、NFE、CFG scale、分辨率、采样器都要写清楚。</li>
+      </ol>
+    </section>
+
+    <section class="chapter" id="misconceptions" data-part="part7">
+      <header class="chapter-header"><h2>12. 常见误解与失败模式</h2><p class="chapter-summary">少步生成不是单一指标竞赛，很多漂亮样例背后隐藏了分布覆盖和条件对齐问题。</p></header>
       <div class="misconception-card warning-card">
         <h3>常见误解</h3>
         <ul>
-          <li>蒸馏不只是模型压缩；生成蒸馏主要压缩采样计算图，参数量可以不小。</li>
-          <li>one-step 延迟最低，但 four-step 往往在细节、文本一致性、多样性上更稳。</li>
-          <li>DMD 不要求 teacher path 对齐，但仍需要 teacher score 或 target distribution signal。</li>
-          <li>GAN loss 不只是让图更锐，也可能造成 mode collapse 或伪影。</li>
-          <li>Self Forcing 的关键是训练时真的使用 self-generated context 和 KV cache。</li>
-          <li>Self-Forcing++ 不需要 long-video teacher，而是用 short-horizon teacher 修正长 rollout 的短窗口。</li>
+          <li><strong>蒸馏就是压参数：</strong>生成蒸馏经常压的是采样计算图和 NFE，参数量可以不小。</li>
+          <li><strong>1-step 一定最快：</strong>真实速度还取决于模型大小、分辨率、decoder、CFG、KV cache 和系统实现。</li>
+          <li><strong>FID 好就代表模型好：</strong>FID 不能充分反映 prompt alignment、diversity、composition、long-tail concepts 和视频时序一致性。</li>
+          <li><strong>少步模型只是 teacher 的近似：</strong>DMD2、ADD、LADD、Self-Forcing 已开始利用 distribution、adversarial feedback 或 self-rollout correction。</li>
+          <li><strong>所有少步生成都是蒸馏：</strong>MeanFlow、部分 Flow Matching / Shortcut 路线更像重新设计训练目标或路径。</li>
         </ul>
       </div>
-      <div class="chapter-checkpoints">
-        <h3>理解检查</h3>
-        <ul>
-          <li>能按匹配对象解释 trajectory、consistency、DMD、ADD/LADD 和 Self Forcing 的区别。</li>
-          <li>能写出 DMD2 的 four-part training recipe。</li>
-          <li>能解释为什么 LADD 的核心是 teacher generative features，而不是普通 latent GAN。</li>
-          <li>能解释 Self-Forcing++ 如何用短 teacher 纠正长视频。</li>
-        </ul>
-      </div>
-      <div class="source-note">
-        <h3>延伸阅读</h3>
-        <p>Hinton et al. 2015；Salimans & Ho 2022；Song et al. 2023；Luo et al. 2023；Sauer et al. 2023/2024；Yin et al. 2024；Huang et al. 2025；Cui et al. 2025；Lu et al. 2025。文中低步数效果均应理解为 paper reports，不是任意模型和数据上的普遍保证。</p>
+      <div class="comparison-scroll">
+        <table class="comparison-table misunderstanding-table">
+          <thead><tr><th>方法族</th><th>典型失败模式</th><th>可能原因</th></tr></thead>
+          <tbody>
+            <tr><td>Progressive / Guided</td><td>模糊、误差累积、继承 teacher path 偏差</td><td>强路径绑定，多轮误差放大</td></tr>
+            <tr><td>Consistency / LCM</td><td>1-step 细节弱、文本对齐不稳</td><td>endpoint 学习不足，schedule 敏感</td></tr>
+            <tr><td>DMD / DMD2</td><td>diversity 下降、fake score 不稳、mode seeking</td><td>fake distribution 估计困难，优化非平稳</td></tr>
+            <tr><td>ADD / LADD</td><td>过锐、GAN artifact、prompt alignment 受损</td><td>adversarial signal 压过 teacher alignment</td></tr>
+            <tr><td>Flow 少步化</td><td>一步结果欠细节或路径假设不匹配</td><td>path/velocity 学习难，训练目标偏差</td></tr>
+            <tr><td>Self-Forcing</td><td>长程漂移、身份变化、运动冻结</td><td>self-rollout distribution 难覆盖，长期记忆不足</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <section class="chapter" id="sources" data-part="part6">
+    <section class="chapter" id="open" data-part="part8">
+      <header class="chapter-header"><h2>13. 开放问题</h2><p class="chapter-summary">这些问题决定了少步生成能否从演示模型走向可靠系统。</p></header>
+      <ul class="open-list">
+        <li>one-step 生成的 fidelity-diversity trade-off 是否存在更好的理论刻画？</li>
+        <li>fake score model 如何稳定跟踪高速变化的 generator distribution？</li>
+        <li>adversarial feedback 如何避免 reward hacking、过锐纹理和 prompt misalignment？</li>
+        <li>少步模型是否系统性继承或放大 teacher bias？</li>
+        <li>视频蒸馏中如何处理长期记忆、身份一致性和多事件组合？</li>
+        <li>distillation objective 能否统一 diffusion、flow、AR token generation、audio、3D 和 video？</li>
+        <li>如何建立公平的 latency/quality/cost benchmark？</li>
+        <li>少步模型在 controllability、editing、inversion、安全过滤和 personalization 上是否会退化？</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="glossary" data-part="part8">
+      <header class="chapter-header"><h2>14. 术语表</h2><p class="chapter-summary">把反复出现的技术词压缩成可查表。</p></header>
+      <div class="comparison-scroll">
+        <table class="comparison-table glossary-table">
+          <thead><tr><th>术语</th><th>解释</th></tr></thead>
+          <tbody>
+            <tr><td>NFE</td><td>Number of Function Evaluations，采样时模型前向调用次数。</td></tr>
+            <tr><td>CFG</td><td>Classifier-Free Guidance，通过条件和无条件预测组合增强条件对齐。</td></tr>
+            <tr><td>teacher path</td><td>teacher 从噪声到样本的逐步采样轨迹。</td></tr>
+            <tr><td>student rollout</td><td>student 在推理或训练中根据自己输出继续生成的过程。</td></tr>
+            <tr><td>score</td><td>数据分布 log density 对输入的梯度，可理解为朝高密度区域移动的方向。</td></tr>
+            <tr><td>PF-ODE</td><td>Probability Flow ODE，将 diffusion 的随机反向过程对应到确定性 ODE。</td></tr>
+            <tr><td>endpoint consistency</td><td>同一生成轨迹上不同时间点都应映射到同一 clean endpoint。</td></tr>
+            <tr><td>fake score</td><td>对当前 student/generator 分布 score 的估计。</td></tr>
+            <tr><td>adversarial feedback</td><td>discriminator 或 critic 给出的 real/fake 判别信号。</td></tr>
+            <tr><td>train-test mismatch</td><td>训练时输入分布和推理时输入分布不一致。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="chapter" id="sources" data-part="part8">
       <header class="chapter-header">
-        <h2>来源核验表</h2>
-        <p class="chapter-summary">训练流程与推理流程按论文或项目页核对；表中只记录与本文算法步骤直接相关的依据。</p>
+        <h2>15. 参考资料与来源核验</h2>
+        <p class="chapter-summary">表中只记录本文算法流程或评估主张直接依赖的来源；具体数值以各 paper reports 和复现设置为准。</p>
       </header>
       <div class="comparison-scroll source-table">
         <table class="comparison-table">
-          <thead><tr><th>方法</th><th>核验到的流程要点</th><th>来源</th></tr></thead>
+          <thead><tr><th>主题</th><th>核验到的流程要点</th><th>来源</th></tr></thead>
           <tbody>
-            <tr><td>Classic KD</td><td>temperature soft targets 与 KL matching。</td><td><a href="https://arxiv.org/abs/1503.02531">Distilling the Knowledge in a Neural Network</a></td></tr>
-            <tr><td>Progressive Distillation</td><td>teacher 两个 DDIM-like 小步合成 student 一个大步，逐轮减半 NFE。</td><td><a href="https://arxiv.org/abs/2202.00512">Progressive Distillation for Fast Sampling</a></td></tr>
-            <tr><td>Guided Distillation</td><td>先匹配 CFG-composed output，再做 progressive distillation 到少步。</td><td><a href="https://arxiv.org/abs/2210.03142">On Distillation of Guided Diffusion Models</a></td></tr>
-            <tr><td>Consistency / LCM / TCD / CTM</td><td>同一 PF-ODE 轨迹上的状态映射到一致 endpoint；LCM 迁移到 latent guided PF-ODE，TCD/CTM 扩展到轨迹一致性。</td><td><a href="https://arxiv.org/abs/2303.01469">Consistency Models</a> · <a href="https://arxiv.org/abs/2310.04378">LCM</a> · <a href="https://arxiv.org/html/2402.19159v1">TCD</a> · <a href="https://openreview.net/forum?id=ymjI8feDTD">CTM</a></td></tr>
-            <tr><td>DMD / DMD2</td><td>DMD 用 real score 与 fake score 的差更新 generator；DMD2 去 paired regression，加入 two-time-scale fake critic、GAN loss 与 multi-step backward simulation。</td><td><a href="https://tianweiy.github.io/dmd/">DMD project</a> · <a href="https://arxiv.org/abs/2405.14867">DMD2</a></td></tr>
-            <tr><td>ADD / LADD</td><td>ADD 结合 score distillation 与 adversarial loss；LADD 在 latent space 使用 teacher generative features 和 noise-level feedback。</td><td><a href="https://arxiv.org/abs/2311.17042">ADD</a> · <a href="https://arxiv.org/abs/2403.12015">LADD</a></td></tr>
-            <tr><td>Flow / Shortcut / MeanFlow / SFD</td><td>Flow Matching 学 instantaneous velocity；Rectified/Reflow 让路径更直；Shortcut/MeanFlow/SFD 学可跳步或区间平均速度。</td><td><a href="https://arxiv.org/abs/2210.02747">Flow Matching</a> · <a href="https://arxiv.org/abs/2209.03003">Rectified Flow</a> · <a href="https://arxiv.org/abs/2505.13447">MeanFlow</a> · <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/47ee3941a6f1d23c39b788e0f450e2a7-Paper-Conference.pdf">SFD</a></td></tr>
-            <tr><td>Self Forcing / Self-Forcing++</td><td>Self Forcing 训练时做 self-rollout 与 rolling KV cache；Self-Forcing++ 生成长 rollout，抽局部窗口，用 backward noise initialization 与 extended DMD 对齐短 teacher。</td><td><a href="https://self-forcing.github.io/">Self Forcing</a> · <a href="https://arxiv.org/html/2506.08009v1">Self Forcing paper</a> · <a href="https://self-forcing-plus-plus.github.io/">Self-Forcing++</a></td></tr>
+            <tr><td>Progressive / Guided</td><td>teacher 两步合成 student 一步；guided distillation 先匹配 CFG-composed output。</td><td><a href="https://arxiv.org/abs/2202.00512">Progressive Distillation</a> · <a href="https://arxiv.org/abs/2210.03142">Guided Diffusion Distillation</a></td></tr>
+            <tr><td>Consistency / LCM / TCD / CTM / iCT</td><td>同一 PF-ODE 轨迹状态映射到 endpoint；LCM 用 latent guided PF-ODE；TCD/CTM/iCT 扩展 consistency 训练。</td><td><a href="https://arxiv.org/abs/2303.01469">CM</a> · <a href="https://arxiv.org/abs/2310.04378">LCM</a> · <a href="https://arxiv.org/html/2402.19159v1">TCD</a> · <a href="https://openreview.net/forum?id=ymjI8feDTD">CTM</a> · <a href="https://arxiv.org/abs/2310.14189">iCT</a></td></tr>
+            <tr><td>Diff-Instruct / DMD / DMD2</td><td>从 KL/integral KL 和 score gap 角度做分布蒸馏；DMD2 移除 regression，加入 two-time-scale fake critic、GAN loss、backward simulation。</td><td><a href="https://arxiv.org/abs/2305.18455">Diff-Instruct</a> · <a href="https://tianweiy.github.io/dmd/">DMD project</a> · <a href="https://arxiv.org/abs/2405.14867">DMD2</a></td></tr>
+            <tr><td>SiD / SIM / SiDA / Uni-Instruct</td><td>score identity、score divergence、adversarial score identity 和统一 one-step distillation objective。</td><td><a href="https://arxiv.org/abs/2404.04057">SiD</a> · <a href="https://arxiv.org/abs/2410.16794">SIM</a> · <a href="https://arxiv.org/abs/2410.14919">SiDA</a> · <a href="https://arxiv.org/abs/2505.20755">Uni-Instruct</a></td></tr>
+            <tr><td>ADD / LADD</td><td>ADD 结合 score distillation 与 adversarial loss；LADD 使用 latent teacher generative features、noise-level feedback 和 synthetic data。</td><td><a href="https://arxiv.org/abs/2311.17042">ADD</a> · <a href="https://arxiv.org/abs/2403.12015">LADD</a></td></tr>
+            <tr><td>Flow / Reflow / Shortcut / MeanFlow</td><td>Flow Matching 学 vector field；Rectified/Reflow 让路径变直；Shortcut/MeanFlow 学可跳步或 average velocity。</td><td><a href="https://arxiv.org/abs/2210.02747">Flow Matching</a> · <a href="https://arxiv.org/abs/2209.03003">Rectified Flow</a> · <a href="https://arxiv.org/abs/2410.12557">Shortcut Models</a> · <a href="https://arxiv.org/abs/2505.13447">MeanFlow</a></td></tr>
+            <tr><td>Self-Forcing / Self-Forcing++</td><td>训练时 self-rollout 与 rolling KV cache；长 rollout 抽短窗口，backward noise initialization 后用短 teacher 做 correction。</td><td><a href="https://self-forcing.github.io/">Self-Forcing</a> · <a href="https://arxiv.org/html/2506.08009v1">Self-Forcing paper</a> · <a href="https://self-forcing-plus-plus.github.io/">Self-Forcing++</a></td></tr>
+            <tr><td>评估基准</td><td>文本对齐、组合能力、视频质量、真实延迟和复现细节需要分开报告。</td><td><a href="https://arxiv.org/abs/2311.17982">VBench</a> · <a href="https://arxiv.org/abs/2210.11983">GenEval</a> · <a href="https://arxiv.org/abs/2406.13394">DPG-Bench</a> · <a href="https://arxiv.org/abs/1812.01717">FVD</a></td></tr>
           </tbody>
         </table>
       </div>
