@@ -1,3 +1,23 @@
+- name: LLM 核心机制交互讲义
+  category: LLM 原理与系统
+  status: 12 个机制与 6 个动态实验
+  featured: true
+  date: 2026-07-22
+  display_date: 07/2026
+  url: /foundations/llm-mechanics/
+  teaser: /images/projects/llm-mechanics.svg
+  teaser_alt: 从文本和 token 到 decoder、训练、KV cache 与采样的 LLM 核心机制路线图
+  highlight: 从 BPE 到 next token 的理论、交互实验与可运行代码
+  summary: >-
+    沿文本到 next token 的真实数据流，串起 BPE/tokenizer、decoder-only Transformer、
+    causal mask、RoPE、RMSNorm、SwiGLU、teacher forcing、perplexity、prefill/decode、
+    KV cache、greedy/temperature/top-p、repetition 与 EOS。每个机制都配有 shape、公式、
+    动态实验、最小可运行例子，以及 Stanford CS336 2026 与 nanochat 源码边界对照。
+  tags:
+    - LLM
+    - Transformer
+    - KV Cache
+    - Tokenizer
 - name: 大模型算法岗常见面试题深度解析
   category: LLM 面试与系统基础
   status: 20 题深度答案解析

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="LLM 核心机制：从 BPE 到 KV Cache 与采样">
+  <meta name="description" content="一份可交互的中文 LLM 工程讲义：用五章、六个动态实验和十二个可运行例子串起 tokenizer、decoder、训练、KV cache、sampling 与 perplexity。">
+  <meta name="keywords" content="BPE, tokenizer, decoder-only Transformer, causal mask, RoPE, RMSNorm, SwiGLU, prefill, decode, KV cache, sampling, teacher forcing, perplexity">
+  <meta name="author" content="Jinyang Zhang">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="LLM 核心机制交互讲义">
+  <meta property="og:description" content="从文本到 next token：理论、动态实验、最小 PyTorch 例子与 CS336 / nanochat 源码对照。">
+  <meta property="og:url" content="https://cosmicrealm.github.io/foundations/llm-mechanics/">
+  <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/llm-mechanics.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>LLM 核心机制交互讲义 | From Text to Next Token</title>
+  <link rel="canonical" href="/foundations/llm-mechanics/">
+  <link rel="icon" href="../../images/favicon.svg">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="./static/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="/">Jinyang Zhang</a>
+    <nav class="module-nav" aria-label="Foundations 页面导航">
+      <a href="/foundations/">Foundations</a>
+      <a href="#references">来源</a>
+    </nav>
+  </header>
+
+  <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
+  <aside class="lecture-toc" id="lectureToc" aria-label="LLM 核心机制目录">
+    <div class="toc-heading"><span>LLM MECHANICS</span><small id="tocProgressText">0%</small></div>
+    <nav>
+      <a href="#overview"><span>00</span>学习路线</a>
+      <a href="#tokens"><span>01</span>文本与 token</a>
+      <a href="#decoder"><span>02</span>Decoder block</a>
+      <a href="#training"><span>03</span>训练闭环</a>
+      <a href="#inference"><span>04</span>Prefill / decode</a>
+      <a href="#decoding"><span>05</span>采样与停止</a>
+      <a href="#references"><span>06</span>来源与边界</a>
+    </nav>
+  </aside>
+
+  <main id="main" class="lecture">
+    <header class="paper-header" id="overview">
+      <p class="kicker">From text to next token · interactive lecture</p>
+      <h1>LLM 核心机制</h1>
+      <p class="subtitle">沿一条真实的数据流，把 BPE、decoder、训练、KV cache、采样与评测连成一个可以操作、可以运行、可以解释的闭环。</p>
+      <div class="route" aria-label="课程数据流">
+        <span>文本</span><i>→</i><span>token ids</span><i>→</i><span>decoder</span><i>→</i><span>loss</span><i>→</i><span>prefill / decode</span><i>→</i><span>next token</span>
+      </div>
+      <div class="lecture-contract">
+        <p><strong>读法：</strong>每章先观察一个现象，再把它写成 shape 与公式，最后用浏览器实验和独立 Python 文件复现。</p>
+        <p><strong>来源：</strong>机制基准、Stanford CS336 2026 课程材料和固定 commit 的 nanochat 源码分层呈现；缺失内容不会补写成官方结论。</p>
+      </div>
+    </header>
+
+    <section class="orientation" aria-labelledby="orientation-title">
+      <h2 id="orientation-title">五章只回答一个问题：模型怎样得到下一个 token？</h2>
+      <ol class="chapter-route">
+        <li><b>01</b><div><strong>表示</strong><span>文本如何成为整数序列</span></div></li>
+        <li><b>02</b><div><strong>计算</strong><span>decoder block 如何变换每个位置</span></div></li>
+        <li><b>03</b><div><strong>学习</strong><span>怎样用真实后继 token 构造 loss</span></div></li>
+        <li><b>04</b><div><strong>推理</strong><span>prompt 与逐 token 生成为何是两种负载</span></div></li>
+        <li><b>05</b><div><strong>决策</strong><span>怎样从 logits 选择 token 并停止</span></div></li>
+      </ol>
+    </section>
+
+    <section class="chapter" id="tokens" data-chapter="tokens">
+      <header class="chapter-header">
+        <p class="chapter-number">CHAPTER 01 · REPRESENTATION</p>
+        <h2>文本如何变成模型输入</h2>
+        <p class="chapter-summary">Tokenizer 不是前处理细节：它决定词表、序列长度、特殊边界和 loss 的计数单位。BPE 在 byte 与整词之间学习一套数据驱动的压缩规则。</p>
+      </header>
+
+      <div class="question-block">
+        <h3>先问：为什么不直接按“词”切分？</h3>
+        <p>整词词表会遇到未登录词和巨大词表；逐 byte 永远可表示，却让序列过长。byte-level BPE 从 256 个 byte token 出发，反复合并训练语料里最常见的相邻 pair。频繁片段变短，罕见文本仍可退回 bytes，因此不会出现真正的未知字符。</p>
+      </div>
+
+      <div class="mechanism-grid">
+        <article class="mechanism-card">
+          <p class="card-label">可计算对象</p>
+          <h3>一次 merge 到底做什么</h3>
+          <div class="equation">
+            \[
+            (a^*,b^*)=\arg\max_{(a,b)}\operatorname{count}(a,b),\qquad
+            (a^*,b^*)\mapsto v_{\mathrm{new}}.
+            \]
+          </div>
+          <p>统计当前 token 序列中的相邻 pair，选择频率最高者，分配新 id，再替换所有不重叠出现。下一轮统计基于更新后的序列，因此规则有顺序。</p>
+        </article>
+        <article class="shape-card">
+          <p class="card-label">数据流</p>
+          <h3>类型与长度</h3>
+          <div class="shape-flow"><code>str</code><i>→ UTF-8</i><code>bytes [T₀]</code><i>→ merges</i><code>ids [T]</code><i>→ lookup</i><code>x [T,d]</code></div>
+          <p>通常 (T\le T_0)，但 token 数不是字数；同一字符可能占多个 UTF-8 bytes，同一常见片段也可能被一个 token 表示。</p>
+        </article>
+      </div>
+
+      <div class="walkthrough">
+        <h3>手算一个微型例子</h3>
+        <div class="token-steps" aria-label="BPE 合并步骤">
+          <div><span>l</span><span>o</span><span>w</span><span>e</span><span>r</span><small>初始 byte/char 视图</small></div>
+          <div><span>l</span><span class="merged">ow</span><span>e</span><span>r</span><small>merge: o + w</small></div>
+          <div><span class="merged">low</span><span>e</span><span>r</span><small>merge: l + ow</small></div>
+          <div><span class="merged">low</span><span class="merged">er</span><small>merge: e + r</small></div>
+        </div>
+        <p>这不是在发现语言学意义上的“词根”。它只是在给定语料与词表预算下，提高相邻 byte 片段的复用率。</p>
+      </div>
+
+      <div class="interactive-lab" id="lab-bpe" data-lab="bpe">
+        <div class="lab-heading">
+          <div><p class="lab-index">LAB 01</p><h3>BPE merge 工作台</h3><p>每次点击只执行一条最频繁 pair merge，观察 token 数和规则表如何共同变化。</p></div>
+          <button class="lab-reset" id="bpeReset" type="button">重置</button>
+        </div>
+        <div class="lab-layout">
+          <div class="lab-controls">
+            <label for="bpeInput">训练文本</label>
+            <textarea id="bpeInput" rows="4" aria-label="BPE 训练文本">low lower lowest low newer</textarea>
+            <div class="button-row">
+              <button id="bpeStep" type="button">执行一次 merge</button>
+              <button id="bpeAuto" class="secondary" type="button">自动执行</button>
+            </div>
+            <p class="control-hint">浏览器实验按 Unicode 字符演示规则；下载例子使用真实 UTF-8 bytes。</p>
+          </div>
+          <div class="lab-visual">
+            <div id="bpeTokens" class="token-board" aria-label="当前 BPE token 序列"></div>
+            <div class="metric-grid">
+              <div><small>step</small><strong id="bpeStepCount">0</strong></div>
+              <div><small>last pair</small><strong id="bpePair">—</strong></div>
+              <div><small>vocab +</small><strong id="bpeVocab">0</strong></div>
+              <div><small>compression</small><strong id="bpeCompression">1.00×</strong></div>
+            </div>
+            <ol id="bpeRules" class="rule-list" aria-label="已学习的 BPE merge 规则"></ol>
+          </div>
+        </div>
+        <p class="lab-readout" id="bpeReadout">尚未执行 merge。先预测哪个 pair 最常见，再点击验证。</p>
+        <p class="lab-error" hidden>这个实验没有成功初始化；正文与可运行示例仍可独立使用。</p>
+      </div>
+
+      <div class="source-note">
+        <p class="source-label">SOURCE MAP</p>
+        <p><a href="https://github.com/stanford-cs336/assignment1-basics/blob/main/cs336_assignment1_basics.pdf">CS336 2026 Assignment 1，pp.3–12</a> 要求实现 byte-level BPE、pre-tokenization、special token、encode/decode；<a href="https://github.com/stanford-cs336/lectures/blob/main/lecture_01.py#L269-L279">Lecture 1</a> 将 tokenizer 描述为 raw bytes 与 integer tokens 之间的工程接口。nanochat 则在 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/tokenizer.py#L34-L61">tokenizer.py</a> 用 rustbpe 训练、tiktoken 推理，并在普通文本编码与 special token 注入之间保持明确边界。</p>
+      </div>
+
+      <article class="example-card">
+        <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 01</p><h3>训练 8 条 merge rule，并检查 UTF-8 round-trip</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-01">复制</button><a href="./examples/01_bpe.py" download>下载 01_bpe.py</a></div></div>
+        <pre id="code-ex-01"><code>rules, vocab = train("low lower lowest low 你好", num_merges=8)
+ids = encode("low lower lowest low 你好", rules)
+text = decode(ids, vocab)
+
+assert text == "low lower lowest low 你好"
+assert len(ids) &lt; len(text.encode("utf-8"))</code></pre>
+        <p class="expected-output">运行：<code>python 01_bpe.py</code> · 预期：<code>round-trip: True</code></p>
+      </article>
+
+      <div class="failure-grid">
+        <article><h3>特殊 token 不是普通字符串</h3><p>若把 <code>&lt;|bos|&gt;</code> 当普通文本编码，它应拆成多个普通 token；只有显式 special-token API 才把它映射为保留 id。混用两条路径会让训练模板和停止条件失配。</p></article>
+        <article><h3>压缩率不是语言能力</h3><p>更大词表通常缩短序列，却增加 embedding / LM head 参数，并可能让罕见片段学习不足。跨 tokenizer 比较 token-level perplexity 也会改变分母。</p></article>
+      </div>
+
+      <div class="checkpoints"><h3>这一章结束后，应能回答</h3><ul><li>BPE 学到的是按频率排序的压缩规则，而不是唯一正确的词边界。</li><li>byte-level 起点为何既能覆盖任意 UTF-8 文本，又会带来较长初始序列。</li><li>为什么 encode/decode round-trip、special token 隔离和词表大小要分别测试。</li></ul></div>
+    </section>
+
+    <section class="chapter" id="decoder" data-chapter="decoder">
+      <header class="chapter-header">
+        <p class="chapter-number">CHAPTER 02 · MODEL CORE</p>
+        <h2>一个 decoder block 如何计算</h2>
+        <p class="chapter-summary">从输入 embedding 开始追踪 residual stream：RMSNorm 控制尺度，causal attention 聚合可见历史，SwiGLU 做逐位置变换，RoPE 在 Q/K 中编码相对位置。</p>
+      </header>
+
+      <div class="decoder-map" aria-label="Decoder-only Transformer 数据流">
+        <div><small>[B,T]</small><strong>token ids</strong></div><i>→</i>
+        <div><small>[B,T,d]</small><strong>embedding</strong></div><i>→</i>
+        <div class="stack"><span>RMSNorm → causal attention → residual</span><span>RMSNorm → SwiGLU → residual</span><small>× L blocks</small></div><i>→</i>
+        <div><small>[B,T,V]</small><strong>logits</strong></div>
+      </div>
+
+      <div class="derivation-section">
+        <h3>Decoder-only 的“only”指什么</h3>
+        <p>它没有单独的 encoder memory。每层 self-attention 的 Q、K、V 都来自同一条 token residual stream，当前位置只能读取自己与左侧前缀。训练时所有位置并行计算，因果依赖由 mask 保证；生成时则只取最后位置的 logits 决定下一 token。</p>
+        <div class="equation">
+          \[
+          X_0=E[\mathrm{ids}],\quad
+          X'_{\ell}=X_{\ell}+\operatorname{Attn}(\operatorname{RMSNorm}(X_{\ell})),\quad
+          X_{\ell+1}=X'_{\ell}+\operatorname{SwiGLU}(\operatorname{RMSNorm}(X'_{\ell})).
+          \]
+        </div>
+      </div>
+
+      <div class="concept-sections">
+        <article>
+          <p class="concept-index">02.1 · CAUSAL MASK</p>
+          <h3>屏蔽发生在 softmax 之前</h3>
+          <div class="equation">
+            \[
+            A=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_h}}+M\right),\qquad
+            M_{ij}=\begin{cases}0,&j\le i\\-\infty,&j&gt;i.\end{cases}
+            \]
+          </div>
+          <p>把未来位置加 (-\infty) 后，softmax 概率严格为 0。若在 softmax 之后简单清零却不重新归一化，行和不再为 1；若完全不 mask，训练时就能偷看目标 token。</p>
+        </article>
+        <article>
+          <p class="concept-index">02.2 · ROPE</p>
+          <h3>把位置变成 Q/K 的相位</h3>
+          <div class="equation">
+            \[
+            \operatorname{RoPE}(x,m)_{2i:2i+2}=R(m\theta_i)x_{2i:2i+2},\qquad
+            \langle R(m\theta)q,R(n\theta)k\rangle=\langle q,R((n-m)\theta)k\rangle.
+            \]
+          </div>
+          <p>二维旋转保持向量范数；Q/K 的点积依赖位置差 (n-m)。V 不旋转，因为位置关系是在注意力相似度中注入，而不是改写被聚合的内容向量。</p>
+        </article>
+        <article>
+          <p class="concept-index">02.3 · RMSNORM</p>
+          <h3>只校准均方根，不减均值</h3>
+          <div class="equation">
+            \[
+            \operatorname{RMSNorm}(x)=g\odot\frac{x}{\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2+\epsilon}}.
+            \]
+          </div>
+          <p>(\epsilon) 防止零向量除零；实现常先把平方与均值提升到 fp32，再转回计算 dtype。pre-norm 把归一化放在子层之前，让 residual path 保持直接。</p>
+        </article>
+        <article>
+          <p class="concept-index">02.4 · SWIGLU</p>
+          <h3>用一条分支控制另一条分支</h3>
+          <div class="equation">
+            \[
+            \operatorname{SwiGLU}(x)=W_2\left(\operatorname{SiLU}(W_1x)\odot W_3x\right).
+            \]
+          </div>
+          <p>两次上投影分别产生 gate 与 value，逐元素相乘后再投回 (d_{model})。参数量公平比较时常把 (d_{ff}) 设为约 (8d/3)，而不是沿用普通 FFN 的 (4d)。</p>
+        </article>
+      </div>
+
+      <div class="interactive-lab" id="lab-decoder" data-lab="decoder">
+        <div class="lab-heading"><div><p class="lab-index">LAB 02</p><h3>Decoder block 解剖台</h3><p>切换四个机制；同一控制区同时给出视觉变化、数值性质与实现边界。</p></div><button class="lab-reset" id="decoderReset" type="button">重置</button></div>
+        <div class="segmented" role="tablist" aria-label="Decoder 机制视图">
+          <button class="active" type="button" role="tab" data-decoder-mode="causal" aria-selected="true">Causal mask</button>
+          <button type="button" role="tab" data-decoder-mode="rope" aria-selected="false">RoPE</button>
+          <button type="button" role="tab" data-decoder-mode="rms" aria-selected="false">RMSNorm</button>
+          <button type="button" role="tab" data-decoder-mode="swiglu" aria-selected="false">SwiGLU</button>
+        </div>
+        <div class="decoder-panels">
+          <section data-mode-panel="causal">
+            <label for="decoderPosition">当前 query 位置 <output id="decoderPositionOut">3</output></label>
+            <input id="decoderPosition" type="range" min="0" max="5" value="3" aria-label="当前 query 位置">
+            <div id="causalMatrix" class="attention-matrix" aria-label="因果注意力矩阵"></div>
+          </section>
+          <section data-mode-panel="rope" hidden>
+            <label for="ropePosition">RoPE position <output id="ropePositionOut">2</output></label>
+            <input id="ropePosition" type="range" min="0" max="12" value="2" aria-label="RoPE 位置">
+            <canvas id="ropeCanvas" width="720" height="300" aria-label="RoPE 二维旋转"></canvas>
+          </section>
+          <section data-mode-panel="rms" hidden>
+            <label for="rmsScale">输入尺度 <output id="rmsScaleOut">2.0×</output></label>
+            <input id="rmsScale" type="range" min="0" max="5" step="0.1" value="2" aria-label="RMSNorm 输入尺度">
+            <div id="rmsBars" class="vector-bars" aria-label="RMSNorm 前后向量"></div>
+          </section>
+          <section data-mode-panel="swiglu" hidden>
+            <label for="swigluInput">门控输入 <output id="swigluInputOut">0.8</output></label>
+            <input id="swigluInput" type="range" min="-4" max="4" step="0.1" value="0.8" aria-label="SwiGLU 门控输入">
+            <div id="swigluBars" class="gate-bars" aria-label="SwiGLU 与 ReLU 平方输出"></div>
+          </section>
+        </div>
+        <p class="lab-readout" id="decoderReadout">query=3 只能读取 key 0..3；未来 attention mass = 0。</p>
+        <p class="lab-error" hidden>Decoder 实验没有成功初始化；可直接阅读公式并运行对应示例。</p>
+      </div>
+
+      <div class="source-note">
+        <p class="source-label">SOURCE CONTRAST</p>
+        <p><a href="https://github.com/stanford-cs336/assignment1-basics/blob/main/cs336_assignment1_basics.pdf">CS336 2026 A1，pp.13–26</a> 的主线是 pre-norm decoder-only Transformer、RMSNorm、RoPE、causal self-attention 与 SwiGLU；课程把这些视为现代 LM 的常见选择，而不是理论上唯一最优。nanochat 的 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/gpt.py#L42-L65">gpt.py</a> 使用无可学习 scale 的 <code>F.rms_norm</code> 与 RoPE，attention 通过 <code>causal=True</code> 实现 mask；但其 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/gpt.py#L131-L141">MLP</a> 使用 <strong>ReLU²</strong>，不是 SwiGLU。</p>
+      </div>
+
+      <div class="examples-grid">
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 02</p><h3>一个完整 pre-norm decoder block</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-02">复制</button><a href="./examples/02_decoder_only.py" download>下载</a></div></div>
+          <pre id="code-ex-02"><code>normalized = rms_norm(x)
+attended, _ = mha(normalized, normalized, normalized,
+                  attn_mask=future)
+x = x + attended
+x = x + swiglu(rms_norm(x))
+assert x.shape == (batch, length, width)</code></pre>
+          <p class="expected-output">预期：<code>output shape == input shape</code></p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 03</p><h3>验证未来 attention 为零</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-03">复制</button><a href="./examples/03_causal_mask.py" download>下载</a></div></div>
+          <pre id="code-ex-03"><code>future = torch.triu(torch.ones(T, T, dtype=torch.bool), 1)
+scores = scores.masked_fill(future, float("-inf"))
+attention = scores.softmax(dim=-1)
+assert torch.all(attention[future] == 0)</code></pre>
+          <p class="expected-output">预期：lower-triangular attention，行和为 1</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 04</p><h3>RoPE 的相对位置性质</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-04">复制</button><a href="./examples/04_rope.py" download>下载</a></div></div>
+          <pre id="code-ex-04"><code>dot_a = torch.dot(rope(q, 2), rope(k, 5))
+dot_b = torch.dot(rope(q, 9), rope(k, 12))
+assert torch.allclose(q.norm(), rope(q, 7).norm())
+assert torch.allclose(dot_a, dot_b, atol=1e-5)</code></pre>
+          <p class="expected-output">预期：共同平移位置后点积不变</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 05</p><h3>手写 RMSNorm 对齐 PyTorch</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-05">复制</button><a href="./examples/05_rmsnorm.py" download>下载</a></div></div>
+          <pre id="code-ex-05"><code>inv_rms = torch.rsqrt(x.float().square().mean(-1, keepdim=True) + eps)
+manual = (x.float() * inv_rms * scale).to(x.dtype)
+reference = F.rms_norm(x, (x.size(-1),), scale, eps)
+assert torch.allclose(manual, reference)</code></pre>
+          <p class="expected-output">预期：输出 RMS 约为 1</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 06</p><h3>SwiGLU 门控不是 ReLU²</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-06">复制</button><a href="./examples/06_swiglu.py" download>下载</a></div></div>
+          <pre id="code-ex-06"><code>y = (F.silu(x @ W_gate) * (x @ W_value)) @ W_out
+relu_squared = F.relu(x @ W_gate).square() @ W_out
+assert y.shape == x.shape
+assert not torch.allclose(y, relu_squared)</code></pre>
+          <p class="expected-output">预期：shape 相同，但两种 MLP 数值不同</p>
+        </article>
+      </div>
+
+      <div class="checkpoints"><h3>这一章结束后，应能回答</h3><ul><li>训练时并行计算所有位置，为何仍不会看到未来 token。</li><li>RoPE、RMSNorm 与 SwiGLU 分别改写 attention 的位置关系、残差尺度和逐位置非线性。</li><li>为什么“nanochat 是 decoder-only Transformer”不等于“它实现了所有课程默认组件”。</li></ul></div>
+    </section>
+
+    <section class="chapter" id="training" data-chapter="training">
+      <header class="chapter-header">
+        <p class="chapter-number">CHAPTER 03 · LEARNING</p>
+        <h2>模型如何学会预测下一个 token</h2>
+        <p class="chapter-summary">训练只做一次 shift：真实序列的前 (T-1) 个 token 是输入，后 (T-1) 个 token 是目标；一次 causal forward 同时产生所有位置的 next-token loss。</p>
+      </header>
+
+      <div class="alignment-demo" aria-label="Teacher forcing 对齐示意">
+        <div><strong>tokens</strong><span>&lt;bos&gt;</span><span>我</span><span>喜欢</span><span>机器</span><span>学习</span></div>
+        <div><strong>inputs</strong><span>&lt;bos&gt;</span><span>我</span><span>喜欢</span><span>机器</span><i>—</i></div>
+        <div><strong>targets</strong><i>—</i><span>我</span><span>喜欢</span><span>机器</span><span>学习</span></div>
+      </div>
+
+      <div class="mechanism-grid">
+        <article class="mechanism-card">
+          <p class="card-label">TEACHER FORCING</p>
+          <h3>训练前缀来自数据，而不是模型</h3>
+          <p>位置 (t) 的预测以真实 (x_{&lt;t}) 为条件。这样所有位置可以并行监督，梯度稳定；推理时前缀来自模型自己的历史输出，一次错误会改变后续条件，这就是训练/推理分布差异的来源。</p>
+          <div class="equation">\[\mathcal{L}(x)=-\sum_{t=1}^{T-1}\log p_\theta(x_{t+1}\mid x_{\le t}).\]</div>
+        </article>
+        <article class="mechanism-card">
+          <p class="card-label">PERPLEXITY</p>
+          <h3>平均 token NLL 的指数</h3>
+          <div class="equation">\[\operatorname{PPL}=\exp\left(\frac{1}{N}\sum_{i=1}^{N}-\log p_\theta(x_i\mid x_{&lt;i})\right).\]</div>
+          <p>直观上，它是模型在每个位置面对的“等效候选数”。但这个解释只在同一 tokenizer、同一数据与同一计数口径下可靠。</p>
+        </article>
+      </div>
+
+      <div class="limitations-table table-wrap">
+        <table>
+          <thead><tr><th>perplexity 能说明</th><th>perplexity 不能单独说明</th><th>需要补充</th></tr></thead>
+          <tbody>
+            <tr><td>模型是否给评测文本较高概率</td><td>回答是否事实正确</td><td>任务级事实性评测</td></tr>
+            <tr><td>同 tokenizer / 数据口径下的 LM 拟合</td><td>跨 tokenizer 的绝对优劣</td><td>bits per byte / byte-normalized loss</td></tr>
+            <tr><td>平均 next-token calibration 的一部分</td><td>指令遵循、安全与长程一致性</td><td>生成式 benchmark 与人工审计</td></tr>
+            <tr><td>常见 token 上的总体趋势</td><td>关键答案 token 是否预测正确</td><td>conditional / span-level 指标</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="interactive-lab" id="lab-teacher" data-lab="teacher">
+        <div class="lab-heading"><div><p class="lab-index">LAB 03</p><h3>Teacher forcing 对齐器</h3><p>拖动当前位置，查看输入、目标、目标概率、token NLL 与整段 perplexity。</p></div><button class="lab-reset" id="teacherReset" type="button">重置</button></div>
+        <div class="lab-layout">
+          <div class="lab-controls">
+            <label for="teacherPosition">预测位置 <output id="teacherPositionOut">2</output></label>
+            <input id="teacherPosition" type="range" min="0" max="4" value="2" aria-label="Teacher forcing 预测位置">
+            <label class="toggle-row" for="teacherFault"><input id="teacherFault" type="checkbox" aria-label="使用错误的未偏移目标"> 故障注入：目标不做 shift</label>
+          </div>
+          <div class="lab-visual">
+            <div class="sequence-row"><strong>input</strong><div id="teacherInputs" aria-label="Teacher forcing 输入 token"></div></div>
+            <div class="sequence-row"><strong>target</strong><div id="teacherTargets" aria-label="Teacher forcing 目标 token"></div></div>
+            <div class="loss-strip" id="teacherLosses" aria-label="各 token NLL"></div>
+            <div class="metric-grid">
+              <div><small>target p</small><strong id="teacherProbability">—</strong></div>
+              <div><small>token NLL</small><strong id="teacherNll">—</strong></div>
+              <div><small>sequence PPL</small><strong id="teacherPpl">—</strong></div>
+            </div>
+          </div>
+        </div>
+        <p class="lab-readout" id="teacherReadout">位置 2 用真实前缀预测下一个 token；所有位置可在一次 forward 中并行计算。</p>
+        <p class="lab-error" hidden>训练对齐实验没有成功初始化；可运行示例仍会检查 shift 与 loss。</p>
+      </div>
+
+      <div class="source-note">
+        <p class="source-label">SOURCE BOUNDARY</p>
+        <p><a href="https://github.com/stanford-cs336/assignment1-basics/blob/main/cs336_assignment1_basics.pdf">CS336 2026 A1，pp.28–29</a> 定义 next-token objective 与 perplexity；<a href="https://github.com/stanford-cs336/lectures/blob/main/lecture_12.py#L60-L105">Lecture 12</a> 明确指出 perplexity 仍常用但与真实任务需求可能错位。核验材料没有直接把 <em>teacher forcing</em> 作为独立术语或 scheduled sampling 专题讲授；本页用这个标准术语描述课程公式隐含的“真实前缀监督”机制。nanochat 的 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/core_eval.py#L145-L164">core_eval.py</a> 左移 target，<a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/loss_eval.py#L8-L65">loss_eval.py</a> 则用 <strong>bits per byte</strong> 降低词表大小对评测口径的影响。</p>
+      </div>
+
+      <div class="examples-grid two">
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 11</p><h3>检查 input / target 一位偏移</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-11">复制</button><a href="./examples/11_teacher_forcing.py" download>下载</a></div></div>
+          <pre id="code-ex-11"><code>inputs = tokens[:, :-1]
+targets = tokens[:, 1:]
+loss = F.cross_entropy(logits.reshape(-1, vocab), targets.reshape(-1))
+
+assert torch.equal(inputs[:, 1:], targets[:, :-1])
+assert correct_loss &lt; unshifted_loss</code></pre>
+          <p class="expected-output">预期：正确 shift 的 loss 显著更低</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 12</p><h3>从 NLL 计算 perplexity 与 BPB</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-12">复制</button><a href="./examples/12_perplexity.py" download>下载</a></div></div>
+          <pre id="code-ex-12"><code>ppl = math.exp(sum(token_nlls) / len(token_nlls))
+bpb = sum(token_nlls) / (math.log(2) * byte_count)
+
+assert ppl &gt;= 1
+assert tokenization_a_ppl != tokenization_b_ppl
+assert math.isclose(tokenization_a_bpb, tokenization_b_bpb)</code></pre>
+          <p class="expected-output">预期：PPL 随 token 切分变化，BPB 按 byte 归一化</p>
+        </article>
+      </div>
+
+      <div class="checkpoints"><h3>这一章结束后，应能回答</h3><ul><li>teacher forcing 为什么既允许训练并行，又带来推理前缀分布差异。</li><li>perplexity 与 cross-entropy 的精确关系，以及为何它必须在相同 tokenizer/数据口径下比较。</li><li>低 perplexity 为什么不等于事实正确、指令遵循或生成文本没有重复。</li></ul></div>
+    </section>
+
+    <section class="chapter" id="inference" data-chapter="inference">
+      <header class="chapter-header">
+        <p class="chapter-number">CHAPTER 04 · INFERENCE</p>
+        <h2>生成为什么分成 prefill 和 decode</h2>
+        <p class="chapter-summary">同一模型有两种负载：prefill 一次处理完整 prompt，decode 每步只处理一个新 token。KV cache 连接两者，用显存换取前缀计算复用。</p>
+      </header>
+
+      <div class="phase-comparison">
+        <article><p class="card-label">PREFILL</p><h3>一次读完整 prompt</h3><ul><li>输入 shape：<code>[B,P]</code></li><li>产生所有 prompt 位置的 K/V</li><li>token 维度可并行</li><li>矩阵乘法规模大，常偏 compute-bound</li></ul></article>
+        <div class="phase-arrow">same weights<br>different workload</div>
+        <article><p class="card-label">DECODE</p><h3>每步读一个新 token</h3><ul><li>输入 shape：<code>[B,1]</code></li><li>追加一个位置的 K/V</li><li>下一步依赖上一步 token</li><li>权重与 cache 读取频繁，常偏 memory-bound</li></ul></article>
+      </div>
+
+      <div class="derivation-section">
+        <h3>KV cache 保存什么</h3>
+        <p>第 (ell) 层对历史 token 已经计算过的 key 与 value。新 token 到来时，只计算它自己的 (q_t,k_t,v_t)，把 (k_t,v_t) 追加进 cache，并让 (q_t) 读取所有可见历史 K/V。</p>
+        <div class="equation">
+          \[
+          K^{(\ell)}_{1:t}=[K^{(\ell)}_{1:t-1};k^{(\ell)}_t],\quad
+          V^{(\ell)}_{1:t}=[V^{(\ell)}_{1:t-1};v^{(\ell)}_t],\quad
+          y_t=\operatorname{softmax}\left(\frac{q_tK_{1:t}^{\top}}{\sqrt{d_h}}\right)V_{1:t}.
+          \]
+        </div>
+      </div>
+
+      <div class="cache-formula">
+        <p class="card-label">MEMORY ACCOUNTING</p>
+        <h3>每个序列的 KV cache 字节数</h3>
+        <div class="equation">\[\text{bytes}=L\times 2\times B\times T\times H_{kv}\times d_h\times \text{bytes(dtype)}.\]</div>
+        <p>因子 2 来自 K 与 V。GQA/MQA 通过减少 (H_{kv}) 降低 cache；量化或更短 context 也会降低显存。cache 并没有消除新 query 对历史 K/V 的读取，因此 decode 仍随 context 增长。</p>
+      </div>
+
+      <div class="interactive-lab" id="lab-prefill" data-lab="prefill">
+        <div class="lab-heading"><div><p class="lab-index">LAB 04</p><h3>Prefill / decode 时间线</h3><p>改变 prompt 与生成长度，比较没有 cache 的重复前向和 cache 驱动的单 token decode。</p></div><button class="lab-reset" id="prefillReset" type="button">重置</button></div>
+        <div class="lab-controls inline-controls">
+          <label for="promptLength">prompt tokens <output id="promptLengthOut">8</output></label>
+          <input id="promptLength" type="range" min="2" max="24" value="8" aria-label="Prompt token 数">
+          <label for="generatedLength">generated tokens <output id="generatedLengthOut">5</output></label>
+          <input id="generatedLength" type="range" min="1" max="12" value="5" aria-label="生成 token 数">
+        </div>
+        <div id="prefillTimeline" class="timeline" aria-label="Prefill 和 decode 时间线"></div>
+        <div class="metric-grid wide">
+          <div><small>prefill tokens</small><strong id="prefillTokens">8</strong></div>
+          <div><small>decode steps</small><strong id="decodeSteps">5</strong></div>
+          <div><small>naive token work</small><strong id="naiveWork">—</strong></div>
+          <div><small>cached token work</small><strong id="cachedWork">—</strong></div>
+        </div>
+        <p class="lab-readout" id="prefillReadout">prefill 可并行处理 8 个 prompt token；随后发生 5 次串行 decode。</p>
+        <p class="lab-error" hidden>Prefill / decode 时间线没有成功初始化；公式与示例仍可使用。</p>
+      </div>
+
+      <div class="interactive-lab" id="lab-kv" data-lab="kv">
+        <div class="lab-heading"><div><p class="lab-index">LAB 05</p><h3>KV cache 显存账本</h3><p>直接修改结构与上下文参数，计算每 token 和完整 batch 的 cache 占用。</p></div><button class="lab-reset" id="kvReset" type="button">重置</button></div>
+        <div class="calculator-grid">
+          <label for="kvLayers">layers <input id="kvLayers" type="number" min="1" max="160" value="32" aria-label="Transformer 层数"></label>
+          <label for="kvHeads">KV heads <input id="kvHeads" type="number" min="1" max="128" value="8" aria-label="KV head 数"></label>
+          <label for="kvHeadDim">head dim <input id="kvHeadDim" type="number" min="2" max="512" value="128" aria-label="Attention head dimension"></label>
+          <label for="kvDtype">dtype <select id="kvDtype" aria-label="KV cache dtype"><option value="2">bf16 / fp16</option><option value="4">fp32</option><option value="1">int8</option></select></label>
+          <label for="kvBatch">batch <input id="kvBatch" type="number" min="1" max="256" value="1" aria-label="推理 batch size"></label>
+          <label for="kvContext">context <input id="kvContext" type="number" min="1" max="1048576" value="4096" aria-label="上下文 token 数"></label>
+        </div>
+        <div class="cache-visual"><div id="kvStack" class="cache-stack" aria-label="KV cache 层与序列示意"></div><div class="cache-stats"><p><span>shape / layer</span><strong id="kvShape">[1,4096,8,128] × K,V</strong></p><p><span>bytes / token</span><strong id="kvPerToken">—</strong></p><p><span>total cache</span><strong id="kvTotal">—</strong></p><p><span>attention history read</span><strong id="kvRead">—</strong></p></div></div>
+        <p class="lab-readout" id="kvReadout">改变 context 会线性改变 cache 容量，也会增加每次 decode 读取的历史 K/V。</p>
+        <p class="lab-error" hidden>KV cache 参数无效或实验初始化失败；请恢复为正整数。</p>
+      </div>
+
+      <div class="source-note">
+        <p class="source-label">SOURCE MAP</p>
+        <p><a href="https://github.com/stanford-cs336/lectures/blob/main/lecture_10.py#L166-L180">CS336 2026 Lecture 10</a> 将 prefill 描述为接近训练的并行、compute-bound 阶段，将 generation/decode 描述为逐 token、memory-bound 阶段，并进一步讨论 KV cache。nanochat 的 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/engine.py#L82-L137">KVCache</a> 预分配 <code>[layers,B,T,Hkv,D]</code>，随后在 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/engine.py#L194-L275">generate</a> 中先 batch=1 prefill、复制 cache，再逐 token decode。</p>
+      </div>
+
+      <div class="examples-grid two">
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 07</p><h3>Prefill 多 query，decode 单 query</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-07">复制</button><a href="./examples/07_prefill_decode.py" download>下载</a></div></div>
+          <pre id="code-ex-07"><code>prefill_output = causal_attention(prompt)       # [P,d]
+full_output = causal_attention(cat(prompt, new_token))
+decode_output = attention(q_new, K_all, V_all) # [1,d]
+
+assert torch.allclose(decode_output, full_output[-1:])</code></pre>
+          <p class="expected-output">预期：decode 输出与完整重算最后位置一致</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 08</p><h3>追加 KV 并核对显存</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-08">复制</button><a href="./examples/08_kv_cache.py" download>下载</a></div></div>
+          <pre id="code-ex-08"><code>cache.append(prompt_k, prompt_v)
+cache.append(new_k, new_v)
+bytes_used = T * layers * batch * heads * head_dim * 2 * 4
+
+assert cache.position == T
+assert torch.allclose(cached_attention, full_attention)</code></pre>
+          <p class="expected-output">预期：cache position 增长，输出数值一致</p>
+        </article>
+      </div>
+
+      <div class="failure-grid">
+        <article><h3>cache 不是免费加速</h3><p>它显著减少重复计算，但会占用随 batch、context、layer 与 KV heads 线性增长的显存；长上下文 decode 仍需读取历史 K/V。</p></article>
+        <article><h3>位置偏移必须跟 cache 对齐</h3><p>decode 的 RoPE position 应从 cache 当前长度开始。如果每一步都从 position 0 旋转，shape 正确但相对位置语义已经损坏。</p></article>
+      </div>
+
+      <div class="checkpoints"><h3>这一章结束后，应能回答</h3><ul><li>prefill 与 decode 为什么使用同一模型，却有不同的并行度与性能瓶颈。</li><li>KV cache 精确保存哪些张量，为什么不能缓存 Q。</li><li>如何从层数、KV heads、head dim、dtype、batch 和 context 推导 cache 显存。</li></ul></div>
+    </section>
+
+    <section class="chapter" id="decoding" data-chapter="decoding">
+      <header class="chapter-header">
+        <p class="chapter-number">CHAPTER 05 · DECISION</p>
+        <h2>概率分布如何变成最终文本</h2>
+        <p class="chapter-summary">模型只输出 logits。greedy、temperature、top-p、repetition penalty 与 EOS 共同定义“如何选 token、怎样避免退化、何时停止”。</p>
+      </header>
+
+      <div class="derivation-section">
+        <h3>Temperature 改变相对 logit 间距</h3>
+        <div class="equation">\[p_i(\tau)=\frac{\exp(z_i/\tau)}{\sum_j\exp(z_j/\tau)}.\]</div>
+        <p>(\tau&lt;1) 放大差距，分布更尖；(\tau&gt;1) 压缩差距，分布更平。greedy 直接取 (\arg\max_i z_i)，可视为 (	au\to0^+) 的选择极限，但实现应显式走 argmax，避免除零。</p>
+      </div>
+
+      <div class="mechanism-grid">
+        <article class="mechanism-card">
+          <p class="card-label">TOP-P / NUCLEUS</p>
+          <h3>候选集大小随分布变化</h3>
+          <p>先按概率降序，取累计概率首次达到 (p) 的最小集合，再在集合内重新归一化采样。模型很确定时集合可能只有一个 token；分布平坦时会保留更多候选。</p>
+          <div class="equation">\[S_p=\min\left\{S:\sum_{i\in S}p_i\ge p\right\}.\]</div>
+        </article>
+        <article class="mechanism-card">
+          <p class="card-label">REPETITION</p>
+          <h3>修改已出现 token 的 logits</h3>
+          <p>常见 sign-aware penalty：正 logit 除以 (r&gt;1)，负 logit 乘以 (r)。它能抑制循环，但也可能损伤姓名、代码变量、引用或句法上必要的重复，因此不是单调增加的“质量旋钮”。</p>
+        </article>
+        <article class="mechanism-card">
+          <p class="card-label">EOS</p>
+          <h3>停止是状态机，不是删掉字符串</h3>
+          <p>采样到 EOS / assistant-end 时应停止当前序列；还要有 max tokens 作为硬边界。batch generation 中每一行可能在不同时间完成，已完成行不能继续追加普通 token。</p>
+        </article>
+      </div>
+
+      <div class="interactive-lab" id="lab-sampling" data-lab="sampling">
+        <div class="lab-heading"><div><p class="lab-index">LAB 06</p><h3>采样与停止游乐场</h3><p>同一组 logits 下切换策略，观察概率、top-p 候选集、重复惩罚和 EOS 状态。</p></div><button class="lab-reset" id="samplingReset" type="button">重置</button></div>
+        <div class="lab-layout sampling-layout">
+          <div class="lab-controls">
+            <label for="samplingPolicy">策略</label>
+            <select id="samplingPolicy" aria-label="采样策略"><option value="greedy">greedy</option><option value="temperature" selected>temperature</option><option value="topp">top-p</option></select>
+            <label for="temperature">temperature <output id="temperatureOut">1.0</output></label>
+            <input id="temperature" type="range" min="0" max="2" step="0.1" value="1" aria-label="Temperature">
+            <label for="topP">top-p <output id="topPOut">0.85</output></label>
+            <input id="topP" type="range" min="0.1" max="1" step="0.05" value="0.85" aria-label="Top-p threshold">
+            <label for="repetitionPenalty">repetition penalty <output id="repetitionPenaltyOut">1.2</output></label>
+            <input id="repetitionPenalty" type="range" min="1" max="2" step="0.1" value="1.2" aria-label="Repetition penalty">
+            <button id="sampleNext" type="button">采样下一个 token</button>
+          </div>
+          <div class="lab-visual">
+            <div id="probabilityBars" class="probability-bars" aria-label="下一个 token 概率"></div>
+            <p class="candidate-line">candidate set：<strong id="candidateSet">—</strong></p>
+            <div id="generatedTokens" class="generated-stream" aria-label="已生成 token"></div>
+            <div class="metric-grid">
+              <div><small>selected</small><strong id="selectedToken">—</strong></div>
+              <div><small>entropy</small><strong id="samplingEntropy">—</strong></div>
+              <div><small>state</small><strong id="stopState">running</strong></div>
+            </div>
+          </div>
+        </div>
+        <p class="lab-readout" id="samplingReadout">先比较不同 temperature 下最大概率的变化，再切到 top-p 观察候选集大小。</p>
+        <p class="lab-error" hidden>采样实验没有成功初始化；请直接运行示例 09 和 10。</p>
+      </div>
+
+      <div class="source-note">
+        <p class="source-label">SOURCE BOUNDARY</p>
+        <p><a href="https://github.com/stanford-cs336/assignment1-basics/blob/main/cs336_assignment1_basics.pdf">CS336 2026 A1，pp.37–42</a> 明确覆盖 temperature、top-p 与 end-of-text stopping；核验材料没有直接系统讲授 repetition penalty，也没有把 greedy 作为独立重点术语。nanochat 的 <a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/engine.py#L140-L156">sample_next_token</a> 实现 temperature=0 的 argmax、temperature 与 top-k，当前没有 top-p 或通用 repetition penalty；<a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/engine.py#L185-L250">生成状态机</a> 在 <code>&lt;|assistant_end|&gt;</code> 或 BOS 被采样时结束当前行。</p>
+      </div>
+
+      <div class="examples-grid two">
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 09</p><h3>同一 logits 比较三种策略</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-09">复制</button><a href="./examples/09_sampling.py" download>下载</a></div></div>
+          <pre id="code-ex-09"><code>greedy = max(range(len(logits)), key=logits.__getitem__)
+warm_probs = softmax(logits, temperature=1.5)
+candidates = nucleus(warm_probs, p=0.8)
+sampled = sample(candidates, seed=9)
+
+assert sampled in {token for token, _ in candidates}</code></pre>
+          <p class="expected-output">预期：低 temperature 更尖，top-p 只在候选集采样</p>
+        </article>
+        <article class="example-card">
+          <div class="example-head"><div><p class="card-label">RUNNABLE EXAMPLE 10</p><h3>重复惩罚与 EOS 停止</h3></div><div class="example-actions"><button type="button" data-copy-target="code-ex-10">复制</button><a href="./examples/10_repetition_eos.py" download>下载</a></div></div>
+          <pre id="code-ex-10"><code>adjusted = penalize(logits, set(generated), penalty=1.5)
+next_token = max(range(len(adjusted)), key=adjusted.__getitem__)
+if next_token == EOS:
+    break
+generated.append(next_token)
+
+assert generated == [0, 1]</code></pre>
+          <p class="expected-output">预期：生成两个普通 token 后遇到 EOS 停止</p>
+        </article>
+      </div>
+
+      <div class="integrated-loop">
+        <p class="card-label">END-TO-END LOOP</p>
+        <h3>把五章重新接起来</h3>
+        <ol>
+          <li>Tokenizer 把 prompt 编成 ids，并注入明确的 special token。</li>
+          <li>模型对 prompt 做 prefill，把每层 K/V 写入 cache。</li>
+          <li>取最后位置 logits，应用 repetition、temperature 与 top-p。</li>
+          <li>选择 next token；若是 EOS 则结束，否则追加到序列。</li>
+          <li>只对新 token 做 decode，追加新的 K/V，回到第 3 步。</li>
+        </ol>
+        <pre class="algorithm"><code>ids = tokenizer.encode(prompt)
+logits, cache = model.prefill(ids)
+while len(generated) &lt; max_tokens:
+    logits = apply_repetition_penalty(logits, generated)
+    next_id = sample(logits, temperature, top_p)
+    if next_id == eos_id:
+        break
+    generated.append(next_id)
+    logits, cache = model.decode(next_id, cache)</code></pre>
+      </div>
+
+      <div class="checkpoints"><h3>这一章结束后，应能回答</h3><ul><li>greedy、temperature 与 top-p 分别在哪一步改变 token 选择。</li><li>repetition penalty 为何可能缓解循环，也可能伤害必要重复。</li><li>EOS、max tokens 与 batch 中逐行完成应怎样组成停止状态机。</li></ul></div>
+    </section>
+
+    <section class="chapter references" id="references">
+      <header class="chapter-header">
+        <p class="chapter-number">SOURCES · VERIFIED 2026-07-22</p>
+        <h2>来源、实现差异与继续学习</h2>
+        <p class="chapter-summary">课程材料告诉我们教学主线，项目源码告诉我们具体取舍；两者不一致的地方，往往正是理解工程边界的入口。</p>
+      </header>
+
+      <div class="summary-table table-wrap">
+        <table>
+          <thead><tr><th>概念</th><th>CS336 2026</th><th>nanochat @ 92d63d4</th><th>本页处理</th></tr></thead>
+          <tbody>
+            <tr><td>BPE</td><td>A1 实现 byte-level BPE</td><td>rustbpe 训练、tiktoken 推理</td><td>机制 + UTF-8 round-trip</td></tr>
+            <tr><td>Decoder / mask / RoPE / RMSNorm</td><td>A1 现代 decoder 主线</td><td>直接采用，并加入 GQA/FlashAttention 等系统取舍</td><td>聚焦最小标准机制</td></tr>
+            <tr><td>SwiGLU</td><td>A1 明确要求</td><td>使用 ReLU²</td><td>并排比较，不抹平差异</td></tr>
+            <tr><td>Prefill / decode / KV cache</td><td>Lecture 10 机制与系统瓶颈</td><td>真实 cache 与两阶段生成路径</td><td>时间线 + 显存账本</td></tr>
+            <tr><td>Temperature / top-p</td><td>A1 明确覆盖 top-p</td><td>temperature + top-k</td><td>独立实现 top-p</td></tr>
+            <tr><td>Repetition</td><td>没有直接系统讲授</td><td>没有通用 penalty</td><td>标准补充机制，明确风险</td></tr>
+            <tr><td>Teacher forcing</td><td>next-token 公式隐含，术语未直接展开</td><td>shifted targets 可直接追踪</td><td>用标准术语解释机制</td></tr>
+            <tr><td>Perplexity</td><td>重要但不充分</td><td>主推 bits per byte</td><td>定义、局限与 BPB 对照</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reference-list">
+        <article><h3>Stanford CS336 2026</h3><ul><li><a href="https://cs336.stanford.edu/">课程主页与 Spring 2026 schedule</a></li><li><a href="https://github.com/stanford-cs336/lectures">官方 lectures 仓库</a></li><li><a href="https://github.com/stanford-cs336/assignment1-basics">Assignment 1: Basics</a></li><li><a href="https://github.com/stanford-cs336/assignment2-systems">Assignment 2: Systems</a></li></ul></article>
+        <article><h3>nanochat</h3><ul><li><a href="https://github.com/karpathy/nanochat/tree/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd">固定源码版本</a></li><li><a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/gpt.py">模型结构</a></li><li><a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/engine.py">推理引擎与 KV cache</a></li><li><a href="https://github.com/karpathy/nanochat/blob/92d63d4e8bb4df75c3b71618f31ddde2378b2bcd/nanochat/loss_eval.py">bits-per-byte 评测</a></li></ul></article>
+      </div>
+
+      <div class="final-check"><h3>真正理解，而不是只记住名词</h3><p>如果你能从一段文本开始，画出每一步的 shape；解释训练前缀与推理前缀的差异；写出 cache 显存公式；在同一 logits 上手算 temperature 和 top-p；最后说明 perplexity 为什么重要但不充分，那么这 12 个概念已经组成了一个可工作的心智模型。</p></div>
+    </section>
+  </main>
+
+  <footer class="page-footer"><a href="/">返回主页</a><a href="/foundations/">返回 Foundations</a><a href="#overview">回到顶部</a></footer>
+  <script src="./static/js/index.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">LLM 核心机制路线图</title>
+  <desc id="desc">文本经过 token、decoder、训练和 KV cache，最终产生下一个 token。</desc>
+  <rect width="1200" height="630" fill="#f1ebdf"/>
+  <path d="M0 108h1200M0 522h1200" stroke="#d2c6b4" stroke-width="2"/>
+  <text x="76" y="92" fill="#a94730" font-family="monospace" font-size="25" font-weight="700" letter-spacing="4">LLM MECHANICS</text>
+  <text x="76" y="161" fill="#17211d" font-family="serif" font-size="52" font-weight="700">从文本，到下一个 token</text>
+  <g transform="translate(75 232)">
+    <g fill="#fffdf8" stroke="#aa9d88" stroke-width="2">
+      <rect x="0" y="0" width="170" height="106" rx="14"/>
+      <rect x="214" y="0" width="170" height="106" rx="14"/>
+      <rect x="428" y="0" width="170" height="106" rx="14"/>
+      <rect x="642" y="0" width="170" height="106" rx="14"/>
+      <rect x="856" y="0" width="194" height="106" rx="14"/>
+    </g>
+    <g fill="#17211d" font-family="sans-serif" font-size="23" font-weight="700" text-anchor="middle">
+      <text x="85" y="48">文本</text><text x="85" y="76" fill="#66716b" font-size="16" font-weight="400">UTF-8</text>
+      <text x="299" y="48">token ids</text><text x="299" y="76" fill="#66716b" font-size="16" font-weight="400">BPE</text>
+      <text x="513" y="48">decoder</text><text x="513" y="76" fill="#66716b" font-size="16" font-weight="400">mask · RoPE</text>
+      <text x="727" y="48">KV cache</text><text x="727" y="76" fill="#66716b" font-size="16" font-weight="400">prefill / decode</text>
+      <text x="953" y="48">next token</text><text x="953" y="76" fill="#66716b" font-size="16" font-weight="400">sample · stop</text>
+    </g>
+    <g fill="none" stroke="#1d6552" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M178 53h26m-9-10 10 10-10 10"/>
+      <path d="M392 53h26m-9-10 10 10-10 10"/>
+      <path d="M606 53h26m-9-10 10 10-10 10"/>
+      <path d="M820 53h26m-9-10 10 10-10 10"/>
+    </g>
+  </g>
+  <g transform="translate(76 410)" font-family="monospace">
+    <rect width="1048" height="76" rx="12" fill="#19261f"/>
+    <text x="24" y="31" fill="#d9e5df" font-size="18">input[:-1] → logits → target[1:] → loss</text>
+    <text x="24" y="56" fill="#d7b56d" font-size="16">6 interactive labs · 12 runnable examples · CS336 × nanochat</text>
+  </g>
+</svg>
