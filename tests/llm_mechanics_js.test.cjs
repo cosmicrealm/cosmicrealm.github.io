@@ -31,6 +31,7 @@ assert.deepEqual(mechanics.rmsNormalize([0, 0]), [0, 0]);
 const work = mechanics.prefillDecodeWork(8, 5);
 assert.equal(work.naive, 50);
 assert.equal(work.cached, 12);
+assert.equal(work.decodeForwards, 4);
 
 const kv = mechanics.kvCacheMetrics({ layers: 32, kvHeads: 8, headDim: 128, dtypeBytes: 2, batch: 1, context: 4096 });
 assert.equal(kv.bytesPerToken, 131072);

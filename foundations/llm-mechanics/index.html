@@ -237,7 +237,7 @@ assert len(ids) &lt; len(text.encode("utf-8"))</code></pre>
             \langle R(m\theta)q,R(n\theta)k\rangle=\langle q,R((n-m)\theta)k\rangle.
             \]
           </div>
-          <p>二维旋转保持向量范数；Q/K 的点积依赖位置差 (n-m)。V 不旋转，因为位置关系是在注意力相似度中注入，而不是改写被聚合的内容向量。</p>
+          <p>二维旋转保持向量范数；Q/K 的点积依赖位置差 \(n-m\)。V 不旋转，因为位置关系是在注意力相似度中注入，而不是改写被聚合的内容向量。</p>
         </article>
         <article>
           <p class="concept-index">02.3 · RMSNORM</p>
@@ -247,7 +247,7 @@ assert len(ids) &lt; len(text.encode("utf-8"))</code></pre>
             \operatorname{RMSNorm}(x)=g\odot\frac{x}{\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_i^2+\epsilon}}.
             \]
           </div>
-          <p>(\epsilon) 防止零向量除零；实现常先把平方与均值提升到 fp32，再转回计算 dtype。pre-norm 把归一化放在子层之前，让 residual path 保持直接。</p>
+          <p>\(\epsilon\) 防止零向量除零；实现常先把平方与均值提升到 fp32，再转回计算 dtype。pre-norm 把归一化放在子层之前，让 residual path 保持直接。</p>
         </article>
         <article>
           <p class="concept-index">02.4 · SWIGLU</p>
@@ -257,7 +257,7 @@ assert len(ids) &lt; len(text.encode("utf-8"))</code></pre>
             \operatorname{SwiGLU}(x)=W_2\left(\operatorname{SiLU}(W_1x)\odot W_3x\right).
             \]
           </div>
-          <p>两次上投影分别产生 gate 与 value，逐元素相乘后再投回 (d_{model})。参数量公平比较时常把 (d_{ff}) 设为约 (8d/3)，而不是沿用普通 FFN 的 (4d)。</p>
+          <p>两次上投影分别产生 gate 与 value，逐元素相乘后再投回 \(d_{model}\)。参数量公平比较时常把 \(d_{ff}\) 设为约 \(8d/3\)，而不是沿用普通 FFN 的 \(4d\)。</p>
         </article>
       </div>
 
@@ -352,7 +352,7 @@ assert not torch.allclose(y, relu_squared)</code></pre>
       <header class="chapter-header">
         <p class="chapter-number">CHAPTER 03 · LEARNING</p>
         <h2>模型如何学会预测下一个 token</h2>
-        <p class="chapter-summary">训练只做一次 shift：真实序列的前 (T-1) 个 token 是输入，后 (T-1) 个 token 是目标；一次 causal forward 同时产生所有位置的 next-token loss。</p>
+        <p class="chapter-summary">训练只做一次 shift：真实序列的前 \(T-1\) 个 token 是输入，后 \(T-1\) 个 token 是目标；一次 causal forward 同时产生所有位置的 next-token loss。</p>
       </header>
 
       <div class="alignment-demo" aria-label="Teacher forcing 对齐示意">
@@ -365,7 +365,7 @@ assert not torch.allclose(y, relu_squared)</code></pre>
         <article class="mechanism-card">
           <p class="card-label">TEACHER FORCING</p>
           <h3>训练前缀来自数据，而不是模型</h3>
-          <p>位置 (t) 的预测以真实 (x_{&lt;t}) 为条件。这样所有位置可以并行监督，梯度稳定；推理时前缀来自模型自己的历史输出，一次错误会改变后续条件，这就是训练/推理分布差异的来源。</p>
+          <p>位置 \(t\) 的预测以真实 \(x_{&lt;t}\) 为条件。这样所有位置可以并行监督，梯度稳定；推理时前缀来自模型自己的历史输出，一次错误会改变后续条件，这就是训练/推理分布差异的来源。</p>
           <div class="equation">\[\mathcal{L}(x)=-\sum_{t=1}^{T-1}\log p_\theta(x_{t+1}\mid x_{\le t}).\]</div>
         </article>
         <article class="mechanism-card">
@@ -457,7 +457,7 @@ assert math.isclose(tokenization_a_bpb, tokenization_b_bpb)</code></pre>
 
       <div class="derivation-section">
         <h3>KV cache 保存什么</h3>
-        <p>第 (ell) 层对历史 token 已经计算过的 key 与 value。新 token 到来时，只计算它自己的 (q_t,k_t,v_t)，把 (k_t,v_t) 追加进 cache，并让 (q_t) 读取所有可见历史 K/V。</p>
+        <p>第 \(\ell\) 层对历史 token 已经计算过的 key 与 value。新 token 到来时，只计算它自己的 \(q_t,k_t,v_t\)，把 \(k_t,v_t\) 追加进 cache，并让 \(q_t\) 读取所有可见历史 K/V。</p>
         <div class="equation">
           \[
           K^{(\ell)}_{1:t}=[K^{(\ell)}_{1:t-1};k^{(\ell)}_t],\quad
@@ -471,7 +471,7 @@ assert math.isclose(tokenization_a_bpb, tokenization_b_bpb)</code></pre>
         <p class="card-label">MEMORY ACCOUNTING</p>
         <h3>每个序列的 KV cache 字节数</h3>
         <div class="equation">\[\text{bytes}=L\times 2\times B\times T\times H_{kv}\times d_h\times \text{bytes(dtype)}.\]</div>
-        <p>因子 2 来自 K 与 V。GQA/MQA 通过减少 (H_{kv}) 降低 cache；量化或更短 context 也会降低显存。cache 并没有消除新 query 对历史 K/V 的读取，因此 decode 仍随 context 增长。</p>
+        <p>因子 2 来自 K 与 V。GQA/MQA 通过减少 \(H_{kv}\) 降低 cache；量化或更短 context 也会降低显存。cache 并没有消除新 query 对历史 K/V 的读取，因此 decode 仍随 context 增长。</p>
       </div>
 
       <div class="interactive-lab" id="lab-prefill" data-lab="prefill">
@@ -485,11 +485,11 @@ assert math.isclose(tokenization_a_bpb, tokenization_b_bpb)</code></pre>
         <div id="prefillTimeline" class="timeline" aria-label="Prefill 和 decode 时间线"></div>
         <div class="metric-grid wide">
           <div><small>prefill tokens</small><strong id="prefillTokens">8</strong></div>
-          <div><small>decode steps</small><strong id="decodeSteps">5</strong></div>
+          <div><small>decode forwards after g1</small><strong id="decodeSteps">4</strong></div>
           <div><small>naive token work</small><strong id="naiveWork">—</strong></div>
           <div><small>cached token work</small><strong id="cachedWork">—</strong></div>
         </div>
-        <p class="lab-readout" id="prefillReadout">prefill 可并行处理 8 个 prompt token；随后发生 5 次串行 decode。</p>
+        <p class="lab-readout" id="prefillReadout">prefill 可并行处理 8 个 prompt token，并从最后位置 logits 选出 g1；再做 4 次单-token decode forward，共生成 5 个 token。</p>
         <p class="lab-error" hidden>Prefill / decode 时间线没有成功初始化；公式与示例仍可使用。</p>
       </div>
 
@@ -560,13 +560,13 @@ assert torch.allclose(cached_attention, full_attention)</code></pre>
         <article class="mechanism-card">
           <p class="card-label">TOP-P / NUCLEUS</p>
           <h3>候选集大小随分布变化</h3>
-          <p>先按概率降序，取累计概率首次达到 (p) 的最小集合，再在集合内重新归一化采样。模型很确定时集合可能只有一个 token；分布平坦时会保留更多候选。</p>
+          <p>先按概率降序，取累计概率首次达到 \(p\) 的最小集合，再在集合内重新归一化采样。模型很确定时集合可能只有一个 token；分布平坦时会保留更多候选。</p>
           <div class="equation">\[S_p=\min\left\{S:\sum_{i\in S}p_i\ge p\right\}.\]</div>
         </article>
         <article class="mechanism-card">
           <p class="card-label">REPETITION</p>
           <h3>修改已出现 token 的 logits</h3>
-          <p>常见 sign-aware penalty：正 logit 除以 (r&gt;1)，负 logit 乘以 (r)。它能抑制循环，但也可能损伤姓名、代码变量、引用或句法上必要的重复，因此不是单调增加的“质量旋钮”。</p>
+          <p>常见 sign-aware penalty：正 logit 除以 \(r&gt;1\)，负 logit 乘以 \(r\)。它能抑制循环，但也可能损伤姓名、代码变量、引用或句法上必要的重复，因此不是单调增加的“质量旋钮”。</p>
         </article>
         <article class="mechanism-card">
           <p class="card-label">EOS</p>

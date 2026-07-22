@@ -355,6 +355,7 @@ td { color: var(--muted); }
 .inline-controls { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 0.65rem; align-items: center; margin: 1rem 0; }
 .timeline { display: flex; gap: 0.22rem; min-height: 8rem; align-items: end; overflow-x: auto; padding: 1rem; border: 1px solid var(--lab-line); background: var(--lab-panel); }
 .timeline span { display: grid; place-items: end center; min-width: 1.35rem; padding-bottom: 0.25rem; color: var(--lab); background: var(--gold); font-family: var(--mono); font-size: 0.55rem; }
+.timeline span.first-output { color: var(--lab-text); border: 1px solid var(--vermilion); background: var(--vermilion); }
 .timeline span.decode { color: var(--lab-text); border: 1px solid var(--lab-line); background: var(--lab); }
 
 .calculator-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0; }

@@ -59,6 +59,7 @@ async function checkDesktop(browser) {
   });
   assert.equal(await page.locator("#naiveWork").textContent(), "156", "prefill lab should calculate naive work");
   assert.equal(await page.locator("#cachedWork").textContent(), "23", "prefill lab should calculate cached work");
+  assert.equal(await page.locator("#decodeSteps").textContent(), "7", "prefill lab should separate the first sampled token from later decode forwards");
 
   await page.locator("#kvContext").evaluate((element) => {
     element.value = "32768";

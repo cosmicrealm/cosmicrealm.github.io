@@ -59,7 +59,7 @@
     const generated = Math.max(1, Math.round(generatedLength));
     let naive = 0;
     for (let step = 0; step < generated; step += 1) naive += prompt + step;
-    return { naive, cached: prompt + generated - 1 };
+    return { naive, cached: prompt + generated - 1, decodeForwards: generated - 1 };
   }
 
   function kvCacheMetrics({ layers, kvHeads, headDim, dtypeBytes, batch, context }) {
@@ -532,7 +532,7 @@
       byId("promptLengthOut").textContent = String(prompt);
       byId("generatedLengthOut").textContent = String(generated);
       byId("prefillTokens").textContent = String(prompt);
-      byId("decodeSteps").textContent = String(generated);
+      byId("decodeSteps").textContent = String(work.decodeForwards);
       byId("naiveWork").textContent = String(work.naive);
       byId("cachedWork").textContent = String(work.cached);
       const items = [];
@@ -544,13 +544,16 @@
       }
       for (let index = 0; index < generated; index += 1) {
         const item = document.createElement("span");
-        item.className = "decode";
-        item.textContent = `d${index + 1}`;
+        item.className = index === 0 ? "first-output" : "decode";
+        item.textContent = `g${index + 1}`;
+        item.title = index === 0
+          ? "第 1 个生成 token：由 prefill 最后位置的 logits 选出"
+          : `第 ${index} 次单-token decode forward 选出 g${index + 1}`;
         item.style.height = `${98 + index * 3}px`;
         items.push(item);
       }
       byId("prefillTimeline").replaceChildren(...items);
-      byId("prefillReadout").textContent = `prefill 并行处理 ${prompt} 个 prompt token；随后 ${generated} 次串行选择。按 token-forward 单位，无 cache ${work.naive}，有 cache ${work.cached}。`;
+      byId("prefillReadout").textContent = `prefill 并行处理 ${prompt} 个 prompt token，并用最后位置 logits 选出 g1；再做 ${work.decodeForwards} 次单-token decode forward，共生成 ${generated} 个 token。按 token-forward 单位，无 cache ${work.naive}，有 cache ${work.cached}。`;
     }
 
     [promptControl, generatedControl].forEach((control) => control.addEventListener("input", render));
