@@ -121,7 +121,7 @@
           <p class="card-label">数据流</p>
           <h3>类型与长度</h3>
           <div class="shape-flow"><code>str</code><i>→ UTF-8</i><code>bytes [T₀]</code><i>→ merges</i><code>ids [T]</code><i>→ lookup</i><code>x [T,d]</code></div>
-          <p>通常 (T\le T_0)，但 token 数不是字数；同一字符可能占多个 UTF-8 bytes，同一常见片段也可能被一个 token 表示。</p>
+          <p>通常 \(T\le T_0\)，但 token 数不是字数；同一字符可能占多个 UTF-8 bytes，同一常见片段也可能被一个 token 表示。</p>
         </article>
       </div>
 
@@ -226,7 +226,7 @@ assert len(ids) &lt; len(text.encode("utf-8"))</code></pre>
             M_{ij}=\begin{cases}0,&j\le i\\-\infty,&j&gt;i.\end{cases}
             \]
           </div>
-          <p>把未来位置加 (-\infty) 后，softmax 概率严格为 0。若在 softmax 之后简单清零却不重新归一化，行和不再为 1；若完全不 mask，训练时就能偷看目标 token。</p>
+          <p>把未来位置加 \(-\infty\) 后，softmax 概率严格为 0。若在 softmax 之后简单清零却不重新归一化，行和不再为 1；若完全不 mask，训练时就能偷看目标 token。</p>
         </article>
         <article>
           <p class="concept-index">02.2 · ROPE</p>
@@ -553,7 +553,7 @@ assert torch.allclose(cached_attention, full_attention)</code></pre>
       <div class="derivation-section">
         <h3>Temperature 改变相对 logit 间距</h3>
         <div class="equation">\[p_i(\tau)=\frac{\exp(z_i/\tau)}{\sum_j\exp(z_j/\tau)}.\]</div>
-        <p>(\tau&lt;1) 放大差距，分布更尖；(\tau&gt;1) 压缩差距，分布更平。greedy 直接取 (\arg\max_i z_i)，可视为 (	au\to0^+) 的选择极限，但实现应显式走 argmax，避免除零。</p>
+        <p>\(\tau&lt;1\) 放大差距，分布更尖；\(\tau&gt;1\) 压缩差距，分布更平。greedy 直接取 \(\arg\max_i z_i\)，可视为 \(\tau\to0^+\) 的选择极限，但实现应显式走 argmax，避免除零。</p>
       </div>
 
       <div class="mechanism-grid">

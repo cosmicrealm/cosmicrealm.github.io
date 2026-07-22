@@ -44,8 +44,10 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+html { max-width: 100%; overflow-x: clip; scroll-behavior: smooth; scroll-padding-top: 6rem; }
 body {
+  max-width: 100%;
+  overflow-x: clip;
   margin: 0;
   color: var(--ink);
   background: var(--paper);
@@ -207,6 +209,7 @@ code { font-size: 0.9em; }
 
 .mechanism-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
 .mechanism-card, .shape-card {
+  min-width: 0;
   padding: 1.4rem;
   border: 1px solid var(--line);
   background: var(--sheet);
@@ -216,7 +219,7 @@ code { font-size: 0.9em; }
 .shape-flow { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin: 1rem 0; }
 .shape-flow code { padding: 0.35rem 0.5rem; border: 1px solid var(--line); background: var(--paper); }
 .shape-flow i { color: var(--vermilion); font-family: var(--mono); font-size: 0.68rem; font-style: normal; }
-.equation { margin: 1rem 0; overflow-x: auto; color: var(--ink); }
+.equation { max-width: 100%; margin: 1rem 0; overflow-x: auto; color: var(--ink); }
 
 .token-steps { display: grid; gap: 0.6rem; margin: 1rem 0; }
 .token-steps > div { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
@@ -246,7 +249,7 @@ code { font-size: 0.9em; }
 .decoder-map .stack { gap: 0.45rem; background: var(--green-soft); font-family: var(--mono); font-size: 0.65rem; text-align: left; }
 
 .concept-sections { display: grid; gap: 1rem; margin: 2rem 0; }
-.concept-sections article { padding: 1.5rem; border: 1px solid var(--line); background: var(--sheet); }
+.concept-sections article { min-width: 0; padding: 1.5rem; border: 1px solid var(--line); background: var(--sheet); }
 .concept-sections h3 { margin: 0.35rem 0 0.6rem; }
 .concept-sections p:last-child { margin-bottom: 0; color: var(--muted); }
 
@@ -385,7 +388,7 @@ td { color: var(--muted); }
 
 @media (max-width: 1100px) {
   .lecture { width: min(55rem, calc(100vw - 2rem)); margin: 0 auto; }
-  .lecture-toc { top: 4.6rem; right: 1rem; left: auto; width: min(19rem, calc(100vw - 2rem)); transform: translateX(calc(100% + 2rem)); transition: transform 180ms ease; box-shadow: var(--shadow); }
+  .lecture-toc { top: 4.6rem; right: 1rem; left: auto; width: min(19rem, calc(100vw - 2rem)); max-width: calc(100vw - 2rem); transform: translate3d(calc(100% + 2rem), 0, 0); transition: transform 180ms ease; box-shadow: var(--shadow); }
   .lecture-toc.open { transform: translateX(0); }
   .toc-toggle { display: block; position: fixed; z-index: 920; top: 0.95rem; right: 10rem; padding: 0.45rem 0.7rem; border: 1px solid var(--line); background: var(--sheet); color: var(--ink); font-family: var(--sans); font-size: 0.72rem; }
 }
@@ -399,8 +402,8 @@ td { color: var(--muted); }
   .lecture { width: 100%; padding: 6.5rem 0.85rem 4rem; }
   .paper-header { padding: 2rem 1.15rem; }
   .paper-header h1 { font-size: clamp(3rem, 17vw, 5rem); }
-  .lecture-contract, .mechanism-grid, .failure-grid, .examples-grid, .examples-grid.two, .phase-comparison, .lab-layout, .cache-visual, .reference-list { grid-template-columns: 1fr; }
-  .chapter-route { grid-template-columns: 1fr; }
+  .lecture-contract, .mechanism-grid, .failure-grid, .examples-grid, .examples-grid.two, .phase-comparison, .lab-layout, .cache-visual, .reference-list { grid-template-columns: minmax(0, 1fr); }
+  .chapter-route { grid-template-columns: minmax(0, 1fr); }
   .chapter-route li { display: grid; grid-template-columns: 2rem 1fr; gap: 0.6rem; align-items: center; }
   .chapter-route strong { margin-top: 0; }
   .chapter { margin-top: 4rem; padding-top: 1.8rem; }
