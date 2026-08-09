@@ -4,343 +4,223 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
-  <meta name="description" content="IConFace is a unified reference-aware and no-reference face restoration framework with identity-structure asymmetric conditioning.">
-  <meta name="keywords" content="face restoration, reference-aware restoration, blind face restoration, identity preservation, image restoration, computer vision">
+  <meta name="title" content="IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration">
+  <meta name="description" content="IConFace restores reference-supported identity details while preserving target-aligned structure, and also supports blind face restoration when references are unavailable.">
+  <meta name="keywords" content="face restoration, reference-aware face restoration, blind face restoration, identity preservation, localized identity detail, computer vision">
   <meta name="author" content="Axi Niu, Jinyang Zhang, Senyan Qing">
   <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="IConFace Project Page">
-  <meta property="og:title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
-  <meta property="og:description" content="Unified reference-aware face restoration with asymmetric identity-structure conditioning for reference-based and no-reference blind restoration.">
+  <meta property="og:title" content="IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration">
+  <meta property="og:description" content="Dense reference evidence and asymmetric identity–structure conditioning for fine-grained face restoration.">
   <meta property="og:url" content="https://cosmicrealm.github.io/IConFace/">
   <meta property="og:image" content="https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="IConFace teaser preview">
+  <meta property="og:image:alt" content="IConFace reference-aware restoration examples">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
-  <meta name="twitter:description" content="Unified reference-aware face restoration with asymmetric identity-structure conditioning.">
+  <meta name="twitter:title" content="IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration">
+  <meta name="twitter:description" content="Recover reference-supported identity details while retaining target-aligned structure.">
   <meta name="twitter:image" content="https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg">
 
-  <meta name="citation_title" content="IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration">
+  <meta name="citation_title" content="IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration">
   <meta name="citation_author" content="Niu, Axi">
   <meta name="citation_author" content="Zhang, Jinyang">
   <meta name="citation_author" content="Qing, Senyan">
   <meta name="citation_date" content="2026/05/04">
   <meta name="citation_online_date" content="2026/05/04">
+  <meta property="article:modified_time" content="2026-08-05">
   <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2605.02814">
   <meta name="citation_arxiv_id" content="2605.02814">
   <meta name="citation_doi" content="10.48550/arXiv.2605.02814">
 
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-  <title>IConFace | Unified Reference-Aware Face Restoration</title>
+  <meta name="theme-color" content="#1f4fc4">
+  <title>IConFace | Fine-Grained Identity Conditioning</title>
 
   <link rel="icon" type="image/png" href="static/images/favicon-iconface.png">
   <link rel="apple-touch-icon" href="static/images/apple-touch-icon-iconface.png">
-
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20260606-home">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/index.js?v=20260505-jpg"></script>
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css?v=20260810-v2">
+  <script defer src="static/js/index.js?v=20260810-v2"></script>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
-    "headline": "IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration",
-    "description": "IConFace is a unified reference-aware face restoration framework for reference-based and no-reference blind restoration.",
+    "headline": "IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration",
+    "description": "A fine-grained identity-conditioned framework that combines dense reference evidence with target-aligned degraded-structure reinforcement.",
     "author": [
-      {
-        "@type": "Person",
-        "name": "Axi Niu"
-      },
-      {
-        "@type": "Person",
-        "name": "Jinyang Zhang"
-      },
-      {
-        "@type": "Person",
-        "name": "Senyan Qing"
-      }
+      {"@type": "Person", "name": "Axi Niu"},
+      {"@type": "Person", "name": "Jinyang Zhang"},
+      {"@type": "Person", "name": "Senyan Qing"}
     ],
-    "datePublished": "2026-01-01",
+    "datePublished": "2026-05-04",
+    "dateModified": "2026-08-05",
     "url": "https://cosmicrealm.github.io/IConFace/",
     "image": "https://cosmicrealm.github.io/IConFace/static/images/social_preview.jpg",
-    "keywords": ["face restoration", "reference-aware restoration", "blind face restoration", "identity preservation"],
-    "isAccessibleForFree": true,
-    "codeRepository": "https://github.com/cosmicrealm/IConFace",
-    "mainEntity": {
-      "@type": "WebPage",
-      "@id": "https://cosmicrealm.github.io/IConFace/"
-    }
+    "keywords": ["face restoration", "reference-aware restoration", "blind face restoration", "localized identity detail"],
+    "isAccessibleForFree": true
   }
   </script>
 </head>
 <body>
-
-  <a class="project-home-link" href="https://cosmicrealm.github.io/" aria-label="Go to Jinyang Zhang homepage">
-    <i class="fas fa-home" aria-hidden="true"></i>
-    <span>Home</span>
-  </a>
-
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
+  <a class="project-home-link" href="https://cosmicrealm.github.io/" aria-label="Go to Jinyang Zhang's homepage">← Home</a>
+  <button class="scroll-to-top" type="button" title="Scroll to top" aria-label="Scroll to top">↑</button>
 
   <main id="main-content">
-    <section class="hero publication-header">
-      <div class="hero-body">
-        <div class="container is-max-desktop">
-          <div class="columns is-centered">
-            <div class="column has-text-centered">
-              <h1 class="title is-1 publication-title">IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration</h1>
-              <div class="is-size-5 publication-authors">
-                <span class="author-block">Axi Niu<sup>*</sup></span>
-                <span class="author-block">Jinyang Zhang<sup>*</sup></span>
-                <span class="author-block">Senyan Qing</span>
-              </div>
-              <div class="is-size-5 publication-authors publication-affiliation">
-                <span class="author-block">Northwestern Polytechnical University</span>
-              </div>
-              <div class="is-size-6 publication-authors publication-email-line">
-                <span class="author-block">nax@nwpu.edu.cn</span>
-                <span class="author-block">zhangjinyang@mail.nwpu.edu.cn</span>
-                <span class="author-block">qingsenyan@nwpu.edu.cn</span>
-              </div>
-              <div class="is-size-6 publication-authors publication-author-note">
-                <span class="author-block"><sup>*</sup>Equal contribution</span>
-              </div>
-
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="https://cosmicrealm.github.io/IConFace/" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-globe"></i>
-                    </span>
-                    <span>Project</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/2605.02814" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="static/pdfs/iconface_supp.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Supplementary</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://github.com/cosmicrealm/IConFace" target="_blank" class="external-link button is-normal is-rounded is-dark" title="Code">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-quote-right"></i>
-                    </span>
-                    <span>BibTeX</span>
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
+    <header class="publication-header">
+      <div class="container is-max-desktop has-text-centered">
+        <h1>
+          <span class="title-line">IConFace: Fine-Grained Identity Conditioning</span>
+          <span class="title-line">for Reference-Aware Face Restoration</span>
+        </h1>
+        <div class="publication-authors">
+          <span>Axi Niu<sup>*</sup></span>
+          <span>Jinyang Zhang<sup>*</sup></span>
+          <span>Senyan Qing</span>
         </div>
-      </div>
-    </section>
+        <div class="publication-affiliation">Northwestern Polytechnical University</div>
+        <div class="publication-emails">
+          <span>nax@nwpu.edu.cn</span>
+          <span>zhangjinyang@mail.nwpu.edu.cn</span>
+          <span>qingsenyan@nwpu.edu.cn</span>
+        </div>
+        <div class="publication-note"><sup>*</sup>Equal contribution</div>
 
-    <section class="hero teaser">
+        <nav class="publication-links" aria-label="Paper links">
+          <a class="paper-link" href="https://arxiv.org/pdf/2605.02814" target="_blank" rel="noopener noreferrer">Paper</a>
+          <a class="paper-link" href="https://arxiv.org/abs/2605.02814" target="_blank" rel="noopener noreferrer">arXiv</a>
+          <a class="paper-link" href="https://arxiv.org/pdf/2605.02814#page=10" target="_blank" rel="noopener noreferrer">Supplementary</a>
+          <a class="paper-link" href="#BibTeX">BibTeX</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="section teaser-section" aria-labelledby="teaser-heading">
       <div class="container is-max-desktop">
-        <div class="hero-body">
-          <div class="teaser-grid">
-            <div class="teaser-cell">
-              <div class="teaser-label">Reference 1</div>
-              <img src="static/images/teaser/ref1.jpg" alt="Reference image 1">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">Reference 2</div>
-              <img src="static/images/teaser/ref2.jpg" alt="Reference image 2">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">Reference 3</div>
-              <img src="static/images/teaser/ref3.jpg" alt="Reference image 3">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">Degraded Input</div>
-              <img src="static/images/teaser/deg.jpg" alt="Degraded input">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">CodeFormer</div>
-              <img src="static/images/teaser/codeformer.jpg" alt="CodeFormer result">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">FaceMe</div>
-              <img src="static/images/teaser/faceme.jpg" alt="FaceMe result">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">Ours</div>
-              <img src="static/images/teaser/ours.jpg" alt="IConFace result">
-            </div>
-            <div class="teaser-cell">
-              <div class="teaser-label">Ground Truth</div>
-              <img src="static/images/teaser/gt.jpg" alt="Ground truth">
-            </div>
-          </div>
-          <p class="teaser-caption">
-            IConFace preserves reference-consistent facial details better than strong blind and reference-aware baselines while remaining anchored to the degraded input.
-          </p>
-          <div class="detail-grid teaser-detail-grid">
-            <div class="detail-card">
-              <div class="detail-header">CodeFormer</div>
-              <img src="static/images/teaser/details/detail1_codeformer.jpg" alt="CodeFormer detail crop 1">
-              <img src="static/images/teaser/details/detail2_codeformer.jpg" alt="CodeFormer detail crop 2">
-            </div>
-            <div class="detail-card">
-              <div class="detail-header">FaceMe</div>
-              <img src="static/images/teaser/details/detail1_faceme.jpg" alt="FaceMe detail crop 1">
-              <img src="static/images/teaser/details/detail2_faceme.jpg" alt="FaceMe detail crop 2">
-            </div>
-            <div class="detail-card">
-              <div class="detail-header">Ours</div>
-              <img src="static/images/teaser/details/detail1_ours.jpg" alt="IConFace detail crop 1">
-              <img src="static/images/teaser/details/detail2_ours.jpg" alt="IConFace detail crop 2">
-            </div>
-            <div class="detail-card">
-              <div class="detail-header">Ground Truth</div>
-              <img src="static/images/teaser/details/detail1_gt.jpg" alt="Ground-truth detail crop 1">
-              <img src="static/images/teaser/details/detail2_gt.jpg" alt="Ground-truth detail crop 2">
-            </div>
-          </div>
+        <h2 id="teaser-heading" class="visually-hidden">Reference-supported detail example</h2>
+        <div class="teaser-grid">
+          <figure class="teaser-cell"><figcaption>Ref₁</figcaption><img src="static/images/v2/teaser/ref1.webp" alt="First same-identity reference"></figure>
+          <figure class="teaser-cell"><figcaption>Ref₂</figcaption><img src="static/images/v2/teaser/ref2.webp" alt="Second same-identity reference"></figure>
+          <figure class="teaser-cell"><figcaption>Ref₃</figcaption><img src="static/images/v2/teaser/ref3.webp" alt="Third same-identity reference"></figure>
+          <figure class="teaser-cell"><figcaption>LQ</figcaption><img src="static/images/v2/teaser/deg.webp" alt="Degraded target observation"></figure>
+          <figure class="teaser-cell"><figcaption>CodeFormer</figcaption><img src="static/images/v2/teaser/codeformer.webp" alt="CodeFormer restoration"></figure>
+          <figure class="teaser-cell"><figcaption>RefSTAR</figcaption><img src="static/images/v2/teaser/refstar.webp" alt="RefSTAR restoration"></figure>
+          <figure class="teaser-cell teaser-cell--ours"><figcaption>IConFace</figcaption><img src="static/images/v2/teaser/ours.webp" alt="IConFace restoration"></figure>
+          <figure class="teaser-cell"><figcaption>GT</figcaption><img src="static/images/v2/teaser/gt.webp" alt="Paired ground truth"></figure>
+        </div>
+        <p class="figure-caption"><strong>Reference-supported detail with target-aligned structure.</strong> The references and paired GT show a forehead mark obscured in the degraded observation. IConFace recovers this cue more clearly while preserving GT-consistent periocular structure.</p>
+
+        <div class="detail-comparison" aria-label="Detail and periocular crops">
+          <article><h3>CodeFormer</h3><img src="static/images/v2/teaser/codeformer_detail.webp" alt="CodeFormer forehead detail"><img src="static/images/v2/teaser/codeformer_eye.webp" alt="CodeFormer eye detail"></article>
+          <article><h3>RefSTAR</h3><img src="static/images/v2/teaser/refstar_detail.webp" alt="RefSTAR forehead detail"><img src="static/images/v2/teaser/refstar_eye.webp" alt="RefSTAR eye detail"></article>
+          <article class="detail-comparison--ours"><h3>IConFace</h3><img src="static/images/v2/teaser/ours_detail.webp" alt="IConFace forehead detail"><img src="static/images/v2/teaser/ours_eye.webp" alt="IConFace eye detail"></article>
+          <article><h3>GT</h3><img src="static/images/v2/teaser/gt_detail.webp" alt="Ground-truth forehead detail"><img src="static/images/v2/teaser/gt_eye.webp" alt="Ground-truth eye detail"></article>
         </div>
       </div>
     </section>
 
-    <section class="section hero is-light">
+    <section class="section section-soft" aria-labelledby="abstract-heading">
+      <div class="container is-max-desktop prose-block">
+        <h2 id="abstract-heading" class="section-title">Abstract</h2>
+        <p>Severe face degradation can remove person-specific evidence, making restoration underdetermined. A generative prior may recover a sharp, plausible face yet miss localized traits that persist across images of the same person. Same-identity references supply this missing evidence, while the degraded observation anchors target structure. We propose <strong>IConFace</strong>, a fine-grained identity-conditioned framework that optionally conditions restoration on up to three same-identity references. Its hybrid concat backbone retains degraded and reference observations as dense visual tokens, preserving localized reference evidence. An identity pathway provides compact multi-reference guidance, while a degraded-structure pathway injects full-field and local-residual memories to reinforce target-aligned structure. We also introduce a human-audited benchmark that measures whether persistent localized identity details survive restoration. IConFace achieves leading reference compatibility, especially under severe degradation, and the highest observed preservation rate on this benchmark. Without references, it achieves leading learned perceptual quality across five blind-restoration benchmarks. Joint reference-based and paired-target evaluations show that reference-supported identity recovery and exact target agreement are complementary.</p>
+
+        <div class="contribution-grid">
+          <article><span>01</span><h3>Dense identity evidence</h3><p>Spatially distributed reference tokens preserve localized evidence, complemented by norm-weighted global identity aggregation.</p></article>
+          <article><span>02</span><h3>Structure reinforcement</h3><p>An input residual and full-field/local-residual memories repeatedly anchor restoration to the degraded target observation.</p></article>
+          <article><span>03</span><h3>Detail-centered evaluation</h3><p>A human-audited benchmark evaluates whether persistent localized identity traits survive restoration.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="results-heading">
       <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <h2 class="title is-3">Abstract</h2>
-            <div class="content has-text-justified">
-              <p>
-                Blind face restoration is highly ill-posed under severe degradation, where identity-critical details may be missing from the degraded input. Same-identity references reduce this ambiguity, but mismatched pose, expression, illumination, age, makeup, or local facial states can lead to overuse of reference appearance. We propose <strong>IConFace</strong>, a unified reference-aware and no-reference framework with identity--structure asymmetric conditioning. References are distilled into a norm-weighted global AdaFace identity anchor for image-only modulation, while the degraded image is reinforced as the spatial structure anchor through low-rank residuals and block-wise degraded cross-attention with two-route memory. The resulting single checkpoint exploits references when available and falls back to no-reference restoration when absent, improving identity consistency, fine-detail recovery, and degraded-only restoration quality in a unified model.
-              </p>
-              <ul class="contribution-list">
-                <li>A unified optional-reference formulation where one checkpoint supports reference-aware and no-reference restoration through asymmetric identity--structure conditioning.</li>
-                <li>Lightweight pathways that use norm-weighted AdaFace modulation for reference identity and low-rank residuals with two-route degraded memory for structure and detail anchoring.</li>
-                <li>Extensive results showing improved reference-aligned identity consistency, fine-detail recovery under severe degradation, and strong no-reference perceptual quality.</li>
-              </ul>
-            </div>
-          </div>
+        <h2 id="results-heading" class="section-title">Key Results</h2>
+        <div class="result-grid">
+          <article><strong>3 / 3</strong><h3>Reference-aware benchmarks</h3><p>Best RefAvg identity compatibility under both independent ArcFace and MagFace evaluation.</p></article>
+          <article><strong>160 / 167</strong><h3>Localized traits preserved</h3><p>A 95.8% human-audited preservation rate, the highest observed result on PID-167.</p></article>
+          <article><strong>5</strong><h3>Blind-restoration benchmarks</h3><p>Leading learned perceptual quality across all five evaluated datasets when references are unavailable.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-soft" aria-labelledby="method-heading">
       <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column is-full">
-            <h2 class="title is-3 has-text-centered">Method Overview</h2>
-            <div class="content has-text-justified method-summary">
-              <p>
-                IConFace is built on the FLUX.2-klein-base-4B hybrid concat restoration backbone. The main sequence concatenates noisy scene tokens, degraded-image tokens, and optional reference tokens, while no-reference mode removes the reference segment rather than duplicating placeholders. On top of the backbone, a global identity pathway aggregates valid references into a norm-weighted AdaFace anchor for image-only modulation, and a degraded structure pathway reinforces the spatially aligned degraded observation with low-rank input residuals plus block-wise degraded cross-attention. The two-route memory separates base structure from local detail so the model can use reference identity evidence without copying mismatched pose, expression, illumination, age, makeup, or local facial state.
-              </p>
-            </div>
-            <div class="figure-card">
-              <img src="static/images/method/iconface_framework.jpg" alt="IConFace framework diagram" class="method-figure">
-            </div>
-            <div class="sample-strip">
-              <div class="sample-item">
-                <div class="sample-label">Ref 1</div>
-                <img src="static/images/method/sample_ref1.jpg" alt="Reference image 1">
-              </div>
-              <div class="sample-item">
-                <div class="sample-label">Ref 2</div>
-                <img src="static/images/method/sample_ref2.jpg" alt="Reference image 2">
-              </div>
-              <div class="sample-item">
-                <div class="sample-label">Ref 3</div>
-                <img src="static/images/method/sample_ref3.jpg" alt="Reference image 3">
-              </div>
-              <div class="sample-item">
-                <div class="sample-label">LQ</div>
-                <img src="static/images/method/sample_deg.jpg" alt="Low-quality input">
-              </div>
-              <div class="sample-item">
-                <div class="sample-label">Ours</div>
-                <img src="static/images/method/sample_ours.jpg" alt="IConFace output">
-              </div>
-              <div class="sample-item">
-                <div class="sample-label">GT</div>
-                <img src="static/images/method/sample_gt.jpg" alt="Ground truth">
-              </div>
-            </div>
-          </div>
+        <h2 id="method-heading" class="section-title">Method</h2>
+        <p class="section-intro">IConFace keeps reference evidence spatially accessible while reinforcing target-aligned structure from the degraded observation.</p>
+        <figure class="framework-card">
+          <img src="static/images/v2/framework.png" alt="IConFace framework with dense visual tokens, identity guidance, and degraded-structure memories">
+          <figcaption>The noisy scene latent is concatenated with VAE-encoded degraded-image and optional reference tokens. Norm-weighted AdaFace aggregation supplies compact multi-reference identity guidance, while the degraded-structure adapter adds an input residual and full-field/local-residual memories.</figcaption>
+        </figure>
+        <div class="method-pillars">
+          <article><h3>Dense reference route</h3><p>References remain spatially distributed visual tokens throughout restoration.</p></article>
+          <article><h3>Identity guidance</h3><p>Norm-weighted aggregation provides compact multi-reference conditioning.</p></article>
+          <article><h3>Degraded-structure route</h3><p>Same-grid residual and memory paths reinforce target-aligned structure at multiple spatial scales.</p></article>
         </div>
       </div>
     </section>
 
-
-
-    <section class="section">
-      <div class="container is-max-widescreen gallery-wide">
-        <h2 class="title is-3 has-text-centered">Main Paper Figure Panels</h2>
-        <p class="section-intro has-text-centered">
-          Qualitative figure panels from the AAAI main paper, including reference-aware comparisons, no-reference comparisons, and ablation examples.
-        </p>
-        <div id="main-paper-figures-root" class="dataset-gallery-root"></div>
+    <section class="section evidence-section" aria-labelledby="reference-heading">
+      <div class="container gallery-container">
+        <h2 id="reference-heading" class="section-title">Reference-Aware Restoration</h2>
+        <p class="section-intro">Headline identity evaluation averages output-to-reference similarities within each sample (RefAvg). ArcFace and MagFace are independent of the AdaFace encoder used during training.</p>
+        <div class="dataset-gallery-root" data-gallery-groups="reference-featured,reference-extended"></div>
       </div>
     </section>
 
-    <section class="section hero is-light">
-      <div class="container is-max-widescreen gallery-wide">
-        <h2 class="title is-3 has-text-centered">Supplementary Visual Evidence</h2>
-        <p class="section-intro has-text-centered">
-          Supplementary panels are regenerated from AAAI_IConface_supp.tex and its figure input: selected reference--GT gap diagnostics, four reference-aware datasets, five no-reference datasets, and three reference-aware ablation datasets.
-        </p>
-        <div id="supplementary-figures-root" class="dataset-gallery-root"></div>
+    <section class="section section-soft" aria-labelledby="detail-heading">
+      <div class="container is-max-widescreen detail-section">
+        <h2 id="detail-heading" class="section-title">Persistent Localized Identity Details</h2>
+        <p class="section-intro">PID-167 asks whether a localized identity trait supported by the paired GT and a same-identity reference remains visible after restoration.</p>
+        <div class="detail-evidence-grid">
+          <figure class="evidence-figure evidence-figure--chart">
+            <img src="static/images/v2/pid167_preservation_rate.png" alt="PID-167 preservation rates for six restoration methods">
+            <figcaption>IConFace preserves 160 of 167 audited traits, giving the highest observed preservation rate.</figcaption>
+          </figure>
+          <figure class="evidence-figure evidence-figure--wide">
+            <img src="static/images/v2/localized_detail_main.png" alt="Localized cheek-mole preservation comparison">
+            <figcaption>IConFace more completely preserves the displayed three-mole cheek pattern and its spatial arrangement.</figcaption>
+          </figure>
+        </div>
+        <details class="large-figure-disclosure" data-lazy-figure>
+          <summary>Open the extended localized-detail gallery</summary>
+          <figure>
+            <img data-src="static/images/v2/localized_detail_extended.png" alt="Extended PID-167 localized identity-detail examples">
+            <figcaption>Expanded examples of moles, scars, pigmentation, and other persistent localized traits. Red boxes identify the enlarged source regions.</figcaption>
+          </figure>
+        </details>
+      </div>
+    </section>
+
+    <section class="section evidence-section" aria-labelledby="blind-heading">
+      <div class="container gallery-container">
+        <h2 id="blind-heading" class="section-title">No-Reference Restoration</h2>
+        <p class="section-intro">Across diverse ages, poses, occlusions, illumination, and degradation conditions, IConFace recovers clear eyes and coherent facial components while preserving visible occlusion boundaries and surrounding structure.</p>
+        <div class="dataset-gallery-root" data-gallery-groups="blind-featured,blind-extended"></div>
+      </div>
+    </section>
+
+    <section class="section section-soft evidence-section" aria-labelledby="ablation-heading">
+      <div class="container gallery-container">
+        <h2 id="ablation-heading" class="section-title">Component Ablation</h2>
+        <p class="section-intro">Two main-paper examples illustrate how identity guidance and degraded-structure reinforcement complement the dense concat backbone. The full two-route configuration yields the strongest displayed Ref₁ similarity in both cases.</p>
+        <div class="dataset-gallery-root" data-gallery-groups="ablation-main"></div>
       </div>
     </section>
 
     <section class="section" id="BibTeX">
-      <div class="container is-max-desktop content">
+      <div class="container is-max-desktop">
         <div class="bibtex-header">
-          <h2 class="title">BibTeX</h2>
-          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-            <i class="fas fa-copy"></i>
-            <span class="copy-text">Copy</span>
-          </button>
+          <h2 class="section-title section-title--left">BibTeX</h2>
+          <button class="copy-bibtex-btn" type="button"><span class="copy-text">Copy</span></button>
         </div>
         <pre id="bibtex-code"><code>@article{niu2026iconface,
-  title={IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration},
+  title={IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration},
   author={Niu, Axi and Zhang, Jinyang and Qing, Senyan},
   journal={arXiv preprint arXiv:2605.02814},
   year={2026},
@@ -355,19 +235,10 @@
   </main>
 
   <footer class="footer">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content">
-            <p>
-              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-              The page content and visual assets are customized for the IConFace project.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div class="container is-max-desktop">
+      <p>IConFace project page · Updated to match arXiv v2.</p>
+      <p class="footer-credit">Built from the Academic Project Page template.</p>
     </div>
   </footer>
-
 </body>
 </html>

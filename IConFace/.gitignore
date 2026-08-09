@@ -1,4 +1,4 @@
-# Generated PNG sources replaced by compressed JPG assets on the project page.
+# Legacy generated PNG panels are replaced by high-quality WebP assets.
 static/gallery/**/*.png
 static/images/method/*.png
 static/images/teaser/**/*.png
@@ -8,3 +8,6 @@ static/images/social_preview.png
 # Keep browser icons as PNG.
 !static/images/favicon-iconface.png
 !static/images/apple-touch-icon-iconface.png
+
+# Local Python validation cache.
+scripts/__pycache__/

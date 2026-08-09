@@ -1,0 +1,1880 @@
+{
+  "version": 2,
+  "source": "IConface_v1.tex and IConface_supp_v1.tex",
+  "groups": [
+    {
+      "id": "reference-featured",
+      "title": "Featured comparisons",
+      "description": "Three main-paper cases under the official reference configuration of each method.",
+      "datasets": [
+        {
+          "id": "main-ref-celeba-test-ref",
+          "title": "CelebA-Test-Ref",
+          "description": "Main-paper comparison, case 00645.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Reference"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "00645",
+              "images": {
+                "ref1": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/ref1.webp",
+                "deg": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/deg.webp",
+                "refldm": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/faceme.webp",
+                "refstar": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/refstar.webp",
+                "ours": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/ours.webp",
+                "gt": "static/gallery/v2/reference-featured/CelebA-Test-Ref/00645/gt.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-ref-ffhq-ref-moderate",
+          "title": "FFHQ-Ref Moderate",
+          "description": "Main-paper comparison, case 03016.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Reference"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "03016",
+              "images": {
+                "ref1": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/ref1.webp",
+                "deg": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/deg.webp",
+                "refldm": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/faceme.webp",
+                "refstar": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/refstar.webp",
+                "ours": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/ours.webp",
+                "gt": "static/gallery/v2/reference-featured/FFHQ-Ref-Moderate/03016/gt.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-ref-ffhq-ref-severe",
+          "title": "FFHQ-Ref Severe",
+          "description": "Main-paper comparison, case 12744.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Reference"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "12744",
+              "images": {
+                "ref1": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/ref1.webp",
+                "deg": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/deg.webp",
+                "refldm": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/faceme.webp",
+                "refstar": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/refstar.webp",
+                "ours": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/ours.webp",
+                "gt": "static/gallery/v2/reference-featured/FFHQ-Ref-Severe/12744/gt.webp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reference-extended",
+      "title": "Extended reference-aware gallery",
+      "description": "Twenty-seven supplementary cases; each dataset expands only when requested.",
+      "datasets": [
+        {
+          "id": "supp-ref-celeba-test-ref",
+          "title": "CelebA-Test-Ref",
+          "description": "Nine extended CelebA-Test-Ref comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Ref₁"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "dmdnet",
+              "label": "DMDNet"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "18646",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18646/gt.webp"
+              }
+            },
+            {
+              "sample_id": "20257",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/20257/gt.webp"
+              }
+            },
+            {
+              "sample_id": "26060",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/26060/gt.webp"
+              }
+            },
+            {
+              "sample_id": "02060",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/02060/gt.webp"
+              }
+            },
+            {
+              "sample_id": "24093",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/24093/gt.webp"
+              }
+            },
+            {
+              "sample_id": "00218",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/00218/gt.webp"
+              }
+            },
+            {
+              "sample_id": "27315",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/27315/gt.webp"
+              }
+            },
+            {
+              "sample_id": "18375",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/18375/gt.webp"
+              }
+            },
+            {
+              "sample_id": "08806",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/CelebA-Test-Ref/08806/gt.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-ref-ffhq-ref-moderate",
+          "title": "FFHQ-Ref Moderate",
+          "description": "Nine extended FFHQ-Ref Moderate comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Ref₁"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "dmdnet",
+              "label": "DMDNet"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "57244",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/57244/gt.webp"
+              }
+            },
+            {
+              "sample_id": "31223",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/31223/gt.webp"
+              }
+            },
+            {
+              "sample_id": "48700",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/48700/gt.webp"
+              }
+            },
+            {
+              "sample_id": "08081",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/08081/gt.webp"
+              }
+            },
+            {
+              "sample_id": "44570",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/44570/gt.webp"
+              }
+            },
+            {
+              "sample_id": "55156",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/55156/gt.webp"
+              }
+            },
+            {
+              "sample_id": "54575",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/54575/gt.webp"
+              }
+            },
+            {
+              "sample_id": "02647",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/02647/gt.webp"
+              }
+            },
+            {
+              "sample_id": "15714",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Moderate/15714/gt.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-ref-ffhq-ref-severe",
+          "title": "FFHQ-Ref Severe",
+          "description": "Nine extended FFHQ-Ref Severe comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Ref₁"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "dmdnet",
+              "label": "DMDNet"
+            },
+            {
+              "key": "refldm",
+              "label": "ReF-LDM"
+            },
+            {
+              "key": "instantrestore",
+              "label": "InstantRestore"
+            },
+            {
+              "key": "faceme",
+              "label": "FaceMe"
+            },
+            {
+              "key": "refstar",
+              "label": "RefSTAR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "02293",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02293/gt.webp"
+              }
+            },
+            {
+              "sample_id": "48700",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/48700/gt.webp"
+              }
+            },
+            {
+              "sample_id": "04716",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/04716/gt.webp"
+              }
+            },
+            {
+              "sample_id": "12051",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/12051/gt.webp"
+              }
+            },
+            {
+              "sample_id": "02647",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/02647/gt.webp"
+              }
+            },
+            {
+              "sample_id": "13427",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/13427/gt.webp"
+              }
+            },
+            {
+              "sample_id": "14836",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/14836/gt.webp"
+              }
+            },
+            {
+              "sample_id": "27211",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/27211/gt.webp"
+              }
+            },
+            {
+              "sample_id": "09880",
+              "images": {
+                "ref1": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/ref1.webp",
+                "deg": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/deg.webp",
+                "dmdnet": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/dmdnet.webp",
+                "refldm": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/refldm.webp",
+                "instantrestore": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/instantrestore.webp",
+                "faceme": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/faceme.webp",
+                "refstar": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/refstar.webp",
+                "ours": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/ours.webp",
+                "gt": "static/gallery/v2/reference-extended/FFHQ-Ref-Severe/09880/gt.webp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blind-featured",
+      "title": "Featured comparisons",
+      "description": "One main-paper example from each of the five blind-restoration benchmarks.",
+      "datasets": [
+        {
+          "id": "main-blind-lfw",
+          "title": "LFW",
+          "description": "Main-paper no-reference comparison, case Adrian_Annus_0001_00.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "Adrian_Annus_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-featured/LFW/Adrian_Annus_0001_00/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-blind-celebchild",
+          "title": "CelebChild",
+          "description": "Main-paper no-reference comparison, case Child__040_Zooey_Deschanel_00.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "Child__040_Zooey_Deschanel_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-featured/CelebChild/Child__040_Zooey_Deschanel_00/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-blind-webphoto",
+          "title": "WebPhoto",
+          "description": "Main-paper no-reference comparison, case 00022_00.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "00022_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-featured/WebPhoto/00022_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-featured/WebPhoto/00022_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-featured/WebPhoto/00022_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-featured/WebPhoto/00022_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-featured/WebPhoto/00022_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-featured/WebPhoto/00022_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-featured/WebPhoto/00022_00/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-blind-wider-test",
+          "title": "Wider-Test",
+          "description": "Main-paper no-reference comparison, case 0060.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "0060",
+              "images": {
+                "deg": "static/gallery/v2/blind-featured/Wider-Test/0060/deg.webp",
+                "codeformer": "static/gallery/v2/blind-featured/Wider-Test/0060/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-featured/Wider-Test/0060/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-featured/Wider-Test/0060/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-featured/Wider-Test/0060/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-featured/Wider-Test/0060/daefr.webp",
+                "ours": "static/gallery/v2/blind-featured/Wider-Test/0060/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "main-blind-celeba-test",
+          "title": "CelebA-Test",
+          "description": "Main-paper no-reference comparison, case 00000216.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "00000216",
+              "images": {
+                "deg": "static/gallery/v2/blind-featured/CelebA-Test/00000216/deg.webp",
+                "codeformer": "static/gallery/v2/blind-featured/CelebA-Test/00000216/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-featured/CelebA-Test/00000216/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-featured/CelebA-Test/00000216/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-featured/CelebA-Test/00000216/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-featured/CelebA-Test/00000216/daefr.webp",
+                "ours": "static/gallery/v2/blind-featured/CelebA-Test/00000216/ours.webp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blind-extended",
+      "title": "Extended no-reference gallery",
+      "description": "Forty-five supplementary cases across all five benchmarks; datasets load on demand.",
+      "datasets": [
+        {
+          "id": "supp-blind-celeba-test",
+          "title": "CelebA-Test",
+          "description": "Nine extended CelebA-Test comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "00000216",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00000216/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00000216/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00000216/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00000216/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00000216/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00000216/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00000216/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00002645",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00002645/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00002645/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00002645/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00002645/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00002645/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00002645/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00002645/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00000893",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00000893/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00000893/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00000893/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00000893/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00000893/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00000893/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00000893/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00000894",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00000894/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00000894/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00000894/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00000894/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00000894/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00000894/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00000894/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00001737",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00001737/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00001737/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00001737/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00001737/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00001737/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00001737/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00001737/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00000032",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00000032/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00000032/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00000032/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00000032/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00000032/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00000032/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00000032/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00000060",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00000060/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00000060/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00000060/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00000060/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00000060/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00000060/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00000060/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00002781",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00002781/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00002781/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00002781/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00002781/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00002781/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00002781/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00002781/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00002191",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebA-Test/00002191/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebA-Test/00002191/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebA-Test/00002191/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebA-Test/00002191/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebA-Test/00002191/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebA-Test/00002191/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebA-Test/00002191/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-blind-lfw",
+          "title": "LFW",
+          "description": "Nine extended LFW comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "Adrian_Annus_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Adrian_Annus_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Ben_Davis_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Ben_Davis_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Thomas_Haeggstroem_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Thomas_Haeggstroem_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Brian_Scalabrine_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Brian_Scalabrine_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Abdul_Majeed_Shobokshi_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Abdul_Majeed_Shobokshi_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Curtis_Joseph_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Curtis_Joseph_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Alfonso_Portillo_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Alfonso_Portillo_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adrien_Brody_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/Adrien_Brody_0001_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "AJ_Lamas_0001_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/LFW/AJ_Lamas_0001_00/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-blind-celebchild",
+          "title": "CelebChild",
+          "description": "Nine extended CelebChild comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "Child__040_Zooey_Deschanel_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Child__040_Zooey_Deschanel_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adult__005_Chloe_Grace_Moretz_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Adult__005_Chloe_Grace_Moretz_01/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Child__107_John_Wayne_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Child__107_John_Wayne_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Child__061_Demi_Moore_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Child__061_Demi_Moore_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adult__034_Lady_Gaga_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Adult__034_Lady_Gaga_01/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adult__012_Jackie_Chan_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Adult__012_Jackie_Chan_01/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adult__007_Benedict_Cumberbatch_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Adult__007_Benedict_Cumberbatch_01/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Child__001_Ryan_Gosling_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Child__001_Ryan_Gosling_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "Adult__000_Adele_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/CelebChild/Adult__000_Adele_01/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-blind-webphoto",
+          "title": "WebPhoto",
+          "description": "Nine extended WebPhoto comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "00022_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00022_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00022_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00022_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00022_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00022_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00022_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00022_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00105_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00105_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00105_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00105_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00105_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00105_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00105_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00105_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00018_01",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00018_01/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00018_01/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00018_01/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00018_01/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00018_01/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00018_01/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00018_01/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00030_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00030_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00030_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00030_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00030_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00030_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00030_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00030_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00010_02",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00010_02/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00010_02/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00010_02/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00010_02/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00010_02/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00010_02/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00010_02/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00059_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00059_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00059_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00059_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00059_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00059_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00059_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00059_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00000_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00000_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00000_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00000_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00000_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00000_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00000_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00000_00/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00006_04",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00006_04/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00006_04/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00006_04/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00006_04/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00006_04/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00006_04/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00006_04/ours.webp"
+              }
+            },
+            {
+              "sample_id": "00009_00",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/WebPhoto/00009_00/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/WebPhoto/00009_00/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/WebPhoto/00009_00/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/WebPhoto/00009_00/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/WebPhoto/00009_00/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/WebPhoto/00009_00/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/WebPhoto/00009_00/ours.webp"
+              }
+            }
+          ]
+        },
+        {
+          "id": "supp-blind-wider-test",
+          "title": "Wider-Test",
+          "description": "Nine extended Wider-Test comparisons from the supplementary material.",
+          "columns": [
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "codeformer",
+              "label": "CodeFormer"
+            },
+            {
+              "key": "gfpgan",
+              "label": "GFP-GAN"
+            },
+            {
+              "key": "vqfr",
+              "label": "VQFR"
+            },
+            {
+              "key": "restoreformerpp",
+              "label": "RF++"
+            },
+            {
+              "key": "daefr",
+              "label": "DAEFR"
+            },
+            {
+              "key": "ours",
+              "label": "IConFace"
+            }
+          ],
+          "open_by_default": false,
+          "cases": [
+            {
+              "sample_id": "0060",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0060/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0060/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0060/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0060/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0060/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0060/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0060/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0000",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0000/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0000/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0000/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0000/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0000/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0000/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0000/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0001",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0001/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0001/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0001/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0001/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0001/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0001/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0001/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0038",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0038/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0038/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0038/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0038/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0038/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0038/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0038/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0039",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0039/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0039/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0039/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0039/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0039/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0039/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0039/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0049",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0049/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0049/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0049/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0049/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0049/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0049/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0049/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0011",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0011/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0011/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0011/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0011/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0011/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0011/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0011/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0020",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0020/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0020/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0020/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0020/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0020/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0020/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0020/ours.webp"
+              }
+            },
+            {
+              "sample_id": "0029",
+              "images": {
+                "deg": "static/gallery/v2/blind-extended/Wider-Test/0029/deg.webp",
+                "codeformer": "static/gallery/v2/blind-extended/Wider-Test/0029/codeformer.webp",
+                "gfpgan": "static/gallery/v2/blind-extended/Wider-Test/0029/gfpgan.webp",
+                "vqfr": "static/gallery/v2/blind-extended/Wider-Test/0029/vqfr.webp",
+                "restoreformerpp": "static/gallery/v2/blind-extended/Wider-Test/0029/restoreformerpp.webp",
+                "daefr": "static/gallery/v2/blind-extended/Wider-Test/0029/daefr.webp",
+                "ours": "static/gallery/v2/blind-extended/Wider-Test/0029/ours.webp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ablation-main",
+      "title": "Two representative component comparisons",
+      "description": "The concise ablation view mirrors the two cases in the main paper.",
+      "datasets": [
+        {
+          "id": "ablation-ffhq-ref-moderate",
+          "title": "FFHQ-Ref Moderate",
+          "description": "Main-paper component comparison, case 03234. Arc labels are cosine similarity to the displayed Ref₁.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Ref₁"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "concat",
+              "label": "Concat"
+            },
+            {
+              "key": "struct",
+              "label": "Concat + Struct"
+            },
+            {
+              "key": "id",
+              "label": "Concat + ID"
+            },
+            {
+              "key": "1r",
+              "label": "ID + Struct (1R)"
+            },
+            {
+              "key": "full",
+              "label": "Full (2R)"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "03234",
+              "images": {
+                "ref1": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/ref1.webp",
+                "deg": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/deg.webp",
+                "concat": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/concat.webp",
+                "struct": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/struct.webp",
+                "id": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/id.webp",
+                "1r": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/1r.webp",
+                "full": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/full.webp",
+                "gt": "static/gallery/v2/ablation-main/FFHQ-Ref-Moderate/03234/gt.webp"
+              },
+              "scores": {
+                "ref1": {
+                  "label": "Arc",
+                  "value": 1.0
+                },
+                "deg": {
+                  "label": "Arc",
+                  "value": 0.479
+                },
+                "concat": {
+                  "label": "Arc",
+                  "value": 0.553
+                },
+                "struct": {
+                  "label": "Arc",
+                  "value": 0.602
+                },
+                "id": {
+                  "label": "Arc",
+                  "value": 0.643
+                },
+                "1r": {
+                  "label": "Arc",
+                  "value": 0.648
+                },
+                "full": {
+                  "label": "Arc",
+                  "value": 0.656
+                },
+                "gt": {
+                  "label": "Arc",
+                  "value": 0.607
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "ablation-ffhq-ref-severe",
+          "title": "FFHQ-Ref Severe",
+          "description": "Main-paper component comparison, case 31223. Arc labels are cosine similarity to the displayed Ref₁.",
+          "columns": [
+            {
+              "key": "ref1",
+              "label": "Ref₁"
+            },
+            {
+              "key": "deg",
+              "label": "LQ"
+            },
+            {
+              "key": "concat",
+              "label": "Concat"
+            },
+            {
+              "key": "struct",
+              "label": "Concat + Struct"
+            },
+            {
+              "key": "id",
+              "label": "Concat + ID"
+            },
+            {
+              "key": "1r",
+              "label": "ID + Struct (1R)"
+            },
+            {
+              "key": "full",
+              "label": "Full (2R)"
+            },
+            {
+              "key": "gt",
+              "label": "GT"
+            }
+          ],
+          "open_by_default": true,
+          "cases": [
+            {
+              "sample_id": "31223",
+              "images": {
+                "ref1": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/ref1.webp",
+                "deg": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/deg.webp",
+                "concat": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/concat.webp",
+                "struct": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/struct.webp",
+                "id": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/id.webp",
+                "1r": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/1r.webp",
+                "full": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/full.webp",
+                "gt": "static/gallery/v2/ablation-main/FFHQ-Ref-Severe/31223/gt.webp"
+              },
+              "scores": {
+                "ref1": {
+                  "label": "Arc",
+                  "value": 1.0
+                },
+                "deg": {
+                  "label": "Arc",
+                  "value": 0.047
+                },
+                "concat": {
+                  "label": "Arc",
+                  "value": 0.467
+                },
+                "struct": {
+                  "label": "Arc",
+                  "value": 0.523
+                },
+                "id": {
+                  "label": "Arc",
+                  "value": 0.535
+                },
+                "1r": {
+                  "label": "Arc",
+                  "value": 0.54
+                },
+                "full": {
+                  "label": "Arc",
+                  "value": 0.588
+                },
+                "gt": {
+                  "label": "Arc",
+                  "value": 0.545
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

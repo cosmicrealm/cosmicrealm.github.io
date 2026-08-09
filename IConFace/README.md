@@ -1,29 +1,40 @@
 # IConFace Project Page
 
-This directory contains the static project page for IConFace:
+Static project page for:
 
-- https://cosmicrealm.github.io/IConFace/
-
-## Current Links
+> IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration
 
 - Project: https://cosmicrealm.github.io/IConFace/
+- Paper: https://arxiv.org/pdf/2605.02814
 - arXiv: https://arxiv.org/abs/2605.02814
-- Code: https://github.com/cosmicrealm/IConFace
-- Supplementary PDF: `static/pdfs/iconface_supp.pdf`
+- Supplementary: https://arxiv.org/pdf/2605.02814#page=10
 
-## Main Files
+The public code button is intentionally hidden until a repository is released.
 
-- `index.html`: page content, metadata, paper/code links, and BibTeX.
-- `static/css/index.css`: page styling.
-- `static/js/index.js`: BibTeX copy, gallery rendering, and scroll behavior.
-- `static/gallery/paper/manifest.json`: generated figure manifest for main-paper and supplementary panels.
+## Source of truth
 
-## Asset Notes
+The page follows the final v1 activity files in `paper_submission_iconface`:
 
-Visible page images are compressed as JPG. Browser icons remain PNG.
+- `IConface_v1.tex`
+- `IConface_supp_v1.tex`
+- `figures/` and `fingers/` referenced by those files
 
-Source materials were generated from:
+The website does not modify the paper sources. Main-paper and supplementary visual assets are mirrored into `static/gallery/v2/`; ordinary face panels use high-quality WebP, while the framework and localized-detail composites remain lossless PNG.
 
-- `/Users/zhangjinyang/code/local/flux-restoration/paper_submission/AAAI_IConface.tex`
-- `/Users/zhangjinyang/code/local/flux-restoration/paper_submission/AAAI_IConface_supp.tex`
-- `/Users/zhangjinyang/code/local/flux-restoration/paper_submission/iconface_refgap_selected_figures.tex`
+## Refreshing paper assets
+
+```bash
+python3 IConFace/scripts/sync_paper_assets.py \
+  --paper-root /Users/zhangjinyang/code/local/flux-restoration/paper_submission_iconface
+```
+
+The script uses an explicit source map rather than parsing TeX macros. Update that map whenever selected paper cases change.
+It requires `cwebp` and `ffmpeg` on `PATH`.
+
+## Main files
+
+- `index.html`: metadata, paper narrative, result summaries, and gallery anchors.
+- `static/css/index.css`: responsive project-page styling.
+- `static/js/index.js`: on-demand gallery rendering, BibTeX copy, and scroll behavior.
+- `static/gallery/v2/manifest.json`: generated gallery metadata.
+- `scripts/sync_paper_assets.py`: reproducible asset synchronization.

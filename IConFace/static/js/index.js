@@ -1,282 +1,216 @@
-const LABEL_MAP = {
-  ref1: 'Ref 1',
-  ref2: 'Ref 2',
-  ref3: 'Ref 3',
-  lq: 'LQ',
-  deg: 'LQ',
-  gt: 'GT',
-  ours: 'Ours',
-  dmdnet: 'DMDNet',
-  refldm: 'ReF-LDM',
-  restorerid: 'RestorerID',
-  instantrestore: 'InstantRestore',
-  faceme: 'FaceMe',
-  codeformer: 'CodeFormer',
-  gfpgan: 'GFP-GAN',
-  restoreformerpp: 'RestoreFormer++',
-  vqfr: 'VQFR',
-  daefr: 'DAEFR',
-  concat: 'Concat',
-  struct: 'Struct',
-  id: 'ID',
-  '1r': '1-Route',
-  full: 'Full'
-};
+const MANIFEST_URL = 'static/gallery/v2/manifest.json';
 
-function copyBibTeX() {
-  const bibtexElement = document.getElementById('bibtex-code');
-  const button = document.querySelector('.copy-bibtex-btn');
-  const copyText = button ? button.querySelector('.copy-text') : null;
-
-  if (!bibtexElement || !button || !copyText) return;
-
-  navigator.clipboard.writeText(bibtexElement.textContent).then(function() {
-    button.classList.add('copied');
-    copyText.textContent = 'Copied';
-    setTimeout(function() {
-      button.classList.remove('copied');
-      copyText.textContent = 'Copy';
-    }, 2000);
-  }).catch(function() {
-    const textArea = document.createElement('textarea');
-    textArea.value = bibtexElement.textContent;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-
-    button.classList.add('copied');
-    copyText.textContent = 'Copied';
-    setTimeout(function() {
-      button.classList.remove('copied');
-      copyText.textContent = 'Copy';
-    }, 2000);
-  });
-}
-
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-}
-
-function formatColumnLabel(key) {
-  return LABEL_MAP[key] || key;
-}
-
-function computeDatasetWidthPx(columnCount, galleryType) {
-  const gapPx = 12.8;
-  const paddingPx = 32;
-  let tileWidthPx = 150;
-
-  if (galleryType === 'blind') {
-    tileWidthPx = columnCount >= 8 ? 148 : 146;
-  } else if (galleryType === 'ablation') {
-    tileWidthPx = 150;
-  } else {
-    tileWidthPx = 150;
-  }
-
-  return Math.round(columnCount * tileWidthPx + Math.max(0, columnCount - 1) * gapPx + paddingPx);
-}
-
-function getDisplayColumns(dataset) {
-  if (dataset.columns.includes('ref2') || dataset.columns.includes('ref3')) {
-    return dataset.columns.filter((key) => key !== 'ref2' && key !== 'ref3');
-  }
-  return dataset.columns;
-}
-
-function createImageTile(label, imagePath, score) {
+function createImageTile(column, imagePath, score) {
   const tile = document.createElement('div');
-  tile.className = imagePath ? 'image-tile' : 'image-tile image-tile--missing';
-
-  const tileLabel = document.createElement('div');
-  tileLabel.className = 'image-tile-label';
-  tileLabel.textContent = label;
-  tile.appendChild(tileLabel);
-
-  if (imagePath) {
-    const link = document.createElement('a');
-    link.href = imagePath;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-
-    const img = document.createElement('img');
-    img.src = imagePath;
-    img.alt = label;
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    link.appendChild(img);
-    tile.appendChild(link);
-  } else {
-    const placeholder = document.createElement('div');
-    placeholder.className = 'image-tile-placeholder';
-    placeholder.textContent = 'N/A';
-    tile.appendChild(placeholder);
+  tile.className = 'image-tile';
+  if (column.key === 'ours' || column.key === 'full') {
+    tile.classList.add('image-tile--ours');
   }
 
-  if (typeof score === 'number') {
+  const label = document.createElement('div');
+  label.className = 'image-tile-label';
+  label.textContent = column.label;
+  tile.appendChild(label);
+
+  const link = document.createElement('a');
+  link.href = imagePath;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+
+  const image = document.createElement('img');
+  image.src = imagePath;
+  image.alt = `${column.label} restoration panel`;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  link.appendChild(image);
+  tile.appendChild(link);
+
+  if (score && typeof score.value === 'number') {
     const scoreNode = document.createElement('div');
     scoreNode.className = 'image-tile-score';
-    scoreNode.textContent = `R1 ${score.toFixed(3)}`;
-    tile.appendChild(scoreNode);
-  } else if (score && typeof score === 'object') {
-    const scoreNode = document.createElement('div');
-    scoreNode.className = 'image-tile-score image-tile-score--stacked';
-
-    if (typeof score.gt === 'number') {
-      const gtLine = document.createElement('span');
-      gtLine.textContent = `GT ${score.gt.toFixed(3)}`;
-      scoreNode.appendChild(gtLine);
-    }
-
-    if (typeof score.r1 === 'number') {
-      const r1Line = document.createElement('span');
-      r1Line.textContent = `R1 ${score.r1.toFixed(3)}`;
-      scoreNode.appendChild(r1Line);
-    }
-
+    scoreNode.textContent = `${score.label || 'Score'} ${score.value.toFixed(3)}`;
     tile.appendChild(scoreNode);
   }
 
   return tile;
 }
 
-function createCaseCard(dataset, item, index) {
+function createCaseCard(dataset, item) {
   const card = document.createElement('article');
   card.className = 'case-card';
 
-  const header = document.createElement('div');
-  header.className = 'case-card-header';
-
   const title = document.createElement('h4');
   title.className = 'case-card-title';
-  title.textContent = `#${index + 1} · ${item.sample_id}`;
-  header.appendChild(title);
+  title.textContent = `case ${item.sample_id}`;
+  card.appendChild(title);
 
-  if (typeof item.record_index === 'number') {
-    const meta = document.createElement('div');
-    meta.className = 'case-card-meta';
-    meta.textContent = `record ${item.record_index}`;
-    header.appendChild(meta);
-  }
-
-  card.appendChild(header);
+  const wrap = document.createElement('div');
+  wrap.className = 'case-strip-wrap';
 
   const strip = document.createElement('div');
   strip.className = 'case-strip';
-  const displayColumns = getDisplayColumns(dataset);
+  strip.style.setProperty('--columns', String(dataset.columns.length));
 
-  displayColumns.forEach((columnKey) => {
-    const imagePath = item.images ? item.images[columnKey] : null;
-    const score = item.scores ? item.scores[columnKey] : null;
-    strip.appendChild(createImageTile(formatColumnLabel(columnKey), imagePath, score));
+  dataset.columns.forEach((column) => {
+    const imagePath = item.images[column.key];
+    const score = item.scores ? item.scores[column.key] : null;
+    strip.appendChild(createImageTile(column, imagePath, score));
   });
 
-  card.appendChild(strip);
+  wrap.appendChild(strip);
+  card.appendChild(wrap);
   return card;
 }
 
-function createDatasetBlock(dataset, openByDefault, galleryType) {
+function renderDatasetContent(details, dataset) {
+  if (details.dataset.rendered === 'true') return;
+
+  const content = document.createElement('div');
+  content.className = 'dataset-content';
+  dataset.cases.forEach((item) => content.appendChild(createCaseCard(dataset, item)));
+  details.appendChild(content);
+  details.dataset.rendered = 'true';
+}
+
+function createDatasetBlock(dataset) {
   const details = document.createElement('details');
   details.className = 'dataset-block';
-  const displayColumns = getDisplayColumns(dataset);
-  details.style.setProperty('--dataset-columns', String(displayColumns.length));
-  details.style.width = `min(100%, ${computeDatasetWidthPx(displayColumns.length, galleryType)}px)`;
-  if (openByDefault) {
-    details.open = true;
-  }
 
   const summary = document.createElement('summary');
-  summary.className = 'dataset-summary';
+  const textWrap = document.createElement('span');
+  textWrap.className = 'dataset-summary-text';
 
-  const titleWrap = document.createElement('div');
-  titleWrap.className = 'dataset-summary-text';
+  const title = document.createElement('span');
+  title.className = 'dataset-summary-title';
+  title.textContent = dataset.title;
+  textWrap.appendChild(title);
 
-  const title = document.createElement('h3');
-  title.className = 'dataset-title';
-  title.textContent = dataset.name;
-  titleWrap.appendChild(title);
+  const description = document.createElement('span');
+  description.className = 'dataset-summary-description';
+  description.textContent = dataset.description;
+  textWrap.appendChild(description);
 
-  const meta = document.createElement('p');
-  meta.className = 'dataset-meta';
-  meta.textContent = `${dataset.cases.length} cases · ${displayColumns.map(formatColumnLabel).join(' / ')}`;
-  titleWrap.appendChild(meta);
+  const meta = document.createElement('span');
+  meta.className = 'dataset-summary-meta';
+  meta.textContent = `${dataset.cases.length} ${dataset.cases.length === 1 ? 'case' : 'cases'}`;
 
-  summary.appendChild(titleWrap);
+  summary.appendChild(textWrap);
+  summary.appendChild(meta);
   details.appendChild(summary);
 
-  if (dataset.description) {
-    const description = document.createElement('p');
-    description.className = 'dataset-description';
-    description.textContent = dataset.description;
-    details.appendChild(description);
-  }
-
-  const caseList = document.createElement('div');
-  caseList.className = 'case-list';
-  dataset.cases.forEach((item, index) => {
-    caseList.appendChild(createCaseCard(dataset, item, index));
+  details.addEventListener('toggle', () => {
+    if (details.open) renderDatasetContent(details, dataset);
   });
 
-  details.appendChild(caseList);
+  if (dataset.open_by_default) {
+    details.open = true;
+    renderDatasetContent(details, dataset);
+  }
+
   return details;
 }
 
-function renderGallerySection(rootId, datasets, galleryType) {
-  const root = document.getElementById(rootId);
-  if (!root) return;
+function createGalleryGroup(group) {
+  const section = document.createElement('section');
+  section.className = 'gallery-group';
 
-  root.innerHTML = '';
-  datasets.forEach((dataset, index) => {
-    root.appendChild(createDatasetBlock(dataset, index === 0, galleryType));
-  });
+  const header = document.createElement('div');
+  header.className = 'gallery-group-header';
+
+  const title = document.createElement('h3');
+  title.textContent = group.title;
+  header.appendChild(title);
+
+  const description = document.createElement('p');
+  description.textContent = group.description;
+  header.appendChild(description);
+  section.appendChild(header);
+
+  group.datasets.forEach((dataset) => section.appendChild(createDatasetBlock(dataset)));
+  return section;
 }
 
-function renderError(rootId, message) {
-  const root = document.getElementById(rootId);
-  if (!root) return;
-  const error = document.createElement('div');
-  error.className = 'gallery-error';
-  error.textContent = message;
-  root.innerHTML = '';
-  root.appendChild(error);
+function renderGalleryRoots(manifest) {
+  const groupMap = new Map(manifest.groups.map((group) => [group.id, group]));
+  document.querySelectorAll('[data-gallery-groups]').forEach((root) => {
+    const groupIds = root.dataset.galleryGroups.split(',').map((value) => value.trim()).filter(Boolean);
+    groupIds.forEach((groupId) => {
+      const group = groupMap.get(groupId);
+      if (group) root.appendChild(createGalleryGroup(group));
+    });
+  });
 }
 
 async function loadGalleries() {
   try {
-    const [paperManifestResp] = await Promise.all([
-      fetch('static/gallery/paper/manifest.json')
-    ]);
-
-    if (!paperManifestResp.ok) {
-      throw new Error(`Failed to load paper manifest: ${paperManifestResp.status}`);
-    }
-
-    const paperManifest = await paperManifestResp.json();
-
-    renderGallerySection('main-paper-figures-root', paperManifest.main_datasets || [], 'paper');
-    renderGallerySection('supplementary-figures-root', paperManifest.supplementary_datasets || [], 'paper');
+    const response = await fetch(MANIFEST_URL);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const manifest = await response.json();
+    renderGalleryRoots(manifest);
   } catch (error) {
-    console.error(error);
-    renderError('main-paper-figures-root', 'Failed to load main-paper figure assets.');
-    renderError('supplementary-figures-root', 'Failed to load supplementary figure assets.');
+    document.querySelectorAll('[data-gallery-groups]').forEach((root) => {
+      const message = document.createElement('div');
+      message.className = 'gallery-error';
+      message.textContent = 'The visual gallery could not be loaded. Please refresh the page.';
+      root.appendChild(message);
+    });
+    console.error('Failed to load IConFace gallery manifest:', error);
   }
 }
 
-window.addEventListener('scroll', function() {
-  const scrollButton = document.querySelector('.scroll-to-top');
-  if (!scrollButton) return;
+function setupLazyFigures() {
+  document.querySelectorAll('[data-lazy-figure]').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      details.querySelectorAll('img[data-src]').forEach((image) => {
+        image.src = image.dataset.src;
+        image.removeAttribute('data-src');
+      });
+    });
+  });
+}
 
-  if (window.pageYOffset > 300) {
-    scrollButton.classList.add('visible');
-  } else {
-    scrollButton.classList.remove('visible');
-  }
-});
+function setupBibTeXCopy() {
+  const button = document.querySelector('.copy-bibtex-btn');
+  const code = document.getElementById('bibtex-code');
+  if (!button || !code) return;
 
-window.addEventListener('DOMContentLoaded', function() {
+  button.addEventListener('click', async () => {
+    const text = code.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (_) {
+      const area = document.createElement('textarea');
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+
+    const label = button.querySelector('.copy-text');
+    button.classList.add('copied');
+    label.textContent = 'Copied';
+    window.setTimeout(() => {
+      button.classList.remove('copied');
+      label.textContent = 'Copy';
+    }, 1800);
+  });
+}
+
+function setupScrollToTop() {
+  const button = document.querySelector('.scroll-to-top');
+  if (!button) return;
+
+  const updateVisibility = () => button.classList.toggle('visible', window.scrollY > 500);
+  window.addEventListener('scroll', updateVisibility, { passive: true });
+  button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  updateVisibility();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupBibTeXCopy();
+  setupScrollToTop();
+  setupLazyFigures();
   loadGalleries();
 });

@@ -64,19 +64,18 @@
   display_date: 05/2026
   teaser: /images/projects/iconface.jpg
   teaser_alt: IConFace face restoration comparison
-  highlight: Unified reference-aware face restoration
-  summary: A unified reference-aware and no-reference face restoration framework. It uses identity-structure asymmetric conditioning so one checkpoint can exploit same-identity references when available and fall back to degraded-only restoration when references are absent.
+  highlight: Fine-grained identity conditioning
+  summary: IConFace retains same-identity references as dense visual evidence and reinforces target-aligned degraded structure, recovering persistent localized identity details while also supporting blind face restoration.
   tags:
     - Face Restoration
     - Reference-aware
+    - Identity Conditioning
     - FLUX
   links:
     - label: Project
       url: /IConFace/
     - label: arXiv
       url: https://arxiv.org/abs/2605.02814
-    - label: Code
-      url: https://github.com/cosmicrealm/IConFace
 
 - name: flux-restoration
   category: Face Restoration

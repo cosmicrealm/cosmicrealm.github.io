@@ -1,5 +1,5 @@
 ---
-title: "IConFace: Identity-Structure Asymmetric Conditioning for Unified Reference-Aware Face Restoration"
+title: "IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration"
 collection: publications
 category: preprints
 permalink: /publication/IConFace
@@ -7,15 +7,13 @@ excerpt:
 date: 2026-05-04
 venue: 'arXiv preprint arXiv:2605.02814'
 teaser: /images/publications/iconface.jpg
-teaser_alt: IConFace restoration teaser
-summary: 'A unified reference-aware and no-reference face restoration framework that uses reliability-weighted identity anchors and degraded-image spatial structure anchors in one checkpoint.'
+teaser_alt: IConFace reference-aware face restoration comparison
+summary: 'A fine-grained identity-conditioned framework that retains dense reference evidence and reinforces target-aligned degraded structure.'
 paperurl: 'https://arxiv.org/abs/2605.02814'
 projecturl: 'https://cosmicrealm.github.io/IConFace/'
-codeurl: 'https://github.com/cosmicrealm/IConFace'
-codelabel: 'Code'
 ---
 
-[Project](https://cosmicrealm.github.io/IConFace/) / [arXiv](https://arxiv.org/abs/2605.02814) / [Code](https://github.com/cosmicrealm/IConFace)
+[Project](https://cosmicrealm.github.io/IConFace/) / [arXiv](https://arxiv.org/abs/2605.02814)
 
 Abstract:
-Blind face restoration is challenging under severe degradation because identity-critical details may be missing from the degraded input. Same-identity references can reduce this ambiguity, but mismatched pose, expression, illumination, age, makeup, or local facial states may cause overuse of reference appearance. IConFace addresses this with a unified reference-aware and no-reference framework based on identity-structure asymmetric conditioning. It distills references into a norm-weighted global AdaFace identity anchor for image-only modulation, reinforces the degraded image as the spatial structure anchor through low-rank residuals and block-wise degraded cross-attention, and uses a two-route memory design. A single checkpoint can use references when available and fall back to no-reference restoration when absent.
+Severe face degradation can remove person-specific evidence, making restoration underdetermined. A generative prior may recover a sharp, plausible face yet miss localized traits that persist across images of the same person. Same-identity references supply this missing evidence, while the degraded observation anchors target structure. IConFace retains degraded and reference observations as dense visual tokens, adds compact multi-reference identity guidance, and reinforces target-aligned structure through full-field and local-residual memories. A human-audited benchmark further measures whether persistent localized identity details survive restoration.
