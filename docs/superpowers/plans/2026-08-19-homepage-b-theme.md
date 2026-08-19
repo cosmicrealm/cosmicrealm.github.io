@@ -50,7 +50,7 @@
 - Modify: `_includes/head.html`
 - Modify: `_includes/masthead.html`
 - Modify: `_includes/footer.html`
-- Modify: `_includes/footer/custom.html`
+- Delete: `_includes/footer/custom.html`
 - Modify: `_includes/seo.html`
 - Modify: `_includes/tag-chip.html`
 - Modify: `_includes/head/custom.html`
@@ -73,7 +73,6 @@
 - Modify: `_pages/publications.html`
 - Modify: `_pages/foundations.md`
 - Modify: `_data/navigation.yml`
-- Modify: `_data/ui-text.yml`
 
 **Standalone pages**
 
@@ -120,6 +119,8 @@ This verifier must fail until the new architecture exists. It checks:
 - `base_path` resolves only `site.baseurl`
 
 ```python
+import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -180,6 +181,7 @@ seo = read("_includes/seo.html")
 masthead = read("_includes/masthead.html")
 base_path = read("_includes/base_path")
 home = read("_pages/home.md")
+writing = read("_pages/writing.html")
 home_layout = read("_layouts/home.html")
 single = read("_layouts/single.html")
 archive = read("_layouts/archive.html")
@@ -195,7 +197,6 @@ projects_yml = read("_data/projects.yml")
 config = read("_config.yml")
 default_layout = read("_layouts/default.html")
 author_profile = read("_includes/author-profile.html")
-footer_custom = read("_includes/footer/custom.html")
 package = json.loads(read("package.json"))
 
 require("assets/js/theme-init.js" in head, "head.html missing shared theme-init.js")
@@ -206,10 +207,13 @@ require('theme-controller.js' in scripts and 'defer' in scripts, "scripts.html m
 require('site.js' in scripts and 'defer' in scripts, "scripts.html missing deferred site.js")
 require("social-share" not in single, "single layout still renders share include")
 require(not (ROOT / "_layouts/talk.html").exists(), "_layouts/talk.html should have been removed by the architecture migration")
-require("{% if page.mathjax %}" in footer_custom and "{% if page.mermaid %}" in footer_custom, "footer/custom.html must gate heavy renderers by page flags")
-require("cdn.jsdelivr.net/npm/mathjax" not in footer_custom.lower(), "footer/custom.html still points to remote MathJax CDN")
+require(not (ROOT / "_includes/footer/custom.html").exists(), "global footer renderer include still exists")
+require("{% if page.mathjax %}" in scripts and "{% if page.mermaid %}" in scripts, "scripts.html must gate heavy renderers by page flags")
+require("cdn.jsdelivr.net/npm/mathjax" not in scripts.lower(), "scripts.html still points to remote MathJax CDN")
 require('data-theme="light"' in default_layout, "default layout lacks explicit light no-JS fallback")
 require("/writing/?tags=" in tag_chip, "tag chip still points at old writing route")
+require("URLSearchParams" not in writing and "applyFilter" not in writing, "writing page still owns duplicate inline filter runtime")
+require("page.blog_tag_filter" in archive and "include sidebar.html" in archive, "archive layout no longer renders Writing filter sidebar")
 require("layout: home" in home and "author_profile: false" in home, "home.md not on home layout")
 require("Selected Work" in home and "Representative Publications" in home and "Foundations" in home and "Recent Writing" in home, "home.md missing homepage sections")
 require("homepage:" in projects_yml and "homepage_order:" in projects_yml, "projects.yml missing homepage curation fields")
@@ -226,7 +230,7 @@ for token in ["--cr-accent-strong", "--cr-warm", "--cr-page-bg", "--cr-card-bg",
 require(":root {" not in cosmicrealm, "_cosmicrealm.scss still owns token blocks")
 for variable in ["$doc-font-size", "$type-size-1", "$global-font-family", "$small", "$x-large", "$susy", "$gray", "$danger-color", "$border-radius", "$masthead-height"]:
     require(variable in settings, f"_settings.scss missing compile-time variable {variable}")
-require('"theme/_settings"' in main_scss, "main.scss not importing shared theme settings")
+require('"theme/settings"' in main_scss, "main.scss not importing shared theme settings")
 require('"layout/tables"' in main_scss and '"layout/notices"' in main_scss and '"layout/sidebar"' in main_scss and '"syntax"' in main_scss, "main.scss dropped required layout imports")
 require('"layout/json_cv"' not in main_scss and not (ROOT / "_sass/layout/_json_cv.scss").exists(), "retired JSON CV Sass remains")
 require(not (ROOT / "_sass/_themes.scss").exists(), "legacy Sass settings owner still exists")
@@ -240,6 +244,7 @@ for rel in REAL_FOUNDATIONS + REAL_PROJECTS:
     require("theme-controller.js" in html and "site.js" in html, f"{rel} missing deferred runtime scripts")
     require("theme-tokens.css" in html, f"{rel} missing shared token stylesheet")
     require("content-theme-bridge.css" in html, f"{rel} missing bridge stylesheet")
+    require('class="has-shared-theme"' in html, f"{rel} missing shared-theme html class")
     require("has-shared-theme-shell" in html, f"{rel} missing shared-theme shell class")
     require(html.count("data-theme-toggle") == 1, f"{rel} must contain exactly one theme toggle")
     require('name="twitter:' not in html.lower(), f"{rel} still contains Twitter-specific metadata")
@@ -320,7 +325,7 @@ assert.equal(toggles[0].attrs["aria-pressed"], "true");
 assert.match(toggles[0].attrs["aria-label"], /Switch to light mode/);
 controller.toggleExplicitTheme();
 assert.equal(storage.get("theme"), "light");
-assert.equal(root.attrs["data-theme"], undefined);
+assert.equal(root.attrs["data-theme"], "light");
 assert.equal(toggles[0].attrs["aria-pressed"], "false");
 assert.match(toggles[0].attrs["aria-label"], /Switch to dark mode/);
 assert.equal(typeof globalThis.mountAll, "undefined");
@@ -429,6 +434,7 @@ async function gotoReady(page, url, readySelector) {
 
 async function assertNoOverflow(page, width, height) {
   await page.setViewportSize({ width, height });
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve())));
   const metrics = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     clientWidth: document.documentElement.clientWidth,
@@ -537,7 +543,7 @@ async function main() {
       const menuStyle = window.getComputedStyle(menu);
       const toggleStyle = window.getComputedStyle(toggle);
       return {
-        menuVisible: menuStyle.display !== "none" && !menu.hidden,
+        menuVisible: menuStyle.display !== "none" && menuStyle.visibility !== "hidden",
         toggleHidden: toggleStyle.display === "none",
       };
     });
@@ -645,7 +651,12 @@ function createThemeController(options) {
   const systemDark = options.systemDark;
 
   function readSetting() {
-    const value = storage.getItem("theme");
+    let value = null;
+    try {
+      value = storage.getItem("theme");
+    } catch (error) {
+      value = null;
+    }
     return value === "light" || value === "dark" ? value : "system";
   }
 
@@ -653,6 +664,11 @@ function createThemeController(options) {
     root.setAttribute("data-theme", resolved);
     root.setAttribute("data-theme-setting", setting);
     toggles.forEach((toggle) => updateToggle(toggle, resolved));
+    if (typeof document !== "undefined") {
+      document.querySelectorAll("[data-theme-color]").forEach((meta) => {
+        meta.setAttribute("content", resolved === "dark" ? "#121b28" : "#f6f1e8");
+      });
+    }
     return resolved;
   }
 
@@ -665,7 +681,11 @@ function createThemeController(options) {
     toggleExplicitTheme() {
       const current = resolveTheme(readSetting(), systemDark());
       const next = current === "dark" ? "light" : "dark";
-      storage.setItem("theme", next);
+      try {
+        storage.setItem("theme", next);
+      } catch (error) {
+        // The resolved theme still applies when storage is unavailable.
+      }
       return apply(next);
     },
     applySystemChange() {
@@ -850,7 +870,6 @@ git commit -m "feat: add shared theme init and deferred runtime chain"
 - Modify: `_sass/layout/_navigation.scss`
 - Modify: `_sass/layout/_cosmicrealm.scss`
 - Create: `_sass/layout/_home.scss`
-- Delete: `_sass/_themes.scss`
 - Delete: `_sass/theme/_default_light.scss`
 - Delete: `_sass/theme/_default_dark.scss`
 - Delete: `_sass/theme/_air_light.scss`
@@ -956,9 +975,13 @@ html {
 }
 ```
 
-- [ ] **Step 2: Create `_sass/theme/_settings.scss` for compile-time variables**
+- [ ] **Step 2: Move the complete compile-time settings owner**
 
-Keep all Sass variables the layout partials still use.
+Do not replace the current 103-line `_themes.scss` with a shortened variable list: typography, type scale, breakpoints, Susy grid, and utility brand colors are still compiled by retained layout partials. Move it intact, then append the compile-time values currently supplied by `_default_light.scss`:
+
+```bash
+git mv _sass/_themes.scss _sass/theme/_settings.scss
+```
 
 ```scss
 $gray: #7a8288;
@@ -981,46 +1004,331 @@ $sidebar-link-max-width: 250px;
 $sidebar-screen-min-width: 1024px;
 ```
 
+The `@include breakpoint-set(...)` call inside the moved file is why `vendor/breakpoint/breakpoint` must remain before `theme/settings` in `main.scss`.
+
 - [ ] **Step 3: Rewire `main.scss` and split homepage styles**
 
 `main.scss` must import `_settings.scss` and `_home.scss`, and stop importing deleted theme partials.
 
 ```scss
 @import
-  "theme/settings",
   "vendor/breakpoint/breakpoint",
+  "theme/settings",
+  "include/mixins",
   "vendor/susy/susy",
-  "base/reset",
-  "base/mixins",
+  "layout/reset",
   "layout/base",
+  "include/utilities",
+  "layout/tables",
+  "layout/buttons",
+  "layout/notices",
   "layout/masthead",
   "layout/navigation",
-  "layout/buttons",
   "layout/footer",
-  "layout/archive",
+  "syntax",
+  "layout/forms",
   "layout/page",
+  "layout/archive",
+  "layout/sidebar",
   "layout/cosmicrealm",
-  "layout/home";
+  "layout/home",
+  "vendor/font-awesome/fontawesome",
+  "vendor/font-awesome/solid",
+  "vendor/font-awesome/brands";
 ```
 
-- [ ] **Step 4: Remove runtime token blocks from `_cosmicrealm.scss`, strip share CSS, and retire legacy Sass ownership**
+Delete only the retired `layout/json_cv` import; the architecture prerequisite already removed `/cv-json/`. Keep every other import above.
 
-Delete every `:root` / `html[data-theme="dark"]` token block from `_cosmicrealm.scss`. Delete share-specific styles from `_buttons.scss` and `_navigation.scss`. Move any remaining compile-time variables needed from `_sass/_themes.scss` into `_sass/theme/_settings.scss`, then delete `_sass/_themes.scss` and `_sass/layout/_json_cv.scss`.
+Create `_sass/layout/_home.scss` as the final override layer for the B-style shell and homepage. This is the visual implementation, not a placeholder partial:
 
-- [ ] **Step 5: Delete the legacy runtime files once references are gone**
+```scss
+body {
+  background: var(--cr-page-bg);
+  color: var(--global-text-color);
+  font-family: var(--cr-font-sans);
+}
+
+.masthead {
+  background: var(--cr-page-bg);
+  border-bottom: 1px solid var(--cr-border);
+  box-shadow: none;
+}
+
+.masthead__inner-wrap,
+.site-nav,
+.home-shell,
+.site-footer__inner {
+  width: min(100% - 2rem, 74rem);
+  margin-inline: auto;
+}
+
+.site-nav {
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-nav__brand {
+  color: var(--global-text-color);
+  font-family: var(--cr-font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.site-nav__menu {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__menu a {
+  color: var(--global-text-color-light);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.site-nav__menu a:hover,
+.site-nav__menu a:focus-visible {
+  color: var(--cr-accent);
+}
+
+.site-nav__toggle,
+.theme-toggle,
+.hero-actions a,
+.section-heading__link {
+  border: 1px solid var(--cr-border-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--global-text-color);
+  font: inherit;
+}
+
+.site-nav__toggle,
+.theme-toggle {
+  min-height: 2.4rem;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+
+.site-nav__toggle { display: none; }
+
+.home-shell {
+  padding-block: clamp(3rem, 7vw, 6.5rem);
+}
+
+.home-document {
+  display: grid;
+  gap: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.home-hero {
+  max-width: 62rem;
+  padding-top: clamp(1rem, 4vw, 3rem);
+}
+
+.home-hero__eyebrow,
+.section-heading__link,
+.focus-strip span {
+  color: var(--cr-accent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-hero h1 {
+  max-width: 15ch;
+  margin: 0.45rem 0 1.25rem;
+  color: var(--global-text-color);
+  font-family: var(--cr-font-serif);
+  font-size: clamp(2.8rem, 7vw, 6.4rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.home-hero__lead {
+  max-width: 48rem;
+  color: var(--cr-ink-soft);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.75;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1.75rem;
+}
+
+.hero-actions a,
+.section-heading__link {
+  padding: 0.55rem 0.8rem;
+  text-decoration: none;
+}
+
+.hero-actions a:hover,
+.section-heading__link:hover {
+  border-color: var(--cr-accent);
+  color: var(--cr-accent);
+}
+
+.focus-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-block: 1px solid var(--cr-border);
+}
+
+.focus-strip__item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1.35rem 1rem;
+}
+
+.focus-strip__item + .focus-strip__item { border-left: 1px solid var(--cr-border); }
+.focus-strip strong { font-family: var(--cr-font-serif); font-size: 2rem; font-weight: 500; }
+
+.home-section { display: grid; gap: 1.5rem; }
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--cr-border-strong);
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-family: var(--cr-font-serif);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 500;
+}
+
+.home-card-grid,
+.publication-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.home-card,
+.publication-card {
+  grid-column: span 4;
+  min-width: 0;
+  background: var(--cr-card-bg);
+  border: 1px solid var(--cr-border);
+  box-shadow: none;
+}
+
+.publication-card { padding: 1.25rem; }
+.home-card__cover { display: block; border-bottom: 1px solid var(--cr-border); }
+.home-card__cover img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.home-card__body { padding: 1.15rem; }
+.home-card h3,
+.publication-card h3 { margin: 0 0 0.65rem; font-family: var(--cr-font-serif); font-size: 1.25rem; }
+.home-card p,
+.publication-card p { margin: 0; color: var(--cr-ink-soft); line-height: 1.65; }
+.home-card a,
+.publication-card a { color: var(--global-text-color); }
+.home-card a:hover,
+.publication-card a:hover { color: var(--cr-accent); }
+
+.compact-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--cr-border);
+}
+
+.compact-list li {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--cr-border);
+}
+
+.compact-list time { color: var(--cr-ink-soft); font-family: var(--cr-font-mono); font-size: 0.82rem; }
+.compact-list a { color: var(--global-text-color); text-decoration: none; }
+.compact-list a:hover { color: var(--cr-accent); }
+
+.archive-layout--full .archive,
+.archive-layout--full .archive-shell {
+  float: none;
+  width: min(100% - 2rem, 74rem);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.page__footer {
+  position: static;
+  margin-top: 5rem;
+  background: var(--global-footer-bg-color);
+  border-top: 1px solid var(--cr-border);
+  box-shadow: none;
+}
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.4rem;
+  color: var(--cr-ink-soft);
+  font-size: 0.82rem;
+}
+
+.site-footer__links { display: flex; flex-wrap: wrap; gap: 1rem; }
+.site-footer__links a { color: inherit; }
+
+@media (max-width: 63.99rem) {
+  .site-nav { flex-wrap: wrap; padding-block: 0.8rem; }
+  .site-nav__toggle { display: inline-flex; }
+  .site-nav__menu { flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 0; }
+  .site-nav__menu[hidden] { display: none; }
+  .site-nav__menu li { padding-block: 0.55rem; border-top: 1px solid var(--cr-border); }
+}
+
+@media (min-width: 64rem) {
+  .site-nav__menu[hidden] { display: flex; }
+}
+
+@media (max-width: 48rem) {
+  .home-card,
+  .publication-card { grid-column: 1 / -1; }
+  .focus-strip { grid-template-columns: 1fr; }
+  .focus-strip__item + .focus-strip__item { border-left: 0; border-top: 1px solid var(--cr-border); }
+  .section-heading,
+  .site-footer__inner { align-items: flex-start; flex-direction: column; }
+  .compact-list li { grid-template-columns: 1fr; gap: 0.3rem; }
+}
+```
+
+- [ ] **Step 4: Remove duplicate tokens and the complete share-style surface**
+
+Delete every `:root` / `html[data-theme="dark"]` runtime-token block from `_cosmicrealm.scss`. Delete the `/* social buttons */` map from `_buttons.scss`, the `.page__share` block and title rules from `_page.scss`, and the `.page__share + .pagination` coupling from `_navigation.scss`. Delete `_sass/layout/_json_cv.scss`; do not delete `layout/sidebar`, which still serves Writing filters and any article/sidebar opt-in.
+
+- [ ] **Step 5: Delete the legacy runtime files and prove references are gone**
+
+```bash
+git rm assets/js/main.min.js assets/js/_main.js assets/js/theme.js assets/js/plugins/jquery.greedy-navigation.js assets/js/collapse.js _sass/layout/_json_cv.scss _sass/theme/_default_light.scss _sass/theme/_default_dark.scss _sass/theme/_air_light.scss _sass/theme/_air_dark.scss
+```
 
 Run: `rg -n "main.min.js|_main.js|theme.js|jquery.greedy-navigation|plotly.js-dist-min|fitvids|jquery-smooth-scroll|collapse.js" _data _includes _layouts _pages _posts _sass assets foundations projects _config.yml _config_docker.yml index.html`
 
-Expected: zero references in source files before deletion commit.
-
-```bash
-git rm assets/js/main.min.js assets/js/_main.js assets/js/theme.js assets/js/plugins/jquery.greedy-navigation.js assets/js/collapse.js _sass/_themes.scss _sass/layout/_json_cv.scss _sass/theme/_default_light.scss _sass/theme/_default_dark.scss _sass/theme/_air_light.scss _sass/theme/_air_dark.scss
-```
+Expected: exit 1 with zero references after deletion and template rewiring.
 
 - [ ] **Step 6: Commit the shared token system and runtime deletion**
 
 ```bash
-git add assets/css/theme-tokens.css assets/css/main.scss _sass/theme/_settings.scss _sass/layout/_masthead.scss _sass/layout/_footer.scss _sass/layout/_archive.scss _sass/layout/_page.scss _sass/layout/_buttons.scss _sass/layout/_navigation.scss _sass/layout/_cosmicrealm.scss _sass/layout/_home.scss
+git add assets/css/theme-tokens.css assets/css/main.scss _sass/theme/_settings.scss _sass/layout/_page.scss _sass/layout/_buttons.scss _sass/layout/_navigation.scss _sass/layout/_cosmicrealm.scss _sass/layout/_home.scss
 git commit -m "refactor: unify theme ownership and remove legacy runtime"
 ```
 
@@ -1031,8 +1339,11 @@ git commit -m "refactor: unify theme ownership and remove legacy runtime"
 - Modify: `_includes/base_path`
 - Modify: `_includes/masthead.html`
 - Modify: `_includes/footer.html`
-- Modify: `_includes/footer/custom.html`
+- Delete: `_includes/footer/custom.html`
 - Modify: `_includes/seo.html`
+- Modify: `_includes/head/custom.html`
+- Modify: `_includes/author-profile.html`
+- Modify: `_layouts/default.html`
 - Modify: `_config.yml`
 
 - [ ] **Step 1: Reduce `_includes/base_path` to baseurl-only semantics**
@@ -1065,7 +1376,29 @@ Use `relative_url` for internal links, and provide `data-nav-toggle` / `data-nav
 </div>
 ```
 
-- [ ] **Step 3: Keep generic SEO and Person JSON-LD, but delete network-specific blocks**
+- [ ] **Step 3: Replace the upstream/template footer with a minimal content footer**
+
+Delete `_includes/footer/custom.html` and remove its include line from `_layouts/default.html`; optional renderers move to `_includes/scripts.html` in Task 6. Replace `_includes/footer.html` with:
+
+```liquid
+<div class="site-footer__inner">
+  <p>&copy; {{ site.time | date: '%Y' }} Jinyang Zhang.</p>
+  <nav class="site-footer__links" aria-label="Footer navigation">
+    <a href="mailto:{{ site.author.email }}">Email</a>
+    <a href="https://github.com/{{ site.author.github }}" rel="me">GitHub</a>
+    <a href="{{ '/cv/' | relative_url }}">CV</a>
+    <a href="{{ '/sitemap/' | relative_url }}">Sitemap</a>
+  </nav>
+</div>
+```
+
+In `_includes/head/custom.html`, keep the existing favicon/manifest links but change the fixed color meta to a controller-addressable light fallback:
+
+```html
+<meta name="theme-color" content="#f6f1e8" data-theme-color>
+```
+
+- [ ] **Step 4: Keep generic SEO and Person JSON-LD, but delete network-specific blocks**
 
 Set non-empty `social` in `_config.yml`:
 
@@ -1099,7 +1432,9 @@ Keep in `_includes/seo.html`:
 
 Delete all `twitter:*` and Facebook publisher/app-id blocks.
 
-- [ ] **Step 4: Remove `site_theme`, keep publish excludes explicit**
+Also remove the top-level `twitter:` block, `author.twitter`, and any empty network-specific keys from `_config.yml`. Delete the Twitter/X conditional and its “X (formerly Twitter)” text from `_includes/author-profile.html`; GitHub, Email, CV, publication/code links, canonical metadata, and generic Open Graph remain.
+
+- [ ] **Step 5: Remove `site_theme`, keep publish excludes explicit**
 
 `_config.yml` must:
 
@@ -1117,10 +1452,11 @@ exclude:
   - tests/
 ```
 
-- [ ] **Step 5: Commit path semantics and SEO ownership**
+- [ ] **Step 6: Commit path semantics and SEO ownership**
 
 ```bash
-git add _includes/base_path _includes/masthead.html _includes/footer.html _includes/footer/custom.html _includes/seo.html _config.yml
+git add _includes/base_path _includes/masthead.html _includes/footer.html _includes/seo.html _includes/head/custom.html _includes/author-profile.html _layouts/default.html _config.yml
+git add -u _includes/footer/custom.html
 git commit -m "refactor: fix internal path semantics and retain generic seo"
 ```
 
@@ -1138,7 +1474,6 @@ git commit -m "refactor: fix internal path semantics and retain generic seo"
 - Modify: `_pages/foundations.md`
 - Modify: `_data/projects.yml`
 - Modify: `_data/navigation.yml`
-- Modify: `_data/ui-text.yml`
 - Modify: `_includes/tag-chip.html`
 - Modify: `_layouts/archive.html`
 
@@ -1193,12 +1528,17 @@ for `_pages/home.md`, and `author_profile: false` for `_pages/writing.html`, `_p
 
 - [ ] **Step 3: Make archive layout full-width when no author profile**
 
+Keep the existing hero, breadcrumbs, title, and `.archive` wrapper. Replace only the `<div id="main">` and unconditional sidebar lines with the following; `page.blog_tag_filter` must still render `_includes/sidebar.html`, otherwise Writing loses its filter root:
+
 ```liquid
-<div id="main" role="main" class="{% unless page.author_profile or layout.author_profile %}archive-layout--full{% endunless %}">
-  {% if page.author_profile or layout.author_profile %}
+<div id="main" role="main" class="{% if page.blog_tag_filter %}blog-filter-layout{% elsif page.author_profile or layout.author_profile or page.sidebar %}{% else %}archive-layout--full{% endif %}">
+  {% if page.author_profile or layout.author_profile or page.sidebar or page.blog_tag_filter %}
     {% include sidebar.html %}
   {% endif %}
-  <div class="archive-shell">
+  <div class="archive">
+    {% unless page.header.overlay_color or page.header.overlay_image %}
+      <h1 class="page__title">{{ page.title }}</h1>
+    {% endunless %}
     {{ content }}
   </div>
 </div>
@@ -1327,10 +1667,12 @@ blog_tag_filter: true
 {% assign tag_chip_url = "/writing/?tags=" | append: tag_chip_slug %}
 ```
 
+Delete the entire legacy inline `<script>` from `_pages/writing.html`; `assets/js/site.js` is now the only owner of `URLSearchParams`, filter clicks, counts, empty state, and URL synchronization. Keep the `data-blog-list`, `data-blog-item`, `data-blog-tags`, and `data-blog-empty` markup unchanged.
+
 - [ ] **Step 7: Commit homepage data and layout changes**
 
 ```bash
-git add _layouts/home.html _layouts/archive.html _includes/home-project-card.html _includes/home-foundation-card.html _pages/home.md _pages/writing.html _pages/projects.md _pages/publications.html _pages/foundations.md _data/projects.yml _data/navigation.yml _data/ui-text.yml _includes/tag-chip.html
+git add _layouts/home.html _layouts/archive.html _includes/home-project-card.html _includes/home-foundation-card.html _pages/home.md _pages/writing.html _pages/projects.md _pages/publications.html _pages/foundations.md _data/projects.yml _data/navigation.yml _includes/tag-chip.html
 git commit -m "feat: build curated homepage and schema-correct home cards"
 ```
 
@@ -1341,7 +1683,7 @@ git commit -m "feat: build curated homepage and schema-correct home cards"
 - Modify: `_layouts/single.html`
 - Delete: `_includes/social-share.html`
 - Modify: `_config.yml`
-- Modify: `_includes/footer/custom.html`
+- Modify: `_includes/scripts.html`
 - Create: `assets/js/mermaid-init.js`
 - Modify: `_posts/2025-12-25-blog-nonochat-1-base.md`
 
@@ -1369,14 +1711,10 @@ defaults:
       mermaid: false
 ```
 
-Add the only Mermaid opt-in:
+Add the only Mermaid opt-in directly to `_posts/2025-12-25-blog-nonochat-1-base.md` front matter:
 
 ```yaml
-defaults:
-  - scope:
-      path: "_posts/2025-12-25-blog-nonochat-1-base.md"
-    values:
-      mermaid: true
+mermaid: true
 ```
 
 - [ ] **Step 3: Load MathJax and Mermaid conditionally**
@@ -1415,7 +1753,7 @@ if (document.querySelector("code.language-mermaid")) {
 
 ```bash
 git rm _includes/social-share.html
-git add _layouts/single.html _config.yml _includes/footer/custom.html assets/js/mermaid-init.js _posts/2025-12-25-blog-nonochat-1-base.md
+git add _layouts/single.html _config.yml _includes/scripts.html assets/js/mermaid-init.js _posts/2025-12-25-blog-nonochat-1-base.md
 git commit -m "refactor: remove visible share ui and gate heavy renderers"
 ```
 
@@ -1438,11 +1776,51 @@ git commit -m "refactor: remove visible share ui and gate heavy renderers"
 - Modify: `foundations/llm-mechanics/index.html`
 - Modify: `foundations/video-generation/index.html`
 
-- [ ] **Step 1: Create a structural-only bridge stylesheet**
+- [ ] **Step 1: Create the shared-content bridge stylesheet**
 
-No token duplication, no gradients, no blur, no glass.
+Load this file after each microsite's local stylesheet. It maps the common local variable names used by the existing project/Foundation layouts onto the canonical B tokens, provides the shared toggle/focus treatment, and neutralizes decorative shell gradients/glass without rewriting content-specific grids or labs.
 
 ```css
+html.has-shared-theme {
+  --paper: var(--cr-page-bg);
+  --bg: var(--cr-page-bg);
+  --surface: var(--cr-card-bg);
+  --panel: var(--cr-card-bg);
+  --panel-strong: var(--cr-panel-bg);
+  --soft: var(--cr-panel-bg);
+  --ink: var(--global-text-color);
+  --muted: var(--cr-ink-soft);
+  --line: var(--cr-border);
+  --accent: var(--cr-accent);
+  --accent-deep: var(--cr-accent-strong);
+  --accent-ink: var(--cr-accent-strong);
+  --blue: var(--cr-accent);
+  --blue-dark: var(--cr-accent-strong);
+  --blue-soft: var(--cr-accent-soft);
+  --rose: var(--cr-warm);
+  --shadow: none;
+  --shadow-small: none;
+  --serif: var(--cr-font-serif);
+  --sans: var(--cr-font-sans);
+  --mono: var(--cr-font-mono);
+}
+
+html.has-shared-theme body,
+html.has-shared-theme .site-header,
+html.has-shared-theme .lecture-toc,
+html.has-shared-theme .publication-header {
+  background: var(--cr-page-bg);
+  color: var(--global-text-color);
+}
+
+html.has-shared-theme .site-header,
+html.has-shared-theme .lecture-toc,
+html.has-shared-theme .project-home-link {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -1452,44 +1830,132 @@ No token duplication, no gradients, no blur, no glass.
   color: var(--global-text-color);
   border: 1px solid var(--cr-border);
   background: var(--cr-card-bg);
+  cursor: pointer;
+  font: 600 0.82rem/1 var(--cr-font-sans);
 }
 
 .has-shared-theme-shell {
   background: var(--cr-page-bg);
   color: var(--global-text-color);
 }
+
+.project-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 60;
+}
+
+html.has-shared-theme .publication-header,
+html.has-shared-theme .teaser-cell,
+html.has-shared-theme .detail-comparison article,
+html.has-shared-theme .contribution-grid article,
+html.has-shared-theme .result-grid article,
+html.has-shared-theme .method-pillars article,
+html.has-shared-theme .framework-card,
+html.has-shared-theme .dataset-block,
+html.has-shared-theme .evidence-figure,
+html.has-shared-theme .large-figure-disclosure,
+html.has-shared-theme .image-tile-label,
+html.has-shared-theme .image-tile-score {
+  background: var(--cr-card-bg);
+  border-color: var(--cr-border);
+  box-shadow: none;
+}
+
+html.has-shared-theme .section-title::after {
+  background: var(--cr-accent);
+}
+
+html.has-shared-theme .lead,
+html.has-shared-theme .pill-row span,
+html.has-shared-theme .pipeline span {
+  color: var(--global-text-color);
+}
+
+html.has-shared-theme .gallery-error {
+  background: var(--cr-accent-soft);
+  border-color: var(--cr-accent);
+  color: var(--cr-accent-strong);
+}
 ```
 
-- [ ] **Step 2: Patch project pages by inserting toggle into existing header/nav and classing existing main**
+- [ ] **Step 2: Patch both project pages with exact, page-specific anchors**
 
-Do not add a second header or nested `<main>`. Add shared head assets:
+Do not add a second header or nested `<main>`. On both pages, change `<html lang="en">` (or the existing language value) to include `class="has-shared-theme"`. Remove every contiguous `<meta name="twitter:*">` line while retaining canonical, description, Open Graph, citation metadata, and JSON-LD.
+
+Load `theme-init.js` before any stylesheet, load `theme-tokens.css` before the local stylesheet, and load `content-theme-bridge.css` after the local stylesheet so its mappings win:
 
 ```html
 <script src="/assets/js/theme-init.js"></script>
 <link rel="stylesheet" href="/assets/css/theme-tokens.css">
+<!-- existing project-local stylesheet remains here -->
 <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
 <script src="/assets/js/theme-controller.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
 ```
 
-Then add one toggle into the existing project header/nav container:
+For `projects/iconface/index.html`, add the toggle immediately after the existing fixed `.project-home-link`, and change its existing main only:
+
+```html
+<button type="button" class="theme-toggle project-theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
+<main id="main-content" class="has-shared-theme-shell">
+```
+
+For `projects/style-talking/index.html`, insert the standard toggle before the first `</nav>` inside `.site-header` and change its existing main only:
 
 ```html
 <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
+<main class="has-shared-theme-shell">
 ```
 
-And add one class to the existing main container:
+Use these exact fallback roots in the project-local CSS; the later bridge maps them to the current shared light/dark tokens:
 
-```html
-<main class="existing-main-class has-shared-theme-shell">
+```css
+/* projects/iconface/static/css/index.css */
+:root {
+  --ink: #172235;
+  --muted: #5c6778;
+  --blue: #9a4736;
+  --blue-dark: #7c382b;
+  --blue-soft: #f1e6df;
+  --rose: #8c6f54;
+  --surface: #fbf8f1;
+  --soft: #f1ebe2;
+  --line: #d7d1c6;
+  --shadow: none;
+  --shadow-small: none;
+  --radius: 8px;
+}
+
+/* projects/style-talking/static/css/index.css */
+:root {
+  --bg: #f6f1e8;
+  --panel: #fbf8f1;
+  --ink: #172235;
+  --muted: #5c6778;
+  --line: #d7d1c6;
+  --soft: #f1ebe2;
+  --accent: #9a4736;
+  --accent-ink: #7c382b;
+  --shadow: none;
+}
 ```
 
-- [ ] **Step 3: Patch all 9 Foundations the same way**
+In both project CSS files, replace hard-coded white card/label backgrounds with the corresponding surface variable, replace IConFace's `publication-header` radial background with `var(--surface)`, replace its `.section-title::after` linear gradient with `var(--blue)`, replace remaining hard-coded shadows with `none`, and remove `backdrop-filter`. Run:
 
-Every Foundation already has `.site-header` and `main.lecture`. Insert the shared assets into `<head>`, inject one `data-theme-toggle` button into the existing `.site-header` / nav block, and change:
+```bash
+rg -n -i 'gradient|backdrop-filter|blur\(' projects/iconface/static/css/index.css projects/style-talking/static/css/index.css
+```
+
+Expected: exit 1. Do not alter scientific images, gallery behavior, video URLs, or content layout.
+
+- [ ] **Step 3: Patch the 8 clean Foundations with the same protocol**
+
+Patch every listed Foundation except `foundations/image-generation-data-training/index.html`; Step 4 alone owns that dirty file. Each clean Foundation already has `.site-header`, `.module-nav`, and `main.lecture`. Add `class="has-shared-theme"` to its existing `<html>` element, remove its `twitter:*` meta lines, use the same head asset order from Step 2, insert exactly one standard toggle immediately before the first `</nav>` in `.module-nav`, and change:
 
 ```html
-<main class="lecture has-shared-theme-shell">
+<main id="main" class="lecture has-shared-theme-shell">
 ```
 
 Do not create another header. Do not wrap `main.lecture` in another `<main>`.
@@ -1504,6 +1970,7 @@ Run the exact script below from repo root:
 python3 - <<'PY'
 from pathlib import Path
 import hashlib
+import re
 import subprocess
 import tempfile
 
@@ -1530,22 +1997,51 @@ head_text = subprocess.check_output(
     text=True,
 )
 
-HEAD_SNIPPET = '<script>\n    try {\n      var stored = localStorage.getItem("theme");'
-NEW_HEAD = '\n'.join([
-    '<script src="/assets/js/theme-init.js"></script>',
-    '<link rel="stylesheet" href="/assets/css/theme-tokens.css">',
-    '<link rel="stylesheet" href="/assets/css/content-theme-bridge.css">',
-    '<script src="/assets/js/theme-controller.js" defer></script>',
-    '<script src="/assets/js/site.js" defer></script>',
+OLD_THEME_INIT = '''  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (theme === "system" && systemDark)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (error) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    })();
+  </script>'''
+
+SHARED_INIT = '\n'.join([
+    '  <script src="/assets/js/theme-init.js"></script>',
+    '  <link rel="stylesheet" href="/assets/css/theme-tokens.css">',
+])
+
+LOCAL_CSS = '  <link rel="stylesheet" href="./static/css/index.css">'
+SHARED_AFTER_LOCAL = '\n'.join([
+    LOCAL_CSS,
+    '  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">',
+    '  <script src="/assets/js/theme-controller.js" defer></script>',
+    '  <script src="/assets/js/site.js" defer></script>',
 ])
 
 TOGGLE = '<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>'
 
 def patch_html(text):
-    text = text.replace(HEAD_SNIPPET, NEW_HEAD, 1)
-    text = text.replace('<header class="site-header">', '<header class="site-header has-shared-theme-shell">', 1)
-    text = text.replace('</nav>', f'{TOGGLE}</nav>', 1)
-    text = text.replace('<main class="lecture">', '<main class="lecture has-shared-theme-shell">', 1)
+    assert text.count('<html lang="zh-CN">') == 1
+    assert text.count(OLD_THEME_INIT) == 1
+    assert text.count(LOCAL_CSS) == 1
+    assert text.count('<main id="main" class="lecture">') == 1
+    text, twitter_count = re.subn(r'^  <meta name="twitter:[^\n]+\n', '', text, flags=re.MULTILINE)
+    assert twitter_count == 4, f"expected four Twitter meta lines, got {twitter_count}"
+    text = text.replace('<html lang="zh-CN">', '<html lang="zh-CN" class="has-shared-theme">', 1)
+    text = text.replace(OLD_THEME_INIT, SHARED_INIT, 1)
+    text = text.replace(LOCAL_CSS, SHARED_AFTER_LOCAL, 1)
+    text = text.replace('</nav>', f'      {TOGGLE}\n    </nav>', 1)
+    text = text.replace('<main id="main" class="lecture">', '<main id="main" class="lecture has-shared-theme-shell">', 1)
+    assert text.count('data-theme-toggle') == 1
+    assert 'name="twitter:' not in text.lower()
     return text
 
 patched_head = patch_html(head_text)
@@ -1557,6 +2053,7 @@ with tempfile.NamedTemporaryFile("w", delete=False) as handle:
     tmp_path = Path(handle.name)
 
 blob = subprocess.check_output(["git", "hash-object", "-w", str(tmp_path)], text=True).strip()
+tmp_path.unlink()
 subprocess.check_call(["git", "update-index", "--cacheinfo", "100644", blob, target.relative_to(repo).as_posix()])
 
 assert sha256(css_path) == css_before, "css hash changed"
@@ -1570,7 +2067,7 @@ PY
 
 Expected:
 
-- staged diff for `foundations/image-generation-data-training/index.html` contains only theme asset links, toggle insertion, and `main` class addition
+- staged diff for `foundations/image-generation-data-training/index.html` contains only the shared-theme HTML class/assets/toggle/main-class patch plus removal of the four Twitter-specific meta lines
 - CSS hash unchanged
 - `static/img/` hash unchanged
 - working-tree diff in that directory still belongs only to the user’s existing content plus the same minimal `index.html` patch
@@ -1598,13 +2095,12 @@ Expected:
 
 - Modify: `package.json`
 - Modify: `package-lock.json`
-- Modify: `tests/site_browser_qa.cjs`
 
 - [ ] **Step 1: Replace old npm ownership with tracked Playwright QA**
 
 Use `npm install --save-dev playwright` instead of hard-coding a version. Commit `package-lock.json`. Remove legacy dependencies and build scripts.
 
-After `npm install --save-dev playwright`, `package.json` must contain exactly one `devDependencies.playwright` entry written by npm plus the three scripts below:
+First replace `package.json` with the exact dependency-free manifest below; this preserves the repository identity established by the architecture plan while removing the retired bundler scripts. Then let npm write the Playwright version instead of inserting a fake or stale version by hand:
 
 ```json
 {
@@ -1612,6 +2108,14 @@ After `npm install --save-dev playwright`, `package.json` must contain exactly o
   "version": "1.0.0",
   "description": "Build and QA helpers for cosmicrealm.github.io",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cosmicrealm/cosmicrealm.github.io"
+  },
+  "bugs": {
+    "url": "https://github.com/cosmicrealm/cosmicrealm.github.io/issues"
+  },
+  "homepage": "https://cosmicrealm.github.io",
   "scripts": {
     "test:structure": "python3 scripts/verify_homepage_theme_architecture.py",
     "test:theme": "node tests/theme_controller.test.cjs",
@@ -1619,6 +2123,8 @@ After `npm install --save-dev playwright`, `package.json` must contain exactly o
   }
 }
 ```
+
+After `npm install --save-dev playwright`, npm adds exactly one `devDependencies.playwright` entry to that manifest and writes `package-lock.json`; do not hand-edit the resolved version.
 
 The post-install reality should be:
 
@@ -1631,6 +2137,26 @@ The post-install reality should be:
 Run: `npm install --save-dev playwright`
 
 Expected: `package.json` and `package-lock.json` update; `node_modules/playwright` exists locally.
+
+Run:
+
+```bash
+node - <<'NODE'
+const assert = require("node:assert/strict");
+const pkg = require("./package.json");
+assert.deepEqual(Object.keys(pkg.devDependencies || {}), ["playwright"]);
+for (const name of ["jquery", "fitvids", "jquery-smooth-scroll", "plotly.js-dist-min", "onchange", "uglify-js"]) {
+  assert.equal(Boolean((pkg.dependencies || {})[name] || (pkg.devDependencies || {})[name]), false, name);
+}
+NODE
+```
+
+Expected: exit 0.
+
+```bash
+git add package.json package-lock.json
+git commit -m "test: track browser QA runtime"
+```
 
 - [ ] **Step 3: Run the full verification matrix**
 

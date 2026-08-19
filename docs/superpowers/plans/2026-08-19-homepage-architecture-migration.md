@@ -1052,7 +1052,7 @@ mkdir -p assets/vendor
 git mv foundations/generation-math/static/vendor/mathjax assets/vendor/mathjax
 ```
 
-- [ ] **Step 2: Repoint all nine real Foundations pages to the shared vendor path**
+- [ ] **Step 2: Repoint the eight clean Foundations pages to the shared vendor path**
 
 Edit the MathJax script tag only; do not change theme, prose, labs, or layout:
 
@@ -1060,14 +1060,13 @@ Edit the MathJax script tag only; do not change theme, prose, labs, or layout:
 <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 ```
 
-Apply it to these exact entrypoints:
+Apply it to these exact clean entrypoints. Do not edit `foundations/image-generation-data-training/index.html` here; Step 4 alone owns that dirty working file.
 
 ```text
 foundations/aigc-llm-math/index.html
 foundations/generation-acceleration/index.html
 foundations/generation-distillation/index.html
 foundations/generation-math/index.html
-foundations/image-generation-data-training/index.html
 foundations/leetcode-hot100/index.html
 foundations/llm-interview-qa/index.html
 foundations/llm-mechanics/index.html
@@ -1175,6 +1174,12 @@ Expected: exit 1 with no matches.
 
 - [ ] **Step 7: Commit the vendor centralization without staging user CSS/img**
 
+Before committing, prove the user CSS and image paths are still unstaged. Exit 1 with no output is the expected result:
+
+```bash
+git diff --cached --name-only | rg 'foundations/image-generation-data-training/static/css|foundations/image-generation-data-training/static/img'
+```
+
 ```bash
 git add \
   assets/vendor/mathjax \
@@ -1190,14 +1195,6 @@ git add \
   scripts/verify_llm_mechanics.py
 git commit -m "refactor: centralize shared MathJax vendor assets"
 ```
-
-Before committing, prove the user CSS and image paths are still unstaged:
-
-```bash
-git diff --cached --name-only | rg 'foundations/image-generation-data-training/static/css|foundations/image-generation-data-training/static/img'
-```
-
-Expected: exit 1 with no matches.
 
 After committing, the worktree should return to the normal dirty shape for this Foundations area:
 
