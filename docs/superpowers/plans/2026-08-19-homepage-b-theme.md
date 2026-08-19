@@ -8,6 +8,8 @@
 
 **Tech Stack:** Jekyll, Liquid, Sass, vanilla JavaScript, Python 3, Node.js built-in `assert`, Playwright as a tracked `devDependency`, system Chrome via `CHROME_PATH`, Docker Compose Jekyll preview.
 
+**Prerequisite:** Complete `docs/superpowers/plans/2026-08-19-homepage-architecture-migration.md` first and start this plan from its clean index. This plan intentionally assumes the canonical `projects/iconface/`, `projects/style-talking/`, `_pages/home.md`, `_pages/writing.html`, lowercase publication files, centralized `assets/vendor/mathjax/`, and deleted template/CV-json/talk residue already exist.
+
 **Upstream posture:** This plan does **not** migrate the whole site onto Academic Pages, Minimal Mistakes, al-folio, or minimal-light as a new base theme. The current repository has already diverged heavily with custom Foundations pages and standalone project microsites, so whole-theme migration would cost more than it saves. Instead, it selectively borrows: Minimal Mistakes' token/layout layering (`https://github.com/mmistakes/minimal-mistakes`), al-folio's page-level opt-in runtime idea (`https://github.com/alshedivat/al-folio`), minimal-light's restrained homepage / dual-theme sensibility (`https://github.com/yaoyao-liu/minimal-light`), and Academic Pages' collection-oriented academic content framing (`https://github.com/academicpages/academicpages.github.io`). The implementation target remains this repository's existing Jekyll site, not an upstream theme replacement.
 
 ---
@@ -22,7 +24,7 @@
 - Create: `assets/js/mermaid-init.js`
 - Create: `assets/css/theme-tokens.css`
 - Create: `assets/css/content-theme-bridge.css`
-- Create: `_sass/theme/_settings.scss`
+- Move: `_sass/_themes.scss` -> `_sass/theme/_settings.scss`
 - Modify: `_config.yml`
 - Modify: `package.json`
 - Modify: `package-lock.json`
@@ -37,6 +39,7 @@
 - Delete: `_sass/theme/_default_dark.scss`
 - Delete: `_sass/theme/_air_light.scss`
 - Delete: `_sass/theme/_air_dark.scss`
+- Delete: `_sass/layout/_json_cv.scss`
 
 **Templates, includes, and layouts**
 
@@ -48,9 +51,10 @@
 - Modify: `_includes/masthead.html`
 - Modify: `_includes/footer.html`
 - Modify: `_includes/footer/custom.html`
-- Modify: `_includes/scripts.html`
 - Modify: `_includes/seo.html`
 - Modify: `_includes/tag-chip.html`
+- Modify: `_includes/head/custom.html`
+- Modify: `_includes/author-profile.html`
 - Modify: `_layouts/default.html`
 - Modify: `_layouts/archive.html`
 - Modify: `_layouts/single.html`
@@ -58,10 +62,6 @@
 **Main-site Sass and pages**
 
 - Modify: `assets/css/main.scss`
-- Modify: `_sass/_themes.scss`
-- Modify: `_sass/layout/_masthead.scss`
-- Modify: `_sass/layout/_footer.scss`
-- Modify: `_sass/layout/_archive.scss`
 - Modify: `_sass/layout/_page.scss`
 - Modify: `_sass/layout/_buttons.scss`
 - Modify: `_sass/layout/_navigation.scss`
@@ -190,17 +190,25 @@ main_scss = read("assets/css/main.scss")
 cosmicrealm = read("_sass/layout/_cosmicrealm.scss")
 buttons = read("_sass/layout/_buttons.scss")
 navigation = read("_sass/layout/_navigation.scss")
-themes = read("_sass/_themes.scss")
+page_scss = read("_sass/layout/_page.scss")
 projects_yml = read("_data/projects.yml")
 config = read("_config.yml")
+default_layout = read("_layouts/default.html")
+author_profile = read("_includes/author-profile.html")
+footer_custom = read("_includes/footer/custom.html")
+package = json.loads(read("package.json"))
 
 require("assets/js/theme-init.js" in head, "head.html missing shared theme-init.js")
 require("theme-controller.js" not in head, "head.html must not load theme-controller.js")
 require("site.js" not in head, "head.html must not load site.js")
+require(head.index("theme-init.js") < head.index("theme-tokens.css") < head.index("main.css"), "head asset order must be init -> tokens -> main CSS")
 require('theme-controller.js' in scripts and 'defer' in scripts, "scripts.html missing deferred theme-controller.js")
 require('site.js' in scripts and 'defer' in scripts, "scripts.html missing deferred site.js")
 require("social-share" not in single, "single layout still renders share include")
 require(not (ROOT / "_layouts/talk.html").exists(), "_layouts/talk.html should have been removed by the architecture migration")
+require("{% if page.mathjax %}" in footer_custom and "{% if page.mermaid %}" in footer_custom, "footer/custom.html must gate heavy renderers by page flags")
+require("cdn.jsdelivr.net/npm/mathjax" not in footer_custom.lower(), "footer/custom.html still points to remote MathJax CDN")
+require('data-theme="light"' in default_layout, "default layout lacks explicit light no-JS fallback")
 require("/writing/?tags=" in tag_chip, "tag chip still points at old writing route")
 require("layout: home" in home and "author_profile: false" in home, "home.md not on home layout")
 require("Selected Work" in home and "Representative Publications" in home and "Foundations" in home and "Recent Writing" in home, "home.md missing homepage sections")
@@ -208,26 +216,38 @@ require("homepage:" in projects_yml and "homepage_order:" in projects_yml, "proj
 require("social:" in config and "type: Person" in config and "github.com/cosmicrealm" in config, "_config.yml missing non-empty Person social config")
 require("package-lock.json" in config, "_config.yml must exclude package-lock.json from publish output")
 require("site_theme" not in config, "_config.yml must not keep site_theme")
-require('assign base_path = site.baseurl' in base_path or 'site.baseurl' in base_path, "base_path include not reduced to baseurl-only semantics")
+require('assign base_path = site.baseurl' in base_path and "site.url" not in base_path and "site.github" not in base_path, "base_path include not reduced to baseurl-only semantics")
+require("twitter:" not in config.lower(), "_config.yml still contains X/Twitter configuration")
+require("twitter" not in author_profile.lower() and "x (formerly" not in author_profile.lower(), "author profile still contains X/Twitter display copy")
 require("--global-base-color" in theme_tokens, "theme-tokens.css missing global-base-color")
 require("--global-fig-caption-color" in theme_tokens, "theme-tokens.css missing global-fig-caption-color")
-for token in ["--cr-accent-strong", "--cr-warm", "--cr-page-bg", "--cr-card-bg", "--cr-panel-bg", "--cr-ink-soft", "--cr-border", "--cr-border-strong", "--cr-shadow", "--cr-shadow-hover"]:
+for token in ["--cr-accent-strong", "--cr-warm", "--cr-page-bg", "--cr-card-bg", "--cr-panel-bg", "--cr-surface", "--cr-ink-soft", "--cr-border", "--cr-border-strong", "--cr-shadow", "--cr-shadow-hover", "--cr-font-serif", "--cr-font-sans", "--cr-font-mono"]:
     require(token in theme_tokens, f"theme-tokens.css missing {token}")
 require(":root {" not in cosmicrealm, "_cosmicrealm.scss still owns token blocks")
-require("$gray" in settings and "$danger-color" in settings, "_settings.scss missing compile-time variables")
+for variable in ["$doc-font-size", "$type-size-1", "$global-font-family", "$small", "$x-large", "$susy", "$gray", "$danger-color", "$border-radius", "$masthead-height"]:
+    require(variable in settings, f"_settings.scss missing compile-time variable {variable}")
 require('"theme/_settings"' in main_scss, "main.scss not importing shared theme settings")
-for text in [buttons, navigation, themes]:
-    require("share" not in text.lower(), "share-specific CSS still present in Sass")
+require('"layout/tables"' in main_scss and '"layout/notices"' in main_scss and '"layout/sidebar"' in main_scss and '"syntax"' in main_scss, "main.scss dropped required layout imports")
+require('"layout/json_cv"' not in main_scss and not (ROOT / "_sass/layout/_json_cv.scss").exists(), "retired JSON CV Sass remains")
+require(not (ROOT / "_sass/_themes.scss").exists(), "legacy Sass settings owner still exists")
+for text in [buttons, navigation, page_scss]:
+    require("page__share" not in text.lower() and "social buttons" not in text.lower(), "share-specific CSS still present in Sass")
 require("twitter:" not in seo and "facebook:" not in seo.lower(), "seo.html still contains network-specific meta")
-require('"@type" : "Person"' in seo or '"@type":"Person"' in seo, "seo.html must keep Person JSON-LD")
+require(re.search(r'"@type"\s*:\s*"Person"', seo), "seo.html must keep Person JSON-LD")
 for rel in REAL_FOUNDATIONS + REAL_PROJECTS:
     html = read(rel)
     require("theme-init.js" in html, f"{rel} missing shared theme-init.js")
     require("theme-controller.js" in html and "site.js" in html, f"{rel} missing deferred runtime scripts")
     require("theme-tokens.css" in html, f"{rel} missing shared token stylesheet")
     require("content-theme-bridge.css" in html, f"{rel} missing bridge stylesheet")
+    require("has-shared-theme-shell" in html, f"{rel} missing shared-theme shell class")
+    require(html.count("data-theme-toggle") == 1, f"{rel} must contain exactly one theme toggle")
+    require('name="twitter:' not in html.lower(), f"{rel} still contains Twitter-specific metadata")
 for rel in LEGACY_FILES:
     require(not (ROOT / rel).exists(), f"{rel} still exists")
+
+for dependency in ["jquery", "fitvids", "jquery-smooth-scroll", "plotly.js-dist-min", "onchange", "uglify-js"]:
+    require(dependency not in package.get("dependencies", {}) and dependency not in package.get("devDependencies", {}), f"package.json still owns {dependency}")
 
 def iter_source_files():
     for rel in SCAN_DIRS:
@@ -243,9 +263,17 @@ def iter_source_files():
             yield ref
 
 for ref in iter_source_files():
-    text = ref.read_text(errors="ignore")
+    if "assets/vendor" in ref.as_posix() or "/static/vendor/" in ref.as_posix():
+        continue
+    text = ref.read_text(encoding="utf-8", errors="ignore")
     for legacy in ["main.min.js", "jquery.greedy-navigation", "plotly.js-dist-min", "fitvids", "jquery-smooth-scroll"]:
-        require(legacy not in text, f"{ref} still references {legacy}")
+        require(legacy not in text, f"{ref.relative_to(ROOT)} still references {legacy}")
+
+for ref in list((ROOT / "assets/css").glob("*.css")) + list((ROOT / "_sass").rglob("*.scss")):
+    if ref == ROOT / "assets/css/theme-tokens.css":
+        continue
+    text = ref.read_text(encoding="utf-8", errors="ignore")
+    require(not re.search(r"--(?:global|cr)-[a-z0-9-]+\s*:", text), f"runtime token declaration escaped canonical owner: {ref.relative_to(ROOT)}")
 ```
 
 - [ ] **Step 2: Write the failing theme-controller unit test**
@@ -384,7 +412,12 @@ function bindCollectors(page) {
       badResponses.push(`${res.status()} ${url}`);
     }
   });
-  page.on("console", (msg) => { if (msg.type() === "error") consoleErrors.push(msg.text()); });
+  page.on("console", (msg) => {
+    if (msg.type() !== "error") return;
+    const sourceUrl = msg.location().url || "";
+    if (sourceUrl && isOptionalExternalUrl(sourceUrl)) return;
+    consoleErrors.push(msg.text());
+  });
   page.on("pageerror", (err) => pageErrors.push(err.message));
   return { requestfailed, badResponses, consoleErrors, pageErrors };
 }
@@ -420,8 +453,12 @@ async function assertThemeToggle(page) {
 }
 
 async function assertReducedMotion(page) {
-  const reduced = await page.evaluate(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  assert.equal(reduced, true, "reduced-motion media query not active in QA context");
+  const reduced = await page.evaluate(() => ({
+    matches: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+  }));
+  assert.equal(reduced.matches, true, "reduced-motion media query not active in QA context");
+  assert.equal(reduced.scrollBehavior, "auto", "reduced-motion CSS did not disable smooth scrolling");
 }
 
 async function assertHomepageResources(page) {
@@ -491,7 +528,20 @@ async function main() {
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
     const noJsPage = await noJs.newPage();
     await noJsPage.goto(`${SITE_URL}/`, { waitUntil: "domcontentloaded" });
-    assert.ok(await noJsPage.locator("a[href='/projects/'], a[href$='/projects/'], a[href='/writing/'], a[href$='/writing/']").count() >= 2, "no-JS nav lost internal links");
+    const navState = await noJsPage.evaluate(() => {
+      const menu = document.querySelector("[data-nav-menu]");
+      const toggle = document.querySelector("[data-nav-toggle]");
+      const projectLink = document.querySelector('a[href="/projects/"], a[href$="/projects/"]');
+      const writingLink = document.querySelector('a[href="/writing/"], a[href$="/writing/"]');
+      if (!menu || !toggle || !projectLink || !writingLink) return null;
+      const menuStyle = window.getComputedStyle(menu);
+      const toggleStyle = window.getComputedStyle(toggle);
+      return {
+        menuVisible: menuStyle.display !== "none" && !menu.hidden,
+        toggleHidden: toggleStyle.display === "none",
+      };
+    });
+    assert.ok(navState && navState.menuVisible && navState.toggleHidden, "no-JS nav fallback is not visibly expanded");
     await noJs.close();
   } finally {
     await browser.close();
@@ -530,6 +580,7 @@ git commit -m "test: define homepage B-theme architecture contract"
 - Create: `assets/js/site.js`
 - Modify: `_includes/head.html`
 - Modify: `_includes/scripts.html`
+- Modify: `_layouts/default.html`
 
 - [ ] **Step 1: Create the tiny shared synchronous init**
 
@@ -537,20 +588,19 @@ This file runs before CSS on every page and does only first-paint theme resoluti
 
 ```javascript
 (function () {
+  var root = document.documentElement;
+  var stored = null;
+  var setting = "system";
   try {
-    var stored = localStorage.getItem("theme");
-    var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var resolved = stored === "dark" || (stored !== "light" && systemDark) ? "dark" : "light";
-    if (resolved === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
-    document.documentElement.setAttribute("data-theme-setting", stored || "system");
+    stored = localStorage.getItem("theme");
   } catch (error) {
-    document.documentElement.removeAttribute("data-theme");
-    document.documentElement.setAttribute("data-theme-setting", "system");
+    stored = null;
   }
+  if (stored === "light" || stored === "dark") setting = stored;
+  var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var resolved = setting === "dark" || (setting === "system" && systemDark) ? "dark" : "light";
+  root.setAttribute("data-theme", resolved);
+  root.setAttribute("data-theme-setting", setting);
 }());
 ```
 
@@ -562,6 +612,12 @@ The head must load `theme-init.js` first, then CSS assets. Internal asset links 
 <script src="{{ '/assets/js/theme-init.js' | relative_url }}"></script>
 <link rel="stylesheet" href="{{ '/assets/css/theme-tokens.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}">
+```
+
+Also give no-JS browsers an explicit light fallback and remove the retired `site_theme` branch in `_layouts/default.html`:
+
+```liquid
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js" data-theme="light" data-theme-setting="system">
 ```
 
 - [ ] **Step 3: Implement `theme-controller.js` without auto-mount**
@@ -594,8 +650,7 @@ function createThemeController(options) {
   }
 
   function applyResolved(resolved, setting) {
-    if (resolved === "dark") root.setAttribute("data-theme", "dark");
-    else root.removeAttribute("data-theme");
+    root.setAttribute("data-theme", resolved);
     root.setAttribute("data-theme-setting", setting);
     toggles.forEach((toggle) => updateToggle(toggle, resolved));
     return resolved;
@@ -779,7 +834,7 @@ Run: `node tests/theme_controller.test.cjs`
 Expected: pass.
 
 ```bash
-git add assets/js/theme-init.js assets/js/theme-controller.js assets/js/site.js _includes/head.html _includes/scripts.html
+git add assets/js/theme-init.js assets/js/theme-controller.js assets/js/site.js _includes/head.html _includes/scripts.html _layouts/default.html
 git commit -m "feat: add shared theme init and deferred runtime chain"
 ```
 
@@ -788,21 +843,19 @@ git commit -m "feat: add shared theme init and deferred runtime chain"
 **Files:**
 
 - Create: `assets/css/theme-tokens.css`
-- Create: `_sass/theme/_settings.scss`
+- Move: `_sass/_themes.scss` -> `_sass/theme/_settings.scss`
 - Modify: `assets/css/main.scss`
-- Modify: `_sass/_themes.scss`
-- Modify: `_sass/layout/_masthead.scss`
-- Modify: `_sass/layout/_footer.scss`
-- Modify: `_sass/layout/_archive.scss`
 - Modify: `_sass/layout/_page.scss`
 - Modify: `_sass/layout/_buttons.scss`
 - Modify: `_sass/layout/_navigation.scss`
 - Modify: `_sass/layout/_cosmicrealm.scss`
 - Create: `_sass/layout/_home.scss`
+- Delete: `_sass/_themes.scss`
 - Delete: `_sass/theme/_default_light.scss`
 - Delete: `_sass/theme/_default_dark.scss`
 - Delete: `_sass/theme/_air_light.scss`
 - Delete: `_sass/theme/_air_dark.scss`
+- Delete: `_sass/layout/_json_cv.scss`
 - Delete: `assets/js/main.min.js`
 - Delete: `assets/js/_main.js`
 - Delete: `assets/js/theme.js`
@@ -814,7 +867,9 @@ git commit -m "feat: add shared theme init and deferred runtime chain"
 This file must contain every token the current Sass expects, but express B-style as flat paper/card surfaces, thin borders, and no gradient/glass/blur.
 
 ```css
-:root {
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
   --global-base-color: #666d78;
   --global-bg-color: #f6f1e8;
   --global-footer-bg-color: #f0eadf;
@@ -838,14 +893,19 @@ This file must contain every token the current Sass expects, but express B-style
   --cr-page-bg: #f6f1e8;
   --cr-card-bg: #fbf8f1;
   --cr-panel-bg: #f1ebe2;
+  --cr-surface: #fbf8f1;
   --cr-ink-soft: #5c6778;
   --cr-border: #d7d1c6;
   --cr-border-strong: #c7bfb2;
   --cr-shadow: 0 0 0 0 transparent;
   --cr-shadow-hover: 0 0 0 0 transparent;
+  --cr-font-serif: Georgia, "Times New Roman", "Noto Serif SC", serif;
+  --cr-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  --cr-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 html[data-theme="dark"] {
+  color-scheme: dark;
   --global-base-color: #9aa4b2;
   --global-bg-color: #121b28;
   --global-footer-bg-color: #101724;
@@ -869,11 +929,30 @@ html[data-theme="dark"] {
   --cr-page-bg: #121b28;
   --cr-card-bg: #162131;
   --cr-panel-bg: #182331;
+  --cr-surface: #162131;
   --cr-ink-soft: #9ea8b6;
   --cr-border: #283549;
   --cr-border-strong: #34445b;
   --cr-shadow: 0 0 0 0 transparent;
   --cr-shadow-hover: 0 0 0 0 transparent;
+}
+
+html {
+  background: var(--cr-page-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cr-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 ```
 
@@ -924,9 +1003,9 @@ $sidebar-screen-min-width: 1024px;
   "layout/home";
 ```
 
-- [ ] **Step 4: Remove runtime token blocks from `_cosmicrealm.scss` and strip share CSS**
+- [ ] **Step 4: Remove runtime token blocks from `_cosmicrealm.scss`, strip share CSS, and retire legacy Sass ownership**
 
-Delete every `:root` / `html[data-theme="dark"]` token block from `_cosmicrealm.scss`. Delete share-specific styles from `_buttons.scss`, `_navigation.scss`, and `_themes.scss`.
+Delete every `:root` / `html[data-theme="dark"]` token block from `_cosmicrealm.scss`. Delete share-specific styles from `_buttons.scss` and `_navigation.scss`. Move any remaining compile-time variables needed from `_sass/_themes.scss` into `_sass/theme/_settings.scss`, then delete `_sass/_themes.scss` and `_sass/layout/_json_cv.scss`.
 
 - [ ] **Step 5: Delete the legacy runtime files once references are gone**
 
@@ -935,13 +1014,13 @@ Run: `rg -n "main.min.js|_main.js|theme.js|jquery.greedy-navigation|plotly.js-di
 Expected: zero references in source files before deletion commit.
 
 ```bash
-git rm assets/js/main.min.js assets/js/_main.js assets/js/theme.js assets/js/plugins/jquery.greedy-navigation.js assets/js/collapse.js _sass/theme/_default_light.scss _sass/theme/_default_dark.scss _sass/theme/_air_light.scss _sass/theme/_air_dark.scss
+git rm assets/js/main.min.js assets/js/_main.js assets/js/theme.js assets/js/plugins/jquery.greedy-navigation.js assets/js/collapse.js _sass/_themes.scss _sass/layout/_json_cv.scss _sass/theme/_default_light.scss _sass/theme/_default_dark.scss _sass/theme/_air_light.scss _sass/theme/_air_dark.scss
 ```
 
 - [ ] **Step 6: Commit the shared token system and runtime deletion**
 
 ```bash
-git add assets/css/theme-tokens.css assets/css/main.scss _sass/theme/_settings.scss _sass/_themes.scss _sass/layout/_masthead.scss _sass/layout/_footer.scss _sass/layout/_archive.scss _sass/layout/_page.scss _sass/layout/_buttons.scss _sass/layout/_navigation.scss _sass/layout/_cosmicrealm.scss _sass/layout/_home.scss
+git add assets/css/theme-tokens.css assets/css/main.scss _sass/theme/_settings.scss _sass/layout/_masthead.scss _sass/layout/_footer.scss _sass/layout/_archive.scss _sass/layout/_page.scss _sass/layout/_buttons.scss _sass/layout/_navigation.scss _sass/layout/_cosmicrealm.scss _sass/layout/_home.scss
 git commit -m "refactor: unify theme ownership and remove legacy runtime"
 ```
 
@@ -1065,22 +1144,25 @@ git commit -m "refactor: fix internal path semantics and retain generic seo"
 
 - [ ] **Step 1: Add curated homepage metadata to `_data/projects.yml`**
 
-Mark IConFace, Style-Talking, and Voice Studio as homepage-selected rather than relying on latest-date limits.
+Mark IConFace, Style-Talking, and Voice Studio as homepage-selected rather than relying on latest-date limits. Add an explicit `homepage_url` so the homepage card never depends on `links` ordering.
 
 ```yaml
 - name: IConFace
   homepage: true
   homepage_order: 1
+  homepage_url: /projects/iconface/
   ...
 
 - name: Style-Talking
   homepage: true
   homepage_order: 2
+  homepage_url: /projects/style-talking/
   ...
 
 - name: Voice Studio
   homepage: true
   homepage_order: 3
+  homepage_url: https://github.com/cosmicrealm/VoiceStudio
   ...
 ```
 
@@ -1129,13 +1211,13 @@ Do not reuse the existing `project-card` for foundations because foundations onl
 `_includes/home-project-card.html`
 
 ```liquid
-{% assign project_url = include.project.links | first | default: nil %}
+{% assign project_url = include.project.homepage_url | default: include.project.links.first.url %}
 <article class="home-card home-card--project">
-  <a class="home-card__cover" href="{% if project_url.url contains 'http' %}{{ project_url.url }}{% else %}{{ project_url.url | relative_url }}{% endif %}">
+  <a class="home-card__cover" href="{% if project_url contains 'http' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}">
     <img src="{{ include.project.teaser | relative_url }}" alt="{{ include.project.teaser_alt | default: include.project.name }}">
   </a>
   <div class="home-card__body">
-    <h3><a href="{% if project_url.url contains 'http' %}{{ project_url.url }}{% else %}{{ project_url.url | relative_url }}{% endif %}">{{ include.project.name }}</a></h3>
+    <h3><a href="{% if project_url contains 'http' %}{{ project_url }}{% else %}{{ project_url | relative_url }}{% endif %}">{{ include.project.name }}</a></h3>
     <p>{{ include.project.summary }}</p>
   </div>
 </article>
@@ -1259,7 +1341,7 @@ git commit -m "feat: build curated homepage and schema-correct home cards"
 - Modify: `_layouts/single.html`
 - Delete: `_includes/social-share.html`
 - Modify: `_config.yml`
-- Modify: `_includes/scripts.html`
+- Modify: `_includes/footer/custom.html`
 - Create: `assets/js/mermaid-init.js`
 - Modify: `_posts/2025-12-25-blog-nonochat-1-base.md`
 
@@ -1333,7 +1415,7 @@ if (document.querySelector("code.language-mermaid")) {
 
 ```bash
 git rm _includes/social-share.html
-git add _layouts/single.html _config.yml _includes/scripts.html assets/js/mermaid-init.js _posts/2025-12-25-blog-nonochat-1-base.md
+git add _layouts/single.html _config.yml _includes/footer/custom.html assets/js/mermaid-init.js _posts/2025-12-25-blog-nonochat-1-base.md
 git commit -m "refactor: remove visible share ui and gate heavy renderers"
 ```
 
@@ -1522,7 +1604,7 @@ Expected:
 
 Use `npm install --save-dev playwright` instead of hard-coding a version. Commit `package-lock.json`. Remove legacy dependencies and build scripts.
 
-Resulting `package.json` must contain:
+After `npm install --save-dev playwright`, `package.json` must contain exactly one `devDependencies.playwright` entry written by npm plus the three scripts below:
 
 ```json
 {
@@ -1530,9 +1612,6 @@ Resulting `package.json` must contain:
   "version": "1.0.0",
   "description": "Build and QA helpers for cosmicrealm.github.io",
   "private": true,
-  "devDependencies": {
-    "playwright": "installed by npm"
-  },
   "scripts": {
     "test:structure": "python3 scripts/verify_homepage_theme_architecture.py",
     "test:theme": "node tests/theme_controller.test.cjs",
