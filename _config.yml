@@ -199,9 +199,11 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: false
       related: true
+      mathjax: true
+      mermaid: false
   # _pages
   - scope:
       path: ""

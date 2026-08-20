@@ -1,4 +1,21 @@
 <script src="{{ '/assets/js/theme-controller.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+{% if page.mathjax %}
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="{{ '/assets/vendor/mathjax/tex-mml-chtml.js' | relative_url }}" id="MathJax-script"></script>
+{% endif %}
+{% if page.mermaid %}
+  <script type="module" src="{{ '/assets/js/mermaid-init.js' | relative_url }}"></script>
+{% endif %}
 
 {% include analytics.html %}

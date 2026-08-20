@@ -4,6 +4,7 @@ date: 2025-12-25
 permalink: /posts/2025/12/2025-12-25-blog-nonochat-1-base/
 tags:
   - llm
+mermaid: true
 ---
 
 ### nonochat - LLM Base 训练完整解析
