@@ -2,7 +2,7 @@
 title: "Improving Hyperspectral Image Classification with Unsupervised Knowledge Learning"
 collection: publications
 category: conferences
-permalink: /publication/UKL
+permalink: /publications/ukl/
 excerpt: 
 date: 2019-07-28
 venue: '(IGARSS) IEEE International Geoscience and Remote Sensing Symposium'

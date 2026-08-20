@@ -2,7 +2,7 @@
 title: "Deep Cube-Pair Network for Hyperspectral Imagery Classification"
 collection: publications
 category: manuscripts
-permalink: /publication/DCPN
+permalink: /publications/dcpn/
 excerpt: 
 date: 2018-05-18
 venue: 'remotesensing'

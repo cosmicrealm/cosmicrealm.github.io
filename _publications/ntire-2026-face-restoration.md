@@ -2,7 +2,7 @@
 title: "The Second Challenge on Real-World Face Restoration at NTIRE 2026: Methods and Results"
 collection: publications
 category: preprints
-permalink: /publication/NTIRE2026-Face-Restoration
+permalink: /publications/ntire-2026-face-restoration/
 excerpt:
 date: 2026-04-15
 venue: 'arXiv preprint arXiv:2604.10532v2 / CVPR 2026 Workshop'

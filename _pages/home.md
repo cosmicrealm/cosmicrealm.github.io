@@ -1,12 +1,9 @@
 ---
 permalink: /
 title: "Jinyang Zhang"
-seo_title: "Jinyang Zhang - Projects, Publications, Foundations, Blogs, and CV"
-excerpt: "Personal website for projects, publications, foundations, blogs, and CV."
+seo_title: "Jinyang Zhang - Projects, Publications, Foundations, Writing, and CV"
+excerpt: "Personal website for projects, publications, foundations, writing, and CV."
 author_profile: true
-redirect_from:
-  - /about/
-  - /about.html
 ---
 
 <section class="home-section home-section--about">
@@ -117,8 +114,8 @@ redirect_from:
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
-    <h2>Blogs</h2>
-    <a class="section-heading__link" href="{{ '/year-archive/' | relative_url }}">All blogs</a>
+    <h2>Writing</h2>
+    <a class="section-heading__link" href="{{ '/writing/' | relative_url }}">All writing</a>
   </div>
   <ul class="compact-list compact-list--dated">
     {% for post in site.posts limit:4 %}

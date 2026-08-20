@@ -2,6 +2,6 @@
 {% assign tag_chip_slug = tag_chip_word | slugify %}
 {% assign tag_chip_class = include.class | default: "tag-chip" %}
 
-{% assign tag_chip_url = "/year-archive/?tags=" | append: tag_chip_slug %}
+{% assign tag_chip_url = "/writing/?tags=" | append: tag_chip_slug %}
 
 <a href="{{ tag_chip_url | relative_url }}" class="{{ tag_chip_class }}" rel="tag">{{ tag_chip_word }}</a>

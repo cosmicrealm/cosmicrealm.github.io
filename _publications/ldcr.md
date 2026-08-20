@@ -2,7 +2,7 @@
 title: "Learning Discriminative Compact Representation for Hyperspectral Imagery Classification"
 collection: publications
 category: manuscripts
-permalink: /publication/LDCR
+permalink: /publications/ldcr/
 excerpt: 
 date: 2019-10-01
 venue: 'IEEE Transactions on Geoscience and Remote Sensing (TGRS) '
