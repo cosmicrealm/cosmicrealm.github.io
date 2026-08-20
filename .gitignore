@@ -34,7 +34,6 @@ foundations/codex_*.md
 foundations/*/codex_*.md
 foundations/*/README.md
 foundations/diffusion-distillation-math-lab/static/
-Projects/*/README.md
 
 # Style-Talking media is hosted on R2; keep local video copies out of git.
 projects/style-talking/static/videos/

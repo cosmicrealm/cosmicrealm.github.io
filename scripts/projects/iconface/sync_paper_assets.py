@@ -119,6 +119,14 @@ def find_image(directory: Path, stem: str) -> Path:
     raise FileNotFoundError(f"Missing image: {directory}/{stem}.[png|jpg|jpeg|webp]")
 
 
+def has_image(directory: Path, stem: str) -> bool:
+    try:
+        find_image(directory, stem)
+    except FileNotFoundError:
+        return False
+    return True
+
+
 def convert_webp(source: Path, destination: Path, quality: int) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
@@ -355,7 +363,7 @@ def main() -> None:
         for sample_id in sample_ids:
             possible_roots = [blind_root / folder, candidate_blind_root / folder]
             source_dir = next(
-                (root for root in possible_roots if any((root / f"{sample_id}__deg{s}").is_file() for s in (".png", ".jpg"))),
+                (root for root in possible_roots if has_image(root, f"{sample_id}__deg")),
                 None,
             )
             if source_dir is None:

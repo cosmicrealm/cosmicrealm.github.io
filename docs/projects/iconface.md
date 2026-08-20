@@ -29,7 +29,9 @@ python3 scripts/projects/iconface/sync_paper_assets.py \
 ```
 
 The script uses an explicit source map rather than parsing TeX macros. Update that map whenever selected paper cases change.
-It requires `cwebp` and `ffmpeg` on `PATH`.
+It requires `cwebp` and `ffmpeg` on `PATH`. Each sync also regenerates the page teasers at `images/projects/iconface.jpg` and `images/publications/iconface.jpg`; treat those two files as generated outputs rather than hand-edited assets.
+
+The legacy `static/gallery/paper/` tree is kept only as historical retained assets. The current page consumes `static/gallery/v2/` and the teaser/image outputs above.
 
 ## Main files
 
