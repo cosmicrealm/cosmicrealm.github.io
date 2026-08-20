@@ -93,14 +93,14 @@ async function gotoReady(page, url, readySelector) {
   await waitForDocumentStable(page);
 }
 
-async function assertNoOverflow(page, width, height) {
+async function assertNoOverflow(page, width, height, label) {
   await page.setViewportSize({ width, height });
-  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve())));
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   const metrics = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     clientWidth: document.documentElement.clientWidth,
   }));
-  assert.equal(metrics.scrollWidth, metrics.clientWidth, `${width}px overflow detected`);
+  assert.equal(metrics.scrollWidth, metrics.clientWidth, `${label} overflow detected at ${width}px`);
 }
 
 async function assertThemeToggle(page) {
@@ -183,6 +183,41 @@ async function assertThemePersistence(browser, colorScheme) {
   }
 }
 
+async function captureHomepagePreview(browser, colorScheme, filename) {
+  const context = await browser.newContext({
+    colorScheme,
+    reducedMotion: "reduce",
+    viewport: { width: 1440, height: 960 },
+  });
+  const page = await context.newPage();
+  const collectors = bindCollectors(page);
+  try {
+    await gotoReady(page, `${SITE_URL}/`, ".home-hero h1");
+    const palette = await page.evaluate(() => ({
+      theme: document.documentElement.getAttribute("data-theme") || "light",
+      background: getComputedStyle(document.body).backgroundColor,
+    }));
+    assert.equal(palette.theme, colorScheme, `${colorScheme} preview resolved the wrong theme`);
+    assert.equal(
+      palette.background,
+      colorScheme === "dark" ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
+      `${colorScheme} homepage canvas is not pure ${colorScheme === "dark" ? "black" : "white"}`
+    );
+    await page.screenshot({
+      path: path.join(ARTIFACT_DIR, filename),
+      fullPage: false,
+      animations: "disabled",
+    });
+    assertCollectorsEmpty(collectors, `${colorScheme} homepage preview`);
+  } finally {
+    await context.close();
+  }
+}
+
+function createQaContext(browser, colorScheme = "light", viewport = { width: 1440, height: 960 }) {
+  return browser.newContext({ colorScheme, reducedMotion: "reduce", viewport });
+}
+
 async function main() {
   ensureArtifacts();
   const browser = await chromium.launch({ headless: true, executablePath: CHROME_PATH });
@@ -190,7 +225,7 @@ async function main() {
     await assertThemePersistence(browser, "light");
     await assertThemePersistence(browser, "dark");
 
-    const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, reducedMotion: "reduce" });
+    const context = await createQaContext(browser);
     const homepage = await context.newPage();
     const homepageCollectors = bindCollectors(homepage);
     try {
@@ -198,11 +233,8 @@ async function main() {
       await assertThemeToggle(homepage);
       await assertReducedMotion(homepage);
       for (const width of WIDTHS) {
-        await assertNoOverflow(homepage, width, 900);
+        await assertNoOverflow(homepage, width, 900, "homepage");
       }
-      await homepage.screenshot({ path: path.join(ARTIFACT_DIR, "home-light.png"), fullPage: true });
-      await homepage.locator("[data-theme-toggle]").first().click();
-      await homepage.screenshot({ path: path.join(ARTIFACT_DIR, "home-dark.png"), fullPage: true });
       await waitForDocumentStable(homepage);
       await assertHomepageResources(homepage);
       assertCollectorsEmpty(homepageCollectors, "homepage");
@@ -211,7 +243,8 @@ async function main() {
     }
 
     for (const url of STANDALONE_PATHS) {
-      const standalone = await context.newPage();
+      const routeContext = await createQaContext(browser);
+      const standalone = await routeContext.newPage();
       const routeCollectors = bindCollectors(standalone);
       try {
         await gotoReady(standalone, `${SITE_URL}${url}`, "[data-theme-toggle]");
@@ -219,16 +252,19 @@ async function main() {
         await assertThemeToggle(standalone);
         await assertReducedMotion(standalone);
         for (const width of WIDTHS) {
-          await assertNoOverflow(standalone, width, 900);
+          await assertNoOverflow(standalone, width, 900, url);
         }
         await waitForDocumentStable(standalone);
         await assertNoProductionOriginResources(standalone, url);
         assertCollectorsEmpty(routeCollectors, url);
       } finally {
-        await standalone.close();
+        await routeContext.close();
       }
     }
     await context.close();
+
+    await captureHomepagePreview(browser, "light", "home-light.png");
+    await captureHomepagePreview(browser, "dark", "home-dark.png");
 
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
     const noJsPage = await noJs.newPage();
