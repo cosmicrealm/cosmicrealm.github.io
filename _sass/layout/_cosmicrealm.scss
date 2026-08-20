@@ -3,14 +3,12 @@
    ========================================================================== */
 
 body {
-  background:
-    linear-gradient(180deg, var(--cr-page-bg), var(--global-bg-color) 58%, var(--cr-page-bg));
+  background: var(--cr-page-bg);
 }
 
 .masthead {
-  background: color-mix(in srgb, var(--global-bg-color) 93%, transparent);
+  background: var(--cr-page-bg);
   border-bottom: 1px solid var(--cr-border);
-  backdrop-filter: blur(14px);
 }
 
 .masthead__menu-item--lg a {
