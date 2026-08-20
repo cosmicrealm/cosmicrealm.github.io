@@ -155,6 +155,30 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
+def exact_case_path(path: Path) -> Path | None:
+    try:
+        relative = path.relative_to(REPO_ROOT)
+    except ValueError:
+        return path if path.exists() else None
+
+    current = REPO_ROOT
+    if relative == Path("."):
+        return current
+
+    for part in relative.parts:
+        try:
+            next_path = next(candidate for candidate in current.iterdir() if candidate.name == part)
+        except (FileNotFoundError, NotADirectoryError, StopIteration):
+            return None
+        current = next_path
+
+    return current
+
+
+def exact_case_exists(path: Path) -> bool:
+    return exact_case_path(path) is not None
+
+
 def front_matter(path: Path) -> dict[str, str]:
     text = read_text(path)
     if not text.startswith("---\n"):
@@ -421,7 +445,7 @@ def check_legacy(site_dir: Path) -> list[str]:
     failures: list[str] = []
 
     for rel_path in LEGACY_FORBIDDEN_PATHS:
-        if (REPO_ROOT / rel_path).exists():
+        if exact_case_exists(REPO_ROOT / rel_path):
             failures.append(f"legacy path still exists: {rel_path}")
 
     single_layout_path = REPO_ROOT / "_layouts/single.html"
@@ -429,7 +453,7 @@ def check_legacy(site_dir: Path) -> list[str]:
         failures.append("_layouts/single.html still references comments")
 
     for rel_path in ZERO_REF_TARGETS:
-        if (REPO_ROOT / rel_path).exists():
+        if exact_case_exists(REPO_ROOT / rel_path):
             failures.append(f"legacy asset/include still exists: {rel_path}")
 
     scan_candidates = list(iter_text_files()) + [REPO_ROOT / rel_path for rel_path in ZERO_REF_SCAN_FILES]

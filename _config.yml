@@ -13,9 +13,7 @@ title: "Jinyang Zhang"
 title_separator: "-"
 name: &name "Jinyang Zhang"
 description: &description "Jinyang Zhang's academic portfolio" # Update this with a general description of your site, this is the default if not overridden by a page
-url:
-  https://cosmicrealm.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
-  # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
+url: "https://cosmicrealm.github.io"
 baseurl: "" # the subpath of your site, e.g. "/blog"
 repository: "cosmicrealm/cosmicrealm.github.io"
 
@@ -99,33 +97,6 @@ breadcrumbs: false # true, false (default)
 words_per_minute: 160
 future: true
 read_more: "disabled" # if enabled, adds "Read more" links to excerpts
-talkmap_link: true #change to true to add link to talkmap on talks page
-comments:
-  provider: false # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
-  disqus:
-    shortname:
-  discourse:
-    server: # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
-  facebook:
-    appid:
-    num_posts: # 5 (default)
-    colorscheme: # "light" (default), "dark"
-staticman:
-  allowedFields: ["name", "email", "url", "message"]
-  branch: "gh-pages" # "master", "gh-pages"
-  commitMessage: "New comment."
-  filename: comment-{@timestamp}
-  format: "yml"
-  moderation: true
-  path: "_data/comments/{options.slug}"
-  requiredFields: ["name", "email", "message"]
-  transforms:
-    email: "md5"
-  generatedFields:
-    date:
-      type: "date"
-      options:
-        format: "iso8601" # "iso8601" (default), "timestamp-seconds", "timestamp-milliseconds"
 atom_feed:
   hide: false # change to true to hide the RSS feed in the footer
   path: # blank (default) uses feed.xml
@@ -164,8 +135,10 @@ include:
   - _pages
   - files
 exclude:
+  - AGENTS.md
   - "*.sublime-project"
   - "*.sublime-workspace"
+  - "*.ipynb"
   - .asset-cache
   - .bundle
   - .github
@@ -178,6 +151,8 @@ exclude:
   - Capfile
   - config
   - Dockerfile
+  - docker-compose.yaml
+  - docs/
   - Gemfile
   - Gruntfile.js
   - gulpfile.js
@@ -185,18 +160,13 @@ exclude:
   - local
   - log
   - knowledge
-  - foundations/codex_generation_model_acceleration_page_guide.md
-  - foundations/codex_image_generation_webpage_spec.md
-  - foundations/codex_video_generation_webpage_guidance.md
-  - foundations/diffusion-distillation-math-lab/README.md
-  - foundations/diffusion-distillation-math-lab/codex_generation_distillation_page_guide.md
-  - foundations/diffusion-distillation-math-lab/static
-  - foundations/generation-math/codex_generation_math_refactor_guide.md
-  - Projects/diffusion-distillation-math-lab/README.md
   - node_modules
-  - package.json*
+  - package-lock.json
+  - package.json
   - Rakefile
-  - README
+  - README.md
+  - scripts/
+  - tests/
   - tmp
   - vendor
 keep_files:
@@ -225,16 +195,7 @@ kramdown:
 
 # These settings control the types of collections used by the template
 collections:
-  teaching:
-    output: true
-    permalink: /:collection/:path/
   publications:
-    output: true
-    permalink: /:collection/:path/
-  portfolio:
-    output: true
-    permalink: /:collection/:path/
-  talks:
     output: true
     permalink: /:collection/:path/
 
@@ -248,8 +209,6 @@ defaults:
       layout: single
       author_profile: true
       read_time: false
-      comments: true
-      share: true
       related: true
   # _pages
   - scope:
@@ -258,15 +217,6 @@ defaults:
     values:
       layout: single
       author_profile: true
-  # _teaching
-  - scope:
-      path: ""
-      type: teaching
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
   # _publications
   - scope:
       path: ""
@@ -274,25 +224,6 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: true
-      comments: true
-  # _portfolio
-  - scope:
-      path: ""
-      type: portfolio
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comment: true
-  # _talks
-  - scope:
-      path: ""
-      type: talks
-    values:
-      layout: talk
-      author_profile: true
-      share: true
 
 # Sass/SCSS
 sass:
@@ -308,20 +239,12 @@ timezone: Etc/UTC # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # Plugins
 plugins:
   - jekyll-feed
-  - jekyll-gist
-  - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-redirect-from
-  - jemoji
 
 # Mimic GitHub Pages with --safe
 whitelist:
   - jekyll-feed
-  - jekyll-gist
-  - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-redirect-from
-  - jemoji
 
 # Archives
 #  Type

@@ -1,96 +1,67 @@
-# Academic Pages
-**Academic Pages is a GitHub Pages template for personal and professional portfolio-oriented websites.**
+# Jinyang Zhang 个人主页
 
-![Academic Pages template example](images/themes/homepage-light.png "Academic Pages template example")
+本仓库是 `Jinyang Zhang` 的个人 Jekyll 主页源码，站点主域名为 `https://cosmicrealm.github.io`。仓库只保留当前主页实际使用的内容命名空间与构建脚本，不再承载 Academic Pages 模板残留页面、模板说明或根级实验壳。
 
-# Getting Started
+## Local Preview
 
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Click the "Use this template" button in the top right.
-1. On the "New repository" page, enter your public repository name as "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and add your content.
-1. Upload any files (like PDFs, .zip files, etc.) to the `files/` directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.
-1. Check status by going to the repository settings, in the "GitHub pages" section
-1. (Optional) Use the Jupyter notebooks or python scripts in the `markdown_generator` folder to generate markdown files for publications and talks from a TSV file.
-
-See more info at https://cosmicrealm.github.io/
-
-## Running locally
-
-When you are initially working on your website, it is very useful to be able to preview the changes locally before pushing them to GitHub. To work locally you will need to:
-
-1. Clone the repository and made updates as detailed above.
-
-### Using a different IDE
-1. Make sure you have ruby-dev, bundler, and nodejs installed
-    
-    On most Linux distribution and [Windows Subsystem Linux](https://learn.microsoft.com/en-us/windows/wsl/about) the command is:
-    ```bash
-    sudo apt install ruby-dev ruby-bundler nodejs
-    ```
-    If you see error `Unable to locate package ruby-bundler`, `Unable to locate package nodejs `, run the following:
-    ```bash
-    sudo apt update && sudo apt upgrade -y
-    ```
-    then try run `sudo apt install ruby-dev ruby-bundler nodejs` again.
-
-    On MacOS the commands are:
-    ```bash
-    brew install ruby
-    brew install node
-    gem install bundler
-    ```
-1. Run `bundle install` to install ruby dependencies. If you get errors, delete Gemfile.lock and try again.
-
-    If you see file permission error like `Fetching bundler-2.6.3.gem ERROR:  While executing gem (Gem::FilePermissionError) You don't have write permissions for the /var/lib/gems/3.2.0 directory.` or `Bundler::PermissionError: There was an error while trying to write to /usr/local/bin.`
-    Install Gems Locally (Recommended):
-    ```bash
-    bundle config set --local path 'vendor/bundle'
-    ```
-    then try run `bundle install` again. If succeeded, you should see a folder called `vendor` and `.bundle`.
-
-1. Run `jekyll serve -l -H localhost` to generate the HTML and serve it from `localhost:4000` the local server will automatically rebuild and refresh the pages on change to Markdown (*.md) and HTML files, while changes to the core template and configuration (i.e., `_config.yml`) will require stoping and restarting Jekyll.
-    You may also try `bundle exec jekyll serve -l -H localhost` to ensure jekyll to use specific dependencies on your own local machine.
-
-If you are running on Linux it may be necessary to install some additional dependencies prior to being able to run locally: `sudo apt install build-essential gcc make`
-
-## Using Docker
-
-Working from a different OS, or just want to avoid installing dependencies? You can use the provided `Dockerfile` to build a container that will run the site for you if you have [Docker](https://www.docker.com/) installed.
-
-You can build and execute the container by running the following command in the repository:
+本地预览默认走仓库自带的 Docker Compose 环境，不依赖宿主机 Ruby/Bundler。
 
 ```bash
-chmod -R 777 .
 docker compose up
 ```
 
-You should now be able to access the website from `localhost:4000`.
+服务启动后访问 `http://localhost:4000/`。如果你的本机只提供 legacy 命令，也可使用：
 
-### Using the DevContainer in VS Code
+```bash
+docker-compose up
+```
 
-If you are using [Visual Studio Code](https://code.visualstudio.com/) you can use the [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) that comes with this Repository. Normally VS Code detects that a development container configuration is available and asks you if you want to use the container. If this doesn't happen you can manually start the container by **F1->DevContainer: Reopen in Container**. This restarts your VS Code in the container and automatically hosts your academic page locally on http://localhost:4000. All changes will be updated live to that page after a few seconds.
+停止预览时执行：
 
-# Maintenance
+```bash
+docker compose down
+```
 
-Bug reports and feature requests to the template should be [submitted via GitHub](https://github.com/academicpages/academicpages.github.io/issues/new/choose). For questions concerning how to style the template, please feel free to start a [new discussion on GitHub](https://github.com/academicpages/academicpages.github.io/discussions).
+## Content Namespaces
 
-This repository was forked (then detached) by [Stuart Geiger](https://github.com/staeiou) from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/), which is © 2016 Michael Rose and released under the MIT License (see LICENSE.md). It is currently being maintained by [Robert Zupko](https://github.com/rjzupkoii) and additional maintainers would be welcomed.
+当前站点只维护以下内容空间与对应 canonical URL：
 
-## Bugfixes and enhancements
+- `projects/`：项目静态页面与资源，canonical URL 形如 `/projects/<slug>/`
+- `foundations/`：原理讲义、交互式技术笔记与实验页，canonical URL 形如 `/foundations/<slug>/`
+- `_publications/`：论文条目，canonical URL 形如 `/publications/<slug>/`
+- `_posts/`：博客与写作内容，canonical URL 由 Jekyll post permalink 生成
+- `_pages/`：站点级页面，例如 `/`、`/projects/`、`/foundations/`、`/publications/`、`/writing/`、`/cv/`
 
-If you have bugfixes and enhancements that you would like to submit as a pull request, you will need to [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) this repository as opposed to using it as a template. This will also allow you to [synchronize your copy](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) of template to your fork as well.
+可下载附件继续放在 `files/`，发布后路径为 `/files/<filename>`。
 
-Unfortunately, one logistical issue with a template theme like Academic Pages that makes it a little tricky to get bug fixes and updates to the core theme. If you use this template and customize it, you will probably get merge conflicts if you attempt to synchronize. If you want to save your various .yml configuration files and markdown files, you can delete the repository and fork it again. Or you can manually patch.
+## Validation
 
----
-<div align="center">
-    
-![pages-build-deployment](https://github.com/academicpages/academicpages.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)
-[![GitHub contributors](https://img.shields.io/github/contributors/academicpages/academicpages.github.io.svg)](https://github.com/academicpages/academicpages.github.io/graphs/contributors)
-[![GitHub release](https://img.shields.io/github/v/release/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io/releases/latest)
-[![GitHub license](https://img.shields.io/github/license/academicpages/academicpages.github.io?color=blue)](https://github.com/academicpages/academicpages.github.io/blob/master/LICENSE)
+架构与发布边界变更先跑架构验证器：
 
-[![GitHub stars](https://img.shields.io/github/stars/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io)
-[![GitHub forks](https://img.shields.io/github/forks/academicpages/academicpages.github.io)](https://github.com/academicpages/academicpages.github.io/fork)
-</div>
+```bash
+python3 scripts/verify_homepage_architecture.py --check config --check legacy --check dirty
+```
+
+需要验证 Jekyll 构建与输出时，使用 Docker 环境：
+
+```bash
+docker compose up --build -d
+python3 scripts/verify_homepage_architecture.py --check build
+docker compose down
+```
+
+如果只需要完整回归，也可以串行执行：
+
+```bash
+python3 scripts/verify_homepage_architecture.py --check config --check legacy --check dirty
+docker compose up --build -d
+python3 scripts/verify_homepage_architecture.py --check build
+docker compose down
+```
+
+## Editing Rules
+
+- 不要新增根级项目壳、模板 redirect 页面或 Academic Pages 遗留 shell。
+- `scripts/`、`docs/`、`tests/`、notebooks、开发容器配置与本地说明文档不属于发布内容，修改后也不应暴露到最终站点。
+- `projects/`、`foundations/`、`_publications/`、`_posts/`、`_pages/` 之外的新内容目录，只有在确认需要成为长期站点命名空间时才应加入。
+- 修改固定目录、模板删除或路由迁移前，先更新并运行 `scripts/verify_homepage_architecture.py`，避免把历史模板路径重新发布出去。
