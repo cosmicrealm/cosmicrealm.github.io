@@ -23,7 +23,8 @@
   cursor: pointer;
 
   &:hover {
-    background-color: mix(white, #000, 20%);
+    color: var(--global-on-base-color) !important;
+    background-color: var(--global-base-hover-color);
   }
 
   .icon {
@@ -53,8 +54,9 @@
     background-color: var(--global-bg-color);
 
     &:hover {
+      background-color: var(--global-base-color);
       color: var(--global-on-base-color) !important;
-      border-color: var(--global-text-color-light);
+      border-color: var(--global-base-color);
     }
   }
 

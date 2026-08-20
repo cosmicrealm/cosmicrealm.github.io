@@ -2,6 +2,7 @@
 html[data-theme="light"] {
   color-scheme: light;
   --global-base-color: #666d78;
+  --global-base-hover-color: #4f5763;
   --global-on-base-color: #ffffff;
   --global-bg-color: #f6f1e8;
   --global-footer-bg-color: #f0eadf;
@@ -39,6 +40,7 @@ html[data-theme="light"] {
 html[data-theme="dark"] {
   color-scheme: dark;
   --global-base-color: #9aa4b2;
+  --global-base-hover-color: #b7c0cb;
   --global-on-base-color: #121b28;
   --global-bg-color: #121b28;
   --global-footer-bg-color: #101724;
