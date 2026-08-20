@@ -214,7 +214,8 @@ def make_square_preview(source: Path, destination: Path) -> None:
 def main() -> None:
     args = parse_args()
     paper_root = args.paper_root.expanduser().resolve()
-    site_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[3]
+    site_root = repo_root / "projects/iconface"
     output_root = site_root / "static/gallery/v2"
     image_root = site_root / "static/images/v2"
 
@@ -425,8 +426,8 @@ def main() -> None:
     social_preview = site_root / "static/images/social_preview.jpg"
     make_social_preview(paper_root, social_preview)
     square_source = find_image(teaser_source, "ours_512")
-    make_square_preview(square_source, site_root.parent / "images/projects/iconface.jpg")
-    make_square_preview(square_source, site_root.parent / "images/publications/iconface.jpg")
+    make_square_preview(square_source, repo_root / "images/projects/iconface.jpg")
+    make_square_preview(square_source, repo_root / "images/publications/iconface.jpg")
 
     print(f"Wrote {manifest_path}")
     print(f"Paper source: {paper_root}")

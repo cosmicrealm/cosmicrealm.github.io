@@ -4,7 +4,7 @@ Static project page for:
 
 > IConFace: Fine-Grained Identity Conditioning for Reference-Aware Face Restoration
 
-- Project: https://cosmicrealm.github.io/IConFace/
+- Project: https://cosmicrealm.github.io/projects/iconface/
 - Paper: https://arxiv.org/pdf/2605.02814
 - arXiv: https://arxiv.org/abs/2605.02814
 - Supplementary: https://arxiv.org/pdf/2605.02814#page=10
@@ -24,7 +24,7 @@ The website does not modify the paper sources. Main-paper and supplementary visu
 ## Refreshing paper assets
 
 ```bash
-python3 IConFace/scripts/sync_paper_assets.py \
+python3 scripts/projects/iconface/sync_paper_assets.py \
   --paper-root /Users/zhangjinyang/code/local/flux-restoration/paper_submission_iconface
 ```
 
@@ -37,4 +37,4 @@ It requires `cwebp` and `ffmpeg` on `PATH`.
 - `static/css/index.css`: responsive project-page styling.
 - `static/js/index.js`: on-demand gallery rendering, BibTeX copy, and scroll behavior.
 - `static/gallery/v2/manifest.json`: generated gallery metadata.
-- `scripts/sync_paper_assets.py`: reproducible asset synchronization.
+- `scripts/projects/iconface/sync_paper_assets.py`: reproducible asset synchronization.
