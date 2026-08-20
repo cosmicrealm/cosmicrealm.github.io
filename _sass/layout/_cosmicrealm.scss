@@ -145,7 +145,7 @@ body {
   text-decoration: none !important;
   border: 1px solid var(--cr-border);
   border-radius: 6px;
-  background: color-mix(in srgb, var(--global-bg-color) 92%, var(--cr-card-bg));
+  background: var(--cr-card-bg);
 }
 
 .hero-actions a:first-child,
@@ -1230,10 +1230,6 @@ body {
     display: block;
     padding-left: 51px;
     cursor: default;
-  }
-
-  .author__urls-wrapper button {
-    display: none;
   }
 
   .author__urls {
