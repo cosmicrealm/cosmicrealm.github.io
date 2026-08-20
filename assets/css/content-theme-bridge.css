@@ -1,0 +1,97 @@
+html.has-shared-theme {
+  --paper: var(--cr-page-bg);
+  --bg: var(--cr-page-bg);
+  --surface: var(--cr-card-bg);
+  --panel: var(--cr-card-bg);
+  --panel-strong: var(--cr-panel-bg);
+  --soft: var(--cr-panel-bg);
+  --ink: var(--global-text-color);
+  --muted: var(--cr-ink-soft);
+  --line: var(--cr-border);
+  --accent: var(--cr-accent);
+  --accent-deep: var(--cr-accent-strong);
+  --accent-ink: var(--cr-accent-strong);
+  --blue: var(--cr-accent);
+  --blue-dark: var(--cr-accent-strong);
+  --blue-soft: var(--cr-accent-soft);
+  --rose: var(--cr-warm);
+  --shadow: none;
+  --shadow-small: none;
+  --serif: var(--cr-font-serif);
+  --sans: var(--cr-font-sans);
+  --mono: var(--cr-font-mono);
+}
+
+html.has-shared-theme body,
+html.has-shared-theme .site-header,
+html.has-shared-theme .lecture-toc,
+html.has-shared-theme .publication-header {
+  background: var(--cr-page-bg);
+  color: var(--global-text-color);
+}
+
+html.has-shared-theme .site-header,
+html.has-shared-theme .lecture-toc,
+html.has-shared-theme .project-home-link {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.2rem;
+  padding: 0.4rem 0.7rem;
+  color: var(--global-text-color);
+  border: 1px solid var(--cr-border);
+  background: var(--cr-card-bg);
+  cursor: pointer;
+  font: 600 0.82rem/1 var(--cr-font-sans);
+}
+
+.has-shared-theme-shell {
+  background: var(--cr-page-bg);
+  color: var(--global-text-color);
+}
+
+.project-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 60;
+}
+
+html.has-shared-theme .publication-header,
+html.has-shared-theme .teaser-cell,
+html.has-shared-theme .detail-comparison article,
+html.has-shared-theme .contribution-grid article,
+html.has-shared-theme .result-grid article,
+html.has-shared-theme .method-pillars article,
+html.has-shared-theme .framework-card,
+html.has-shared-theme .dataset-block,
+html.has-shared-theme .evidence-figure,
+html.has-shared-theme .large-figure-disclosure,
+html.has-shared-theme .image-tile-label,
+html.has-shared-theme .image-tile-score {
+  background: var(--cr-card-bg);
+  border-color: var(--cr-border);
+  box-shadow: none;
+}
+
+html.has-shared-theme .section-title::after {
+  background: var(--cr-accent);
+}
+
+html.has-shared-theme .lead,
+html.has-shared-theme .pill-row span,
+html.has-shared-theme .pipeline span {
+  color: var(--global-text-color);
+}
+
+html.has-shared-theme .gallery-error {
+  background: var(--cr-accent-soft);
+  border-color: var(--cr-accent);
+  color: var(--cr-accent-strong);
+}

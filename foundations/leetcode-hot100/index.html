@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="LeetCode 热题 100 Python 解法整理">
   <meta name="description" content="LeetCode Hot100 中文解题笔记：按官方热题 100 分组整理题意、分析、复杂度和 Python 3 代码。">
   <meta name="keywords" content="LeetCode, Hot100, Python, 算法, 数据结构, 动态规划, 二叉树, 链表, 面试题">
@@ -12,42 +13,29 @@
   <meta property="og:description" content="按哈希、双指针、滑动窗口、链表、二叉树、图论、回溯、二分、栈、堆、贪心和动态规划整理 Hot100。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/leetcode-hot100/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/leetcode-hot100.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="LeetCode 热题 100 Python 解法整理">
-  <meta name="twitter:description" content="Clear Python solutions for LeetCode Hot100 grouped by algorithm topic.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/leetcode-hot100.svg">
   <title>LeetCode 热题 100 | Python 解法整理</title>
   <link rel="canonical" href="/foundations/leetcode-hot100/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
   <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
@@ -55,7 +43,7 @@
     <p>目录</p>
     <nav><a href="#overview">总览</a><a href="#hash">哈希<small>3 题</small></a><a href="#two-pointers">双指针<small>4 题</small></a><a href="#sliding-window">滑动窗口<small>2 题</small></a><a href="#substring">子串<small>3 题</small></a><a href="#array">普通数组<small>5 题</small></a><a href="#matrix">矩阵<small>4 题</small></a><a href="#linked-list">链表<small>14 题</small></a><a href="#binary-tree">二叉树<small>15 题</small></a><a href="#graph">图论<small>4 题</small></a><a href="#backtracking">回溯<small>8 题</small></a><a href="#binary-search">二分查找<small>6 题</small></a><a href="#stack">栈<small>5 题</small></a><a href="#heap">堆<small>3 题</small></a><a href="#greedy">贪心算法<small>4 题</small></a><a href="#dynamic-programming">动态规划<small>10 题</small></a><a href="#multi-dp">多维动态规划<small>5 题</small></a><a href="#tricks">技巧<small>5 题</small></a></nav>
   </aside>
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Algorithm practice notes</p>
       <h1>LeetCode 热题 100 Python 解法整理</h1>

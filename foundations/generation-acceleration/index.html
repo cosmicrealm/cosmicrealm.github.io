@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="生成模型加速原理：从算法、架构、数值计算到系统调度">
   <meta name="description" content="中文生成模型加速讲义：从 roofline、FlashAttention、KV cache、PagedAttention、continuous batching、量化、speculative decoding、diffusion sampler/cache、token reduction 到分布式训练。">
   <meta name="keywords" content="generative model acceleration, FlashAttention, KV cache, PagedAttention, quantization, speculative decoding, diffusion sampler, DiT cache, continuous batching, FSDP, ZeRO, MoE">
@@ -14,10 +15,6 @@
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/generation-acceleration.svg">
   <meta property="og:image:alt" content="生成模型加速原理：采样、注意力、KV cache、量化、服务与训练的机制地图">
   <meta property="article:modified_time" content="2026-07-03">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="生成模型加速原理">
-  <meta name="twitter:description" content="Acceleration notes for sampling, attention, quantization, caching, serving, and training.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/generation-acceleration.svg">
   <title>生成模型加速原理 | Sampling, Attention, Quantization, Serving</title>
   <link rel="canonical" href="https://cosmicrealm.github.io/foundations/generation-acceleration/">
   <link rel="icon" href="../../images/favicon.svg">
@@ -45,35 +42,26 @@
   ]
 }
   </script>
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -105,7 +93,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Acceleration notes</p>
       <h1>生成模型加速原理</h1>

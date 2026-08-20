@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="AIGC 与 LLM 数学概念手册：从张量、概率到生成与对齐">
   <meta name="description" content="面向 AIGC 与 LLM 研究和工程的中文数学概念手册：系统解释线性代数、自动微分、概率信息论、优化、Transformer、Diffusion、Flow Matching、RLHF、DPO 与评测统计中的关键概念。">
   <meta name="keywords" content="AIGC, LLM, mathematics, Transformer, diffusion, flow matching, RLHF, DPO, cross entropy, KL divergence, attention, LoRA">
@@ -14,10 +15,6 @@
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/aigc-llm-math.svg">
   <meta property="og:image:alt" content="AIGC 与 LLM 数学基础课程路线图">
   <meta property="article:modified_time" content="2026-07-03">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AIGC 与 LLM 数学概念手册">
-  <meta name="twitter:description" content="A searchable concept handbook for AIGC, LLMs, generative models, and preference optimization.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/aigc-llm-math.svg">
   <title>AIGC 与 LLM 数学概念手册 | Tensor, Probability, Generation, Alignment</title>
   <link rel="canonical" href="https://cosmicrealm.github.io/foundations/aigc-llm-math/">
   <link rel="icon" href="../../images/favicon.svg">
@@ -45,35 +42,26 @@
   ]
 }
   </script>
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -122,7 +110,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Searchable concept handbook</p>
       <h1>AIGC 与 LLM 数学概念手册</h1>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-shared-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff" data-theme-color>
   <meta name="title" content="Style-Talking: Zero-Shot Audio-Driven Digital Human">
   <meta name="description" content="Style-Talking clones speaking style from a reference video and drives a digital human from target audio with an optional RefGAN renderer.">
   <meta name="keywords" content="audio-driven digital human, talking head, speaking style clone, zero-shot avatar, LivePortrait, RefGAN">
@@ -12,20 +13,22 @@
   <meta property="og:description" content="Zero-shot audio-driven digital human with speaking-style cloning and reference-enhanced rendering.">
   <meta property="og:url" content="https://cosmicrealm.github.io/projects/style-talking/">
   <meta property="og:image" content="https://cosmicrealm.github.io/projects/style-talking/static/images/teaser.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Style-Talking">
-  <meta name="twitter:description" content="Zero-shot audio-driven digital human with speaking-style cloning.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/projects/style-talking/static/images/teaser.jpg">
   <title>Style-Talking | Audio-Driven Digital Human</title>
   <link rel="icon" href="/images/favicon.ico">
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
 </head>
 <body>
   <a class="project-home-link" href="https://cosmicrealm.github.io/" aria-label="Go to Jinyang Zhang homepage">
     <span>Home</span>
   </a>
+  <button type="button" class="theme-toggle theme-toggle--floating" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
 
-  <main>
+  <main class="has-shared-theme-shell">
     <header class="site-header">
       <a href="https://cosmicrealm.github.io/" aria-label="Jinyang Zhang home">Jinyang Zhang</a>
       <nav aria-label="Project navigation">

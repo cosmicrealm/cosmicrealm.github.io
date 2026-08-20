@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="LLM 核心机制：从 BPE 到 KV Cache 与采样">
   <meta name="description" content="一份可交互的中文 LLM 工程讲义：用五章、六个动态实验和十二个可运行例子串起 tokenizer、decoder、训练、KV cache、sampling 与 perplexity。">
   <meta name="keywords" content="BPE, tokenizer, decoder-only Transformer, causal mask, RoPE, RMSNorm, SwiGLU, prefill, decode, KV cache, sampling, teacher forcing, perplexity">
@@ -12,24 +13,15 @@
   <meta property="og:description" content="从文本到 next token：理论、动态实验、最小 PyTorch 例子与 CS336 / nanochat 源码对照。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/llm-mechanics/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/llm-mechanics.svg">
-  <meta name="twitter:card" content="summary_large_image">
   <title>LLM 核心机制交互讲义 | From Text to Next Token</title>
   <link rel="canonical" href="/foundations/llm-mechanics/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = {
       tex: {
@@ -42,7 +34,7 @@
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
 
@@ -51,6 +43,7 @@
     <nav class="module-nav" aria-label="Foundations 页面导航">
       <a href="/foundations/">Foundations</a>
       <a href="#references">来源</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -68,7 +61,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header" id="overview">
       <p class="kicker">From text to next token · interactive lecture</p>
       <h1>LLM 核心机制</h1>

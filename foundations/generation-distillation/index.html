@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="生成模型蒸馏：从路径压缩到分布匹配，再到自回归视频自校正">
   <meta name="description" content="中文生成模型蒸馏技术导论：从监督对象、NFE、CFG、路径压缩、一致性、DMD/DMD2、ADD/LADD、Flow 少步化到 Self-Forcing。">
   <meta name="keywords" content="generative model distillation, diffusion distillation, DMD, DMD2, ADD, LADD, consistency models, Self-Forcing, MeanFlow">
@@ -12,43 +13,30 @@
   <meta property="og:description" content="A foundation note on supervision targets for fast generative model distillation.">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/generation-distillation/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/diffusion-distillation-math-lab.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="生成模型蒸馏">
-  <meta name="twitter:description" content="从 teacher path 到 student rollout distribution 的生成蒸馏导论。">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/diffusion-distillation-math-lab.svg">
   <title>生成模型蒸馏 | Path Compression, Distribution Matching, Self-Forcing</title>
   <link rel="canonical" href="/foundations/generation-distillation/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
       <a href="/foundations/generation-math/">Generation Math</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -75,7 +63,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Generative Model Distillation</p>
       <h1>生成模型蒸馏：从路径压缩到分布匹配，再到自回归视频自校正</h1>

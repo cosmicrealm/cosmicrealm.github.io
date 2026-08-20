@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="大模型算法岗常见面试题深度解析">
   <meta name="description" content="20 个 LLM 算法岗核心问题的中文深度解析：覆盖 Transformer、训练优化、模型架构、微调、推理部署、多模态、RAG、Agent 与评估。">
   <meta name="keywords" content="LLM, Transformer, Attention, RoPE, LoRA, RLHF, DPO, KV Cache, RAG, Agent, Benchmark">
@@ -14,10 +15,6 @@
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/llm-interview-qa.svg">
   <meta property="og:image:alt" content="大模型算法岗常见面试题深度解析缩略图">
   <meta property="article:modified_time" content="2026-07-03">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="大模型算法岗常见面试题深度解析">
-  <meta name="twitter:description" content="A structured Chinese handbook for LLM algorithm interviews and system reasoning.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/llm-interview-qa.svg">
   <title>大模型算法岗常见面试题深度解析 | LLM Interview QA</title>
   <link rel="canonical" href="https://cosmicrealm.github.io/foundations/llm-interview-qa/">
   <link rel="icon" href="../../images/favicon.svg">
@@ -45,22 +42,12 @@
   ]
 }
   </script>
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
@@ -68,14 +55,15 @@
   <script defer src="./static/js/data.js"></script>
   <script defer src="./static/js/index.js"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -96,7 +84,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">LLM systems interview handbook</p>
       <h1>大模型算法岗常见面试题深度解析</h1>

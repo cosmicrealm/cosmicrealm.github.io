@@ -1,16 +1,16 @@
 :root {
-  --ink: #172033;
-  --muted: #647086;
-  --blue: #2457d6;
-  --blue-dark: #173ea8;
-  --blue-soft: #edf3ff;
-  --rose: #d72f4e;
+  --ink: #111111;
+  --muted: #555555;
+  --blue: #111111;
+  --blue-dark: #111111;
+  --blue-soft: #f5f5f5;
+  --rose: #555555;
   --surface: #ffffff;
-  --soft: #f7f9fc;
-  --line: #dfe5ef;
-  --shadow: 0 12px 35px rgba(23, 32, 51, 0.09);
-  --shadow-small: 0 4px 16px rgba(23, 32, 51, 0.07);
-  --radius: 16px;
+  --soft: #f5f5f5;
+  --line: #dedede;
+  --shadow: none;
+  --shadow-small: none;
+  --radius: 8px;
 }
 
 * {
@@ -47,11 +47,10 @@ img {
 
 .project-home-link {
   align-items: center;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 999px;
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   color: var(--ink);
   display: inline-flex;
   font-size: 0.9rem;
@@ -77,7 +76,7 @@ img {
   border: 0;
   border-radius: 50%;
   bottom: 1.5rem;
-  box-shadow: var(--shadow);
+  box-shadow: none;
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -111,10 +110,7 @@ img {
 }
 
 .publication-header {
-  background:
-    radial-gradient(circle at 12% 16%, rgba(36, 87, 214, 0.13), transparent 34%),
-    radial-gradient(circle at 88% 20%, rgba(215, 47, 78, 0.1), transparent 30%),
-    #fff;
+  background: var(--surface);
   padding: 6.5rem 1.5rem 4rem;
 }
 
@@ -205,10 +201,10 @@ img {
 }
 
 .teaser-cell {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 13px;
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   margin: 0;
   overflow: hidden;
   position: relative;
@@ -216,11 +212,11 @@ img {
 
 .teaser-cell--ours {
   border-color: rgba(36, 87, 214, 0.55);
-  box-shadow: 0 8px 24px rgba(36, 87, 214, 0.16);
+  box-shadow: none;
 }
 
 .teaser-cell figcaption {
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--surface);
   border-radius: 999px;
   color: var(--ink);
   font-size: 0.77rem;
@@ -256,7 +252,7 @@ img {
 }
 
 .detail-comparison article {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
   display: grid;
@@ -295,7 +291,7 @@ img {
 }
 
 .section-title::after {
-  background: linear-gradient(90deg, var(--blue), var(--rose));
+  background: var(--blue);
   border-radius: 999px;
   content: "";
   display: block;
@@ -341,10 +337,10 @@ img {
 .contribution-grid article,
 .result-grid article,
 .method-pillars article {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   padding: 1.35rem;
 }
 
@@ -387,10 +383,10 @@ img {
 }
 
 .framework-card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: none;
   margin: 0;
   overflow: hidden;
   padding: 1rem;
@@ -452,10 +448,10 @@ img {
 }
 
 .dataset-block {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -550,11 +546,11 @@ img {
 
 .image-tile--ours {
   border-color: rgba(36, 87, 214, 0.65);
-  box-shadow: 0 5px 16px rgba(36, 87, 214, 0.12);
+  box-shadow: none;
 }
 
 .image-tile-label {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--surface);
   border-radius: 999px;
   color: var(--ink);
   font-size: 0.67rem;
@@ -588,7 +584,7 @@ img {
 }
 
 .image-tile-score {
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--surface);
   border-radius: 4px 0 0 0;
   bottom: 0;
   color: var(--ink);
@@ -616,10 +612,10 @@ img {
 }
 
 .evidence-figure {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   margin: 0;
   overflow: hidden;
   padding: 0.8rem;
@@ -631,10 +627,10 @@ img {
 }
 
 .large-figure-disclosure {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   margin-top: 1rem;
   overflow: hidden;
 }
@@ -682,7 +678,7 @@ img {
 pre {
   background: #111827 !important;
   border-radius: var(--radius) !important;
-  box-shadow: var(--shadow-small);
+  box-shadow: none;
   color: #e5e7eb !important;
   font-size: 0.86rem !important;
   overflow-x: auto;

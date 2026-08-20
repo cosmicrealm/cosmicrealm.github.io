@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="视频生成模型技术原理：从 Video VAE、DiT 到 Wan 与 LTX 生态">
   <meta name="description" content="中文视频生成技术笔记：解释 Video VAE、latent token、DiT、Diffusion、Flow Matching、Wan 生态、LTX 生态、音视频生成、控制模型、失败诊断和工程部署。">
   <meta name="keywords" content="video generation, Video VAE, DiT, Diffusion, Flow Matching, Rectified Flow, Wan, LTX, VACE, IC-LoRA, audio-video generation">
@@ -12,42 +13,29 @@
   <meta property="og:description" content="从 Video VAE、DiT、Diffusion 和 Flow Matching 解释现代视频生成，再横向解析 Wan 与 LTX 生态。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/video-generation/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/video-generation.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="视频生成模型技术原理">
-  <meta name="twitter:description" content="Technical notes on video latent generation, Wan ecosystem, and LTX ecosystem.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/video-generation.svg">
   <title>视频生成模型技术原理 | Video VAE, DiT, Wan, LTX</title>
   <link rel="canonical" href="/foundations/video-generation/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -74,7 +62,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Video generation foundations</p>
       <h1>视频生成模型技术原理</h1>

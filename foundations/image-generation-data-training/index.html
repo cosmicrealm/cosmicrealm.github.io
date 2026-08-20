@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,29 +12,15 @@
   <meta property="og:description" content="系统拆解数据分布、OCR caption、VAE、编辑数据、RLHF/GRPO 和 few-step distillation 如何共同塑造现代图像生成模型。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/image-generation-data-training/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/image-generation-data-training.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏">
-  <meta name="twitter:description" content="FLUX.2, Qwen-Image and Z-Image data, VAE, caption, RLHF and distillation training map.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/image-generation-data-training.svg">
   <title>图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏 | FLUX, Qwen-Image, Z-Image</title>
   <link rel="canonical" href="/foundations/image-generation-data-training/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>
@@ -48,6 +34,7 @@
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
 
@@ -73,7 +60,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header">
       <p class="kicker">Image generation systems</p>
       <h1>图像生成模型训练全景：数据工程、Caption、VAE、RLHF 与蒸馏</h1>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="has-shared-theme" data-theme="light" data-theme-setting="system">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8" data-theme-color>
   <meta name="title" content="生成模型数学推导：从概率建模到后训练">
   <meta name="description" content="中文生成模型数学讲义：从 MLE、KL、AR、Flow、VAE、GAN、Score Matching、Diffusion、Flow Matching 到 RLHF、DPO、GRPO、DDPO 的目标推导、训练与采样。">
   <meta name="keywords" content="generative models, MLE, KL, VAE, VQ-VAE, VQGAN, GAN, diffusion, score matching, flow matching, MeanFlow, autoregressive, RLHF, PPO, DPO, GRPO, DDPO">
@@ -12,29 +13,15 @@
   <meta property="og:description" content="从第一性原理推导经典生成模型的训练目标、采样过程与后训练方法。">
   <meta property="og:url" content="https://cosmicrealm.github.io/foundations/generation-math/">
   <meta property="og:image" content="https://cosmicrealm.github.io/images/projects/generation-math.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="生成模型数学推导">
-  <meta name="twitter:description" content="Formal derivation notes on generative modeling and post-training alignment.">
-  <meta name="twitter:image" content="https://cosmicrealm.github.io/images/projects/generation-math.svg">
   <title>生成模型数学推导 | Modeling, Training, Sampling, Alignment</title>
   <link rel="canonical" href="/foundations/generation-math/">
   <link rel="icon" href="../../images/favicon.svg">
-  <script>
-    (function () {
-      try {
-        var theme = localStorage.getItem("theme");
-        var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (theme === "system" && systemDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        } else {
-          document.documentElement.removeAttribute("data-theme");
-        }
-      } catch (error) {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    })();
-  </script>
+  <script src="/assets/js/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/css/theme-tokens.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="/assets/css/content-theme-bridge.css">
+  <script src="/assets/js/theme-controller.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
   <link rel="stylesheet" href="./static/css/components.css">
   <link rel="stylesheet" href="./static/css/labs.css">
   <script>
@@ -42,19 +29,20 @@
   </script>
   <script defer src="/assets/vendor/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
 </head>
-<body>
+<body class="has-shared-theme-shell">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
-  <header class="site-header">
+    <header class="site-header">
     <a class="brand" href="/">Jinyang Zhang</a>
     <nav class="module-nav" aria-label="Foundation module navigation">
       <a href="/">返回主页</a>
       <a href="/foundations/">返回 Foundations</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">Theme</button>
     </nav>
   </header>
   <button class="toc-toggle" id="tocToggle" type="button" aria-expanded="false" aria-controls="lectureToc">目录</button>
   <aside class="lecture-toc" id="lectureToc" aria-label="生成模型数学推导目录"><p>目录</p><nav><a id="toc-problem" href="#problem">总体问题</a><a id="toc-likelihood-kl" href="#likelihood-kl">MLE/KL</a><a id="toc-autoregressive" href="#autoregressive">Autoregressive</a><a id="toc-normalizing-flow" href="#normalizing-flow">Normalizing Flow</a><a id="toc-vae" href="#vae">VAE</a><a id="toc-vqvae" href="#vqvae">VQ-VAE/VQGAN</a><a id="toc-gan" href="#gan">GAN</a><a id="toc-score-matching" href="#score-matching">Score Matching</a><a id="toc-diffusion" href="#diffusion">Diffusion</a><a id="toc-flow-matching" href="#flow-matching">Flow Matching</a><a id="toc-energy-based-model" href="#energy-based-model">EBM</a><a id="toc-post-training" href="#post-training">Post-training</a><a id="toc-equivalence-caveats" href="#equivalence-caveats">等价与近似</a><a id="toc-modern-systems" href="#modern-systems">系统组合</a><a id="toc-unified-summary" href="#unified-summary">统一总结</a><a id="toc-references" href="#references">参考阅读</a></nav></aside>
-  <main id="main" class="lecture">
+  <main id="main" class="lecture has-shared-theme-shell">
     <header class="paper-header"><p class="kicker">Formal derivation notes</p><h1>生成模型数学推导</h1><p class="subtitle">从数据分布的概率建模出发，推导典型生成模型如何训练、如何采样，以及偏好后训练如何改变模型分布。</p></header>
 <section class="chapter problem" id="problem" data-part="part0">
 <header class="chapter-header"><h2>总体问题：从数据分布到可采样模型</h2><p class="chapter-summary">生成模型的共同目标是用可训练、可采样的模型分布逼近未知数据分布。</p></header>
