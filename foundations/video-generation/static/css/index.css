@@ -234,7 +234,7 @@ svg {
 }
 
 .lecture {
-  width: min(100% - 2rem, 1080px);
+  width: min(calc(100% - 2rem), 1080px);
   margin: 0 auto;
   padding: 2rem 0 4rem;
   overflow-x: clip;
@@ -1200,7 +1200,7 @@ output {
   }
 
   .lecture {
-    width: min(100% - 1.25rem, 1080px);
+    width: min(calc(100% - 1.25rem), 1080px);
     padding-top: 1.2rem;
   }
 
