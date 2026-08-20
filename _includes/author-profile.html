@@ -6,9 +6,9 @@
 
   <div class="author__avatar">
     {% if author.avatar contains "://" %}
-    	<img src="{{ author.avatar }}" alt="{{ author.name }}"  fetchpriority="high" />
+      <img src="{{ author.avatar }}" alt="{{ author.name }}"  fetchpriority="high" />
     {% else %}
-    	<img src="{{ '/images/' | append: author.avatar | relative_url }}" class="author__avatar" alt="{{ author.name }}"  fetchpriority="high" />
+      <img src="{{ '/images/' | append: author.avatar | relative_url }}" class="author__avatar" alt="{{ author.name }}"  fetchpriority="high" />
     {% endif %}
   </div>
 
