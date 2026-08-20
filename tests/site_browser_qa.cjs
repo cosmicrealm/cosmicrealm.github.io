@@ -28,14 +28,6 @@ function ensureArtifacts() {
   fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
 }
 
-function isInternalUrl(rawUrl) {
-  try {
-    return new URL(rawUrl).origin === INTERNAL_ORIGIN;
-  } catch (error) {
-    return false;
-  }
-}
-
 function isOptionalExternalUrl(rawUrl) {
   try {
     const url = new URL(rawUrl);
@@ -60,12 +52,11 @@ function bindCollectors(page) {
   page.on("requestfailed", (req) => {
     const url = req.url();
     if (isOptionalExternalUrl(url)) return;
-    if (!isInternalUrl(url) && req.resourceType() !== "document") return;
     requestfailed.push(`${req.method()} ${url}`);
   });
   page.on("response", (res) => {
     const url = res.url();
-    if (res.status() >= 400 && isInternalUrl(url)) {
+    if (res.status() >= 400 && !isOptionalExternalUrl(url)) {
       badResponses.push(`${res.status()} ${url}`);
     }
   });
@@ -79,9 +70,27 @@ function bindCollectors(page) {
   return { requestfailed, badResponses, consoleErrors, pageErrors };
 }
 
+function assertCollectorsEmpty(collectors, label) {
+  assert.deepEqual(collectors.requestfailed, [], `${label} had failed requests`);
+  assert.deepEqual(collectors.badResponses, [], `${label} had HTTP error responses`);
+  assert.deepEqual(collectors.consoleErrors, [], `${label} had console errors`);
+  assert.deepEqual(collectors.pageErrors, [], `${label} had page errors`);
+}
+
+async function waitForDocumentStable(page) {
+  await page.waitForLoadState("load");
+  await page.evaluate(async () => {
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+}
+
 async function gotoReady(page, url, readySelector) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await page.locator(readySelector).first().waitFor({ state: "visible" });
+  await waitForDocumentStable(page);
 }
 
 async function assertNoOverflow(page, width, height) {
@@ -126,7 +135,18 @@ async function assertHomepageResources(page) {
   for (const forbidden of ["main.min.js", "plotly", "mathjax", "mermaid"]) {
     assert.equal(resources.some((name) => name.toLowerCase().includes(forbidden)), false, `${forbidden} loaded on homepage`);
   }
-  assert.equal(resources.some((name) => name.startsWith("https://cosmicrealm.github.io/")), false, "local run loaded production-origin internal resource");
+  assert.equal(resources.some((name) => name.startsWith("https://cosmicrealm.github.io/")), false, "homepage loaded production-origin internal resource locally");
+}
+
+async function assertNoProductionOriginResources(page, label) {
+  const resources = await page.evaluate(() =>
+    performance.getEntriesByType("resource").map((entry) => entry.name)
+  );
+  assert.equal(
+    resources.some((name) => name.startsWith("https://cosmicrealm.github.io/")),
+    false,
+    `${label} loaded production-origin internal resource locally`
+  );
 }
 
 async function assertThemePersistence(browser, colorScheme) {
@@ -139,6 +159,7 @@ async function assertThemePersistence(browser, colorScheme) {
   if (colorScheme === "light") assert.equal(initial, "light");
   await page.locator("[data-theme-toggle]").first().click();
   const explicit = await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light");
+  assert.notEqual(explicit, initial, `${colorScheme} theme toggle did not change the resolved theme`);
   await page.reload({ waitUntil: "domcontentloaded" });
   await page.locator("[data-theme-toggle]").first().waitFor({ state: "visible" });
   assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
@@ -157,30 +178,43 @@ async function main() {
     await assertThemePersistence(browser, "dark");
 
     const context = await browser.newContext({ viewport: { width: 1440, height: 960 }, reducedMotion: "reduce" });
-    const page = await context.newPage();
-    const collectors = bindCollectors(page);
-    await gotoReady(page, `${SITE_URL}/`, "[data-theme-toggle]");
-    await assertHomepageResources(page);
-    await assertThemeToggle(page);
-    await assertReducedMotion(page);
-    for (const width of WIDTHS) {
-      await assertNoOverflow(page, width, 900);
-    }
-    await page.screenshot({ path: path.join(ARTIFACT_DIR, "home-light.png"), fullPage: true });
-    await page.locator("[data-theme-toggle]").first().click();
-    await page.screenshot({ path: path.join(ARTIFACT_DIR, "home-dark.png"), fullPage: true });
-    for (const url of STANDALONE_PATHS) {
-      await gotoReady(page, `${SITE_URL}${url}`, "[data-theme-toggle]");
-      assert.ok(await page.locator("[data-theme-toggle]").count(), `missing toggle on ${url}`);
-      await assertReducedMotion(page);
+    const homepage = await context.newPage();
+    const homepageCollectors = bindCollectors(homepage);
+    try {
+      await gotoReady(homepage, `${SITE_URL}/`, "[data-theme-toggle]");
+      await assertThemeToggle(homepage);
+      await assertReducedMotion(homepage);
       for (const width of WIDTHS) {
-        await assertNoOverflow(page, width, 900);
+        await assertNoOverflow(homepage, width, 900);
+      }
+      await homepage.screenshot({ path: path.join(ARTIFACT_DIR, "home-light.png"), fullPage: true });
+      await homepage.locator("[data-theme-toggle]").first().click();
+      await homepage.screenshot({ path: path.join(ARTIFACT_DIR, "home-dark.png"), fullPage: true });
+      await waitForDocumentStable(homepage);
+      await assertHomepageResources(homepage);
+      assertCollectorsEmpty(homepageCollectors, "homepage");
+    } finally {
+      await homepage.close();
+    }
+
+    for (const url of STANDALONE_PATHS) {
+      const standalone = await context.newPage();
+      const routeCollectors = bindCollectors(standalone);
+      try {
+        await gotoReady(standalone, `${SITE_URL}${url}`, "[data-theme-toggle]");
+        assert.ok(await standalone.locator("[data-theme-toggle]").count(), `missing toggle on ${url}`);
+        await assertThemeToggle(standalone);
+        await assertReducedMotion(standalone);
+        for (const width of WIDTHS) {
+          await assertNoOverflow(standalone, width, 900);
+        }
+        await waitForDocumentStable(standalone);
+        await assertNoProductionOriginResources(standalone, url);
+        assertCollectorsEmpty(routeCollectors, url);
+      } finally {
+        await standalone.close();
       }
     }
-    assert.deepEqual(collectors.requestfailed, []);
-    assert.deepEqual(collectors.badResponses, []);
-    assert.deepEqual(collectors.consoleErrors, []);
-    assert.deepEqual(collectors.pageErrors, []);
     await context.close();
 
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
@@ -197,9 +231,11 @@ async function main() {
       return {
         menuVisible: menuStyle.display !== "none" && menuStyle.visibility !== "hidden",
         toggleHidden: toggleStyle.display === "none",
+        theme: document.documentElement.getAttribute("data-theme"),
       };
     });
     assert.ok(navState && navState.menuVisible && navState.toggleHidden, "no-JS nav fallback is not visibly expanded");
+    assert.equal(navState.theme, "light", "no-JS theme fallback must remain light");
     await noJs.close();
   } finally {
     await browser.close();

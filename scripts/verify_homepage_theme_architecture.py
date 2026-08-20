@@ -54,6 +54,14 @@ def require(condition, message):
 def read(rel):
     return (ROOT / rel).read_text()
 
+def find_asset_tag(source, tag_name, asset_name):
+    for tag in re.finditer(rf"<{tag_name}\b[^>]*>", source, re.IGNORECASE):
+        if not re.search(r"\b(?:src|href)\s*=", tag.group(0), re.IGNORECASE):
+            continue
+        if re.search(rf"/{re.escape(asset_name)}(?=[?'\"]|\s*\|)", tag.group(0), re.IGNORECASE):
+            return tag
+    return None
+
 head = read("_includes/head.html")
 scripts = read("_includes/scripts.html")
 seo = read("_includes/seo.html")
@@ -78,12 +86,25 @@ default_layout = read("_layouts/default.html")
 author_profile = read("_includes/author-profile.html")
 package = json.loads(read("package.json"))
 
-require("assets/js/theme-init.js" in head, "head.html missing shared theme-init.js")
+theme_init_tag = find_asset_tag(head, "script", "theme-init.js")
+theme_tokens_tag = find_asset_tag(head, "link", "theme-tokens.css")
+main_css_tag = find_asset_tag(head, "link", "main.css")
+require(theme_init_tag, "head.html missing shared theme-init.js")
+require(theme_tokens_tag, "head.html missing shared theme-tokens.css")
+require(main_css_tag, "head.html missing main.css")
 require("theme-controller.js" not in head, "head.html must not load theme-controller.js")
 require("site.js" not in head, "head.html must not load site.js")
-require(head.index("theme-init.js") < head.index("theme-tokens.css") < head.index("main.css"), "head asset order must be init -> tokens -> main CSS")
-require('theme-controller.js' in scripts and 'defer' in scripts, "scripts.html missing deferred theme-controller.js")
-require('site.js' in scripts and 'defer' in scripts, "scripts.html missing deferred site.js")
+require(theme_init_tag.start() < theme_tokens_tag.start() < main_css_tag.start(), "head asset order must be init -> tokens -> main CSS")
+for tag in re.findall(r"<(?:script|link)\b[^>]*>", head, re.IGNORECASE):
+    if "/assets/" in tag and re.search(r"\b(?:src|href)\s*=", tag, re.IGNORECASE):
+        require("| relative_url" in tag, f"head internal asset must use relative_url: {tag}")
+controller_script = find_asset_tag(scripts, "script", "theme-controller.js")
+site_script = find_asset_tag(scripts, "script", "site.js")
+require(controller_script, "scripts.html missing theme-controller.js")
+require(site_script, "scripts.html missing site.js")
+require(re.search(r"\sdefer(?:\s|=|>)", controller_script.group(0), re.IGNORECASE), "theme-controller.js script tag must be deferred")
+require(re.search(r"\sdefer(?:\s|=|>)", site_script.group(0), re.IGNORECASE), "site.js script tag must be deferred")
+require(controller_script.start() < site_script.start(), "theme-controller.js must load before site.js")
 require("social-share" not in single, "single layout still renders share include")
 require(not (ROOT / "_layouts/talk.html").exists(), "_layouts/talk.html should have been removed by the architecture migration")
 require(not (ROOT / "_includes/footer/custom.html").exists(), "global footer renderer include still exists")
@@ -123,7 +144,8 @@ for rel in REAL_FOUNDATIONS + REAL_PROJECTS:
     require("theme-controller.js" in html and "site.js" in html, f"{rel} missing deferred runtime scripts")
     require("theme-tokens.css" in html, f"{rel} missing shared token stylesheet")
     require("content-theme-bridge.css" in html, f"{rel} missing bridge stylesheet")
-    require('class="has-shared-theme"' in html, f"{rel} missing shared-theme html class")
+    html_class = re.search(r'<html\b[^>]*\bclass\s*=\s*(["\'])(?P<classes>.*?)\1', html, re.IGNORECASE | re.DOTALL)
+    require(html_class and "has-shared-theme" in html_class.group("classes").split(), f"{rel} missing shared-theme html class")
     require("has-shared-theme-shell" in html, f"{rel} missing shared-theme shell class")
     require(html.count("data-theme-toggle") == 1, f"{rel} must contain exactly one theme toggle")
     require('name="twitter:' not in html.lower(), f"{rel} still contains Twitter-specific metadata")
@@ -153,8 +175,15 @@ for ref in iter_source_files():
     for legacy in ["main.min.js", "jquery.greedy-navigation", "plotly.js-dist-min", "fitvids", "jquery-smooth-scroll"]:
         require(legacy not in text, f"{ref.relative_to(ROOT)} still references {legacy}")
 
-for ref in list((ROOT / "assets/css").glob("*.css")) + list((ROOT / "_sass").rglob("*.scss")):
+style_refs = set((ROOT / "assets").rglob("*.css"))
+for content_root in [ROOT / "foundations", ROOT / "projects"]:
+    for css_dir in content_root.rglob("static/css"):
+        if css_dir.is_dir():
+            style_refs.update(css_dir.rglob("*.css"))
+style_refs.update((ROOT / "_sass").rglob("*.scss"))
+token_declaration = re.compile(r"(?<![-\w])--(?:global|cr)-[a-z0-9-]+\s*:")
+for ref in sorted(style_refs):
     if ref == ROOT / "assets/css/theme-tokens.css":
         continue
     text = ref.read_text(encoding="utf-8", errors="ignore")
-    require(not re.search(r"--(?:global|cr)-[a-z0-9-]+\s*:", text), f"runtime token declaration escaped canonical owner: {ref.relative_to(ROOT)}")
+    require(not token_declaration.search(text), f"runtime token declaration escaped canonical owner: {ref.relative_to(ROOT)}")

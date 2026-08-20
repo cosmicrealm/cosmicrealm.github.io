@@ -1,7 +1,33 @@
 "use strict";
 
 const assert = require("node:assert/strict");
-const { createThemeController, resolveTheme } = require("../assets/js/theme-controller.js");
+const fs = require("node:fs");
+const path = require("node:path");
+
+const controllerPath = path.resolve(__dirname, "../assets/js/theme-controller.js");
+const previousDocument = Object.getOwnPropertyDescriptor(globalThis, "document");
+let controllerModule;
+try {
+  Object.defineProperty(globalThis, "document", {
+    configurable: true,
+    get() {
+      throw new Error("theme-controller.js accessed document while loading");
+    },
+  });
+  controllerModule = require(controllerPath);
+} finally {
+  if (previousDocument) {
+    Object.defineProperty(globalThis, "document", previousDocument);
+  } else {
+    delete globalThis.document;
+  }
+}
+
+const source = fs.readFileSync(controllerPath, "utf8");
+assert.doesNotMatch(source, /\bDOMContentLoaded\b/, "theme-controller.js must not register a DOMContentLoaded auto-mount");
+assert.doesNotMatch(source, /\bdata-theme-toggle\b/, "theme-controller.js must not discover or bind DOM theme toggles");
+
+const { createThemeController, resolveTheme } = controllerModule;
 
 assert.equal(resolveTheme("dark", false), "dark");
 assert.equal(resolveTheme("light", true), "light");
@@ -40,4 +66,3 @@ assert.equal(storage.get("theme"), "light");
 assert.equal(root.attrs["data-theme"], "light");
 assert.equal(toggles[0].attrs["aria-pressed"], "false");
 assert.match(toggles[0].attrs["aria-label"], /Switch to dark mode/);
-assert.equal(typeof globalThis.mountAll, "undefined");
