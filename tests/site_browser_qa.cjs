@@ -152,22 +152,35 @@ async function assertNoProductionOriginResources(page, label) {
 async function assertThemePersistence(browser, colorScheme) {
   const context = await browser.newContext({ colorScheme, reducedMotion: "reduce", viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
-  await gotoReady(page, `${SITE_URL}/`, "[data-theme-toggle]");
-  await assertReducedMotion(page);
-  const initial = await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light");
-  if (colorScheme === "dark") assert.equal(initial, "dark");
-  if (colorScheme === "light") assert.equal(initial, "light");
-  await page.locator("[data-theme-toggle]").first().click();
-  const explicit = await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light");
-  assert.notEqual(explicit, initial, `${colorScheme} theme toggle did not change the resolved theme`);
-  await page.reload({ waitUntil: "domcontentloaded" });
-  await page.locator("[data-theme-toggle]").first().waitFor({ state: "visible" });
-  assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
-  await gotoReady(page, `${SITE_URL}/writing/`, "main");
-  assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
-  await gotoReady(page, `${SITE_URL}/projects/iconface/`, "[data-theme-toggle]");
-  assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
-  await context.close();
+  const collectors = bindCollectors(page);
+  try {
+    await gotoReady(page, `${SITE_URL}/`, "[data-theme-toggle]");
+    await assertReducedMotion(page);
+    const initial = await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light");
+    if (colorScheme === "dark") assert.equal(initial, "dark");
+    if (colorScheme === "light") assert.equal(initial, "light");
+    await page.locator("[data-theme-toggle]").first().click();
+    const explicit = await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light");
+    assert.notEqual(explicit, initial, `${colorScheme} theme toggle did not change the resolved theme`);
+    await assertNoProductionOriginResources(page, `${colorScheme} persistence homepage`);
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.locator("[data-theme-toggle]").first().waitFor({ state: "visible" });
+    await waitForDocumentStable(page);
+    assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
+    await assertNoProductionOriginResources(page, `${colorScheme} persistence homepage reload`);
+
+    await gotoReady(page, `${SITE_URL}/writing/`, "main");
+    assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
+    await assertNoProductionOriginResources(page, `${colorScheme} persistence writing`);
+
+    await gotoReady(page, `${SITE_URL}/projects/iconface/`, "[data-theme-toggle]");
+    assert.equal(await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"), explicit);
+    await assertNoProductionOriginResources(page, `${colorScheme} persistence iconface`);
+    assertCollectorsEmpty(collectors, `${colorScheme} persistence flow`);
+  } finally {
+    await context.close();
+  }
 }
 
 async function main() {
