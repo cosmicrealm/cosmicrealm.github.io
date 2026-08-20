@@ -136,6 +136,7 @@ include:
   - files
 exclude:
   - AGENTS.md
+  - CONTRIBUTING.md
   - "*.sublime-project"
   - "*.sublime-workspace"
   - "*.ipynb"

@@ -1,4 +1,4 @@
-# Jinyang Zhang 个人主页
+# cosmicrealm.github.io
 
 本仓库是 `Jinyang Zhang` 的个人 Jekyll 主页源码，站点主域名为 `https://cosmicrealm.github.io`。仓库只保留当前主页实际使用的内容命名空间与构建脚本，不再承载 Academic Pages 模板残留页面、模板说明或根级实验壳。
 
@@ -29,7 +29,7 @@ docker compose down
 - `projects/`：项目静态页面与资源，canonical URL 形如 `/projects/<slug>/`
 - `foundations/`：原理讲义、交互式技术笔记与实验页，canonical URL 形如 `/foundations/<slug>/`
 - `_publications/`：论文条目，canonical URL 形如 `/publications/<slug>/`
-- `_posts/`：博客与写作内容，canonical URL 由 Jekyll post permalink 生成
+- `_posts/`：博客与写作内容，主入口为 `/writing/`
 - `_pages/`：站点级页面，例如 `/`、`/projects/`、`/foundations/`、`/publications/`、`/writing/`、`/cv/`
 
 可下载附件继续放在 `files/`，发布后路径为 `/files/<filename>`。
@@ -39,23 +39,23 @@ docker compose down
 架构与发布边界变更先跑架构验证器：
 
 ```bash
-python3 scripts/verify_homepage_architecture.py --check config --check legacy --check dirty
+python3 scripts/verify_homepage_architecture.py --check routes --check config --check legacy --check projects --check dirty
 ```
 
 需要验证 Jekyll 构建与输出时，使用 Docker 环境：
 
 ```bash
 docker compose up --build -d
-python3 scripts/verify_homepage_architecture.py --check build
+python3 scripts/verify_homepage_architecture.py --check build --site-dir _site
 docker compose down
 ```
 
 如果只需要完整回归，也可以串行执行：
 
 ```bash
-python3 scripts/verify_homepage_architecture.py --check config --check legacy --check dirty
+python3 scripts/verify_homepage_architecture.py --check routes --check config --check legacy --check projects --check dirty
 docker compose up --build -d
-python3 scripts/verify_homepage_architecture.py --check build
+python3 scripts/verify_homepage_architecture.py --check build --site-dir _site
 docker compose down
 ```
 

@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/cosmicrealm/cosmicrealm.github.io/issues"
   },
-  "homepage": "https://github.com/cosmicrealm/cosmicrealm.github.io",
+  "homepage": "https://cosmicrealm.github.io",
   "engines": {
     "node": ">= 0.10.0"
   },
