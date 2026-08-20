@@ -1,41 +1,22 @@
 {
   "name": "cosmicrealm-homepage",
-  "version": "0.8.1.1",
-  "description": "Jinyang Zhang personal homepage build scripts",
+  "version": "1.0.0",
+  "description": "Build and QA helpers for cosmicrealm.github.io",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/cosmicrealm/cosmicrealm.github.io"
   },
-  "keywords": [
-    "jekyll",
-    "theme",
-    "minimal"
-  ],
-  "contributors": [
-    "Michael Rose",
-    "Robert Zupko"
-  ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cosmicrealm/cosmicrealm.github.io/issues"
   },
   "homepage": "https://cosmicrealm.github.io",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "dependencies": {
-    "fitvids": "^2.1.1",
-    "jquery": "^3.7.1",
-    "jquery-smooth-scroll": "^2.2.0",
-    "plotly.js-dist-min": "^3.3.0"
+  "scripts": {
+    "test:structure": "python3 scripts/verify_homepage_theme_architecture.py",
+    "test:theme": "node tests/theme_controller.test.cjs",
+    "test:browser": "node tests/site_browser_qa.cjs"
   },
   "devDependencies": {
-    "onchange": "^7.1.0",
-    "uglify-js": "^3.17.4"
-  },
-  "scripts": {
-    "uglify": "uglifyjs node_modules/jquery/dist/jquery.min.js node_modules/fitvids/dist/fitvids.min.js node_modules/jquery-smooth-scroll/jquery.smooth-scroll.min.js node_modules/plotly.js-dist-min/plotly.min.js assets/js/plugins/jquery.greedy-navigation.js assets/js/_main.js -c -m -o assets/js/main.min.js",
-    "watch:js": "onchange \"assets/js/**/*.js\" -e \"assets/js/main.min.js\" -- npm run build:js",
-    "build:js": "npm run uglify"
+    "playwright": "^1.62.1"
   }
 }
