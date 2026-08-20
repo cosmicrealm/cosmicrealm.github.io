@@ -16,15 +16,18 @@ function createThemeController(options) {
   const root = options.root;
   const toggles = options.toggles;
   const systemDark = options.systemDark;
+  let inMemorySetting = null;
 
   function readSetting() {
+    if (inMemorySetting !== null) return inMemorySetting;
     let value = null;
     try {
       value = storage.getItem("theme");
     } catch (error) {
       value = null;
     }
-    return value === "light" || value === "dark" ? value : "system";
+    inMemorySetting = value === "light" || value === "dark" ? value : "system";
+    return inMemorySetting;
   }
 
   function applyResolved(resolved, setting) {
@@ -48,6 +51,7 @@ function createThemeController(options) {
     toggleExplicitTheme() {
       const current = resolveTheme(readSetting(), systemDark());
       const next = current === "dark" ? "light" : "dark";
+      inMemorySetting = next;
       try {
         storage.setItem("theme", next);
       } catch (error) {
@@ -56,7 +60,6 @@ function createThemeController(options) {
       return apply(next);
     },
     applySystemChange() {
-      if (readSetting() === "system") return apply("system");
       return apply(readSetting());
     },
   };
