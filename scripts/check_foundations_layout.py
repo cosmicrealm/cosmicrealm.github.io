@@ -55,7 +55,7 @@ def main():
     assert_exists("foundations/generation-acceleration/index.html")
     assert_contains(
         "foundations/generation-acceleration/index.html",
-        'href="/foundations/generation-acceleration/"',
+        'href="https://cosmicrealm.github.io/foundations/generation-acceleration/"',
     )
     assert_contains(
         "foundations/generation-math/index.html",
@@ -66,8 +66,8 @@ def main():
         'href="/foundations/generation-distillation/"',
     )
 
-    assert_contains("_pages/about.md", "site.data.foundations")
-    assert_contains("_pages/about.md", "/foundations/")
+    assert_contains("_pages/home.md", "site.data.foundations")
+    assert_contains("_pages/home.md", "/foundations/")
 
 
 if __name__ == "__main__":

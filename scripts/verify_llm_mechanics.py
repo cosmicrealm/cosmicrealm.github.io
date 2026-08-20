@@ -115,7 +115,7 @@ def main() -> int:
     require(JS.exists(), f"missing script: {JS.relative_to(ROOT)}", failures)
     require('./static/css/index.css' in html, "page does not load local stylesheet", failures)
     require('./static/js/index.js' in html, "page does not load local script", failures)
-    require('./static/vendor/mathjax/tex-mml-chtml.js' in html, "page does not load local MathJax", failures)
+    require('/assets/vendor/mathjax/tex-mml-chtml.js' in html, "page does not load shared MathJax", failures)
     require(parser.labels >= 12, f"expected at least 12 labels, found {parser.labels}", failures)
     require(parser.aria_labels >= 12, f"expected at least 12 ARIA labels, found {parser.aria_labels}", failures)
     require("lab-error" in html, "missing lab-local error fallback", failures)
