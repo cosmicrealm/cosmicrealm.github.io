@@ -62,6 +62,10 @@ def main():
         'href="/foundations/generation-math/"',
     )
     assert_contains(
+        "foundations/generation-math/index.html",
+        'src="/assets/vendor/mathjax/tex-mml-chtml.js"',
+    )
+    assert_contains(
         "foundations/generation-distillation/index.html",
         'href="/foundations/generation-distillation/"',
     )
