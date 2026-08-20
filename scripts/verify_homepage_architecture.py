@@ -156,19 +156,21 @@ def display_path(path: Path) -> str:
 
 
 def exact_case_path(path: Path) -> Path | None:
+    path = path if path.is_absolute() else REPO_ROOT / path
     try:
         relative = path.relative_to(REPO_ROOT)
+        current = REPO_ROOT
     except ValueError:
-        return path if path.exists() else None
+        current = Path(path.anchor)
+        relative = path.relative_to(current)
 
-    current = REPO_ROOT
     if relative == Path("."):
         return current
 
     for part in relative.parts:
         try:
             next_path = next(candidate for candidate in current.iterdir() if candidate.name == part)
-        except (FileNotFoundError, NotADirectoryError, StopIteration):
+        except (OSError, StopIteration):
             return None
         current = next_path
 
@@ -422,7 +424,7 @@ def check_config(site_dir: Path) -> list[str]:
             failures.append(f"_config.yml still contains forbidden token {token}")
 
     gemfile_text = read_text(REPO_ROOT / "Gemfile")
-    for required_gem in ("jekyll-feed", "jekyll-sitemap"):
+    for required_gem in ("jekyll-feed", "jekyll-sitemap", "kramdown-parser-gfm"):
         if required_gem not in gemfile_text:
             failures.append(f"Gemfile missing {required_gem}")
     for token in forbidden_plugin_tokens:
@@ -538,7 +540,7 @@ def check_build(site_dir: Path) -> list[str]:
             failures.append(f"missing built artifact: {display_path(path)}")
 
     for rel_path in FORBIDDEN_BUILD_OUTPUTS:
-        if (site_dir / rel_path).exists():
+        if exact_case_exists(site_dir / rel_path):
             failures.append(f"forbidden build output still exists: {display_path(site_dir / rel_path)}")
 
     return failures
