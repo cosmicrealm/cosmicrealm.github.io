@@ -1,0 +1,21 @@
+{% assign home_project = include.project %}
+{% assign project_url = home_project.homepage_url | default: home_project.links.first.url %}
+{% assign project_href = project_url %}
+{% if project_href and project_href contains "http" %}
+  {% assign project_external = true %}
+{% else %}
+  {% assign project_external = false %}
+  {% assign project_href = project_href | relative_url %}
+{% endif %}
+
+<article class="home-card home-card--project">
+  <a class="home-card__cover" href="{{ project_href }}"{% if project_external %} target="_blank" rel="noopener"{% endif %}>
+    <img src="{{ home_project.teaser | relative_url }}" alt="{{ home_project.teaser_alt | default: home_project.name }}">
+  </a>
+  <div class="home-card__body">
+    <h3>
+      <a href="{{ project_href }}"{% if project_external %} target="_blank" rel="noopener"{% endif %}>{{ home_project.name }}</a>
+    </h3>
+    <p>{{ home_project.summary }}</p>
+  </div>
+</article>

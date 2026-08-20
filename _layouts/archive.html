@@ -12,8 +12,10 @@ layout: default
   {% endunless %}
 {% endif %}
 
-<div id="main" role="main"{% if page.blog_tag_filter %} class="blog-filter-layout"{% endif %}>
-  {% include sidebar.html %}
+<div id="main" role="main" class="{% if page.blog_tag_filter %}blog-filter-layout{% elsif page.author_profile or layout.author_profile or page.sidebar %}{% else %}archive-layout--full{% endif %}">
+  {% if page.author_profile or layout.author_profile or page.sidebar or page.blog_tag_filter %}
+    {% include sidebar.html %}
+  {% endif %}
 
   <div class="archive">
     {% unless page.header.overlay_color or page.header.overlay_image %}

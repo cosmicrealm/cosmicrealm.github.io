@@ -1,0 +1,11 @@
+{% assign foundation = include.foundation %}
+
+<article class="home-card home-card--foundation">
+  <a class="home-card__cover" href="{{ foundation.url | relative_url }}">
+    <img src="{{ foundation.teaser | relative_url }}" alt="{{ foundation.teaser_alt | default: foundation.name }}">
+  </a>
+  <div class="home-card__body">
+    <h3><a href="{{ foundation.url | relative_url }}">{{ foundation.name }}</a></h3>
+    <p>{{ foundation.highlight }}</p>
+  </div>
+</article>

@@ -1,89 +1,53 @@
 ---
+layout: home
 permalink: /
 title: "Jinyang Zhang"
 seo_title: "Jinyang Zhang - Projects, Publications, Foundations, Writing, and CV"
 excerpt: "Personal website for projects, publications, foundations, writing, and CV."
-author_profile: true
+author_profile: false
 ---
 
-<section class="home-section home-section--about">
-  <h2>About Me</h2>
-  <p>
-    I am an algorithm engineer focused on AIGC systems that connect research models with deployable workflows, with experience across speech-driven facial generation, digital human synthesis, face restoration, ComfyUI restoration workflows, and practical tools for model development and daily execution. I am currently seeking new opportunities where I can continue building reliable generative AI systems from research prototypes to usable products.
-  </p>
+<section class="home-hero">
+  <p class="home-hero__eyebrow">Jinyang Zhang</p>
+  <h1>Generative AI systems from research mechanism to deployable workflow.</h1>
+  <p class="home-hero__lead">AIGC systems, talking avatars, image restoration, inference pipelines, and source-first technical foundations.</p>
+  <div class="hero-actions">
+    <a href="mailto:{{ site.author.email }}">Email</a>
+    <a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
+    <a href="{{ '/cv/' | relative_url }}">CV</a>
+  </div>
+</section>
+
+<section class="focus-strip" aria-label="Site overview">
+  <article class="focus-strip__item"><strong>{{ site.data.projects | size }}</strong><span>Projects</span></article>
+  <article class="focus-strip__item"><strong>{{ site.publications | size }}</strong><span>Publications</span></article>
+  <article class="focus-strip__item"><strong>{{ site.posts | size }}</strong><span>Writing</span></article>
 </section>
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
-    <h2>Publications</h2>
+    <h2>Selected Work</h2>
+    <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">All projects</a>
+  </div>
+  {% assign featured_home_projects = site.data.projects | where: "homepage", true | sort: "homepage_order" %}
+  <div class="home-card-grid">
+    {% for project in featured_home_projects %}
+      {% include home-project-card.html project=project %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="home-section">
+  <div class="section-heading section-heading--line">
+    <h2>Representative Publications</h2>
     <a class="section-heading__link" href="{{ '/publications/' | relative_url }}">All publications</a>
   </div>
   {% assign selected_publications = site.publications | sort: "date" | reverse %}
-  <ol class="publication-list">
+  <div class="publication-grid">
     {% for publication in selected_publications limit:4 %}
-      <li>
-        {% if publication.teaser %}
-          <a class="list-thumb list-thumb--publication" href="{{ publication.url | relative_url }}" aria-label="{{ publication.title }}">
-            <img src="{{ publication.teaser | relative_url }}" alt="{{ publication.teaser_alt | default: publication.title }}">
-          </a>
-        {% endif %}
-        <div class="publication-list__main">
-          <a href="{{ publication.url | relative_url }}">{{ publication.title }}</a>
-          <span>{{ publication.venue }} · {{ publication.date | date: "%Y" }}</span>
-          {% if publication.summary %}
-            <p>{{ publication.summary }}</p>
-          {% endif %}
-          {% if publication.projecturl or publication.codeurl %}
-            <div class="publication-list__links" aria-label="{{ publication.title }} links">
-              {% if publication.projecturl %}
-                <a href="{{ publication.projecturl }}" target="_blank" rel="noopener">Project</a>
-              {% endif %}
-              {% if publication.codeurl %}
-                <a href="{{ publication.codeurl }}" target="_blank" rel="noopener">{{ publication.codelabel | default: "Code" }}</a>
-              {% endif %}
-            </div>
-          {% endif %}
-        </div>
-      </li>
+      {% include publication-card.html publication=publication %}
     {% endfor %}
-  </ol>
-</section>
-
-<section class="home-section">
-  <div class="section-heading section-heading--line">
-    <h2>Projects</h2>
-    <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">All projects</a>
   </div>
-  {% assign featured_projects = site.data.projects | where: "featured", true | sort: "date" | reverse %}
-  <ul class="compact-list project-compact-list">
-    {% for project in featured_projects limit:4 %}
-      {% assign primary_link = project.links | first %}
-      <li>
-        {% if project.teaser %}
-          {% if primary_link.url contains "http" %}
-            <a class="list-thumb list-thumb--project" href="{{ primary_link.url }}" target="_blank" rel="noopener" aria-label="{{ project.name }}">
-              <img src="{{ project.teaser | relative_url }}" alt="{{ project.teaser_alt | default: project.name }}">
-            </a>
-          {% else %}
-            <a class="list-thumb list-thumb--project" href="{{ primary_link.url | relative_url }}" aria-label="{{ project.name }}">
-              <img src="{{ project.teaser | relative_url }}" alt="{{ project.teaser_alt | default: project.name }}">
-            </a>
-          {% endif %}
-        {% endif %}
-        <div class="project-compact-list__body">
-          <div class="project-compact-list__main">
-            {% if primary_link.url contains "http" %}
-              <a href="{{ primary_link.url }}" target="_blank" rel="noopener">{{ project.name }}</a>
-            {% else %}
-              <a href="{{ primary_link.url | relative_url }}">{{ project.name }}</a>
-            {% endif %}
-            <span>{{ project.display_date }} · {{ project.highlight }}</span>
-          </div>
-          <p>{{ project.summary }}</p>
-        </div>
-      </li>
-    {% endfor %}
-  </ul>
 </section>
 
 <section class="home-section">
@@ -92,29 +56,16 @@ author_profile: true
     <a class="section-heading__link" href="{{ '/foundations/' | relative_url }}">All foundations</a>
   </div>
   {% assign featured_foundations = site.data.foundations | where: "featured", true %}
-  <ul class="compact-list project-compact-list foundation-compact-list">
-    {% for foundation in featured_foundations limit:3 %}
-      <li>
-        {% if foundation.teaser %}
-          <a class="list-thumb list-thumb--project" href="{{ foundation.url | relative_url }}" aria-label="{{ foundation.name }}">
-            <img src="{{ foundation.teaser | relative_url }}" alt="{{ foundation.teaser_alt | default: foundation.name }}">
-          </a>
-        {% endif %}
-        <div class="project-compact-list__body">
-          <div class="project-compact-list__main">
-            <a href="{{ foundation.url | relative_url }}">{{ foundation.name }}</a>
-            <span>{{ foundation.display_date }} · {{ foundation.status }}</span>
-          </div>
-          <p>{{ foundation.highlight }}</p>
-        </div>
-      </li>
+  <div class="home-card-grid">
+    {% for foundation in featured_foundations limit:4 %}
+      {% include home-foundation-card.html foundation=foundation %}
     {% endfor %}
-  </ul>
+  </div>
 </section>
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
-    <h2>Writing</h2>
+    <h2>Recent Writing</h2>
     <a class="section-heading__link" href="{{ '/writing/' | relative_url }}">All writing</a>
   </div>
   <ul class="compact-list compact-list--dated">

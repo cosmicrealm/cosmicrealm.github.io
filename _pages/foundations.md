@@ -2,7 +2,7 @@
 layout: archive
 title: "技术笔记"
 permalink: /foundations/
-author_profile: true
+author_profile: false
 ---
 
 <ul class="index-list project-index-list foundation-index-list">

@@ -2,11 +2,9 @@
 layout: archive
 permalink: /writing/
 title: "Writing"
-author_profile: true
+author_profile: false
 blog_tag_filter: true
 ---
-
-{% include base_path %}
 
 <div class="blog-archive">
   <div class="blog-archive__list">
@@ -46,105 +44,3 @@ blog_tag_filter: true
     <p class="blog-filter__empty" data-blog-empty hidden>No posts match these tags.</p>
   </div>
 </div>
-
-<script>
-  (function () {
-    var root = document.querySelector("[data-blog-filter-root]");
-    var list = document.querySelector("[data-blog-list]");
-
-    if (!root || !list) {
-      return;
-    }
-
-    var buttons = Array.prototype.slice.call(document.querySelectorAll("[data-blog-tag-filter]"));
-    var clearButton = root.querySelector("[data-blog-clear-filter]");
-    var count = root.querySelector("[data-blog-filter-count]");
-    var empty = document.querySelector("[data-blog-empty]");
-    var items = Array.prototype.slice.call(list.querySelectorAll("[data-blog-item]"));
-    var selected = new Set();
-
-    function getQueryTags() {
-      var params = new URLSearchParams(window.location.search);
-      return params.getAll("tags").join(",").split(",").map(function (tag) {
-        return tag.trim();
-      }).filter(Boolean);
-    }
-
-    function updateUrl() {
-      var url = new URL(window.location.href);
-
-      if (selected.size > 0) {
-        url.searchParams.set("tags", Array.from(selected).join(","));
-      } else {
-        url.searchParams.delete("tags");
-      }
-
-      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
-    }
-
-    function applyFilter() {
-      var visible = 0;
-
-      items.forEach(function (item) {
-        var tags = (item.dataset.blogTags || "").split(" ").filter(Boolean);
-        var matches = selected.size === 0 || tags.some(function (tag) {
-          return selected.has(tag);
-        });
-
-        item.hidden = !matches;
-        item.style.display = matches ? "" : "none";
-        if (matches) {
-          visible += 1;
-        }
-      });
-
-      buttons.forEach(function (button) {
-        var active = selected.has(button.dataset.blogTagFilter);
-        button.classList.toggle("is-active", active);
-        button.setAttribute("aria-pressed", active ? "true" : "false");
-      });
-
-      if (clearButton) {
-        var showAll = selected.size === 0;
-        clearButton.classList.toggle("is-active", showAll);
-        clearButton.setAttribute("aria-pressed", showAll ? "true" : "false");
-      }
-
-      if (count) {
-        count.textContent = visible + " / " + items.length;
-      }
-
-      if (empty) {
-        empty.hidden = visible !== 0;
-      }
-    }
-
-    document.addEventListener("click", function (event) {
-      var tagButton = event.target.closest("[data-blog-tag-filter]");
-      var resetButton = event.target.closest("[data-blog-clear-filter]");
-
-      if (tagButton) {
-        var tag = tagButton.dataset.blogTagFilter;
-        if (selected.has(tag)) {
-          selected.delete(tag);
-        } else {
-          selected.add(tag);
-        }
-        applyFilter();
-        updateUrl();
-        return;
-      }
-
-      if (resetButton) {
-        selected.clear();
-        applyFilter();
-        updateUrl();
-      }
-    });
-
-    getQueryTags().forEach(function (tag) {
-      selected.add(tag);
-    });
-    applyFilter();
-  }());
-</script>

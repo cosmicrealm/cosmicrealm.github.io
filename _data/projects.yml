@@ -2,6 +2,9 @@
   category: Digital Human
   status: Project page
   featured: true
+  homepage: true
+  homepage_order: 2
+  homepage_url: /projects/style-talking/
   date: 2026-06-06
   display_date: 06/2026
   teaser: /projects/style-talking/static/images/teaser.jpg
@@ -22,6 +25,9 @@
   category: AI Voice Tools
   status: v0.01 release
   featured: true
+  homepage: true
+  homepage_order: 3
+  homepage_url: https://github.com/cosmicrealm/VoiceStudio
   date: 2026-05-27
   display_date: 05/2026
   teaser: /images/projects/voice-studio.jpg
@@ -60,6 +66,9 @@
   category: Face Restoration
   status: Preprint
   featured: true
+  homepage: true
+  homepage_order: 1
+  homepage_url: /projects/iconface/
   date: 2026-05-05
   display_date: 05/2026
   teaser: /images/projects/iconface.jpg
