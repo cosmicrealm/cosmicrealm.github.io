@@ -20,7 +20,7 @@ author_profile: false
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
-    <h2>Selected Work</h2>
+    <h2>Recent Project</h2>
     <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">All projects</a>
   </div>
   {% assign featured_home_projects = site.data.projects | where: "homepage", true | sort: "date" | reverse %}
@@ -33,7 +33,7 @@ author_profile: false
 
 <section class="home-section">
   <div class="section-heading section-heading--line">
-    <h2>Representative Publications</h2>
+    <h2>Recent Publications</h2>
     <a class="section-heading__link" href="{{ '/publications/' | relative_url }}">All publications</a>
   </div>
   {% assign selected_publications = site.publications | sort: "date" | reverse %}

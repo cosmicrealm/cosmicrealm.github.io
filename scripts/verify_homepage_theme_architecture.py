@@ -123,7 +123,7 @@ require("/writing/?tags=" in tag_chip, "tag chip still points at old writing rou
 require("URLSearchParams" not in writing and "applyFilter" not in writing, "writing page still owns duplicate inline filter runtime")
 require("page.blog_tag_filter" in archive and "include sidebar.html" in archive, "archive layout no longer renders Writing filter sidebar")
 require("layout: home" in home and "author_profile: false" in home, "home.md not on home layout")
-require("Selected Work" in home and "Representative Publications" in home and "Foundations" in home and "Recent Writing" in home, "home.md missing homepage sections")
+require("Recent Project" in home and "Recent Publications" in home and "Foundations" in home and "Recent Writing" in home, "home.md missing homepage sections")
 require("homepage:" in projects_yml and "homepage_order:" in projects_yml, "projects.yml missing homepage curation fields")
 require("social:" in config and "type: Person" in config and "github.com/cosmicrealm" in config, "_config.yml missing non-empty Person social config")
 require("package-lock.json" in config, "_config.yml must exclude package-lock.json from publish output")
