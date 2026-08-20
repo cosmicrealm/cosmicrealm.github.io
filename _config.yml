@@ -8,7 +8,6 @@
 
 # Basic Site Settings
 locale: "zh-CN" # e.g. "en-US", "fr-FR", "de-DE", "es-ES", "zh-CN"
-site_theme: "default" # Currently available options are "default", "air"
 title: "Jinyang Zhang"
 title_separator: "-"
 name: &name "Jinyang Zhang"
@@ -72,7 +71,6 @@ author:
   steam: # Username
   telegram: # URL
   tumblr: # Username
-  twitter: # Username for X / Twitter
   vine: # Username
   weibo: # Username
   wikipedia: # Username
@@ -107,21 +105,15 @@ bing_site_verification:
 alexa_site_verification:
 yandex_site_verification:
 
-# Social Sharing
-twitter:
-  username: &twitter
-facebook:
-  username:
-  app_id:
-  publisher:
 og_image: # Social media default site image
 og_description: # Social media default site image description
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type: # Person or Organization (defaults to Person)
-  name: # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type: Person
+  name: Jinyang Zhang
+  links:
+    - https://github.com/cosmicrealm
 
 # Analytics
 analytics:
@@ -152,6 +144,8 @@ exclude:
   - config
   - Dockerfile
   - docker-compose.yaml
+  - node_modules
+  - package-lock.json
   - docs/
   - Gemfile
   - Gruntfile.js
@@ -160,8 +154,6 @@ exclude:
   - local
   - log
   - knowledge
-  - node_modules
-  - package-lock.json
   - package.json
   - Rakefile
   - README.md
