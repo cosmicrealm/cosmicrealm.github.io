@@ -101,4 +101,22 @@ $vimeo-color                : #1ab7ea;
 $vine-color                 : #00bf8f;
 $youtube-color              : #bb0000;
 $xing-color                 : #006567;
-   
+
+$gray: #7a8288;
+$dark-gray: mix(#000, $gray, 40%);
+$darker-gray: mix(#000, $gray, 60%);
+$light-gray: mix(#fff, $gray, 50%);
+$lighter-gray: mix(#fff, $gray, 90%);
+$danger-color: #ee5f5b;
+$info-color: #2f7f93;
+$notice-color: #7a8288;
+$success-color: #62c462;
+$warning-color: #f89406;
+$border-radius: 4px;
+$box-shadow: none;
+$global-transition: all 0.2s ease-in-out;
+$masthead-height: 70px;
+$navicon-width: 28px;
+$navicon-height: 4px;
+$sidebar-link-max-width: 250px;
+$sidebar-screen-min-width: 1024px;

@@ -1,0 +1,87 @@
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+  --global-base-color: #666d78;
+  --global-bg-color: #f6f1e8;
+  --global-footer-bg-color: #f0eadf;
+  --global-border-color: #d7d1c6;
+  --global-dark-border-color: #c7bfb2;
+  --global-code-background-color: #efe8de;
+  --global-code-text-color: #172235;
+  --global-fig-caption-color: #6a7280;
+  --global-link-color: #9a4736;
+  --global-link-color-hover: #7c382b;
+  --global-link-color-visited: #7c382b;
+  --global-masthead-link-color: #172235;
+  --global-masthead-link-color-hover: #9a4736;
+  --global-text-color: #172235;
+  --global-text-color-light: #5c6778;
+  --global-thead-color: #e9e2d7;
+  --cr-accent: #9a4736;
+  --cr-accent-strong: #7c382b;
+  --cr-accent-soft: rgba(154, 71, 54, 0.1);
+  --cr-warm: #8c6f54;
+  --cr-page-bg: #f6f1e8;
+  --cr-card-bg: #fbf8f1;
+  --cr-panel-bg: #f1ebe2;
+  --cr-surface: #fbf8f1;
+  --cr-ink-soft: #5c6778;
+  --cr-border: #d7d1c6;
+  --cr-border-strong: #c7bfb2;
+  --cr-shadow: 0 0 0 0 transparent;
+  --cr-shadow-hover: 0 0 0 0 transparent;
+  --cr-font-serif: Georgia, "Times New Roman", "Noto Serif SC", serif;
+  --cr-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  --cr-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --global-base-color: #9aa4b2;
+  --global-bg-color: #121b28;
+  --global-footer-bg-color: #101724;
+  --global-border-color: #283549;
+  --global-dark-border-color: #34445b;
+  --global-code-background-color: #182331;
+  --global-code-text-color: #eef1f5;
+  --global-fig-caption-color: #9ea8b6;
+  --global-link-color: #d57a62;
+  --global-link-color-hover: #ebb19e;
+  --global-link-color-visited: #d57a62;
+  --global-masthead-link-color: #eef1f5;
+  --global-masthead-link-color-hover: #ebb19e;
+  --global-text-color: #eef1f5;
+  --global-text-color-light: #9ea8b6;
+  --global-thead-color: #182331;
+  --cr-accent: #d57a62;
+  --cr-accent-strong: #ebb19e;
+  --cr-accent-soft: rgba(213, 122, 98, 0.12);
+  --cr-warm: #b6946d;
+  --cr-page-bg: #121b28;
+  --cr-card-bg: #162131;
+  --cr-panel-bg: #182331;
+  --cr-surface: #162131;
+  --cr-ink-soft: #9ea8b6;
+  --cr-border: #283549;
+  --cr-border-strong: #34445b;
+  --cr-shadow: 0 0 0 0 transparent;
+  --cr-shadow-hover: 0 0 0 0 transparent;
+}
+
+html {
+  background: var(--cr-page-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cr-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
