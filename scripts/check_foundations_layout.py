@@ -1,8 +1,21 @@
 #!/usr/bin/env python3
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+MATHJAX_SRC = 'src="/assets/vendor/mathjax/tex-mml-chtml.js"'
+MATHJAX_ENTRYPOINTS = (
+    "foundations/aigc-llm-math/index.html",
+    "foundations/generation-acceleration/index.html",
+    "foundations/generation-distillation/index.html",
+    "foundations/generation-math/index.html",
+    "foundations/image-generation-data-training/index.html",
+    "foundations/leetcode-hot100/index.html",
+    "foundations/llm-interview-qa/index.html",
+    "foundations/llm-mechanics/index.html",
+    "foundations/video-generation/index.html",
+)
 
 
 def read(path):
@@ -21,6 +34,10 @@ def assert_not_contains(path, needle):
 
 def assert_exists(path):
     assert (ROOT / path).exists(), f"{path} should exist"
+
+
+def assert_not_exists(path):
+    assert not (ROOT / path).exists(), f"{path} should not exist"
 
 
 def main():
@@ -63,7 +80,7 @@ def main():
     )
     assert_contains(
         "foundations/generation-math/index.html",
-        'src="/assets/vendor/mathjax/tex-mml-chtml.js"',
+        MATHJAX_SRC,
     )
     assert_contains(
         "foundations/generation-distillation/index.html",
@@ -72,6 +89,19 @@ def main():
 
     assert_contains("_pages/home.md", "site.data.foundations")
     assert_contains("_pages/home.md", "/foundations/")
+
+    assert_exists("assets/vendor/mathjax/tex-mml-chtml.js")
+    for path in MATHJAX_ENTRYPOINTS:
+        assert read(path).count(MATHJAX_SRC) == 1, f"{path} should load shared MathJax exactly once"
+
+    assert_not_exists("foundations/generation-math/static/vendor/mathjax")
+    assert_not_exists("foundations/llm-mechanics/static/vendor/mathjax")
+
+    bundle = read("assets/vendor/mathjax/tex-mml-chtml.js")
+    referenced_fonts = set(re.findall(r"MathJax_[A-Za-z0-9-]+\.woff", bundle))
+    font_root = ROOT / "assets/vendor/mathjax/output/chtml/fonts/woff-v2"
+    missing_fonts = sorted(name for name in referenced_fonts if not (font_root / name).is_file())
+    assert not missing_fonts, f"MathJax bundle references missing fonts: {missing_fonts}"
 
 
 if __name__ == "__main__":
