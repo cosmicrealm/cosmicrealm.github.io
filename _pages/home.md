@@ -2,15 +2,15 @@
 layout: home
 permalink: /
 title: "Jinyang Zhang"
-seo_title: "Jinyang Zhang - Projects, Publications, Foundations, Writing, and CV"
-excerpt: "Personal website for projects, publications, foundations, writing, and CV."
+seo_title: "Jinyang Zhang - Generative AI Researcher"
+excerpt: "Generative AI researcher focused on digital humans, image restoration, multimodal generation, and efficient model inference."
 author_profile: false
 ---
 
 <section class="home-hero">
-  <p class="home-hero__eyebrow">Jinyang Zhang · Generative AI Researcher</p>
-  <h1>I build generative AI systems for visual creation.</h1>
-  <p class="home-hero__lead">My work focuses on digital humans, image restoration, multimodal generation, and efficient model inference. I am currently open to full-time opportunities.</p>
+  <p class="home-hero__eyebrow">Jinyang Zhang</p>
+  <h1>Generative AI researcher.</h1>
+  <p class="home-hero__lead">I focus on digital humans, image restoration, multimodal generation, and efficient model inference. I am currently seeking full-time research and engineering opportunities.</p>
   <div class="hero-actions">
     <a href="mailto:{{ site.author.email }}">Email</a>
     <a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
@@ -23,7 +23,7 @@ author_profile: false
     <h2>Selected Work</h2>
     <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">All projects</a>
   </div>
-  {% assign featured_home_projects = site.data.projects | where: "homepage", true | sort: "homepage_order" %}
+  {% assign featured_home_projects = site.data.projects | where: "homepage", true | sort: "date" | reverse %}
   <div class="home-card-grid">
     {% for project in featured_home_projects limit:3 %}
       {% include home-project-card.html project=project %}
@@ -49,7 +49,7 @@ author_profile: false
     <h2>Foundations</h2>
     <a class="section-heading__link" href="{{ '/foundations/' | relative_url }}">All foundations</a>
   </div>
-  {% assign featured_foundations = site.data.foundations | where: "featured", true %}
+  {% assign featured_foundations = site.data.foundations | where: "featured", true | sort: "date" | reverse %}
   <div class="home-card-grid">
     {% for foundation in featured_foundations limit:3 %}
       {% include home-foundation-card.html foundation=foundation %}
