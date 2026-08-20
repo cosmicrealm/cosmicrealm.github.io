@@ -8,20 +8,14 @@ author_profile: false
 ---
 
 <section class="home-hero">
-  <p class="home-hero__eyebrow">Jinyang Zhang</p>
-  <h1>Generative AI systems from research mechanism to deployable workflow.</h1>
-  <p class="home-hero__lead">AIGC systems, talking avatars, image restoration, inference pipelines, and source-first technical foundations.</p>
+  <p class="home-hero__eyebrow">Jinyang Zhang · Generative AI Researcher</p>
+  <h1>I build generative AI systems for visual creation.</h1>
+  <p class="home-hero__lead">My work focuses on digital humans, image restoration, multimodal generation, and efficient model inference. I am currently open to full-time opportunities.</p>
   <div class="hero-actions">
     <a href="mailto:{{ site.author.email }}">Email</a>
     <a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
     <a href="{{ '/cv/' | relative_url }}">CV</a>
   </div>
-</section>
-
-<section class="focus-strip" aria-label="Site overview">
-  <article class="focus-strip__item"><strong>{{ site.data.projects | size }}</strong><span>Projects</span></article>
-  <article class="focus-strip__item"><strong>{{ site.publications | size }}</strong><span>Publications</span></article>
-  <article class="focus-strip__item"><strong>{{ site.posts | size }}</strong><span>Writing</span></article>
 </section>
 
 <section class="home-section">
@@ -31,7 +25,7 @@ author_profile: false
   </div>
   {% assign featured_home_projects = site.data.projects | where: "homepage", true | sort: "homepage_order" %}
   <div class="home-card-grid">
-    {% for project in featured_home_projects %}
+    {% for project in featured_home_projects limit:3 %}
       {% include home-project-card.html project=project %}
     {% endfor %}
   </div>
@@ -44,7 +38,7 @@ author_profile: false
   </div>
   {% assign selected_publications = site.publications | sort: "date" | reverse %}
   <div class="publication-grid">
-    {% for publication in selected_publications limit:4 %}
+    {% for publication in selected_publications limit:3 %}
       {% include publication-card.html publication=publication %}
     {% endfor %}
   </div>
@@ -57,7 +51,7 @@ author_profile: false
   </div>
   {% assign featured_foundations = site.data.foundations | where: "featured", true %}
   <div class="home-card-grid">
-    {% for foundation in featured_foundations limit:4 %}
+    {% for foundation in featured_foundations limit:3 %}
       {% include home-foundation-card.html foundation=foundation %}
     {% endfor %}
   </div>

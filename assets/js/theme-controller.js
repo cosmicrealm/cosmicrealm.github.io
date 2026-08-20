@@ -36,7 +36,7 @@ function createThemeController(options) {
     toggles.forEach((toggle) => updateToggle(toggle, resolved));
     if (typeof document !== "undefined") {
       document.querySelectorAll("[data-theme-color]").forEach((meta) => {
-        meta.setAttribute("content", resolved === "dark" ? "#121b28" : "#f6f1e8");
+        meta.setAttribute("content", resolved === "dark" ? "#000000" : "#ffffff");
       });
     }
     return resolved;
