@@ -168,10 +168,21 @@
     render();
   }
 
+  function mountVisitorAnalytics() {
+    if (!window.CosmicVisitorAnalytics) return;
+    const analytics = window.CosmicVisitorAnalytics.createVisitorAnalytics({
+      component: document.querySelector("[data-visitor-stats]"),
+      document,
+      window,
+    });
+    analytics.mount();
+  }
+
   function boot() {
     mountTheme();
     mountNavigation();
     mountWritingFilter();
+    mountVisitorAnalytics();
   }
 
   if (document.readyState === "loading") {

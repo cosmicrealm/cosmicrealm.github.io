@@ -71,3 +71,5 @@ author_profile: false
     {% endfor %}
   </ul>
 </section>
+
+{% include home-visitor-stats.html %}

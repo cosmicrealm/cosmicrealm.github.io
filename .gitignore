@@ -11,6 +11,8 @@ Gemfile.lock
 # Ignore files created by npm
 node_modules
 tmp/
+.wrangler/
+services/visitor-analytics/dist/
 
 # Ignore the vendor file at root level and bundle for alternative installation
 /vendor/

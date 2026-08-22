@@ -14,7 +14,8 @@
   "scripts": {
     "test:structure": "python3 scripts/verify_homepage_theme_architecture.py",
     "test:theme": "node tests/theme_controller.test.cjs",
-    "test:browser": "node tests/site_browser_qa.cjs"
+    "test:browser": "node tests/site_browser_qa.cjs",
+    "test:visitors": "node --test tests/visitor_analytics.test.cjs && node --test services/visitor-analytics/tests/worker.test.mjs && python3 scripts/check_visitor_analytics.py"
   },
   "devDependencies": {
     "playwright": "^1.62.1"

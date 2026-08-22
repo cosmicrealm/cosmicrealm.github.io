@@ -158,6 +158,7 @@ exclude:
   - Rakefile
   - README.md
   - scripts/
+  - services/
   - tests/
   - tmp
   - vendor

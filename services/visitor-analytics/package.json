@@ -1,0 +1,17 @@
+{
+  "name": "cosmicrealm-visitor-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build:pages": "node scripts/build-pages.mjs",
+    "deploy": "npm run build:pages && wrangler pages deploy dist --project-name cosmicrealm-visitor-stats --branch main",
+    "deploy:worker": "wrangler deploy --config wrangler.worker.jsonc",
+    "db:migrate:local": "wrangler d1 migrations apply cosmicrealm-visitor-analytics --local",
+    "db:migrate:remote": "wrangler d1 migrations apply cosmicrealm-visitor-analytics --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^4.125.0"
+  }
+}

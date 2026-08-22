@@ -1,0 +1,36 @@
+<section class="visitor-reach home-section" data-visitor-stats aria-labelledby="visitor-reach-title">
+  <div class="visitor-reach__heading">
+    <div>
+      <p class="visitor-reach__eyebrow">05 / Visitors</p>
+      <h2 id="visitor-reach-title">Global Reach</h2>
+    </div>
+    <p class="visitor-reach__privacy">Privacy-preserving, country-level aggregates. Raw IP addresses are never stored.</p>
+  </div>
+
+  <div class="visitor-reach__body">
+    <dl class="visitor-reach__stats" aria-label="Site visitor statistics">
+      <div>
+        <dd data-visitor-total>—</dd>
+        <dt>Total visits</dt>
+      </div>
+      <div>
+        <dd data-visitor-today>—</dd>
+        <dt>Visitors today</dt>
+      </div>
+      <div>
+        <dd data-visitor-countries>—</dd>
+        <dt>Countries reached</dt>
+      </div>
+    </dl>
+
+    <div class="visitor-reach__map">
+      {% include world-map.svg %}
+    </div>
+  </div>
+
+  <div class="visitor-reach__footer">
+    <span>Country-level view distribution</span>
+    <span data-visitor-status aria-live="polite">Loading live statistics</span>
+  </div>
+  <p class="screen-reader-text" data-visitor-accessible-summary aria-live="polite"></p>
+</section>

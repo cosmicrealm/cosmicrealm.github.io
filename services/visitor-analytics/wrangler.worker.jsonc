@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cosmicrealm-visitor-analytics",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-08-22",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://cosmicrealm.github.io,http://localhost:4000,http://127.0.0.1:4000",
+    "MAX_VIEWS_PER_VISITOR": "50",
+    "MIN_COUNTRY_VIEWS": "3"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cosmicrealm-visitor-analytics",
+      "database_id": "dc0d9f4d-3e9d-483c-822d-3d2456fc1892",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["17 0 * * *"]
+  }
+}
