@@ -138,6 +138,65 @@ async function assertHomepageResources(page) {
   assert.equal(resources.some((name) => name.startsWith("https://cosmicrealm.github.io/")), false, "homepage loaded production-origin internal resource locally");
 }
 
+async function assertHomepageEditorialRows(page) {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const sections = await page.evaluate(() => {
+    const referenceFontSize = getComputedStyle(document.querySelector(".compact-list a")).fontSize;
+    const selectors = {
+      "Recent Project": [".home-card--project", "h3"],
+      "Recent Publications": [".publication-card", ".publication-card__title"],
+      "Foundations": [".home-card--foundation", "h3"],
+    };
+    return Object.entries(selectors).map(([heading, [selector, titleSelector]]) => {
+      const title = [...document.querySelectorAll(".section-heading h2")]
+        .find((node) => node.textContent.trim() === heading);
+      const section = title?.closest(".home-section");
+      const items = [...(section?.querySelectorAll(selector) || [])];
+      return {
+        heading,
+        count: items.length,
+        rows: new Set(items.map((item) => Math.round(item.getBoundingClientRect().top))).size,
+        widths: items.map((item) => item.getBoundingClientRect().width),
+        titleFontSizes: items.map((item) => getComputedStyle(item.querySelector(titleSelector)).fontSize),
+        referenceFontSize,
+        containerWidth: section?.getBoundingClientRect().width || 0,
+      };
+    });
+  });
+  for (const section of sections) {
+    assert.equal(section.count, 3, `${section.heading} should keep its three recent items`);
+    assert.equal(section.rows, 3, `${section.heading} should render one item per row`);
+    assert.equal(
+      section.widths.every((width) => width >= section.containerWidth * 0.95),
+      true,
+      `${section.heading} rows should span the section width`
+    );
+    assert.equal(
+      section.titleFontSizes.every((fontSize) => fontSize === section.referenceFontSize),
+      true,
+      `${section.heading} titles should match Recent Writing font size`
+    );
+  }
+
+  const voiceStudioAudio = await page.evaluate(() => {
+    const card = [...document.querySelectorAll(".home-card--project")]
+      .find((item) => item.querySelector("h3")?.textContent.trim() === "Voice Studio");
+    const audio = card?.querySelector("audio");
+    return audio
+      ? {
+          controls: audio.controls,
+          preload: audio.preload,
+          src: audio.currentSrc || audio.querySelector("source")?.src || "",
+        }
+      : null;
+  });
+  assert.ok(voiceStudioAudio, "Voice Studio should include an inline audio preview");
+  assert.equal(voiceStudioAudio.controls, true, "Voice Studio audio preview should expose playback controls");
+  assert.equal(voiceStudioAudio.preload, "none", "Voice Studio audio should not preload on the homepage");
+  assert.match(voiceStudioAudio.src, /Voice-Studio-0\.01-dialogue-demo\.mp3$/, "Voice Studio should use the published v0.01 dialogue sample");
+}
+
 async function assertNoProductionOriginResources(page, label) {
   const resources = await page.evaluate(() =>
     performance.getEntriesByType("resource").map((entry) => entry.name)
@@ -183,6 +242,56 @@ async function assertThemePersistence(browser, colorScheme) {
   }
 }
 
+async function assertWritingAccentPalette(browser, colorScheme) {
+  const context = await createQaContext(browser, colorScheme);
+  const page = await context.newPage();
+  const collectors = bindCollectors(page);
+  try {
+    await gotoReady(page, `${SITE_URL}/writing/`, "#main.blog-filter-layout");
+    const palette = await page.evaluate(() => {
+      const rootStyle = getComputedStyle(document.documentElement);
+      const mainStyle = getComputedStyle(document.querySelector("#main.blog-filter-layout"));
+      const activeFilterStyle = getComputedStyle(document.querySelector(".blog-filter__clear.is-active"));
+      const dateStyle = getComputedStyle(document.querySelector(".blog-list__date time"));
+      return {
+        rootAccent: rootStyle.getPropertyValue("--cr-accent").trim(),
+        accent: mainStyle.getPropertyValue("--cr-accent").trim(),
+        accentStrong: mainStyle.getPropertyValue("--cr-accent-strong").trim(),
+        accentSoft: mainStyle.getPropertyValue("--cr-accent-soft").trim(),
+        pageBackground: getComputedStyle(document.body).backgroundColor,
+        activeBackground: activeFilterStyle.backgroundColor,
+        activeColor: activeFilterStyle.color,
+        dateBackground: dateStyle.backgroundColor,
+      };
+    });
+    const expected = colorScheme === "dark"
+      ? {
+          rootAccent: "#f5f5f5",
+          accent: "#a8d5b8",
+          accentStrong: "#c8ead3",
+          accentSoft: "rgba(168, 213, 184, 0.14)",
+          pageBackground: "rgb(0, 0, 0)",
+          activeBackground: "rgb(200, 234, 211)",
+          activeColor: "rgb(0, 0, 0)",
+          dateBackground: "rgba(168, 213, 184, 0.14)",
+        }
+      : {
+          rootAccent: "#111111",
+          accent: "#5f8f72",
+          accentStrong: "#315d46",
+          accentSoft: "#eaf4ed",
+          pageBackground: "rgb(255, 255, 255)",
+          activeBackground: "rgb(49, 93, 70)",
+          activeColor: "rgb(255, 255, 255)",
+          dateBackground: "rgb(234, 244, 237)",
+        };
+    assert.deepEqual(palette, expected, `${colorScheme} Writing page should use its scoped green accent palette`);
+    assertCollectorsEmpty(collectors, `${colorScheme} Writing accent palette`);
+  } finally {
+    await context.close();
+  }
+}
+
 async function captureHomepagePreview(browser, colorScheme, filename) {
   const context = await browser.newContext({
     colorScheme,
@@ -193,15 +302,55 @@ async function captureHomepagePreview(browser, colorScheme, filename) {
   const collectors = bindCollectors(page);
   try {
     await gotoReady(page, `${SITE_URL}/`, ".home-hero h1");
-    const palette = await page.evaluate(() => ({
-      theme: document.documentElement.getAttribute("data-theme") || "light",
-      background: getComputedStyle(document.body).backgroundColor,
-    }));
+    const palette = await page.evaluate(() => {
+      const rootStyle = getComputedStyle(document.documentElement);
+      const primaryAction = document.querySelector(".home-hero .hero-actions a:first-child");
+      const eyebrow = document.querySelector(".home-hero__eyebrow");
+      return {
+        theme: document.documentElement.getAttribute("data-theme") || "light",
+        background: getComputedStyle(document.body).backgroundColor,
+        accent: rootStyle.getPropertyValue("--cr-accent").trim(),
+        accentStrong: rootStyle.getPropertyValue("--cr-accent-strong").trim(),
+        warm: rootStyle.getPropertyValue("--cr-warm").trim(),
+        primaryBackground: getComputedStyle(primaryAction).backgroundColor,
+        primaryColor: getComputedStyle(primaryAction).color,
+        eyebrowColor: getComputedStyle(eyebrow).color,
+      };
+    });
     assert.equal(palette.theme, colorScheme, `${colorScheme} preview resolved the wrong theme`);
     assert.equal(
       palette.background,
       colorScheme === "dark" ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)",
       `${colorScheme} homepage canvas is not pure ${colorScheme === "dark" ? "black" : "white"}`
+    );
+    const expectedPalette = colorScheme === "dark"
+      ? {
+          accent: "#f5f5f5",
+          accentStrong: "#ffffff",
+          warm: "#b5b5b5",
+          primaryBackground: "rgb(255, 255, 255)",
+          primaryColor: "rgb(0, 0, 0)",
+          eyebrowColor: "rgb(245, 245, 245)",
+        }
+      : {
+          accent: "#111111",
+          accentStrong: "#000000",
+          warm: "#555555",
+          primaryBackground: "rgb(0, 0, 0)",
+          primaryColor: "rgb(255, 255, 255)",
+          eyebrowColor: "rgb(17, 17, 17)",
+        };
+    assert.deepEqual(
+      {
+        accent: palette.accent,
+        accentStrong: palette.accentStrong,
+        warm: palette.warm,
+        primaryBackground: palette.primaryBackground,
+        primaryColor: palette.primaryColor,
+        eyebrowColor: palette.eyebrowColor,
+      },
+      expectedPalette,
+      `${colorScheme} homepage should use the monochrome accent treatment`
     );
     await page.screenshot({
       path: path.join(ARTIFACT_DIR, filename),
@@ -224,6 +373,8 @@ async function main() {
   try {
     await assertThemePersistence(browser, "light");
     await assertThemePersistence(browser, "dark");
+    await assertWritingAccentPalette(browser, "light");
+    await assertWritingAccentPalette(browser, "dark");
 
     const context = await createQaContext(browser);
     const homepage = await context.newPage();
@@ -235,6 +386,7 @@ async function main() {
       for (const width of WIDTHS) {
         await assertNoOverflow(homepage, width, 900, "homepage");
       }
+      await assertHomepageEditorialRows(homepage);
       await waitForDocumentStable(homepage);
       await assertHomepageResources(homepage);
       assertCollectorsEmpty(homepageCollectors, "homepage");

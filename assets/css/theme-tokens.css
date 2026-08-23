@@ -11,18 +11,18 @@ html[data-theme="light"] {
   --global-code-background-color: #f4f4f4;
   --global-code-text-color: #111111;
   --global-fig-caption-color: #5f6368;
-  --global-link-color: #9a4736;
-  --global-link-color-hover: #7c382b;
-  --global-link-color-visited: #7c382b;
+  --global-link-color: #111111;
+  --global-link-color-hover: #000000;
+  --global-link-color-visited: #333333;
   --global-masthead-link-color: #111111;
-  --global-masthead-link-color-hover: #9a4736;
+  --global-masthead-link-color-hover: #000000;
   --global-text-color: #111111;
   --global-text-color-light: #555555;
   --global-thead-color: #f2f2f2;
-  --cr-accent: #9a4736;
-  --cr-accent-strong: #7c382b;
-  --cr-accent-soft: rgba(154, 71, 54, 0.1);
-  --cr-warm: #8c6f54;
+  --cr-accent: #111111;
+  --cr-accent-strong: #000000;
+  --cr-accent-soft: rgba(0, 0, 0, 0.07);
+  --cr-warm: #555555;
   --cr-page-bg: #ffffff;
   --cr-card-bg: #ffffff;
   --cr-panel-bg: #f5f5f5;
@@ -49,18 +49,18 @@ html[data-theme="dark"] {
   --global-code-background-color: #111111;
   --global-code-text-color: #f5f5f5;
   --global-fig-caption-color: #b5b5b5;
-  --global-link-color: #d57a62;
-  --global-link-color-hover: #ebb19e;
-  --global-link-color-visited: #d57a62;
+  --global-link-color: #f5f5f5;
+  --global-link-color-hover: #ffffff;
+  --global-link-color-visited: #d0d0d0;
   --global-masthead-link-color: #f5f5f5;
-  --global-masthead-link-color-hover: #ebb19e;
+  --global-masthead-link-color-hover: #ffffff;
   --global-text-color: #f5f5f5;
   --global-text-color-light: #b5b5b5;
   --global-thead-color: #111111;
-  --cr-accent: #d57a62;
-  --cr-accent-strong: #ebb19e;
-  --cr-accent-soft: rgba(213, 122, 98, 0.12);
-  --cr-warm: #b6946d;
+  --cr-accent: #f5f5f5;
+  --cr-accent-strong: #ffffff;
+  --cr-accent-soft: rgba(255, 255, 255, 0.1);
+  --cr-warm: #b5b5b5;
   --cr-page-bg: #000000;
   --cr-card-bg: #080808;
   --cr-panel-bg: #111111;
@@ -70,6 +70,20 @@ html[data-theme="dark"] {
   --cr-border-strong: #666666;
   --cr-shadow: 0 0 0 0 transparent;
   --cr-shadow-hover: 0 0 0 0 transparent;
+}
+
+#main.blog-filter-layout {
+  --cr-accent: #5f8f72;
+  --cr-accent-strong: #315d46;
+  --cr-accent-soft: #eaf4ed;
+  --cr-warm: #6f8c79;
+}
+
+html[data-theme="dark"] #main.blog-filter-layout {
+  --cr-accent: #a8d5b8;
+  --cr-accent-strong: #c8ead3;
+  --cr-accent-soft: rgba(168, 213, 184, 0.14);
+  --cr-warm: #9ab8a3;
 }
 
 html {

@@ -17,5 +17,17 @@
       <a href="{{ project_href }}"{% if project_external %} target="_blank" rel="noopener"{% endif %}>{{ home_project.name }}</a>
     </h3>
     <p>{{ home_project.summary }}</p>
+    {% if home_project.demo.audio_url %}
+      <div class="home-card__audio-preview">
+        <div class="home-card__audio-meta">
+          <span>Audio preview</span>
+          {% if home_project.demo.duration %}<span>{{ home_project.demo.duration }}</span>{% endif %}
+        </div>
+        <audio controls preload="none" aria-label="{{ home_project.demo.title | default: home_project.name }}">
+          <source src="{{ home_project.demo.audio_url }}" type="{{ home_project.demo.audio_type | default: 'audio/mpeg' }}">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+    {% endif %}
   </div>
 </article>

@@ -150,7 +150,7 @@ body {
 
 .hero-actions a:first-child,
 .section-actions a:first-child {
-  color: #fff;
+  color: var(--global-on-base-color);
   border-color: var(--cr-accent-strong);
   background: var(--cr-accent-strong);
 }
@@ -159,7 +159,7 @@ body {
 .section-actions a:hover,
 .project-card__links a:hover,
 .publication-card__links a:hover {
-  color: #fff;
+  color: var(--global-on-base-color);
   border-color: var(--cr-accent);
   background: var(--cr-accent);
 }
@@ -574,14 +574,14 @@ body {
 .blog-filter__clear:hover,
 .blog-filter__tag.is-active,
 .blog-filter__clear.is-active {
-  color: #fff;
+  color: var(--global-on-base-color);
   border-color: var(--cr-accent-strong);
   background: var(--cr-accent-strong);
 }
 
 .blog-filter__tag:hover span:last-child,
 .blog-filter__tag.is-active span:last-child {
-  color: color-mix(in srgb, #fff 76%, var(--cr-accent-soft));
+  color: color-mix(in srgb, var(--global-on-base-color) 76%, var(--cr-accent-soft));
 }
 
 .blog-filter__count {
@@ -718,7 +718,7 @@ body {
 }
 
 .blog-list__tags button.is-active {
-  color: #fff;
+  color: var(--global-on-base-color);
   background: var(--cr-accent-strong);
 }
 
