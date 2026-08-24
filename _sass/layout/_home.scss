@@ -453,7 +453,7 @@ body {
 }
 
 .visitor-map path.is-visited {
-  fill: hsl(var(--visitor-hue, 210) var(--visitor-map-saturation) var(--visitor-map-lightness));
+  fill: hsl(var(--visitor-hue, 210), var(--visitor-map-saturation), var(--visitor-map-lightness));
   fill-opacity: 1;
 }
 
@@ -477,10 +477,10 @@ body {
   border: 1px solid var(--cr-border-strong);
   background: linear-gradient(
     90deg,
-    hsl(210 var(--visitor-map-saturation) var(--visitor-map-lightness)),
-    hsl(145 var(--visitor-map-saturation) var(--visitor-map-lightness)),
-    hsl(75 var(--visitor-map-saturation) var(--visitor-map-lightness)),
-    hsl(18 var(--visitor-map-saturation) var(--visitor-map-lightness))
+    hsl(210, var(--visitor-map-saturation), var(--visitor-map-lightness)),
+    hsl(145, var(--visitor-map-saturation), var(--visitor-map-lightness)),
+    hsl(75, var(--visitor-map-saturation), var(--visitor-map-lightness)),
+    hsl(18, var(--visitor-map-saturation), var(--visitor-map-lightness))
   );
 }
 
