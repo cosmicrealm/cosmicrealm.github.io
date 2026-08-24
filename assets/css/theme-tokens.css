@@ -35,6 +35,8 @@ html[data-theme="light"] {
   --cr-font-serif: Georgia, "Times New Roman", "Noto Serif SC", serif;
   --cr-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
   --cr-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --visitor-map-saturation: 78%;
+  --visitor-map-lightness: 46%;
 }
 
 html[data-theme="dark"] {
@@ -70,6 +72,8 @@ html[data-theme="dark"] {
   --cr-border-strong: #666666;
   --cr-shadow: 0 0 0 0 transparent;
   --cr-shadow-hover: 0 0 0 0 transparent;
+  --visitor-map-saturation: 82%;
+  --visitor-map-lightness: 62%;
 }
 
 #main.blog-filter-layout {

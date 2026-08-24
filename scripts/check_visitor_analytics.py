@@ -32,11 +32,13 @@ visitor_component = read("_includes/home-visitor-stats.html")
 scripts = read("_includes/scripts.html")
 config = read("_config.yml")
 styles = read("_sass/layout/_home.scss")
+theme_tokens = read("assets/css/theme-tokens.css")
 
 writing_position = home.index("Recent Writing")
 visitor_position = home.index("{% include home-visitor-stats.html %}")
 require(visitor_position > writing_position, "Global Reach must render after Recent Writing")
 require("Global Reach" in visitor_component, "homepage is missing the Global Reach heading")
+require("data-visitor-map-legend" in visitor_component, "visitor map is missing its color scale legend")
 for attribute in [
     "data-visitor-total",
     "data-visitor-today",
@@ -63,6 +65,9 @@ require("services/" in config, "Jekyll must exclude the Cloudflare service works
 require(".visitor-reach" in styles, "homepage styles are missing the Global Reach component")
 require("[data-theme=\"dark\"]" not in styles, "Global Reach must use shared theme tokens")
 require("var(--cr-page-bg)" in styles, "Global Reach must inherit the canonical page background")
+require("--visitor-map-saturation" in theme_tokens, "theme tokens are missing visitor map saturation")
+require("--visitor-map-lightness" in theme_tokens, "theme tokens are missing visitor map lightness")
+require("hsl(var(--visitor-hue" in styles, "visited countries must use the volume hue scale")
 
 world_map = read("_includes/world-map.svg")
 country_codes = set(re.findall(r'data-country-code="([A-Z]{2})"', world_map))
