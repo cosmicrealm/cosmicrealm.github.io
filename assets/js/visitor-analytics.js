@@ -15,6 +15,14 @@
     return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(number);
   }
 
+  function visitorHue(views, maximum) {
+    const count = Number(views);
+    const ceiling = Number(maximum);
+    if (!Number.isFinite(count) || !Number.isFinite(ceiling) || count <= 0 || ceiling <= 0) return null;
+    const position = Math.sqrt(Math.min(1, count / ceiling));
+    return Math.round(210 - (192 * position));
+  }
+
   function getStorage(windowObject, storageOverride) {
     if (storageOverride) return storageOverride;
     try {
@@ -99,10 +107,11 @@
       component.querySelectorAll("[data-country-code]").forEach((region) => {
         const views = byCode.get(String(region.dataset.countryCode || "").toUpperCase()) || 0;
         region.classList.remove("is-visited");
+        region.style.removeProperty("--visitor-intensity");
+        region.style.removeProperty("--visitor-hue");
         if (views <= 0) return;
         region.classList.add("is-visited");
-        const intensity = 0.28 + 0.72 * Math.sqrt(views / maximum);
-        region.style.setProperty("--visitor-intensity", intensity.toFixed(3));
+        region.style.setProperty("--visitor-hue", String(visitorHue(views, maximum)));
       });
     }
 
@@ -193,5 +202,6 @@
     DEFAULT_ENDPOINT,
     createVisitorAnalytics,
     formatCount,
+    visitorHue,
   };
 }));

@@ -7,6 +7,7 @@ const {
   CACHE_KEY,
   createVisitorAnalytics,
   formatCount,
+  visitorHue,
 } = require("../assets/js/visitor-analytics.js");
 
 function createElement(dataset = {}) {
@@ -19,6 +20,7 @@ function createElement(dataset = {}) {
     style: {
       values: {},
       setProperty(key, value) { this.values[key] = value; },
+      removeProperty(key) { delete this.values[key]; },
     },
     classList: {
       add(name) { classes.add(name); },
@@ -95,6 +97,13 @@ test("formats public counters without compacting their meaning", () => {
   assert.equal(formatCount(undefined), "—");
 });
 
+test("maps relative visits from blue through green to orange", () => {
+  assert.equal(visitorHue(100, 100), 18);
+  assert.equal(visitorHue(25, 100), 114);
+  assert.equal(visitorHue(1, 100), 191);
+  assert.equal(visitorHue(0, 100), null);
+});
+
 test("collects production visits and renders a country heat map", async () => {
   const calls = [];
   const { component, countries, nodes } = createComponent();
@@ -127,7 +136,19 @@ test("collects production visits and renders a country heat map", async () => {
   assert.equal(countries.cn.classList.contains("is-visited"), true);
   assert.equal(countries.us.classList.contains("is-visited"), true);
   assert.equal(countries.fr.classList.contains("is-visited"), false);
+  assert.equal(countries.cn.style.values["--visitor-hue"], "18");
+  assert.equal(countries.us.style.values["--visitor-hue"], "95");
+  assert.equal(countries.fr.style.values["--visitor-hue"], undefined);
   assert.equal(component.classList.contains("is-ready"), true);
+
+  analytics.renderSummary({
+    ...summary,
+    countriesReached: 1,
+    countries: [{ code: "CN", views: 5210 }],
+  }, "live");
+
+  assert.equal(countries.us.classList.contains("is-visited"), false);
+  assert.equal(countries.us.style.values["--visitor-hue"], undefined);
 });
 
 test("respects browser privacy signals", async () => {
